@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/fireblocks/main/json-schema/fireblocks-webhook-event-schema.json",
+  "title": "Fireblocks Webhook Event",
+  "description": "Push-notification payload sent by Fireblocks when an event occurs in a workspace. Fireblocks signs every webhook with an RSA-SHA512 signature in the `Fireblocks-Signature` header — clients must verify against the workspace's public key before processing.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "Event discriminator identifying which workspace event triggered the webhook.",
+      "enum": [
+        "TRANSACTION_CREATED",
+        "TRANSACTION_STATUS_UPDATED",
+        "TRANSACTION_APPROVAL_STATUS_UPDATED",
+        "VAULT_ACCOUNT_ADDED",
+        "VAULT_ACCOUNT_ASSET_ADDED",
+        "INTERNAL_WALLET_ASSET_ADDED",
+        "EXTERNAL_WALLET_ASSET_ADDED",
+        "EXCHANGE_ACCOUNT_ADDED",
+        "FIAT_ACCOUNT_ADDED",
+        "NETWORK_CONNECTION_ADDED",
+        "THIRD_PARTY_TRANSACTION_CONFIRMED",
+        "UNFREEZE_TRANSACTION",
+        "TRAVEL_RULE_NOTIFICATION",
+        "EMBEDDED_WALLET_DEVICE_PAIRED",
+        "EMBEDDED_WALLET_BACKUP_CREATED",
+        "SMART_TRANSFER_TICKET_CREATED",
+        "SMART_TRANSFER_TICKET_STATUS_UPDATED",
+        "TOKEN_LINK_REQUEST",
+        "WALLET_CONNECT_REQUEST"
+      ]
+    },
+    "tenantId": { "type": "string", "description": "Fireblocks workspace (tenant) identifier." },
+    "timestamp": { "type": "integer", "description": "Unix epoch millis at which the event was emitted." },
+    "data": {
+      "type": "object",
+      "description": "Event-specific payload. Schema depends on `type`; for transaction events this is a Fireblocks Transaction object."
+    }
+  },
+  "required": ["type", "tenantId", "timestamp", "data"]
+}

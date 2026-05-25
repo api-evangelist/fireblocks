@@ -1,0 +1,199 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Fireblocks
+providerId: fireblocks
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - Digital Assets
+  - Custody
+  - MPC
+  - Wallets
+description: 'Fireblocks commercial plans for digital-asset infrastructure: Essentials, Pro, Enterprise, and
+  Enterprise+. Pricing reconciled from fireblocks.com/pricing. Outbound volume is metered in USD of value
+  transferred; overage rate applies per transaction once monthly volume exceeds the included quota.'
+sources:
+  - https://www.fireblocks.com/pricing
+  - https://developers.fireblocks.com/docs/quickstart
+plans:
+  - id: fireblocks-developer-sandbox
+    name: Developer Sandbox
+    type: free
+    description: Complimentary sandbox workspace for evaluating Fireblocks. Pre-funded test assets and a communal
+      test co-signer. No production traffic.
+    entries:
+      - label: Outbound volume
+        name: outbound_volume_usd
+        type: included
+        metric: usd
+        limit: 0
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Sandbox API calls
+        name: api_calls
+        type: included
+        metric: requests
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    elements:
+      - name: Pre-funded test assets across major blockchains
+      - name: Communal test co-signer
+      - name: Full REST API surface
+      - name: Webhooks
+      - name: SDKs (TypeScript, Python, Java)
+  - id: fireblocks-essentials
+    name: Essentials
+    type: tiered
+    description: Entry-tier plan for startups and small teams. $699/month with $1M of included outbound volume.
+      0.20% overage rate per transaction beyond the included quota.
+    entries:
+      - label: Monthly subscription
+        name: subscription
+        type: fixed
+        metric: months
+        limit: 1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '699.00'
+        userMultiplied: false
+      - label: Outbound volume included
+        name: outbound_volume_usd
+        type: included
+        metric: usd
+        limit: 1000000
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Outbound volume overage
+        name: outbound_volume_overage_bps
+        type: metered
+        metric: usd_transferred
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 10000
+        price: '20.00'
+        userMultiplied: false
+      - label: Embedded wallets included
+        name: embedded_wallets
+        type: included
+        metric: wallets
+        limit: 1000
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    elements:
+      - name: Up to 6 months of Essentials pricing
+      - name: 2 workspaces
+      - name: 5 users
+      - name: Basic support (8x5)
+      - name: Policy Engine
+      - name: WalletConnect
+      - name: API co-signer
+      - name: dApp protection
+      - name: Transaction simulation
+  - id: fireblocks-pro
+    name: Pro
+    type: contract
+    description: Custom Pro plan starting at $18,000/year. Negotiated API limits, integrations, workspaces, users,
+      and support level.
+    entries:
+      - label: Annual contract minimum
+        name: contract_minimum
+        type: fixed
+        metric: years
+        limit: 1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: '18000.00'
+        userMultiplied: false
+    elements:
+      - name: Custom API limits
+      - name: Custom workspaces and users
+      - name: Premium or Platinum support (24/7 available)
+      - name: All Essentials features
+      - name: Cold wallet (add-on)
+      - name: Raw signing (add-on)
+      - name: KeyLink (add-on)
+      - name: Staking (add-on)
+      - name: Automation (add-on)
+      - name: Off-Exchange (add-on)
+      - name: Tokenization (3-30 bps on AUC, add-on)
+  - id: fireblocks-enterprise
+    name: Enterprise
+    type: contract
+    description: Custom Enterprise plan with negotiated commercial terms for financial institutions, fintechs,
+      and payment service providers.
+    entries:
+      - label: Annual contract
+        name: contract_annual
+        type: fixed
+        metric: years
+        limit: 1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: contact-sales
+        userMultiplied: false
+    elements:
+      - name: All Pro features
+      - name: Higher workspace, user, and API limits
+      - name: Premium 24/7 support
+      - name: Custom SLA
+      - name: Dedicated CSM
+  - id: fireblocks-enterprise-plus
+    name: Enterprise+
+    type: contract
+    description: Top-tier Enterprise+ plan for banks, large exchanges, and major financial institutions with the
+      highest performance, support, and compliance requirements.
+    entries:
+      - label: Annual contract
+        name: contract_annual
+        type: fixed
+        metric: years
+        limit: 1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: contact-sales
+        userMultiplied: false
+    elements:
+      - name: All Enterprise features
+      - name: Platinum 24/7 support
+      - name: Custom infrastructure / dedicated tenants
+      - name: Negotiated MSA / regulatory addenda
+  - id: fireblocks-addon-tokenization
+    name: Tokenization Add-On
+    type: usage-based
+    description: Tokenization Engine add-on. Priced as 3-30 basis points on Assets Under Custody (AUC) per
+      contract, depending on chain, token standard, and AUC tier.
+    entries:
+      - label: Tokenization fee
+        name: tokenization_bps
+        type: metered
+        metric: usd_auc
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 10000
+        price: '3.00-30.00'
+        userMultiplied: false
+    elements:
+      - name: Smart contract management
+      - name: Token deployment workflows
+      - name: Cross-chain support

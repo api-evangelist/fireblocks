@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/fireblocks/main/json-schema/fireblocks-vault-account-schema.json",
+  "title": "Fireblocks Vault Account",
+  "description": "A Fireblocks Vault account groups one or more asset wallets under a single organizational unit (e.g. desk, customer, fund). Vaults are the root container for keys, balances, and transactions inside a Fireblocks workspace.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique Fireblocks-assigned identifier of the vault account."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the vault account."
+    },
+    "hiddenOnUI": {
+      "type": "boolean",
+      "description": "If true, the vault is hidden from the Fireblocks Console UI but remains accessible via API."
+    },
+    "customerRefId": {
+      "type": "string",
+      "description": "Optional customer-defined reference identifier (e.g. internal customer ID) attached to the vault."
+    },
+    "autoFuel": {
+      "type": "boolean",
+      "description": "If true, Fireblocks will auto-fuel gas for transactions originating from this vault using the configured Gas Station."
+    },
+    "assets": {
+      "type": "array",
+      "description": "List of asset wallets held inside the vault.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "Fireblocks asset identifier (e.g. BTC, ETH, USDC)." },
+          "total": { "type": "string", "description": "Total balance of the asset held in the vault." },
+          "balance": { "type": "string", "description": "Available (spendable) balance of the asset." },
+          "lockedAmount": { "type": "string", "description": "Amount currently locked by pending transactions." },
+          "available": { "type": "string", "description": "Amount available to spend after subtracting locked and pending amounts." },
+          "pending": { "type": "string", "description": "Amount pending confirmation from the network." },
+          "frozen": { "type": "string", "description": "Amount frozen by AML / compliance screening." },
+          "staked": { "type": "string", "description": "Amount currently staked via the Fireblocks Staking API." },
+          "blockHeight": { "type": "string", "description": "Block height at which the balance was last updated." },
+          "blockHash": { "type": "string", "description": "Block hash at which the balance was last updated." }
+        }
+      }
+    }
+  },
+  "required": ["id", "name"]
+}

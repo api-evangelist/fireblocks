@@ -1,0 +1,1488 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: "Fireblocks Workspace \u2014 Workspace"
+  description: Fireblocks Workspace business capability. 40 operations against the Fireblocks REST API v1.
+  tags:
+  - Fireblocks
+  - Workspace
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    FIREBLOCKS_API_KEY: FIREBLOCKS_API_KEY
+    FIREBLOCKS_API_SECRET: FIREBLOCKS_API_SECRET
+capability:
+  consumes:
+  - type: http
+    namespace: workspace
+    baseUri: https://api.fireblocks.io/v1
+    description: Fireblocks Workspace REST capability. JWT-signed using API key + RSA private key.
+    resources:
+    - name: freezeworkspace
+      path: /workspace/freeze
+      operations:
+      - name: freezeworkspace
+        method: POST
+        description: Freeze
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: createsigningkey
+      path: /key_link/signing_keys
+      operations:
+      - name: createsigningkey
+        method: POST
+        description: Add a new signing key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getsigningkeyslist
+      path: /key_link/signing_keys
+      operations:
+      - name: getsigningkeyslist
+        method: GET
+        description: Get list of signing keys
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getsigningkey
+      path: /key_link/signing_keys/{keyId}
+      operations:
+      - name: getsigningkey
+        method: GET
+        description: Get a signing key by `keyId`
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updatesigningkey
+      path: /key_link/signing_keys/{keyId}
+      operations:
+      - name: updatesigningkey
+        method: PATCH
+        description: Modify the signing keyId
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: setagentid
+      path: /key_link/signing_keys/{keyId}/agent_user_id
+      operations:
+      - name: setagentid
+        method: PATCH
+        description: Set agent user id
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: createvalidationkey
+      path: /key_link/validation_keys
+      operations:
+      - name: createvalidationkey
+        method: POST
+        description: Add a new validation key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getvalidationkeyslist
+      path: /key_link/validation_keys
+      operations:
+      - name: getvalidationkeyslist
+        method: GET
+        description: Get list of registered validation keys
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getvalidationkey
+      path: /key_link/validation_keys/{keyId}
+      operations:
+      - name: getvalidationkey
+        method: GET
+        description: Get a validation key by `keyId`
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: disablevalidationkey
+      path: /key_link/validation_keys/{keyId}
+      operations:
+      - name: disablevalidationkey
+        method: PATCH
+        description: Disables a validation key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getmpckeyslist
+      path: /keys/mpc/list
+      operations:
+      - name: getmpckeyslist
+        method: GET
+        description: Get list of mpc keys
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getmpckeyslistbyuser
+      path: /keys/mpc/list/{userId}
+      operations:
+      - name: getmpckeyslistbyuser
+        method: GET
+        description: Get list of mpc keys by `userId`
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getusergroups
+      path: /management/user_groups
+      operations:
+      - name: getusergroups
+        method: GET
+        description: List user groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: createusergroup
+      path: /management/user_groups
+      operations:
+      - name: createusergroup
+        method: POST
+        description: Create user group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getusergroup
+      path: /management/user_groups/{groupId}
+      operations:
+      - name: getusergroup
+        method: GET
+        description: Get user group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updateusergroup
+      path: /management/user_groups/{groupId}
+      operations:
+      - name: updateusergroup
+        method: PUT
+        description: Update user group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: deleteusergroup
+      path: /management/user_groups/{groupId}
+      operations:
+      - name: deleteusergroup
+        method: DELETE
+        description: Delete user group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getusers
+      path: /users
+      operations:
+      - name: getusers
+        method: GET
+        description: List users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getaudits
+      path: /audits
+      operations:
+      - name: getaudits
+        method: GET
+        description: Get audit logs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getauditlogs
+      path: /management/audit_logs
+      operations:
+      - name: getauditlogs
+        method: GET
+        description: Get audit logs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: setadminquorumthreshold
+      path: /admin_quorum
+      operations:
+      - name: setadminquorumthreshold
+        method: PUT
+        description: Update admin quorum threshold
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: setotastatus
+      path: /management/ota
+      operations:
+      - name: setotastatus
+        method: PUT
+        description: Enable or disable transactions to OTA
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getotastatus
+      path: /management/ota
+      operations:
+      - name: getotastatus
+        method: GET
+        description: Returns current OTA status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getworkspacestatus
+      path: /management/workspace_status
+      operations:
+      - name: getworkspacestatus
+        method: GET
+        description: Returns current workspace status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getconsoleusers
+      path: /management/users
+      operations:
+      - name: getconsoleusers
+        method: GET
+        description: Get console users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: createconsoleuser
+      path: /management/users
+      operations:
+      - name: createconsoleuser
+        method: POST
+        description: Create console user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getapiusers
+      path: /management/api_users
+      operations:
+      - name: getapiusers
+        method: GET
+        description: Get API Keys
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: createapiuser
+      path: /management/api_users
+      operations:
+      - name: createapiuser
+        method: POST
+        description: Create API Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: resetdevice
+      path: /management/users/{id}/reset_device
+      operations:
+      - name: resetdevice
+        method: POST
+        description: Resets device
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getwhitelistipaddresses
+      path: /management/api_users/{userId}/whitelist_ip_addresses
+      operations:
+      - name: getwhitelistipaddresses
+        method: GET
+        description: Get whitelisted ip addresses for an API Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getcosigners
+      path: /cosigners
+      operations:
+      - name: getcosigners
+        method: GET
+        description: Get all cosigners
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: addcosigner
+      path: /cosigners
+      operations:
+      - name: addcosigner
+        method: POST
+        description: Add cosigner
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getcosigner
+      path: /cosigners/{cosignerId}
+      operations:
+      - name: getcosigner
+        method: GET
+        description: Get cosigner
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: renamecosigner
+      path: /cosigners/{cosignerId}
+      operations:
+      - name: renamecosigner
+        method: PATCH
+        description: Rename cosigner
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getapikeys
+      path: /cosigners/{cosignerId}/api_keys
+      operations:
+      - name: getapikeys
+        method: GET
+        description: Get all API keys
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getapikey
+      path: /cosigners/{cosignerId}/api_keys/{apiKeyId}
+      operations:
+      - name: getapikey
+        method: GET
+        description: Get API key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: pairapikey
+      path: /cosigners/{cosignerId}/api_keys/{apiKeyId}
+      operations:
+      - name: pairapikey
+        method: PUT
+        description: Pair API key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: unpairapikey
+      path: /cosigners/{cosignerId}/api_keys/{apiKeyId}
+      operations:
+      - name: unpairapikey
+        method: DELETE
+        description: Unpair API key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updatecallbackhandler
+      path: /cosigners/{cosignerId}/api_keys/{apiKeyId}
+      operations:
+      - name: updatecallbackhandler
+        method: PATCH
+        description: Update API key callback handler
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getrequeststatus
+      path: /cosigners/{cosignerId}/api_keys/{apiKeyId}/{requestId}
+      operations:
+      - name: getrequeststatus
+        method: GET
+        description: Get request status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: X-API-Key
+      value: '{{env.FIREBLOCKS_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: workspace-rest
+    port: 8080
+    description: REST adapter for Fireblocks Workspace.
+    resources:
+    - path: /v1/workspace/freeze
+      name: freezeworkspace
+      description: Freeze
+      operations:
+      - method: POST
+        name: freezeworkspace
+        description: Freeze
+        call: workspace.freezeworkspace
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/key_link/signing_keys
+      name: createsigningkey
+      description: Add a new signing key
+      operations:
+      - method: POST
+        name: createsigningkey
+        description: Add a new signing key
+        call: workspace.createsigningkey
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/key_link/signing_keys
+      name: getsigningkeyslist
+      description: Get list of signing keys
+      operations:
+      - method: GET
+        name: getsigningkeyslist
+        description: Get list of signing keys
+        call: workspace.getsigningkeyslist
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/key_link/signing_keys/{keyId}
+      name: getsigningkey
+      description: Get a signing key by `keyId`
+      operations:
+      - method: GET
+        name: getsigningkey
+        description: Get a signing key by `keyId`
+        call: workspace.getsigningkey
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/key_link/signing_keys/{keyId}
+      name: updatesigningkey
+      description: Modify the signing keyId
+      operations:
+      - method: PATCH
+        name: updatesigningkey
+        description: Modify the signing keyId
+        call: workspace.updatesigningkey
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/key_link/signing_keys/{keyId}/agent_user_id
+      name: setagentid
+      description: Set agent user id
+      operations:
+      - method: PATCH
+        name: setagentid
+        description: Set agent user id
+        call: workspace.setagentid
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/key_link/validation_keys
+      name: createvalidationkey
+      description: Add a new validation key
+      operations:
+      - method: POST
+        name: createvalidationkey
+        description: Add a new validation key
+        call: workspace.createvalidationkey
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/key_link/validation_keys
+      name: getvalidationkeyslist
+      description: Get list of registered validation keys
+      operations:
+      - method: GET
+        name: getvalidationkeyslist
+        description: Get list of registered validation keys
+        call: workspace.getvalidationkeyslist
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/key_link/validation_keys/{keyId}
+      name: getvalidationkey
+      description: Get a validation key by `keyId`
+      operations:
+      - method: GET
+        name: getvalidationkey
+        description: Get a validation key by `keyId`
+        call: workspace.getvalidationkey
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/key_link/validation_keys/{keyId}
+      name: disablevalidationkey
+      description: Disables a validation key
+      operations:
+      - method: PATCH
+        name: disablevalidationkey
+        description: Disables a validation key
+        call: workspace.disablevalidationkey
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/keys/mpc/list
+      name: getmpckeyslist
+      description: Get list of mpc keys
+      operations:
+      - method: GET
+        name: getmpckeyslist
+        description: Get list of mpc keys
+        call: workspace.getmpckeyslist
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/keys/mpc/list/{userId}
+      name: getmpckeyslistbyuser
+      description: Get list of mpc keys by `userId`
+      operations:
+      - method: GET
+        name: getmpckeyslistbyuser
+        description: Get list of mpc keys by `userId`
+        call: workspace.getmpckeyslistbyuser
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/management/user_groups
+      name: getusergroups
+      description: List user groups
+      operations:
+      - method: GET
+        name: getusergroups
+        description: List user groups
+        call: workspace.getusergroups
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/management/user_groups
+      name: createusergroup
+      description: Create user group
+      operations:
+      - method: POST
+        name: createusergroup
+        description: Create user group
+        call: workspace.createusergroup
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/management/user_groups/{groupId}
+      name: getusergroup
+      description: Get user group
+      operations:
+      - method: GET
+        name: getusergroup
+        description: Get user group
+        call: workspace.getusergroup
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/management/user_groups/{groupId}
+      name: updateusergroup
+      description: Update user group
+      operations:
+      - method: PUT
+        name: updateusergroup
+        description: Update user group
+        call: workspace.updateusergroup
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/management/user_groups/{groupId}
+      name: deleteusergroup
+      description: Delete user group
+      operations:
+      - method: DELETE
+        name: deleteusergroup
+        description: Delete user group
+        call: workspace.deleteusergroup
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users
+      name: getusers
+      description: List users
+      operations:
+      - method: GET
+        name: getusers
+        description: List users
+        call: workspace.getusers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/audits
+      name: getaudits
+      description: Get audit logs
+      operations:
+      - method: GET
+        name: getaudits
+        description: Get audit logs
+        call: workspace.getaudits
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/management/audit_logs
+      name: getauditlogs
+      description: Get audit logs
+      operations:
+      - method: GET
+        name: getauditlogs
+        description: Get audit logs
+        call: workspace.getauditlogs
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin_quorum
+      name: setadminquorumthreshold
+      description: Update admin quorum threshold
+      operations:
+      - method: PUT
+        name: setadminquorumthreshold
+        description: Update admin quorum threshold
+        call: workspace.setadminquorumthreshold
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/management/ota
+      name: setotastatus
+      description: Enable or disable transactions to OTA
+      operations:
+      - method: PUT
+        name: setotastatus
+        description: Enable or disable transactions to OTA
+        call: workspace.setotastatus
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/management/ota
+      name: getotastatus
+      description: Returns current OTA status
+      operations:
+      - method: GET
+        name: getotastatus
+        description: Returns current OTA status
+        call: workspace.getotastatus
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/management/workspace_status
+      name: getworkspacestatus
+      description: Returns current workspace status
+      operations:
+      - method: GET
+        name: getworkspacestatus
+        description: Returns current workspace status
+        call: workspace.getworkspacestatus
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/management/users
+      name: getconsoleusers
+      description: Get console users
+      operations:
+      - method: GET
+        name: getconsoleusers
+        description: Get console users
+        call: workspace.getconsoleusers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/management/users
+      name: createconsoleuser
+      description: Create console user
+      operations:
+      - method: POST
+        name: createconsoleuser
+        description: Create console user
+        call: workspace.createconsoleuser
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/management/api_users
+      name: getapiusers
+      description: Get API Keys
+      operations:
+      - method: GET
+        name: getapiusers
+        description: Get API Keys
+        call: workspace.getapiusers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/management/api_users
+      name: createapiuser
+      description: Create API Key
+      operations:
+      - method: POST
+        name: createapiuser
+        description: Create API Key
+        call: workspace.createapiuser
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/management/users/{id}/reset_device
+      name: resetdevice
+      description: Resets device
+      operations:
+      - method: POST
+        name: resetdevice
+        description: Resets device
+        call: workspace.resetdevice
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/management/api_users/{userId}/whitelist_ip_addresses
+      name: getwhitelistipaddresses
+      description: Get whitelisted ip addresses for an API Key
+      operations:
+      - method: GET
+        name: getwhitelistipaddresses
+        description: Get whitelisted ip addresses for an API Key
+        call: workspace.getwhitelistipaddresses
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cosigners
+      name: getcosigners
+      description: Get all cosigners
+      operations:
+      - method: GET
+        name: getcosigners
+        description: Get all cosigners
+        call: workspace.getcosigners
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cosigners
+      name: addcosigner
+      description: Add cosigner
+      operations:
+      - method: POST
+        name: addcosigner
+        description: Add cosigner
+        call: workspace.addcosigner
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/cosigners/{cosignerId}
+      name: getcosigner
+      description: Get cosigner
+      operations:
+      - method: GET
+        name: getcosigner
+        description: Get cosigner
+        call: workspace.getcosigner
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cosigners/{cosignerId}
+      name: renamecosigner
+      description: Rename cosigner
+      operations:
+      - method: PATCH
+        name: renamecosigner
+        description: Rename cosigner
+        call: workspace.renamecosigner
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/cosigners/{cosignerId}/api_keys
+      name: getapikeys
+      description: Get all API keys
+      operations:
+      - method: GET
+        name: getapikeys
+        description: Get all API keys
+        call: workspace.getapikeys
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cosigners/{cosignerId}/api_keys/{apiKeyId}
+      name: getapikey
+      description: Get API key
+      operations:
+      - method: GET
+        name: getapikey
+        description: Get API key
+        call: workspace.getapikey
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cosigners/{cosignerId}/api_keys/{apiKeyId}
+      name: pairapikey
+      description: Pair API key
+      operations:
+      - method: PUT
+        name: pairapikey
+        description: Pair API key
+        call: workspace.pairapikey
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/cosigners/{cosignerId}/api_keys/{apiKeyId}
+      name: unpairapikey
+      description: Unpair API key
+      operations:
+      - method: DELETE
+        name: unpairapikey
+        description: Unpair API key
+        call: workspace.unpairapikey
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cosigners/{cosignerId}/api_keys/{apiKeyId}
+      name: updatecallbackhandler
+      description: Update API key callback handler
+      operations:
+      - method: PATCH
+        name: updatecallbackhandler
+        description: Update API key callback handler
+        call: workspace.updatecallbackhandler
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/cosigners/{cosignerId}/api_keys/{apiKeyId}/{requestId}
+      name: getrequeststatus
+      description: Get request status
+      operations:
+      - method: GET
+        name: getrequeststatus
+        description: Get request status
+        call: workspace.getrequeststatus
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: workspace-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Fireblocks Workspace. One tool per consumed operation.
+    tools:
+    - name: fireblocks-freezeworkspace
+      description: Freeze
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.freezeworkspace
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-createsigningkey
+      description: Add a new signing key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.createsigningkey
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getsigningkeyslist
+      description: Get list of signing keys
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getsigningkeyslist
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getsigningkey
+      description: Get a signing key by `keyId`
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getsigningkey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updatesigningkey
+      description: Modify the signing keyId
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.updatesigningkey
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-setagentid
+      description: Set agent user id
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.setagentid
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-createvalidationkey
+      description: Add a new validation key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.createvalidationkey
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getvalidationkeyslist
+      description: Get list of registered validation keys
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getvalidationkeyslist
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getvalidationkey
+      description: Get a validation key by `keyId`
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getvalidationkey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-disablevalidationkey
+      description: Disables a validation key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.disablevalidationkey
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getmpckeyslist
+      description: Get list of mpc keys
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getmpckeyslist
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getmpckeyslistbyuser
+      description: Get list of mpc keys by `userId`
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getmpckeyslistbyuser
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getusergroups
+      description: List user groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getusergroups
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-createusergroup
+      description: Create user group
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.createusergroup
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getusergroup
+      description: Get user group
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getusergroup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updateusergroup
+      description: Update user group
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: workspace.updateusergroup
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-deleteusergroup
+      description: Delete user group
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: workspace.deleteusergroup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getusers
+      description: List users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getusers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getaudits
+      description: Get audit logs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getaudits
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getauditlogs
+      description: Get audit logs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getauditlogs
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-setadminquorumthreshold
+      description: Update admin quorum threshold
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: workspace.setadminquorumthreshold
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-setotastatus
+      description: Enable or disable transactions to OTA
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: workspace.setotastatus
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getotastatus
+      description: Returns current OTA status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getotastatus
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getworkspacestatus
+      description: Returns current workspace status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getworkspacestatus
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getconsoleusers
+      description: Get console users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getconsoleusers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-createconsoleuser
+      description: Create console user
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.createconsoleuser
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getapiusers
+      description: Get API Keys
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getapiusers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-createapiuser
+      description: Create API Key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.createapiuser
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-resetdevice
+      description: Resets device
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.resetdevice
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getwhitelistipaddresses
+      description: Get whitelisted ip addresses for an API Key
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getwhitelistipaddresses
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getcosigners
+      description: Get all cosigners
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getcosigners
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-addcosigner
+      description: Add cosigner
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.addcosigner
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getcosigner
+      description: Get cosigner
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getcosigner
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-renamecosigner
+      description: Rename cosigner
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.renamecosigner
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getapikeys
+      description: Get all API keys
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getapikeys
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getapikey
+      description: Get API key
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getapikey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-pairapikey
+      description: Pair API key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: workspace.pairapikey
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-unpairapikey
+      description: Unpair API key
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: workspace.unpairapikey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updatecallbackhandler
+      description: Update API key callback handler
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: workspace.updatecallbackhandler
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getrequeststatus
+      description: Get request status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: workspace.getrequeststatus
+      outputParameters:
+      - type: object
+        mapping: $.

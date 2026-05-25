@@ -1,0 +1,164 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "fireblocks": "https://api.fireblocks.io/v1/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "VaultAccount": {
+      "@id": "fireblocks:VaultAccount",
+      "@context": {
+        "id": { "@id": "fireblocks:VaultAccount/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "hiddenOnUI": { "@id": "fireblocks:VaultAccount/hiddenOnUI", "@type": "xsd:boolean" },
+        "customerRefId": { "@id": "fireblocks:VaultAccount/customerRefId", "@type": "xsd:string" },
+        "autoFuel": { "@id": "fireblocks:VaultAccount/autoFuel", "@type": "xsd:boolean" },
+        "assets": { "@id": "fireblocks:VaultAccount/assets", "@container": "@list" }
+      }
+    },
+
+    "AssetWallet": {
+      "@id": "fireblocks:AssetWallet",
+      "@context": {
+        "id": { "@id": "fireblocks:AssetWallet/id", "@type": "xsd:string" },
+        "total": { "@id": "fireblocks:AssetWallet/total", "@type": "xsd:decimal" },
+        "balance": { "@id": "fireblocks:AssetWallet/balance", "@type": "xsd:decimal" },
+        "available": { "@id": "fireblocks:AssetWallet/available", "@type": "xsd:decimal" },
+        "pending": { "@id": "fireblocks:AssetWallet/pending", "@type": "xsd:decimal" },
+        "frozen": { "@id": "fireblocks:AssetWallet/frozen", "@type": "xsd:decimal" },
+        "lockedAmount": { "@id": "fireblocks:AssetWallet/lockedAmount", "@type": "xsd:decimal" },
+        "staked": { "@id": "fireblocks:AssetWallet/staked", "@type": "xsd:decimal" },
+        "blockHeight": { "@id": "fireblocks:AssetWallet/blockHeight", "@type": "xsd:string" },
+        "blockHash": { "@id": "fireblocks:AssetWallet/blockHash", "@type": "xsd:string" }
+      }
+    },
+
+    "Transaction": {
+      "@id": "fireblocks:Transaction",
+      "@context": {
+        "id": { "@id": "fireblocks:Transaction/id", "@type": "xsd:string" },
+        "externalTxId": { "@id": "fireblocks:Transaction/externalTxId", "@type": "xsd:string" },
+        "status": { "@id": "fireblocks:Transaction/status", "@type": "xsd:string" },
+        "subStatus": { "@id": "fireblocks:Transaction/subStatus", "@type": "xsd:string" },
+        "txHash": { "@id": "fireblocks:Transaction/txHash", "@type": "xsd:string" },
+        "operation": { "@id": "fireblocks:Transaction/operation", "@type": "xsd:string" },
+        "assetId": { "@id": "fireblocks:Transaction/assetId", "@type": "xsd:string" },
+        "source": { "@id": "fireblocks:Transaction/source", "@type": "fireblocks:TransferPeer" },
+        "destination": { "@id": "fireblocks:Transaction/destination", "@type": "fireblocks:TransferPeer" },
+        "amount": { "@id": "fireblocks:Transaction/amount", "@type": "xsd:decimal" },
+        "amountUSD": { "@id": "fireblocks:Transaction/amountUSD", "@type": "xsd:decimal" },
+        "netAmount": { "@id": "fireblocks:Transaction/netAmount", "@type": "xsd:decimal" },
+        "fee": { "@id": "fireblocks:Transaction/fee", "@type": "xsd:decimal" },
+        "networkFee": { "@id": "fireblocks:Transaction/networkFee", "@type": "xsd:decimal" },
+        "feeLevel": { "@id": "fireblocks:Transaction/feeLevel", "@type": "xsd:string" },
+        "note": { "@id": "schema:description", "@type": "xsd:string" },
+        "createdAt": { "@id": "fireblocks:Transaction/createdAt", "@type": "xsd:integer" },
+        "lastUpdated": { "@id": "fireblocks:Transaction/lastUpdated", "@type": "xsd:integer" },
+        "createdBy": { "@id": "fireblocks:Transaction/createdBy", "@type": "xsd:string" },
+        "signedBy": { "@id": "fireblocks:Transaction/signedBy", "@container": "@list" },
+        "rejectedBy": { "@id": "fireblocks:Transaction/rejectedBy", "@type": "xsd:string" }
+      }
+    },
+
+    "TransferPeer": {
+      "@id": "fireblocks:TransferPeer",
+      "@context": {
+        "type": { "@id": "fireblocks:TransferPeer/type", "@type": "xsd:string" },
+        "id": { "@id": "fireblocks:TransferPeer/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" }
+      }
+    },
+
+    "Asset": {
+      "@id": "fireblocks:Asset",
+      "@context": {
+        "id": { "@id": "fireblocks:Asset/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "type": { "@id": "fireblocks:Asset/type", "@type": "xsd:string" },
+        "contractAddress": { "@id": "fireblocks:Asset/contractAddress", "@type": "xsd:string" },
+        "nativeAsset": { "@id": "fireblocks:Asset/nativeAsset", "@type": "xsd:string" },
+        "decimals": { "@id": "fireblocks:Asset/decimals", "@type": "xsd:integer" }
+      }
+    },
+
+    "Token": {
+      "@id": "fireblocks:Token",
+      "@context": {
+        "id": { "@id": "fireblocks:Token/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "symbol": { "@id": "fireblocks:Token/symbol", "@type": "xsd:string" },
+        "standard": { "@id": "fireblocks:Token/standard", "@type": "xsd:string" },
+        "blockchain": { "@id": "fireblocks:Token/blockchain", "@type": "xsd:string" },
+        "contractAddress": { "@id": "fireblocks:Token/contractAddress", "@type": "xsd:string" },
+        "totalSupply": { "@id": "fireblocks:Token/totalSupply", "@type": "xsd:decimal" }
+      }
+    },
+
+    "WhitelistedWallet": {
+      "@id": "fireblocks:WhitelistedWallet",
+      "@context": {
+        "id": { "@id": "fireblocks:WhitelistedWallet/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "customerRefId": { "@id": "fireblocks:WhitelistedWallet/customerRefId", "@type": "xsd:string" },
+        "assets": { "@id": "fireblocks:WhitelistedWallet/assets", "@container": "@list" }
+      }
+    },
+
+    "ExchangeAccount": {
+      "@id": "fireblocks:ExchangeAccount",
+      "@context": {
+        "id": { "@id": "fireblocks:ExchangeAccount/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "type": { "@id": "fireblocks:ExchangeAccount/type", "@type": "xsd:string" },
+        "status": { "@id": "fireblocks:ExchangeAccount/status", "@type": "xsd:string" },
+        "isSubaccount": { "@id": "fireblocks:ExchangeAccount/isSubaccount", "@type": "xsd:boolean" }
+      }
+    },
+
+    "StakingPosition": {
+      "@id": "fireblocks:StakingPosition",
+      "@context": {
+        "id": { "@id": "fireblocks:StakingPosition/id", "@type": "xsd:string" },
+        "chainDescriptor": { "@id": "fireblocks:StakingPosition/chainDescriptor", "@type": "xsd:string" },
+        "providerId": { "@id": "fireblocks:StakingPosition/providerId", "@type": "xsd:string" },
+        "validator": { "@id": "fireblocks:StakingPosition/validator", "@type": "xsd:string" },
+        "amount": { "@id": "fireblocks:StakingPosition/amount", "@type": "xsd:decimal" },
+        "rewardsAmount": { "@id": "fireblocks:StakingPosition/rewardsAmount", "@type": "xsd:decimal" },
+        "status": { "@id": "fireblocks:StakingPosition/status", "@type": "xsd:string" }
+      }
+    },
+
+    "WebhookEvent": {
+      "@id": "fireblocks:WebhookEvent",
+      "@context": {
+        "type": { "@id": "fireblocks:WebhookEvent/type", "@type": "xsd:string" },
+        "tenantId": { "@id": "fireblocks:WebhookEvent/tenantId", "@type": "xsd:string" },
+        "timestamp": { "@id": "fireblocks:WebhookEvent/timestamp", "@type": "xsd:integer" },
+        "data": { "@id": "fireblocks:WebhookEvent/data" }
+      }
+    },
+
+    "PaymentFlow": {
+      "@id": "fireblocks:PaymentFlow",
+      "@context": {
+        "id": { "@id": "fireblocks:PaymentFlow/id", "@type": "xsd:string" },
+        "status": { "@id": "fireblocks:PaymentFlow/status", "@type": "xsd:string" },
+        "fromAccount": { "@id": "fireblocks:PaymentFlow/fromAccount", "@type": "fireblocks:TransferPeer" },
+        "amount": { "@id": "fireblocks:PaymentFlow/amount", "@type": "xsd:decimal" },
+        "asset": { "@id": "fireblocks:PaymentFlow/asset", "@type": "xsd:string" }
+      }
+    },
+
+    "SmartTransferTicket": {
+      "@id": "fireblocks:SmartTransferTicket",
+      "@context": {
+        "id": { "@id": "fireblocks:SmartTransferTicket/id", "@type": "xsd:string" },
+        "status": { "@id": "fireblocks:SmartTransferTicket/status", "@type": "xsd:string" },
+        "type": { "@id": "fireblocks:SmartTransferTicket/type", "@type": "xsd:string" },
+        "terms": { "@id": "fireblocks:SmartTransferTicket/terms", "@container": "@list" }
+      }
+    }
+  }
+}

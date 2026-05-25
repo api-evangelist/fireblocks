@@ -1,0 +1,186 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: "Fireblocks Gas Station \u2014 Station"
+  description: Fireblocks Gas Station business capability. 4 operations against the Fireblocks REST API v1.
+  tags:
+  - Fireblocks
+  - Station
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    FIREBLOCKS_API_KEY: FIREBLOCKS_API_KEY
+    FIREBLOCKS_API_SECRET: FIREBLOCKS_API_SECRET
+capability:
+  consumes:
+  - type: http
+    namespace: gas-station
+    baseUri: https://api.fireblocks.io/v1
+    description: Fireblocks Gas Station REST capability. JWT-signed using API key + RSA private key.
+    resources:
+    - name: getgasstationinfo
+      path: /gas_station
+      operations:
+      - name: getgasstationinfo
+        method: GET
+        description: Get gas station settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getgasstationbyassetid
+      path: /gas_station/{assetId}
+      operations:
+      - name: getgasstationbyassetid
+        method: GET
+        description: Get gas station settings by asset
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updategasstationconfiguration
+      path: /gas_station/configuration
+      operations:
+      - name: updategasstationconfiguration
+        method: PUT
+        description: Edit gas station settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: updategasstationconfigurationbyassetid
+      path: /gas_station/configuration/{assetId}
+      operations:
+      - name: updategasstationconfigurationbyassetid
+        method: PUT
+        description: Edit gas station settings for an asset
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: X-API-Key
+      value: '{{env.FIREBLOCKS_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: gas-station-rest
+    port: 8080
+    description: REST adapter for Fireblocks Gas Station.
+    resources:
+    - path: /v1/gas_station
+      name: getgasstationinfo
+      description: Get gas station settings
+      operations:
+      - method: GET
+        name: getgasstationinfo
+        description: Get gas station settings
+        call: gas-station.getgasstationinfo
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/gas_station/{assetId}
+      name: getgasstationbyassetid
+      description: Get gas station settings by asset
+      operations:
+      - method: GET
+        name: getgasstationbyassetid
+        description: Get gas station settings by asset
+        call: gas-station.getgasstationbyassetid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/gas_station/configuration
+      name: updategasstationconfiguration
+      description: Edit gas station settings
+      operations:
+      - method: PUT
+        name: updategasstationconfiguration
+        description: Edit gas station settings
+        call: gas-station.updategasstationconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/gas_station/configuration/{assetId}
+      name: updategasstationconfigurationbyassetid
+      description: Edit gas station settings for an asset
+      operations:
+      - method: PUT
+        name: updategasstationconfigurationbyassetid
+        description: Edit gas station settings for an asset
+        call: gas-station.updategasstationconfigurationbyassetid
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+  - type: mcp
+    namespace: gas-station-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Fireblocks Gas Station. One tool per consumed operation.
+    tools:
+    - name: fireblocks-getgasstationinfo
+      description: Get gas station settings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gas-station.getgasstationinfo
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getgasstationbyassetid
+      description: Get gas station settings by asset
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gas-station.getgasstationbyassetid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updategasstationconfiguration
+      description: Edit gas station settings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: gas-station.updategasstationconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-updategasstationconfigurationbyassetid
+      description: Edit gas station settings for an asset
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: gas-station.updategasstationconfigurationbyassetid
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body

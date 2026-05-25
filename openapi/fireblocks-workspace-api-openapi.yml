@@ -1,0 +1,3329 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Workspace Management API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
+    platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+paths:
+  /workspace/freeze:
+    post:
+      x-internal: true
+      operationId: freezeWorkspace
+      summary: Freeze
+      description: "Freezes a Workspace so that ALL operations by ANY user are blocked.\nYou should only perform this action\
+        \ when the workspace faces imminent risk, such as when you have a security breach.\nTo unfreeze a workspace, the workspace\
+        \ Owner must submit a request to Fireblocks Support.\n**NOTE:** \n- This operation can only be performed by the workspace\
+        \ Admins - Your workspace continues to receive incoming transfers during this time.\n</br>Endpoint Permission: Admin,\
+        \ Non-Signing Admin."
+      tags:
+      - Workspace Management
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '204':
+          description: Indicates that the workspace is now frozen
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: python
+        label: Python
+        source: vault_accounts = fireblocks.get_vault_accounts()
+      - lang: javascript
+        label: Javascript
+        source: const vaultAccounts = await fireblocks.getVaultAccounts();
+  /key_link/signing_keys:
+    post:
+      operationId: createSigningKey
+      summary: Add a new signing key
+      description: 'Adds a new signing key to the workspace. The added key will be linked to the specific Fireblocks agent
+        user ID. The same user will receive the proof of ownership message to be signed, and upon successful proof, the key
+        will become enabled.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSigningKeyDto'
+      responses:
+        '201':
+          description: Newly created signing key
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SigningKeyDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.createSigningKey(keyLinkBetaApiCreateSigningKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().createSigningKey(createSigningKeyDto,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.create_signing_key(create_signing_key_dto, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.createSigningKey(keyLinkBetaApiCreateSigningKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().createSigningKey(createSigningKeyDto,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.create_signing_key(create_signing_key_dto, idempotency_key);
+    get:
+      operationId: getSigningKeysList
+      summary: Get list of signing keys
+      description: 'Returns the list of signing keys in the workspace
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: pageCursor
+        required: false
+        in: query
+        description: Cursor to the next page
+        example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Amount of results to return in the next page
+        schema:
+          minimum: 1
+          maximum: 50
+          default: 10
+          type: number
+      - name: sortBy
+        required: false
+        in: query
+        description: Field(s) to use for sorting
+        schema:
+          default: createdAt
+          enum:
+          - createdAt
+          type: string
+      - name: order
+        required: false
+        in: query
+        description: Is the order ascending or descending
+        schema:
+          default: ASC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: vaultAccountId
+        required: false
+        in: query
+        description: Return keys assigned to a specific vault
+        example: 4
+        schema:
+          type: number
+      - name: agentUserId
+        required: false
+        in: query
+        description: Return keys associated with a specific agent user
+        example: 12fed207-5bdf-4a0c-ab12-fcd2627f75d1
+        schema:
+          type: string
+      - name: algorithm
+        required: false
+        in: query
+        description: Return only keys with a specific algorithm
+        example: ECDSA_SECP256K1
+        schema:
+          enum:
+          - ECDSA_SECP256K1
+          - EDDSA_ED25519
+          type: string
+      - name: enabled
+        required: false
+        in: query
+        description: Return keys that have been proof of ownership
+        schema:
+          type: boolean
+      - name: available
+        required: false
+        in: query
+        description: Return keys that are proof of ownership but not assigned. Available filter can be used only when vaultAccountId
+          and enabled filters are not set
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: List of signing keys and a data that allows requesting the next page if applicable
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSigningKeyResponseDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetSigningKeyResponseDto>> = fireblocks.keyLinkBeta.getSigningKeysList(keyLinkBetaApiGetSigningKeysListRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetSigningKeyResponseDto>> response = fireblocks.keyLinkBeta().getSigningKeysList(pageCursor,
+            pageSize, sortBy, order, vaultAccountId, agentUserId, algorithm, enabled, available);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.get_signing_keys_list(page_cursor, page_size, sort_by, order, vault_account_id,
+            agent_user_id, algorithm, enabled, available);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetSigningKeyResponseDto>> = fireblocks.keyLinkBeta.getSigningKeysList(keyLinkBetaApiGetSigningKeysListRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetSigningKeyResponseDto>> response = fireblocks.keyLinkBeta().getSigningKeysList(pageCursor,
+          pageSize, sortBy, order, vaultAccountId, agentUserId, algorithm, enabled, available);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.get_signing_keys_list(page_cursor, page_size, sort_by, order, vault_account_id,
+          agent_user_id, algorithm, enabled, available);
+  /key_link/signing_keys/{keyId}:
+    get:
+      operationId: getSigningKey
+      summary: Get a signing key by `keyId`
+      description: 'Returns a signing key if it exists, identified by the specified Fireblocks provided `keyId`.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: keyId
+        required: true
+        in: path
+        description: The unique identifier for the signing key provided by Fireblocks
+        schema:
+          type: string
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+      responses:
+        '200':
+          description: Requested signing key data
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SigningKeyDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.getSigningKey(keyLinkBetaApiGetSigningKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().getSigningKey(keyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.get_signing_key(key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.getSigningKey(keyLinkBetaApiGetSigningKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().getSigningKey(keyId);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.get_signing_key(key_id);
+    patch:
+      operationId: updateSigningKey
+      summary: Modify the signing keyId
+      description: 'Allows assigning the signing key to a vault account, if it hasn''t been assigned to any other vault accounts
+        yet.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: keyId
+        required: true
+        in: path
+        description: The unique identifier for the signing key provided by Fireblocks
+        schema:
+          type: string
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModifySigningKeyDto'
+      responses:
+        '200':
+          description: Modified signing key data
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SigningKeyDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.updateSigningKey(keyLinkBetaApiUpdateSigningKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().updateSigningKey(modifySigningKeyDto,
+            keyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.update_signing_key(modify_signing_key_dto, key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.updateSigningKey(keyLinkBetaApiUpdateSigningKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().updateSigningKey(modifySigningKeyDto,
+          keyId);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.update_signing_key(modify_signing_key_dto, key_id);
+  /key_link/signing_keys/{keyId}/agent_user_id:
+    patch:
+      operationId: setAgentId
+      summary: Set agent user id
+      description: 'Can modify existing signing key id if the key is not enabled. The change done in background and will be
+        visible once applied. If key is already enabled (after proof of ownership) the user cannot be changed.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: keyId
+        required: true
+        in: path
+        description: The unique identifier for the signing key provided by Fireblocks
+        schema:
+          type: string
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModifySigningKeyAgentIdDto'
+      responses:
+        '204':
+          description: Agent user id modification process has started in background.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.keyLinkBeta.setAgentId(keyLinkBetaApiSetAgentIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.keyLinkBeta().setAgentId(modifySigningKeyAgentIdDto,
+            keyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.set_agent_id(modify_signing_key_agent_id_dto, key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.keyLinkBeta.setAgentId(keyLinkBetaApiSetAgentIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.keyLinkBeta().setAgentId(modifySigningKeyAgentIdDto,
+          keyId);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.set_agent_id(modify_signing_key_agent_id_dto, key_id);
+  /key_link/validation_keys:
+    post:
+      operationId: createValidationKey
+      summary: Add a new validation key
+      description: 'Adds a new validation key used to validate signing keys. The new validation key will undergo an approval
+        process by the workspace quorum.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateValidationKeyDto'
+      responses:
+        '201':
+          description: The validation key that was added and is pending approval.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateValidationKeyResponseDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateValidationKeyResponseDto>> = fireblocks.keyLinkBeta.createValidationKey(keyLinkBetaApiCreateValidationKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateValidationKeyResponseDto>> response = fireblocks.keyLinkBeta().createValidationKey(createValidationKeyDto,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.create_validation_key(create_validation_key_dto, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateValidationKeyResponseDto>> = fireblocks.keyLinkBeta.createValidationKey(keyLinkBetaApiCreateValidationKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateValidationKeyResponseDto>> response = fireblocks.keyLinkBeta().createValidationKey(createValidationKeyDto,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.create_validation_key(create_validation_key_dto, idempotency_key);
+    get:
+      operationId: getValidationKeysList
+      summary: Get list of registered validation keys
+      description: 'Returns the list of validation keys in the workspace
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: pageCursor
+        required: false
+        in: query
+        description: Cursor to the next page
+        example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Amount of results to return in the next page
+        schema:
+          minimum: 1
+          maximum: 50
+          default: 10
+          type: number
+      - name: sortBy
+        required: false
+        in: query
+        description: Field(s) to use for sorting
+        schema:
+          default: createdAt
+          enum:
+          - createdAt
+          type: string
+      - name: order
+        required: false
+        in: query
+        description: Is the order ascending or descending
+        schema:
+          default: ASC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      responses:
+        '200':
+          description: Validation keys list along with data required to request the next page if applicable
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValidationKeyResponseDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetValidationKeyResponseDto>> = fireblocks.keyLinkBeta.getValidationKeysList(keyLinkBetaApiGetValidationKeysListRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetValidationKeyResponseDto>> response = fireblocks.keyLinkBeta().getValidationKeysList(pageCursor,
+            pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.get_validation_keys_list(page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetValidationKeyResponseDto>> = fireblocks.keyLinkBeta.getValidationKeysList(keyLinkBetaApiGetValidationKeysListRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetValidationKeyResponseDto>> response = fireblocks.keyLinkBeta().getValidationKeysList(pageCursor,
+          pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.get_validation_keys_list(page_cursor, page_size, sort_by, order);
+  /key_link/validation_keys/{keyId}:
+    get:
+      operationId: getValidationKey
+      summary: Get a validation key by `keyId`
+      description: 'Returns a validation key if it exists, identified by the specified `keyId`.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: keyId
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The requested validation key data
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationKeyDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ValidationKeyDto>> = fireblocks.keyLinkBeta.getValidationKey(keyLinkBetaApiGetValidationKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ValidationKeyDto>> response = fireblocks.keyLinkBeta().getValidationKey(keyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.get_validation_key(key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ValidationKeyDto>> = fireblocks.keyLinkBeta.getValidationKey(keyLinkBetaApiGetValidationKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ValidationKeyDto>> response = fireblocks.keyLinkBeta().getValidationKey(keyId);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.get_validation_key(key_id);
+    patch:
+      operationId: disableValidationKey
+      summary: Disables a validation key
+      description: 'Allows disabling validation key even if it has not expired yet. It is not allowed to enable the validation
+        key back. Another key has to be used for future validations.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: keyId
+        required: true
+        in: path
+        description: The unique identifier for the validation key provided by Fireblocks
+        schema:
+          type: string
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModifyValidationKeyDto'
+      responses:
+        '200':
+          description: Modified validation key data
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationKeyDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ValidationKeyDto>> = fireblocks.keyLinkBeta.disableValidationKey(keyLinkBetaApiDisableValidationKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ValidationKeyDto>> response = fireblocks.keyLinkBeta().disableValidationKey(modifyValidationKeyDto,
+            keyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.disable_validation_key(modify_validation_key_dto, key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ValidationKeyDto>> = fireblocks.keyLinkBeta.disableValidationKey(keyLinkBetaApiDisableValidationKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ValidationKeyDto>> response = fireblocks.keyLinkBeta().disableValidationKey(modifyValidationKeyDto,
+          keyId);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.disable_validation_key(modify_validation_key_dto, key_id);
+  /keys/mpc/list:
+    get:
+      operationId: getMpcKeysList
+      summary: Get list of mpc keys
+      description: "Returns a list of MPC signing keys of the workspace. For each key, the list of players associated with\
+        \ it is attached.\n**Note:** \nThis endpoint is currently in beta and might be subject to changes."
+      parameters: []
+      responses:
+        '200':
+          description: List of mpc keys
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMpcKeysResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Keys (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetMpcKeysResponse>> = fireblocks.keysBeta.getMpcKeysList();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetMpcKeysResponse>> response = fireblocks.keysBeta().getMpcKeysList();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.keys_beta.get_mpc_keys_list();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetMpcKeysResponse>> = fireblocks.keysBeta.getMpcKeysList();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetMpcKeysResponse>> response = fireblocks.keysBeta().getMpcKeysList();
+      - lang: Python
+        source: response = fireblocks.keys_beta.get_mpc_keys_list();
+  /keys/mpc/list/{userId}:
+    get:
+      operationId: getMpcKeysListByUser
+      summary: Get list of mpc keys by `userId`
+      description: 'Returns a list of MPC signing keys of a specific user. For each key, the list of players associated with
+        it is attached.
+
+        **Note:**
+
+        This endpoint is currently in beta and might be subject to changes.'
+      parameters:
+      - name: userId
+        required: true
+        in: path
+        description: The id for the user
+        example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of mpc keys
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMpcKeysResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Keys (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetMpcKeysResponse>> = fireblocks.keysBeta.getMpcKeysListByUser(keysBetaApiGetMpcKeysListByUserRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetMpcKeysResponse>> response = fireblocks.keysBeta().getMpcKeysListByUser(userId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.keys_beta.get_mpc_keys_list_by_user(user_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetMpcKeysResponse>> = fireblocks.keysBeta.getMpcKeysListByUser(keysBetaApiGetMpcKeysListByUserRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetMpcKeysResponse>> response = fireblocks.keysBeta().getMpcKeysListByUser(userId);
+      - lang: Python
+        source: response = fireblocks.keys_beta.get_mpc_keys_list_by_user(user_id);
+  /management/user_groups:
+    get:
+      operationId: getUserGroups
+      summary: List user groups
+      description: 'Get all user groups in your workspace
+
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UserGroupsResponse>> = fireblocks.userGroupsBeta.getUserGroups();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<UserGroupResponse>>> response = fireblocks.userGroupsBeta().getUserGroups();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.user_groups_beta.get_user_groups();
+          name: Fireblocks SDK Python example
+      tags:
+      - Workspace Management
+      responses:
+        '200':
+          description: List of the user groups in your workspace
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroupsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UserGroupsResponse>> = fireblocks.userGroupsBeta.getUserGroups();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<UserGroupResponse>>> response = fireblocks.userGroupsBeta().getUserGroups();
+      - lang: Python
+        source: response = fireblocks.user_groups_beta.get_user_groups();
+    post:
+      operationId: createUserGroup
+      summary: Create user group
+      description: 'Create a new user group. Users with the Viewer role cannot be added to groups.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateUserGroupResponse>> = fireblocks.userGroupsBeta.createUserGroup(userGroupsBetaApiCreateUserGroupRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateUserGroupResponse>> response = fireblocks.userGroupsBeta().createUserGroup(userGroupCreateRequest,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.user_groups_beta.create_user_group(user_group_create_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      tags:
+      - Workspace Management
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserGroupCreateRequest'
+      responses:
+        '201':
+          description: User group created and pending approval
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserGroupResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateUserGroupResponse>> = fireblocks.userGroupsBeta.createUserGroup(userGroupsBetaApiCreateUserGroupRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateUserGroupResponse>> response = fireblocks.userGroupsBeta().createUserGroup(userGroupCreateRequest,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.user_groups_beta.create_user_group(user_group_create_request, idempotency_key);
+  /management/user_groups/{groupId}:
+    get:
+      operationId: getUserGroup
+      summary: Get user group
+      description: 'Get a user group by ID
+
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      parameters:
+      - in: path
+        required: true
+        name: groupId
+        description: The ID of the user group
+        schema:
+          type: string
+          example: 777d084b-e1d5-4040-8d73-38c8f8a321b2
+      responses:
+        '200':
+          description: User group
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroupResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UserGroupResponse>> = fireblocks.userGroupsBeta.getUserGroup(userGroupsBetaApiGetUserGroupRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UserGroupResponse>> response = fireblocks.userGroupsBeta().getUserGroup(groupId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.user_groups_beta.get_user_group(group_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UserGroupResponse>> = fireblocks.userGroupsBeta.getUserGroup(userGroupsBetaApiGetUserGroupRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UserGroupResponse>> response = fireblocks.userGroupsBeta().getUserGroup(groupId);
+      - lang: Python
+        source: response = fireblocks.user_groups_beta.get_user_group(group_id);
+    put:
+      operationId: updateUserGroup
+      summary: Update user group
+      description: 'Update a user group by ID
+
+        - Please note that this endpoint is available only for API keys with Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      parameters:
+      - in: path
+        required: true
+        name: groupId
+        description: The ID of the user group
+        schema:
+          type: string
+          example: 777d084b-e1d5-4040-8d73-38c8f8a321b2
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserGroupUpdateRequest'
+      responses:
+        '200':
+          description: User group updated and the changes are pending approval
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroupCreateResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UserGroupCreateResponse>> = fireblocks.userGroupsBeta.updateUserGroup(userGroupsBetaApiUpdateUserGroupRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UserGroupCreateResponse>> response = fireblocks.userGroupsBeta().updateUserGroup(userGroupUpdateRequest,
+            groupId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.user_groups_beta.update_user_group(user_group_update_request, group_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UserGroupCreateResponse>> = fireblocks.userGroupsBeta.updateUserGroup(userGroupsBetaApiUpdateUserGroupRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UserGroupCreateResponse>> response = fireblocks.userGroupsBeta().updateUserGroup(userGroupUpdateRequest,
+          groupId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.user_groups_beta.update_user_group(user_group_update_request, group_id, idempotency_key);
+    delete:
+      operationId: deleteUserGroup
+      summary: Delete user group
+      description: 'Delete a user group by ID.</br>
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      parameters:
+      - in: path
+        required: true
+        name: groupId
+        description: The ID of the user group
+        schema:
+          type: string
+          example: 777d084b-e1d5-4040-8d73-38c8f8a321b2
+      responses:
+        '204':
+          description: Request to delete user group submitted for approval
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.userGroupsBeta.deleteUserGroup(userGroupsBetaApiDeleteUserGroupRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.userGroupsBeta().deleteUserGroup(groupId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.user_groups_beta.delete_user_group(group_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.userGroupsBeta.deleteUserGroup(userGroupsBetaApiDeleteUserGroupRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.userGroupsBeta().deleteUserGroup(groupId);
+      - lang: Python
+        source: response = fireblocks.user_groups_beta.delete_user_group(group_id);
+  /users:
+    get:
+      summary: List users
+      deprecated: true
+      description: 'DEPRECATED - please use `GET /management/users` instead
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const users = await fireblocks.getUsers();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetUsersResponse>> = fireblocks.users.getUsers();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<UserResponse>>> response = fireblocks.users().getUsers();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.users.get_users();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: List of users
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getUsers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetUsersResponse>> = fireblocks.users.getUsers();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<UserResponse>>> response = fireblocks.users().getUsers();
+      - lang: Python
+        source: response = fireblocks.users.get_users();
+  /audits:
+    get:
+      summary: Get audit logs
+      deprecated: true
+      description: 'Deprecated. Please use the `GET /management/audit_logs` endpoint instead.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: python
+          code: audits = fireblocks.get_audit_logs(TimePeriod.DAY)
+          name: Fireblocks SDK Python example
+        - language: javascript
+          code: const audits = await fireblocks.getAuditsLogs(TimePeriod.DAY);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetAuditLogsResponseDTO>> = fireblocks.workspaceManagement.getAudits(workspaceManagementApiGetAuditsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetAuditLogsResponseDTO>> response = fireblocks.workspaceManagement().getAudits(timePeriod);
+          name: Fireblocks SDK Java example
+      parameters:
+      - in: query
+        name: timePeriod
+        required: false
+        description: The last time period to fetch audit logs
+        schema:
+          type: string
+          enum:
+          - DAY
+          - WEEK
+      responses:
+        '200':
+          description: Audit logs from requested time period
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAuditLogsResponseDTO'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getAudits
+      x-codeSamples:
+      - lang: python
+        label: Python
+        source: audits = fireblocks.get_audit_logs(TimePeriod.DAY)
+      - lang: javascript
+        label: Javascript
+        source: const audits = await fireblocks.getAuditsLogs(TimePeriod.DAY);
+  /management/audit_logs:
+    get:
+      summary: Get audit logs
+      description: 'Get Audit logs for the last Day/Week.
+
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetAuditLogsResponse>> = fireblocks.auditLogs.getAuditLogs(auditLogsApiGetAuditLogsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetAuditLogsResponse>> response = fireblocks.auditLogs().getAuditLogs(timePeriod,
+            cursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.audit_logs.get_audit_logs(time_period, cursor);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: query
+        name: timePeriod
+        required: false
+        description: The last time period to fetch audit logs
+        schema:
+          type: string
+          enum:
+          - DAY
+          - WEEK
+      - in: query
+        name: cursor
+        required: false
+        description: The next id to start fetch audit logs from
+        schema:
+          type: string
+          example: next_page_cursor
+      responses:
+        '200':
+          description: Audit logs from requested time period
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAuditLogsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getAuditLogs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetAuditLogsResponse>> = fireblocks.auditLogs.getAuditLogs(auditLogsApiGetAuditLogsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetAuditLogsResponse>> response = fireblocks.auditLogs().getAuditLogs(timePeriod,
+          cursor);
+      - lang: Python
+        source: response = fireblocks.audit_logs.get_audit_logs(time_period, cursor);
+  /admin_quorum:
+    put:
+      x-internal: true
+      operationId: setAdminQuorumThreshold
+      summary: Update admin quorum threshold
+      description: 'Update admin quorum threshold.
+
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const result = await fireblocks.setAdminQuorumThreshold(adminQuorumThreshold)
+          name: Fireblocks SDK Javascript example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetAdminQuorumThresholdRequest'
+      responses:
+        '202':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetAdminQuorumThresholdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: python
+        label: Python
+        source: result = fireblocks.set_admin_quorum_threshold(adminQuorumThreshold)
+      - lang: javascript
+        label: Javascript
+        source: 'const result = await fireblocks.setAdminQuorumThreshold(adminQuorumThreshold)
+
+          '
+  /management/ota:
+    put:
+      operationId: setOtaStatus
+      summary: Enable or disable transactions to OTA
+      description: 'Enable or disable transactions to One Time Addresses (Non Whitelisted addresses).
+
+        Learn more about [One Time Addresses](https://support.fireblocks.io/hc/en-us/articles/4409104568338-One-Time-Address-OTA-feature)
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SetOtaStatusResponse>> = fireblocks.oTABeta.setOtaStatus(oTABetaApiSetOtaStatusRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SetOtaStatusResponse>> response = fireblocks.oTABeta().setOtaStatus(setOtaStatusRequest,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.o_t_a_beta.set_ota_status(set_ota_status_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetOtaStatusRequest'
+      responses:
+        '202':
+          description: Successfully updated OTA status
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetOtaStatusResponse'
+        '400':
+          description: Bad request
+        '409':
+          description: Similar request already pending
+        '500':
+          description: Internal server error
+      tags:
+      - Workspace Management
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SetOtaStatusResponse>> = fireblocks.oTABeta.setOtaStatus(oTABetaApiSetOtaStatusRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SetOtaStatusResponse>> response = fireblocks.oTABeta().setOtaStatus(setOtaStatusRequest,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.o_t_a_beta.set_ota_status(set_ota_status_request, idempotency_key);
+    get:
+      operationId: getOtaStatus
+      summary: Returns current OTA status
+      description: 'Returns current One Time Address status.
+
+        Learn more about [One Time Addresses](https://support.fireblocks.io/hc/en-us/articles/4409104568338-One-Time-Address-OTA-feature)
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetOtaStatusResponse>> = fireblocks.oTABeta.getOtaStatus();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetOtaStatusResponse>> response = fireblocks.oTABeta().getOtaStatus();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.o_t_a_beta.get_ota_status();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOtaStatusResponse'
+          description: Current OTA status
+        '404':
+          description: Configuration not found for the workspace
+      tags:
+      - Workspace Management
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetOtaStatusResponse>> = fireblocks.oTABeta.getOtaStatus();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetOtaStatusResponse>> response = fireblocks.oTABeta().getOtaStatus();
+      - lang: Python
+        source: response = fireblocks.o_t_a_beta.get_ota_status();
+  /management/workspace_status:
+    get:
+      operationId: getWorkspaceStatus
+      summary: Returns current workspace status
+      description: 'Returns current workspace status (Beta).
+
+        **Note**:
+
+        - This endpoint is now in Beta, disabled for general availability at this time.
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkspaceStatusResponse'
+          description: Current workspace status
+        '404':
+          description: Workspace not found
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetWorkspaceStatusResponse>> = fireblocks.workspaceStatusBeta.getWorkspaceStatus();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetWorkspaceStatusResponse>> response = fireblocks.workspaceStatusBeta().getWorkspaceStatus();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.workspace_status_beta.get_workspace_status();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetWorkspaceStatusResponse>> = fireblocks.workspaceStatusBeta.getWorkspaceStatus();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetWorkspaceStatusResponse>> response = fireblocks.workspaceStatusBeta().getWorkspaceStatus();
+      - lang: Python
+        source: response = fireblocks.workspace_status_beta.get_workspace_status();
+  /management/users:
+    get:
+      operationId: getConsoleUsers
+      summary: Get console users
+      description: 'Get console users for your workspace.
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const consoleUsers = await fireblocks.getConsoleUsers();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetConsoleUsersResponse>> = fireblocks.consoleUser.getConsoleUsers();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetConsoleUsersResponse>> response = fireblocks.consoleUser().getConsoleUsers();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.console_user.get_console_users();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: got console users
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConsoleUsersResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetConsoleUsersResponse>> = fireblocks.consoleUser.getConsoleUsers();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetConsoleUsersResponse>> response = fireblocks.consoleUser().getConsoleUsers();
+      - lang: Python
+        source: response = fireblocks.console_user.get_console_users();
+    post:
+      operationId: createConsoleUser
+      summary: Create console user
+      description: 'Create console users in your workspace
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        Learn more about Fireblocks Users management in the following [guide](https://developers.fireblocks.com/docs/manage-users).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const res = await fireblocks.createConsoleUser(firstName, lastName, email, role);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.consoleUser.createConsoleUser(consoleUserApiCreateConsoleUserRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.consoleUser().createConsoleUser(createConsoleUser,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.console_user.create_console_user(create_console_user, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConsoleUser'
+      responses:
+        '200':
+          description: User creation approval request has been sent
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '400':
+          description: bad request
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.consoleUser.createConsoleUser(consoleUserApiCreateConsoleUserRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.consoleUser().createConsoleUser(createConsoleUser,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.console_user.create_console_user(create_console_user, idempotency_key);
+  /management/api_users:
+    get:
+      operationId: getApiUsers
+      summary: Get API Keys
+      description: 'List all API keys in your workspace.
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const apiUsers = await fireblocks.getApiUsers();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetAPIUsersResponse>> = fireblocks.apiUser.getApiUsers();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetAPIUsersResponse>> response = fireblocks.apiUser().getApiUsers();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.api_user.get_api_users();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Successfully returned all API Keys
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAPIUsersResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetAPIUsersResponse>> = fireblocks.apiUser.getApiUsers();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetAPIUsersResponse>> response = fireblocks.apiUser().getApiUsers();
+      - lang: Python
+        source: response = fireblocks.api_user.get_api_users();
+    post:
+      operationId: createApiUser
+      summary: Create API Key
+      description: 'Create a new API key in your workspace.
+
+        Learn more about Fireblocks API Keys management in the following [guide](https://developers.fireblocks.com/docs/manage-api-keys).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const res = await fireblocks.createApiUser(name, role, csrForNewUser, coSignerType, isFirstUser);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.apiUser.createApiUser(apiUserApiCreateApiUserRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.apiUser().createApiUser(createAPIUser, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.api_user.create_api_user(create_a_p_i_user, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAPIUser'
+      responses:
+        '200':
+          description: User creation approval request has been sent
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '400':
+          description: bad request
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.apiUser.createApiUser(apiUserApiCreateApiUserRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.apiUser().createApiUser(createAPIUser, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.api_user.create_api_user(create_a_p_i_user, idempotency_key);
+  /management/users/{id}/reset_device:
+    post:
+      operationId: resetDevice
+      summary: Resets device
+      description: 'Resets mobile device for given console user, that user will need to do mobile onboarding again.
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const res = await fireblocks.resetDeviceRequest(consoleUserId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.resetDevice.resetDevice(resetDeviceApiResetDeviceRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.resetDevice().resetDevice(id, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.reset_device.reset_device(id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: id
+        required: true
+        description: The ID of the console user
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Reset device approval request has been sent
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.resetDevice.resetDevice(resetDeviceApiResetDeviceRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.resetDevice().resetDevice(id, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.reset_device.reset_device(id, idempotency_key);
+  /management/api_users/{userId}/whitelist_ip_addresses:
+    get:
+      operationId: getWhitelistIpAddresses
+      summary: Get whitelisted ip addresses for an API Key
+      description: 'Get a list of the whitelisted IP addresses for a specific API Key
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Workspace Management
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const whitelistedAddresses = await fireblocks.getWhitelistedAddresses(apiUserId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetWhitelistIpAddressesResponse>> = fireblocks.whitelistIpAddresses.getWhitelistIpAddresses(whitelistIpAddressesApiGetWhitelistIpAddressesRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetWhitelistIpAddressesResponse>> response = fireblocks.whitelistIpAddresses().getWhitelistIpAddresses(userId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.whitelist_ip_addresses.get_whitelist_ip_addresses(user_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        description: The ID of the api user
+        schema:
+          type: string
+          example: ceb990eb-838d-4de0-accf-924e8132dd67
+      responses:
+        '200':
+          description: successfully got whitelisted ip addresses
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWhitelistIpAddressesResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetWhitelistIpAddressesResponse>> = fireblocks.whitelistIpAddresses.getWhitelistIpAddresses(whitelistIpAddressesApiGetWhitelistIpAddressesRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetWhitelistIpAddressesResponse>> response = fireblocks.whitelistIpAddresses().getWhitelistIpAddresses(userId);
+      - lang: Python
+        source: response = fireblocks.whitelist_ip_addresses.get_whitelist_ip_addresses(user_id);
+  /cosigners:
+    get:
+      operationId: getCosigners
+      summary: Get all cosigners
+      description: 'Get all workspace cosigners (paginated).
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: order
+        required: false
+        in: query
+        description: ASC / DESC ordering (default DESC)
+        example: ASC
+        schema:
+          default: DESC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: pageCursor
+        required: false
+        in: query
+        description: Cursor of the required page
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Maximum number of items in the page
+        example: 10
+        schema:
+          minimum: 1
+          maximum: 100
+          default: 10
+          type: number
+      responses:
+        '200':
+          description: A paginated response containing Cosigner objects
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CosignersPaginatedResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CosignersPaginatedResponse>> = fireblocks.cosignersBeta.getCosigners(cosignersBetaApiGetCosignersRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CosignersPaginatedResponse>> response = fireblocks.cosignersBeta().getCosigners(order,
+            pageCursor, pageSize);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.get_cosigners(order, page_cursor, page_size);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CosignersPaginatedResponse>> = fireblocks.cosignersBeta.getCosigners(cosignersBetaApiGetCosignersRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CosignersPaginatedResponse>> response = fireblocks.cosignersBeta().getCosigners(order,
+          pageCursor, pageSize);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.get_cosigners(order, page_cursor, page_size);
+    post:
+      operationId: addCosigner
+      summary: Add cosigner
+      description: 'Add a new cosigner. The cosigner will be pending pairing until the API key is manually paired
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCosignerRequest'
+      responses:
+        '201':
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          description: Pending cosigner added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddCosignerResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AddCosignerResponse>> = fireblocks.cosignersBeta.addCosigner(cosignersBetaApiAddCosignerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AddCosignerResponse>> response = fireblocks.cosignersBeta().addCosigner(addCosignerRequest,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.add_cosigner(add_cosigner_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AddCosignerResponse>> = fireblocks.cosignersBeta.addCosigner(cosignersBetaApiAddCosignerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AddCosignerResponse>> response = fireblocks.cosignersBeta().addCosigner(addCosignerRequest,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.add_cosigner(add_cosigner_request, idempotency_key);
+  /cosigners/{cosignerId}:
+    get:
+      operationId: getCosigner
+      summary: Get cosigner
+      description: 'Get a cosigner by ID.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: A cosigner object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cosigner'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<Cosigner>> = fireblocks.cosignersBeta.getCosigner(cosignersBetaApiGetCosignerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Cosigner>> response = fireblocks.cosignersBeta().getCosigner(cosignerId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.get_cosigner(cosigner_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<Cosigner>> = fireblocks.cosignersBeta.getCosigner(cosignersBetaApiGetCosignerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Cosigner>> response = fireblocks.cosignersBeta().getCosigner(cosignerId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.get_cosigner(cosigner_id);
+    patch:
+      operationId: renameCosigner
+      summary: Rename cosigner
+      description: 'Rename a cosigner by ID.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RenameCosigner'
+      responses:
+        '200':
+          description: A cosigner object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cosigner'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<Cosigner>> = fireblocks.cosignersBeta.renameCosigner(cosignersBetaApiRenameCosignerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Cosigner>> response = fireblocks.cosignersBeta().renameCosigner(renameCosigner,
+            cosignerId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.rename_cosigner(rename_cosigner, cosigner_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<Cosigner>> = fireblocks.cosignersBeta.renameCosigner(cosignersBetaApiRenameCosignerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Cosigner>> response = fireblocks.cosignersBeta().renameCosigner(renameCosigner,
+          cosignerId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.rename_cosigner(rename_cosigner, cosigner_id);
+  /cosigners/{cosignerId}/api_keys:
+    get:
+      operationId: getApiKeys
+      summary: Get all API keys
+      description: 'Get all cosigner paired API keys (paginated).
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: order
+        required: false
+        in: query
+        description: ASC / DESC ordering (default DESC)
+        example: ASC
+        schema:
+          default: DESC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: pageCursor
+        required: false
+        in: query
+        description: Cursor of the required page
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Maximum number of items in the page
+        example: 10
+        schema:
+          minimum: 1
+          maximum: 100
+          default: 10
+          type: number
+      responses:
+        '200':
+          description: A paginated response containing ApiKey objects
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysPaginatedResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ApiKeysPaginatedResponse>> = fireblocks.cosignersBeta.getApiKeys(cosignersBetaApiGetApiKeysRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ApiKeysPaginatedResponse>> response = fireblocks.cosignersBeta().getApiKeys(cosignerId,
+            order, pageCursor, pageSize);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.get_api_keys(cosigner_id, order, page_cursor, page_size);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ApiKeysPaginatedResponse>> = fireblocks.cosignersBeta.getApiKeys(cosignersBetaApiGetApiKeysRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ApiKeysPaginatedResponse>> response = fireblocks.cosignersBeta().getApiKeys(cosignerId,
+          order, pageCursor, pageSize);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.get_api_keys(cosigner_id, order, page_cursor, page_size);
+  /cosigners/{cosignerId}/api_keys/{apiKeyId}:
+    get:
+      operationId: getApiKey
+      summary: Get API key
+      description: 'Get an API key by ID.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: apiKeyId
+        required: true
+        in: path
+        description: The unique identifier of the API key
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An ApiKey object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ApiKey>> = fireblocks.cosignersBeta.getApiKey(cosignersBetaApiGetApiKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ApiKey>> response = fireblocks.cosignersBeta().getApiKey(cosignerId, apiKeyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.get_api_key(cosigner_id, api_key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ApiKey>> = fireblocks.cosignersBeta.getApiKey(cosignersBetaApiGetApiKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ApiKey>> response = fireblocks.cosignersBeta().getApiKey(cosignerId, apiKeyId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.get_api_key(cosigner_id, api_key_id);
+    put:
+      operationId: pairApiKey
+      summary: Pair API key
+      description: 'Pair an API key to a cosigner
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: apiKeyId
+        required: true
+        in: path
+        description: The unique identifier of the API key
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PairApiKeyRequest'
+      responses:
+        '202':
+          description: The API key object to be paired
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PairApiKeyResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PairApiKeyResponse>> = fireblocks.cosignersBeta.pairApiKey(cosignersBetaApiPairApiKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PairApiKeyResponse>> response = fireblocks.cosignersBeta().pairApiKey(pairApiKeyRequest,
+            cosignerId, apiKeyId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.pair_api_key(pair_api_key_request, cosigner_id, api_key_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PairApiKeyResponse>> = fireblocks.cosignersBeta.pairApiKey(cosignersBetaApiPairApiKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PairApiKeyResponse>> response = fireblocks.cosignersBeta().pairApiKey(pairApiKeyRequest,
+          cosignerId, apiKeyId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.pair_api_key(pair_api_key_request, cosigner_id, api_key_id, idempotency_key);
+    delete:
+      operationId: unpairApiKey
+      summary: Unpair API key
+      description: 'Unpair an API key from a cosigner
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: apiKeyId
+        required: true
+        in: path
+        description: The unique identifier of the API key
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          type: string
+      responses:
+        '202':
+          description: The API key object to be unpaired
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ApiKey>> = fireblocks.cosignersBeta.unpairApiKey(cosignersBetaApiUnpairApiKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ApiKey>> response = fireblocks.cosignersBeta().unpairApiKey(cosignerId, apiKeyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.unpair_api_key(cosigner_id, api_key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ApiKey>> = fireblocks.cosignersBeta.unpairApiKey(cosignersBetaApiUnpairApiKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ApiKey>> response = fireblocks.cosignersBeta().unpairApiKey(cosignerId, apiKeyId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.unpair_api_key(cosigner_id, api_key_id);
+    patch:
+      operationId: updateCallbackHandler
+      summary: Update API key callback handler
+      description: 'Update the callback handler of an API key
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: apiKeyId
+        required: true
+        in: path
+        description: The unique identifier of the API key
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCallbackHandlerRequest'
+      responses:
+        '202':
+          description: The API key object with the new callback handler
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateCallbackHandlerResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UpdateCallbackHandlerResponse>> = fireblocks.cosignersBeta.updateCallbackHandler(cosignersBetaApiUpdateCallbackHandlerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UpdateCallbackHandlerResponse>> response = fireblocks.cosignersBeta().updateCallbackHandler(updateCallbackHandlerRequest,
+            cosignerId, apiKeyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.update_callback_handler(update_callback_handler_request, cosigner_id,
+            api_key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UpdateCallbackHandlerResponse>> = fireblocks.cosignersBeta.updateCallbackHandler(cosignersBetaApiUpdateCallbackHandlerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UpdateCallbackHandlerResponse>> response = fireblocks.cosignersBeta().updateCallbackHandler(updateCallbackHandlerRequest,
+          cosignerId, apiKeyId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.update_callback_handler(update_callback_handler_request, cosigner_id,
+          api_key_id);
+  /cosigners/{cosignerId}/api_keys/{apiKeyId}/{requestId}:
+    get:
+      operationId: getRequestStatus
+      summary: Get request status
+      description: 'Get the status of an asynchronous request
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: apiKeyId
+        required: true
+        in: path
+        description: The unique identifier of the API key
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          type: string
+      - name: requestId
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The status of the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<Status>> = fireblocks.cosignersBeta.getRequestStatus(cosignersBetaApiGetRequestStatusRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Status>> response = fireblocks.cosignersBeta().getRequestStatus(cosignerId,
+            apiKeyId, requestId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.get_request_status(cosigner_id, api_key_id, request_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<Status>> = fireblocks.cosignersBeta.getRequestStatus(cosignersBetaApiGetRequestStatusRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Status>> response = fireblocks.cosignersBeta().getRequestStatus(cosignerId,
+          apiKeyId, requestId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.get_request_status(cosigner_id, api_key_id, request_id);
+components:
+  schemas:
+    APIUser:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        name:
+          type: string
+          description: The name of the API Key
+          example: My API Key
+        role:
+          $ref: '#/components/schemas/APIUserRole'
+        enabled:
+          $ref: '#/components/schemas/UserEnabled'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        userType:
+          $ref: '#/components/schemas/UserType'
+    APIUserRole:
+      type: string
+      description: The role of the API Key
+      enum:
+      - ADMIN
+      - SIGNER
+      - COLLATERALS_SIGNER
+      - EDITOR
+      - APPROVER
+      - VIEWER
+      - NON_SIGNING_ADMIN
+      - AUDITOR
+      - NCW_ADMIN
+      - NCW_SIGNER
+    APIUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/APIUser'
+    AddCosignerRequest:
+      type: object
+      properties:
+        apiKeyId:
+          type: string
+          description: The id of the API key to be paired with the cosigner
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+        name:
+          type: string
+          description: The name of the cosigner
+          example: My Cosigner 1
+          minLength: 1
+        existingCosigner:
+          type: boolean
+          description: Whether the cosigner already exists in another workspace
+          default: false
+          example: false
+      required:
+      - apiKeyId
+      - name
+    AddCosignerResponse:
+      type: object
+      properties:
+        apiKeyId:
+          type: string
+          description: The id of the API key to be paired with the cosigner
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+        name:
+          type: string
+          description: The name of the cosigner
+          example: My Cosigner 1
+          minLength: 1
+        existingCosigner:
+          type: boolean
+          description: Whether the cosigner already exists in another workspace
+          default: false
+          example: false
+        pendingCosignerId:
+          type: string
+          description: The unique identifier of a pending cosigner
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+      required:
+      - apiKeyId
+      - name
+      - pendingCosignerId
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the API key
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        lastSeen:
+          format: date-time
+          type: string
+          description: The date the API key was last seen
+          example: '2021-07-01T00:00:00.000Z'
+      required:
+      - id
+      - lastSeen
+    ApiKeysPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/ApiKey'
+        next:
+          type: string
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+          nullable: true
+      required:
+      - data
+    AuditLogData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the audit log
+        timestamp:
+          type: number
+          description: The timestamp of the audit log
+        createdAt:
+          type: number
+          description: The timestamp of the audit log creation
+        user:
+          type: string
+          description: The user who performed the action
+        subject:
+          type: string
+          description: The subject of the action
+        event:
+          type: string
+          description: The event that was performed
+        tenantId:
+          type: string
+          description: The tenant ID of the audit log
+        userId:
+          type: string
+          description: The user ID of the audit log
+    AuditLogsData:
+      type: array
+      items:
+        $ref: '#/components/schemas/AuditLogData'
+    CallbackHandlerRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The callback handler's URL
+          example: https://example.com/callback-handler
+        publicKey:
+          type: string
+          description: The callback handler's public key
+          example: '-----BEGIN PUBLIC KEY-----
+
+            ... truncated ...-----END PUBLIC KEY-----'
+        cert:
+          type: string
+          description: The callback handler's certificate
+          example: '-----BEGIN CERTIFICATE-----
+
+            ... truncated ...
+
+            -----END CERTIFICATE-----'
+      required:
+      - url
+    ConsoleUser:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        firstName:
+          type: string
+          description: The first name of the user
+          example: Some First Name
+        lastName:
+          type: string
+          description: The last name of the user
+          example: Some Last Name
+        email:
+          type: string
+          description: The email address of the user
+          example: user@example.com
+        role:
+          $ref: '#/components/schemas/UserRole'
+        enabled:
+          $ref: '#/components/schemas/UserEnabled'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        userType:
+          $ref: '#/components/schemas/UserType'
+    ConsoleUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/ConsoleUser'
+    Cosigner:
+      type: object
+      properties:
+        archived:
+          type: boolean
+          description: Whether the cosigner is archived
+          example: false
+        id:
+          type: string
+          description: The unique identifier of the cosigner
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        name:
+          type: string
+          description: The name of the cosigner
+          example: My Cosigner 1
+          nullable: true
+      required:
+      - archived
+      - id
+    CosignersPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/Cosigner'
+        next:
+          type: string
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+          nullable: true
+      required:
+      - data
+    CreateAPIUser:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/APIUserRole'
+        name:
+          type: string
+          description: User Name
+          example: MyAPIEditor
+        csrPem:
+          type: string
+          description: "API requests are authenticated by providing in each request:\n  a. API Key in the `X-API-Key` header\n\
+            \  b. Auth header - `Authorization: Bearer <JWT>` while the JWT is signed with an RSA 4096 private key.\n\nWhen\
+            \ creating a new API Key, you need to generate an RSA 4096 private key and a CSR file. \nThe CSR file is uploaded\
+            \ to Fireblocks upon the user creation and used later on for signature validation (Auth JWT signature validation).\n\
+            \nFor more info read the following [article](https://developers.fireblocks.com/docs/manage-api-keys)\n"
+          example: '-----BEGIN CERTIFICATE REQUEST-----aaa-----END CERTIFICATE REQUEST-----'
+        coSignerSetupType:
+          type: string
+          description: 'Required for Signer/Admin API users that planned to be paired with an API Co-Signer Machine.
+
+
+            - SGX_MACHINE: For SGX enabled servers
+
+            - FIREBLOCKS_CCMT: Fireblocks Communal Co-Signer (for Testnet workspaces only)
+
+            - NITRO_MACHINE: For AWS Nitro Enclave enabled servers
+
+            - GCP_CONFIDENTIAL_SPACE: For GCP Confidential Space servers
+
+
+            For more information about Fireblocks Co-Signer setup please read the following [article](https://support.fireblocks.io/hc/en-us/articles/12006018592156-API-Co-Signer-Overview).
+
+            '
+          enum:
+          - SGX_MACHINE
+          - FIREBLOCKS_CCMT
+          - NITRO_MACHINE
+        coSignerSetupIsFirstUser:
+          type: boolean
+          description: Pass as `true`` if this is the first user on the your Co-Signer machine
+      required:
+      - role
+      - name
+      - csrPem
+    CreateConsoleUser:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: User's first name
+          example: Some First Name
+        lastName:
+          type: string
+          description: User' last name
+          example: Some Last Name
+        role:
+          $ref: '#/components/schemas/UserRole'
+        email:
+          type: string
+          description: User's valid email address
+          example: user@example.com
+      required:
+      - firstName
+      - lastName
+      - role
+      - email
+    CreateSigningKeyDto:
+      type: object
+      properties:
+        signingDeviceKeyId:
+          type: string
+          example: MyKey1
+          maxLength: 256
+          description: The ID, name or label of the key specified on the customer's signing device.
+        signedCertPem:
+          type: string
+          example: '-----BEGIN CERTIFICATE ... END CERTIFICATE-----'
+          description: The signed certificate that includes the public key PEM of the signing key, signed by a validation
+            key.
+        agentUserId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: d18847b5-1df6-4c46-8f99-5cce47284529
+          description: Id of user to which this key belongs
+        proofOfOwnership:
+          type: object
+          description: An object containing proof of ownership for the signing key.
+          properties:
+            message:
+              description: The message to be signed by the key as proof of ownership. 64 to 1024 bytes in hexadecimal format.
+              type: string
+              minLength: 64
+              maxLength: 2048
+            signature:
+              description: The signature of the message. 64 bytes in hexadecimal format.
+              type: string
+              minLength: 64
+              maxLength: 128
+          required:
+          - message
+          - signature
+      required:
+      - signingDeviceKeyId
+      - signedCertPem
+      - agentUserId
+    CreateUserGroupResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User group unique identifier
+          example: 4a7e7b16-c863-4b41-876f-c64f05c087d6
+        name:
+          type: string
+          description: User group name
+          example: My User Group
+        memberIds:
+          type: array
+          description: IDs of the users in the group
+          items:
+            type: string
+            example:
+            - 30e8a73a-6300-4b35-a11a-9c69341805fc
+            - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
+        status:
+          type: string
+          description: User group status
+          enum:
+          - PENDING_APPROVAL
+          - ACTIVE
+    CreateValidationKeyDto:
+      type: object
+      properties:
+        publicKeyPem:
+          type: string
+          example: '-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----'
+          description: The PEM encoded public key of the validation key being added
+        daysTillExpired:
+          type: number
+          minimum: 1
+          example: 365
+          description: The number of days from the date the validation key was added until it expires
+      required:
+      - publicKeyPem
+      - daysTillExpired
+    CreateValidationKeyResponseDto:
+      type: object
+      properties:
+        validationKey:
+          description: Created validation key
+          allOf:
+          - $ref: '#/components/schemas/ValidationKeyDto'
+        admins:
+          description: Admins who have to approve the validation key addition
+          type: array
+          items:
+            type: string
+        approvalThreshold:
+          type: number
+          minimum: 0
+          example: 0
+          description: Minimal number of approvers required. 0 for all
+        requestId:
+          type: number
+          example: 1234
+          description: Approval request id. Can be cancelled
+      required:
+      - validationKey
+      - admins
+      - approvalThreshold
+      - requestId
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - INTERNAL
+              - AUTHENTICATION
+              - AUTHORIZATION
+              - VALIDATION
+              - NOT_FOUND
+              - UNPROCESSABLE_ENTITY
+              - FORBIDDEN
+            message:
+              type: string
+          required:
+          - type
+          - message
+      required:
+      - error
+    GetAPIUsersResponse:
+      type: object
+      properties:
+        users:
+          $ref: '#/components/schemas/APIUsers'
+      required:
+      - users
+    GetAuditLogsResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AuditLogsData'
+        cursor:
+          nullable: true
+          type: string
+          description: The next id to start fetch audit logs from
+          example: next-page-cursor
+        total:
+          type: number
+          description: The total number of audit logs
+          example: 32
+    GetAuditLogsResponseDTO:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        total:
+          type: number
+        cursor:
+          type: string
+          nullable: true
+    GetConsoleUsersResponse:
+      type: object
+      properties:
+        users:
+          $ref: '#/components/schemas/ConsoleUsers'
+      required:
+      - users
+    GetMpcKeysResponse:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          example: bdb57751-921d-45d5-99fd-344cffb364f6
+          description: The workspace id of the keys
+          maxLength: 36
+          minLength: 36
+        keys:
+          description: The keys that are associated with the workspace
+          type: array
+          items:
+            $ref: '#/components/schemas/MpcKey'
+      required:
+      - tenantId
+      - keys
+    GetOtaStatusResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Current One Time Address feature status
+    GetSigningKeyResponseDto:
+      type: object
+      properties:
+        data:
+          description: Response object for getting external signing keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/SigningKeyDto'
+        next:
+          type: string
+          description: The ID of the next page
+      required:
+      - data
+    GetUsersResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserResponse'
+    GetValidationKeyResponseDto:
+      type: object
+      properties:
+        data:
+          description: Response object for getting external validation keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationKeyDto'
+        next:
+          type: string
+          description: The ID of the next page
+      required:
+      - data
+    GetWhitelistIpAddressesResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The ID of the user
+          example: ceb990eb-838d-4de0-accf-924e8132dd67
+        whitelistedIps:
+          nullable: true
+          type: array
+          items:
+            type: string
+            example:
+            - 246.59.202.145
+            - 170.198.11.101
+          description: List of whitelisted ip addresses
+    GetWorkspaceStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Current workspace status
+    ModifySigningKeyAgentIdDto:
+      type: object
+      properties:
+        agentUserId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: d18847b5-1df6-4c46-8f99-5cce47284529
+          description: Id of user that represent agent servers which signs with the key
+      required:
+      - agentUserId
+    ModifySigningKeyDto:
+      type: object
+      properties:
+        vaultAccountId:
+          type: number
+          minimum: 1
+          example: 123
+      required:
+      - vaultAccountId
+    ModifyValidationKeyDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          example: false
+          description: Disable validation key
+      required:
+      - enabled
+    MpcKey:
+      type: object
+      properties:
+        keyId:
+          type: string
+          example: 743f82cf-b526-4148-afb1-cd71f1dfee10
+          maxLength: 36
+          minLength: 36
+        userId:
+          type: string
+          example: da084d02-d446-413e-b4ce-1e3256517dfd
+          description: The user id that owns the key
+          maxLength: 36
+          minLength: 36
+        algorithm:
+          type: number
+          example: 201
+          description: The algorithm of the key
+        players:
+          description: The players that are associated with the key
+          type: array
+          items:
+            $ref: '#/components/schemas/Players'
+        lastPreprocessedIndex:
+          type: number
+          minimum: 0
+          example: '6'
+          description: The last index used on this key
+      required:
+      - keyId
+      - userId
+      - algorithm
+      - players
+    PairApiKeyRequest:
+      type: object
+      properties:
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+    PairApiKeyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the API key
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+      required:
+      - id
+    Players:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the player
+          example: 47d3383e-37a3-43d5-90a4-de0ca8c5e258
+          maxLength: 36
+          minLength: 36
+        type:
+          enum:
+          - MOBILE
+          - CLOUD
+          type: string
+          description: Type of the player
+          example: MOBILE
+      required:
+      - id
+      - type
+    RenameCosigner:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The new name of the cosigner
+          example: My Cosigner 1
+          nullable: true
+    SetAdminQuorumThresholdRequest:
+      type: object
+      properties:
+        adminQuorumThreshold:
+          type: number
+          description: The number of admins that will requires to approve an operation
+          example: 1
+    SetAdminQuorumThresholdResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message which indicates the result of the operation.
+          example: Admin quorum threshold request sent successfully.
+      required:
+      - message
+    SetOtaStatusRequest:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Set true or false to enable or disable OTA transactions
+    SetOtaStatusResponse:
+      oneOf:
+      - type: object
+        properties:
+          message:
+            type: string
+            description: Message indicating the result of the operation for example when no config change is needed
+            example: No change needed. The current status is false
+      - type: string
+        description: Message indicating the result of the operation when config was successfully updated
+        example: Accepted
+    SigningKeyDto:
+      type: object
+      properties:
+        keyId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+          description: External signing key id set by Fireblocks.
+        signingDeviceKeyId:
+          type: string
+          maxLength: 256
+          example: MyKey1
+          description: The ID, name or label of the key specified on the customer's signing device.
+        publicKeyPem:
+          type: string
+          example: '-----BEGIN PUBLIC KEY ... END PUBLIC KEY-----'
+          description: PEM encoded public key
+        algorithm:
+          type: string
+          example: ECDSA_SECP256K1
+          description: 'Algorithm and curve used for the signature. Can be: ECDSA_SECP256K1 or EDDSA_ED25519'
+        enabled:
+          type: boolean
+          example: true
+          description: True if the signing key is enabled
+        vaultAccountId:
+          type: number
+          nullable: true
+          example: 10
+          description: Id of the vault account which this key is linked to
+        agentUserId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: d18847b5-1df6-4c46-8f99-5cce47284529
+          description: Id of user that represent agent servers that can sign with the key
+        createdAt:
+          type: number
+          example: 124757537
+          description: Creation date (timestamp) in milliseconds.
+      required:
+      - keyId
+      - signingDeviceKeyId
+      - publicKeyPem
+      - algorithm
+      - enabled
+      - vaultAccountId
+      - agentUserId
+      - createdAt
+    Status:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of the command
+          enum:
+          - WAITING_FOR_APPROVAL
+          - APPROVED
+          - CANCELLED
+          - REJECTED
+          - COMPLETED
+          example: COMPLETED
+        type:
+          type: string
+          description: The type of the command
+          enum:
+          - PAIR_API_KEY
+          - UPDATE_CALLBACK_HANDLER
+          - UNPAIR_API_KEY
+          example: PAIR_API_KEY
+      required:
+      - status
+      - type
+    UpdateCallbackHandlerRequest:
+      type: object
+      properties:
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+    UpdateCallbackHandlerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the API key
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+      required:
+      - id
+    UserEnabled:
+      type: boolean
+      description: Whether the user is enabled or not
+    UserGroupCreateRequest:
+      type: object
+      properties:
+        groupName:
+          type: string
+          description: User Group Name
+          example: My User Group
+        memberIds:
+          type: array
+          items:
+            type: string
+            example:
+            - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
+            - 30e8a73a-6300-4b35-a11a-9c69341805fc
+    UserGroupCreateResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User Group Name
+          example: My User Group
+        id:
+          type: string
+          description: User Group ID
+          example: f04402d0-00f1-48cb-acd0-352010f2e62f
+        memberIds:
+          type: array
+          description: User Group members (User IDs)
+          items:
+            type: string
+            example:
+            - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
+            - 30e8a73a-6300-4b35-a11a-9c69341805fc
+        status:
+          type: string
+          description: Group Approval Status
+          enum:
+          - PENDING_APPROVAL
+          - ACTIVE
+    UserGroupResponse:
+      type: object
+      properties:
+        id:
+          description: User Group ID
+          type: string
+          example: f04402d0-00f1-48cb-acd0-352010f2e62f
+        name:
+          type: string
+          description: User Group Name
+          example: My Group Name
+        status:
+          type: string
+          description: Group Approval Status
+          enum:
+          - PENDING_APPROVAL
+          - ACTIVE
+        memberIds:
+          type: array
+          items:
+            type: string
+            example:
+            - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
+            - 30e8a73a-6300-4b35-a11a-9c69341805fc
+    UserGroupUpdateRequest:
+      type: object
+      properties:
+        groupName:
+          type: string
+          description: User Group Name
+          example: My User Group
+        memberIds:
+          type: array
+          items:
+            type: string
+          example:
+          - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
+          - 30e8a73a-6300-4b35-a11a-9c69341805fc
+    UserGroupsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserGroupResponse'
+    UserId:
+      type: string
+      description: The unique identifier of the user
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+        email:
+          type: string
+        enabled:
+          type: boolean
+    UserRole:
+      type: string
+      description: The role of the user
+      enum:
+      - OWNER
+      - ADMIN
+      - SIGNER
+      - COLLATERALS_SIGNER
+      - EDITOR
+      - APPROVER
+      - VIEWER
+      - NON_SIGNING_ADMIN
+      - AUDITOR
+      - NCW_ADMIN
+      - NCW_SIGNER
+    UserStatus:
+      type: string
+      description: The status of the user
+      enum:
+      - PENDING_ACTIVATION
+      - PENDING_DEVICE_PAIRING
+      - PENDING_DEVICE_SETUP
+      - READY
+    UserType:
+      type: string
+      description: The type of the user (API or Console)
+      enum:
+      - API
+      - CONSOLE
+    ValidationKeyDto:
+      type: object
+      properties:
+        keyId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+          description: External validation key id set by Fireblocks.
+        publicKeyPem:
+          type: string
+          example: '-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----'
+          description: PEM encoded public key used for the validation.
+        daysTillExpired:
+          type: number
+          minimum: 1
+          example: 365
+        enabled:
+          type: boolean
+          example: false
+          description: True if the validation key is enabled.
+        createdAt:
+          type: number
+          example: 12345633
+          description: Creation date (timestamp) in milliseconds.
+      required:
+      - keyId
+      - publicKeyPem
+      - daysTillExpired
+      - enabled
+      - createdAt
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
+        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+    X-End-User-Wallet-Id:
+      name: X-End-User-Wallet-Id
+      in: header
+      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'

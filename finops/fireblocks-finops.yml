@@ -1,0 +1,142 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Fireblocks
+providerId: fireblocks
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - FinOps
+  - Cost Management
+  - FOCUS
+  - Digital Assets
+  - Custody
+description: FOCUS-aligned FinOps definition for Fireblocks digital-asset infrastructure. Billing is a hybrid
+  fixed-subscription plus usage-based outbound-volume model with multiple metered add-ons (Staking,
+  Tokenization, Off-Exchange, KeyLink, Cold Wallet). Cost is denominated in USD; volume meters track USD-value
+  of outbound transactions and AUC for tokenization.
+sources:
+  - https://www.fireblocks.com/pricing
+  - https://developers.fireblocks.com/reference/api-overview
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Fireblocks
+serviceCategory: Digital Asset Infrastructure
+billingModel:
+  pricingCategory: Hybrid (Subscription + Usage-Based)
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+    - Usage
+    - Purchase
+    - Subscription
+    - Tax
+    - Credit
+    - Adjustment
+  primaryUnit: usd_transferred
+  secondaryUnits:
+    - transaction
+    - embedded_wallet
+    - workspace
+    - user
+    - usd_auc
+focusColumns:
+  ServiceName: Fireblocks Platform
+  ServiceCategory: Digital Asset Infrastructure
+  ProviderName: Fireblocks
+  PublisherName: Fireblocks
+  InvoiceIssuerName: Fireblocks
+  PricingCategory: Hybrid
+  PricingUnit: USD-transferred
+  BillingCurrency: USD
+meters:
+  - name: outbound_volume_usd
+    unit: usd
+    aggregation: sum
+    dimensions:
+      - workspace
+      - vault_account
+      - asset
+      - destination_type
+      - month
+  - name: transaction_count
+    unit: transaction
+    aggregation: count
+    dimensions:
+      - workspace
+      - vault_account
+      - asset
+      - operation
+      - status
+  - name: embedded_wallets
+    unit: wallet
+    aggregation: count
+    dimensions:
+      - workspace
+      - tenant
+  - name: workspaces_provisioned
+    unit: workspace
+    aggregation: count
+    dimensions:
+      - organization
+  - name: tokenization_auc_usd
+    unit: usd
+    aggregation: sum
+    dimensions:
+      - workspace
+      - contract
+      - chain
+      - token_standard
+  - name: staking_position_usd
+    unit: usd
+    aggregation: sum
+    dimensions:
+      - workspace
+      - chain
+      - validator
+      - provider
+  - name: off_exchange_collateral_usd
+    unit: usd
+    aggregation: sum
+    dimensions:
+      - workspace
+      - exchange
+      - asset
+chargeMappings:
+  - chargeCategory: Subscription
+    source: monthly plan subscription
+    meter: workspaces_provisioned
+    pricingCategory: Fixed
+  - chargeCategory: Usage
+    source: outbound volume overage
+    meter: outbound_volume_usd
+    pricingCategory: Tiered (0.20% on Essentials; negotiated above that)
+  - chargeCategory: Usage
+    source: tokenization add-on
+    meter: tokenization_auc_usd
+    pricingCategory: Tiered (3-30 bps)
+  - chargeCategory: Usage
+    source: staking add-on
+    meter: staking_position_usd
+    pricingCategory: Tiered (varies by chain / validator)
+costObservability:
+  api: Workspace billing reports (Fireblocks Console)
+  webhooks: Account usage events delivered via TRANSACTION_STATUS_UPDATED + custom finops processors
+  granularity: Per-workspace, per-vault-account, per-asset, per-transaction
+  cadence: Real-time for transactions; monthly aggregation for invoicing
+allocation:
+  recommendedTags:
+    - workspace
+    - vault_account
+    - customer_ref_id
+    - business_unit
+    - environment
+  notes:
+    - Use `customerRefId` on vault accounts and `externalTxId` on transactions to map Fireblocks usage to
+      internal cost centers, customers, or trading books.
+    - Many institutions allocate cost by vault account hierarchy — set up one vault account per desk/book/fund.

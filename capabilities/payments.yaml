@@ -1,0 +1,1114 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: "Fireblocks Payments \u2014 Payments"
+  description: Fireblocks Payments business capability. 28 operations against the Fireblocks REST API v1.
+  tags:
+  - Fireblocks
+  - Payments
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    FIREBLOCKS_API_KEY: FIREBLOCKS_API_KEY
+    FIREBLOCKS_API_SECRET: FIREBLOCKS_API_SECRET
+capability:
+  consumes:
+  - type: http
+    namespace: payments
+    baseUri: https://api.fireblocks.io/v1
+    description: Fireblocks Payments REST capability. JWT-signed using API key + RSA private key.
+    resources:
+    - name: createpayout
+      path: /payments/payout
+      operations:
+      - name: createpayout
+        method: POST
+        description: Create a payout instruction set
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: executepayoutaction
+      path: /payments/payout/{payoutId}/actions/execute
+      operations:
+      - name: executepayoutaction
+        method: POST
+        description: Execute a payout instruction set
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getpayout
+      path: /payments/payout/{payoutId}
+      operations:
+      - name: getpayout
+        method: GET
+        description: Get the status of a payout instruction set
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: createflowconfiguration
+      path: /payments/workflow_config
+      operations:
+      - name: createflowconfiguration
+        method: POST
+        description: Create payment flow configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getflowconfiguration
+      path: /payments/workflow_config/{configId}
+      operations:
+      - name: getflowconfiguration
+        method: GET
+        description: Retrieve workflow configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deleteflowconfiguration
+      path: /payments/workflow_config/{configId}
+      operations:
+      - name: deleteflowconfiguration
+        method: DELETE
+        description: Delete workflow configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: createflowexecution
+      path: /payments/workflow_execution
+      operations:
+      - name: createflowexecution
+        method: POST
+        description: Create workflow execution
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getflowexecution
+      path: /payments/workflow_execution/{workflowExecutionId}
+      operations:
+      - name: getflowexecution
+        method: GET
+        description: Get workflow execution details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: launchflowexecution
+      path: /payments/workflow_execution/{workflowExecutionId}/actions/execute
+      operations:
+      - name: launchflowexecution
+        method: POST
+        description: Execute the payments workflow
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: createticket
+      path: /smart-transfers
+      operations:
+      - name: createticket
+        method: POST
+        description: Create Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: searchtickets
+      path: /smart-transfers
+      operations:
+      - name: searchtickets
+        method: GET
+        description: Find Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: findticketbyid
+      path: /smart-transfers/{ticketId}
+      operations:
+      - name: findticketbyid
+        method: GET
+        description: Search Ticket by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: setticketexpiration
+      path: /smart-transfers/{ticketId}/expires-in
+      operations:
+      - name: setticketexpiration
+        method: PUT
+        description: Set expiration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: setexternalrefid
+      path: /smart-transfers/{ticketId}/external-id
+      operations:
+      - name: setexternalrefid
+        method: PUT
+        description: Add external ref. ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: submitticket
+      path: /smart-transfers/{ticketId}/submit
+      operations:
+      - name: submitticket
+        method: PUT
+        description: Submit ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: fulfillticket
+      path: /smart-transfers/{ticketId}/fulfill
+      operations:
+      - name: fulfillticket
+        method: PUT
+        description: Fund ticket manually
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: funddvpticket
+      path: /smart_transfers/{ticketId}/dvp/fund
+      operations:
+      - name: funddvpticket
+        method: PUT
+        description: Fund dvp ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: cancelticket
+      path: /smart-transfers/{ticketId}/cancel
+      operations:
+      - name: cancelticket
+        method: PUT
+        description: Cancel Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: createticketterm
+      path: /smart-transfers/{ticketId}/terms
+      operations:
+      - name: createticketterm
+        method: POST
+        description: Create leg (term)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: findtickettermbyid
+      path: /smart-transfers/{ticketId}/terms/{termId}
+      operations:
+      - name: findtickettermbyid
+        method: GET
+        description: Get Smart Transfer ticket term
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updateticketterm
+      path: /smart-transfers/{ticketId}/terms/{termId}
+      operations:
+      - name: updateticketterm
+        method: PUT
+        description: Update ticket leg (term)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: removeticketterm
+      path: /smart-transfers/{ticketId}/terms/{termId}
+      operations:
+      - name: removeticketterm
+        method: DELETE
+        description: Delete ticket leg (term)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: fundticketterm
+      path: /smart-transfers/{ticketId}/terms/{termId}/fund
+      operations:
+      - name: fundticketterm
+        method: PUT
+        description: Define funding source
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: approvedvpticketterm
+      path: /smart_transfers/{ticketId}/terms/{termId}/dvp/approve
+      operations:
+      - name: approvedvpticketterm
+        method: PUT
+        description: Set funding source and approval
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: manuallyfundticketterm
+      path: /smart-transfers/{ticketId}/terms/{termId}/manually-fund
+      operations:
+      - name: manuallyfundticketterm
+        method: PUT
+        description: Manually add term transaction
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: setusergroups
+      path: /smart-transfers/settings/user-groups
+      operations:
+      - name: setusergroups
+        method: POST
+        description: Set user group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getsmarttransferusergroups
+      path: /smart-transfers/settings/user-groups
+      operations:
+      - name: getsmarttransferusergroups
+        method: GET
+        description: Get user group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getsmarttransferstatistic
+      path: /smart_transfers/statistic
+      operations:
+      - name: getsmarttransferstatistic
+        method: GET
+        description: Get smart transfers statistic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: X-API-Key
+      value: '{{env.FIREBLOCKS_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: payments-rest
+    port: 8080
+    description: REST adapter for Fireblocks Payments.
+    resources:
+    - path: /v1/payments/payout
+      name: createpayout
+      description: Create a payout instruction set
+      operations:
+      - method: POST
+        name: createpayout
+        description: Create a payout instruction set
+        call: payments.createpayout
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/payments/payout/{payoutId}/actions/execute
+      name: executepayoutaction
+      description: Execute a payout instruction set
+      operations:
+      - method: POST
+        name: executepayoutaction
+        description: Execute a payout instruction set
+        call: payments.executepayoutaction
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/payments/payout/{payoutId}
+      name: getpayout
+      description: Get the status of a payout instruction set
+      operations:
+      - method: GET
+        name: getpayout
+        description: Get the status of a payout instruction set
+        call: payments.getpayout
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/payments/workflow_config
+      name: createflowconfiguration
+      description: Create payment flow configuration
+      operations:
+      - method: POST
+        name: createflowconfiguration
+        description: Create payment flow configuration
+        call: payments.createflowconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/payments/workflow_config/{configId}
+      name: getflowconfiguration
+      description: Retrieve workflow configuration
+      operations:
+      - method: GET
+        name: getflowconfiguration
+        description: Retrieve workflow configuration
+        call: payments.getflowconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/payments/workflow_config/{configId}
+      name: deleteflowconfiguration
+      description: Delete workflow configuration
+      operations:
+      - method: DELETE
+        name: deleteflowconfiguration
+        description: Delete workflow configuration
+        call: payments.deleteflowconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/payments/workflow_execution
+      name: createflowexecution
+      description: Create workflow execution
+      operations:
+      - method: POST
+        name: createflowexecution
+        description: Create workflow execution
+        call: payments.createflowexecution
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/payments/workflow_execution/{workflowExecutionId}
+      name: getflowexecution
+      description: Get workflow execution details
+      operations:
+      - method: GET
+        name: getflowexecution
+        description: Get workflow execution details
+        call: payments.getflowexecution
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/payments/workflow_execution/{workflowExecutionId}/actions/execute
+      name: launchflowexecution
+      description: Execute the payments workflow
+      operations:
+      - method: POST
+        name: launchflowexecution
+        description: Execute the payments workflow
+        call: payments.launchflowexecution
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers
+      name: createticket
+      description: Create Ticket
+      operations:
+      - method: POST
+        name: createticket
+        description: Create Ticket
+        call: payments.createticket
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers
+      name: searchtickets
+      description: Find Ticket
+      operations:
+      - method: GET
+        name: searchtickets
+        description: Find Ticket
+        call: payments.searchtickets
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/smart-transfers/{ticketId}
+      name: findticketbyid
+      description: Search Ticket by ID
+      operations:
+      - method: GET
+        name: findticketbyid
+        description: Search Ticket by ID
+        call: payments.findticketbyid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/smart-transfers/{ticketId}/expires-in
+      name: setticketexpiration
+      description: Set expiration
+      operations:
+      - method: PUT
+        name: setticketexpiration
+        description: Set expiration
+        call: payments.setticketexpiration
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers/{ticketId}/external-id
+      name: setexternalrefid
+      description: Add external ref. ID
+      operations:
+      - method: PUT
+        name: setexternalrefid
+        description: Add external ref. ID
+        call: payments.setexternalrefid
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers/{ticketId}/submit
+      name: submitticket
+      description: Submit ticket
+      operations:
+      - method: PUT
+        name: submitticket
+        description: Submit ticket
+        call: payments.submitticket
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers/{ticketId}/fulfill
+      name: fulfillticket
+      description: Fund ticket manually
+      operations:
+      - method: PUT
+        name: fulfillticket
+        description: Fund ticket manually
+        call: payments.fulfillticket
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart_transfers/{ticketId}/dvp/fund
+      name: funddvpticket
+      description: Fund dvp ticket
+      operations:
+      - method: PUT
+        name: funddvpticket
+        description: Fund dvp ticket
+        call: payments.funddvpticket
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers/{ticketId}/cancel
+      name: cancelticket
+      description: Cancel Ticket
+      operations:
+      - method: PUT
+        name: cancelticket
+        description: Cancel Ticket
+        call: payments.cancelticket
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers/{ticketId}/terms
+      name: createticketterm
+      description: Create leg (term)
+      operations:
+      - method: POST
+        name: createticketterm
+        description: Create leg (term)
+        call: payments.createticketterm
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers/{ticketId}/terms/{termId}
+      name: findtickettermbyid
+      description: Get Smart Transfer ticket term
+      operations:
+      - method: GET
+        name: findtickettermbyid
+        description: Get Smart Transfer ticket term
+        call: payments.findtickettermbyid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/smart-transfers/{ticketId}/terms/{termId}
+      name: updateticketterm
+      description: Update ticket leg (term)
+      operations:
+      - method: PUT
+        name: updateticketterm
+        description: Update ticket leg (term)
+        call: payments.updateticketterm
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers/{ticketId}/terms/{termId}
+      name: removeticketterm
+      description: Delete ticket leg (term)
+      operations:
+      - method: DELETE
+        name: removeticketterm
+        description: Delete ticket leg (term)
+        call: payments.removeticketterm
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/smart-transfers/{ticketId}/terms/{termId}/fund
+      name: fundticketterm
+      description: Define funding source
+      operations:
+      - method: PUT
+        name: fundticketterm
+        description: Define funding source
+        call: payments.fundticketterm
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart_transfers/{ticketId}/terms/{termId}/dvp/approve
+      name: approvedvpticketterm
+      description: Set funding source and approval
+      operations:
+      - method: PUT
+        name: approvedvpticketterm
+        description: Set funding source and approval
+        call: payments.approvedvpticketterm
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers/{ticketId}/terms/{termId}/manually-fund
+      name: manuallyfundticketterm
+      description: Manually add term transaction
+      operations:
+      - method: PUT
+        name: manuallyfundticketterm
+        description: Manually add term transaction
+        call: payments.manuallyfundticketterm
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers/settings/user-groups
+      name: setusergroups
+      description: Set user group
+      operations:
+      - method: POST
+        name: setusergroups
+        description: Set user group
+        call: payments.setusergroups
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/smart-transfers/settings/user-groups
+      name: getsmarttransferusergroups
+      description: Get user group
+      operations:
+      - method: GET
+        name: getsmarttransferusergroups
+        description: Get user group
+        call: payments.getsmarttransferusergroups
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/smart_transfers/statistic
+      name: getsmarttransferstatistic
+      description: Get smart transfers statistic
+      operations:
+      - method: GET
+        name: getsmarttransferstatistic
+        description: Get smart transfers statistic
+        call: payments.getsmarttransferstatistic
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: payments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Fireblocks Payments. One tool per consumed operation.
+    tools:
+    - name: fireblocks-createpayout
+      description: Create a payout instruction set
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: payments.createpayout
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-executepayoutaction
+      description: Execute a payout instruction set
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: payments.executepayoutaction
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getpayout
+      description: Get the status of a payout instruction set
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: payments.getpayout
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-createflowconfiguration
+      description: Create payment flow configuration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: payments.createflowconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getflowconfiguration
+      description: Retrieve workflow configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: payments.getflowconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-deleteflowconfiguration
+      description: Delete workflow configuration
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: payments.deleteflowconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-createflowexecution
+      description: Create workflow execution
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: payments.createflowexecution
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getflowexecution
+      description: Get workflow execution details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: payments.getflowexecution
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-launchflowexecution
+      description: Execute the payments workflow
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: payments.launchflowexecution
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-createticket
+      description: Create Ticket
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: payments.createticket
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-searchtickets
+      description: Find Ticket
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: payments.searchtickets
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-findticketbyid
+      description: Search Ticket by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: payments.findticketbyid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-setticketexpiration
+      description: Set expiration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: payments.setticketexpiration
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-setexternalrefid
+      description: Add external ref. ID
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: payments.setexternalrefid
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-submitticket
+      description: Submit ticket
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: payments.submitticket
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-fulfillticket
+      description: Fund ticket manually
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: payments.fulfillticket
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-funddvpticket
+      description: Fund dvp ticket
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: payments.funddvpticket
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-cancelticket
+      description: Cancel Ticket
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: payments.cancelticket
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-createticketterm
+      description: Create leg (term)
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: payments.createticketterm
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-findtickettermbyid
+      description: Get Smart Transfer ticket term
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: payments.findtickettermbyid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updateticketterm
+      description: Update ticket leg (term)
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: payments.updateticketterm
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-removeticketterm
+      description: Delete ticket leg (term)
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: payments.removeticketterm
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-fundticketterm
+      description: Define funding source
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: payments.fundticketterm
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-approvedvpticketterm
+      description: Set funding source and approval
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: payments.approvedvpticketterm
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-manuallyfundticketterm
+      description: Manually add term transaction
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: payments.manuallyfundticketterm
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-setusergroups
+      description: Set user group
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: payments.setusergroups
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getsmarttransferusergroups
+      description: Get user group
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: payments.getsmarttransferusergroups
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getsmarttransferstatistic
+      description: Get smart transfers statistic
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: payments.getsmarttransferstatistic
+      outputParameters:
+      - type: object
+        mapping: $.

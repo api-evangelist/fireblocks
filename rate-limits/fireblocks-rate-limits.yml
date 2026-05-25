@@ -1,0 +1,87 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Fireblocks
+providerId: fireblocks
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - Rate Limiting
+  - Quotas
+  - Custody
+  - Wallets
+description: 'Fireblocks REST API rate limits. Limits apply per workspace and per API user. Bursts return HTTP
+  429 with a Retry-After header. Read-heavy and pagination endpoints are subject to lower per-second ceilings;
+  transaction-creation endpoints are protected by additional concurrency controls. Workspace tier (Essentials,
+  Pro, Enterprise, Enterprise+) influences the negotiated ceilings.'
+sources:
+  - https://developers.fireblocks.com/reference/api-overview
+  - https://developers.fireblocks.com/docs/quickstart
+  - https://www.fireblocks.com/pricing
+headers:
+  limit: x-ratelimit-limit
+  remaining: x-ratelimit-remaining
+  reset: x-ratelimit-reset
+  retryAfter: retry-after
+responseCodes:
+  throttled: 429
+  quotaExceeded: 429
+algorithm: token-bucket
+authentication:
+  scheme: JWT
+  signingAlgorithm: RS256
+  required:
+    - API key (X-API-Key header) — workspace-issued API user identifier
+    - API secret (RSA 4096 private key) — used to sign a JWT for each request
+limits:
+  - tier: Essentials
+    surface: REST API (general)
+    window: 1m
+    requests: 600
+    notes: Default Essentials throughput. Negotiable upward on Pro/Enterprise.
+  - tier: Essentials
+    surface: Transactions — POST /transactions
+    window: 1m
+    requests: 60
+    notes: Transaction creation is rate-limited separately from read endpoints to protect downstream signers.
+  - tier: Pro
+    surface: REST API (general)
+    window: 1m
+    requests: 1200
+    notes: Contract-negotiated; typical Pro ceiling.
+  - tier: Enterprise
+    surface: REST API (general)
+    window: 1m
+    requests: 6000
+    notes: Negotiated per workspace; large institutional customers regularly exceed 6k rpm.
+  - tier: Enterprise+
+    surface: REST API (general)
+    window: 1m
+    requests: -1
+    notes: Custom limits per workspace and per API user. No published global ceiling.
+  - tier: all
+    surface: Webhooks (outbound)
+    window: per-event
+    requests: -1
+    notes: Webhook events are pushed best-effort with exponential-backoff retries up to 24 hours when the
+      consumer returns non-2xx.
+spendLimits:
+  - tier: Essentials
+    outboundVolumeIncluded: $1,000,000/month
+    overageRate: '0.20% per transaction'
+  - tier: Pro
+    outboundVolumeIncluded: contract-negotiated
+    overageRate: contract-negotiated
+  - tier: Enterprise
+    outboundVolumeIncluded: contract-negotiated
+    overageRate: contract-negotiated
+  - tier: Enterprise+
+    outboundVolumeIncluded: contract-negotiated
+    overageRate: contract-negotiated
+notes:
+  - JWT tokens must include `iat`, `exp`, `sub` (API user id), `nonce`, `uri` (request path + query), and
+    `bodyHash` (SHA-256 of the request body) claims. Tokens are single-use and expire in 30 seconds by default.
+  - Sandbox workspace shares quota with the rest of the communal sandbox; expect lower effective throughput.
+  - Long-running async operations (vault account address bulk create, payouts) return a job id; poll
+    /vault/accounts/addresses/bulk/{jobId} rather than hammering the underlying endpoint.

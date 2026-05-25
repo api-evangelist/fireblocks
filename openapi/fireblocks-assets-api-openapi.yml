@@ -1,0 +1,1521 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
+    platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+paths:
+  /assets:
+    get:
+      operationId: listAssets
+      summary: List assets
+      description: 'Retrieves a paginated list of all assets supported by Fireblocks in your workspace.
+
+
+        **Note:** We will continue to support and display the legacy ID (API ID). Since not all Fireblocks services fully
+        support the new Assets UUID, please use only the legacy ID until further notice.
+
+        '
+      tags:
+      - Blockchains & Assets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const assets = await fireblocks.listAssets(filters);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ListAssetsResponse>> = fireblocks.blockchainsAssetsBeta.listAssets(blockchainsAssetsBetaApiListAssetsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ListAssetsResponse>> response = fireblocks.blockchainsAssetsBeta().listAssets(blockchainId,
+            assetClass, symbol, scope, deprecated, pageCursor, pageSize, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchains_&_assets_beta.list_assets(blockchain_id, asset_class, symbol, scope, deprecated,
+            page_cursor, page_size, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: blockchainId
+        required: false
+        in: query
+        description: Blockchain id of the assets
+        schema:
+          type: string
+        example: 0f672204-a28b-464a-b318-a387abd3d3c7
+      - name: assetClass
+        required: false
+        in: query
+        description: Assets class
+        schema:
+          $ref: '#/components/schemas/AssetClass'
+      - name: symbol
+        required: false
+        in: query
+        description: Assets onchain symbol
+        schema:
+          minLength: 1
+          type: string
+        example: ETH
+      - name: scope
+        required: false
+        in: query
+        description: Scope of the assets
+        schema:
+          $ref: '#/components/schemas/AssetScope'
+      - name: deprecated
+        required: false
+        in: query
+        description: Are assets deprecated
+        schema:
+          type: boolean
+        example: false
+      - name: ids
+        required: false
+        in: query
+        description: A list of asset IDs (max 100)
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - 3ed32525-70df-45c8-bae3-e69ab56dc095
+        - 3a3b5f06-61e7-44f0-9962-4425b55795ff
+        - SHANI5_B75VRLGX_MUPA
+      - name: pageCursor
+        required: false
+        in: query
+        description: Next page cursor to fetch
+        schema:
+          type: string
+        example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+      - name: pageSize
+        required: false
+        in: query
+        description: Items per page
+        schema:
+          minimum: 100
+          maximum: 1000
+          default: 500
+          type: number
+        example: 500
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: List of assets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAssetsResponse'
+        '500':
+          description: Error occurred while listing assets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetInternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ListAssetsResponse>> = fireblocks.blockchainsAssetsBeta.listAssets(blockchainsAssetsBetaApiListAssetsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ListAssetsResponse>> response = fireblocks.blockchainsAssetsBeta().listAssets(blockchainId,
+          assetClass, symbol, scope, deprecated, pageCursor, pageSize, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.blockchains_&_assets_beta.list_assets(blockchain_id, asset_class, symbol, scope, deprecated,
+          page_cursor, page_size, idempotency_key);
+    post:
+      operationId: registerNewAsset
+      summary: Register an asset
+      description: "Registers a new asset to a workspace and retrieves the newly created asset's details. Currently supported\
+        \ chains are: \n  - EVM-based chains\n  - Algorand\n  - NEAR\n  - Solana\n  - Stellar\n  - Sui\n  - TRON\n\n**Endpoint\
+        \ Permissions:** Owner, Admin, Non-Signing Admin, NCW Admin, Editor, Signer.        \n"
+      tags:
+      - Blockchains & Assets
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const supportedAssets = await fireblocks.registerNewAsset(blockchainId, address, symbol);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AssetResponse>> = fireblocks.blockchainsAssets.registerNewAsset(blockchainsAssetsApiRegisterNewAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AssetResponse>> response = fireblocks.blockchainsAssets().registerNewAsset(registerNewAssetRequest,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchains_&_assets.register_new_asset(register_new_asset_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: A new asset has been created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetResponse'
+        '400':
+          description: '- Listing an asset on the requested blockchain is not supported. Error code: 1000
+
+
+            - The asset address is invalid. Error code: 1003
+
+
+            - Self serve listing an asset on the requested blockchain is currently not supported, please contact support.
+            Error code: 1004
+
+
+            - Blockchain is deprecated. Error code: 1006
+
+
+            - The asset''s standard is not supported. Error code: 1007
+
+            - Unable to get expected metadata: decimals | name | symbol. Error code: 1010
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetBadRequestErrorResponse'
+        '403':
+          description: '- The asset creation quota reached. Error code: 1005
+
+
+            - Tenant is not allowed to create testnet assets. Error code: 1008
+
+
+            - Tenant is not allowed to create mainnet assets. Error code: 1009
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetForbiddenErrorResponse'
+        '404':
+          description: '- Invalid address, could not get asset information. Error code 1003
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInfoNotFoundErrorResponse'
+        '409':
+          description: '- The asset is already supported globally. Error code: 1001
+
+
+            - The asset has already been added to this workspace. Error code: 1002
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetConflictErrorResponse'
+        '500':
+          description: Failed to create asset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetInternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterNewAssetRequest'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AssetResponse>> = fireblocks.blockchainsAssets.registerNewAsset(blockchainsAssetsApiRegisterNewAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AssetResponse>> response = fireblocks.blockchainsAssets().registerNewAsset(registerNewAssetRequest,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.blockchains_&_assets.register_new_asset(register_new_asset_request, idempotency_key);
+  /assets/{id}:
+    get:
+      operationId: getAsset
+      summary: Get an asset by ID
+      description: "Returns an asset by ID or legacyID.</br>\n\n\n**Note**:\n- We will continue displaying and supporting\
+        \ the legacy ID (API ID). \nSince not all Fireblocks services fully support the new Assets UUID, please use only the\
+        \ legacy ID until further notice.\n"
+      tags:
+      - Blockchains & Assets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const asset = await fireblocks.getAssetById(assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<Asset>> = fireblocks.blockchainsAssetsBeta.getAssetById(blockchainsAssetsBetaApiGetAssetByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Asset>> response = fireblocks.blockchainsAssetsBeta().getAssetById(id, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchains_&_assets_beta.get_asset_by_id(id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID or legacyId of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+        example: ETH
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Asset with requested identification
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '404':
+          description: '- Asset with specified ID or legacy ID is not found. Error code 1504
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetNotFoundErrorResponse'
+        '500':
+          description: Error occurred while getting an asset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetInternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<Asset>> = fireblocks.blockchainsAssetsBeta.getAssetById(blockchainsAssetsBetaApiGetAssetByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Asset>> response = fireblocks.blockchainsAssetsBeta().getAssetById(id, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.blockchains_&_assets_beta.get_asset_by_id(id, idempotency_key);
+    patch:
+      operationId: updateAssetUserMetadata
+      summary: "Update the user\u2019s metadata for an asset"
+      description: "Update the user\u2019s metadata for an asset.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin,\
+        \ NCW Admin, Signer, Editor."
+      tags:
+      - Blockchains & assets
+      x-readme:
+        code-samples:
+        - language: python
+          code: asset = fireblocks.update_asset_user_metadata(asset_id, update_asset_user_metadata_request)
+          name: Fireblocks SDK Python example (Legacy)
+        - language: javascript
+          code: const asset = await fireblocks.updateAssetUserMetadata(assetId, updateAssetUserMetadataRequest);
+          name: Fireblocks SDK Javascript example
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID or legacyId of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+        example: ETH
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAssetUserMetadataRequest'
+      responses:
+        '200':
+          description: Updated asset user metadata
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '404':
+          description: '- Asset with specified ID or legacy ID is not found. Error code 1504
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetNotFoundErrorResponse'
+        '500':
+          description: Error occurred while updating asset user metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetInternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+  /assets/prices/{id}:
+    post:
+      operationId: setAssetPrice
+      summary: Set asset price
+      description: 'Set asset price for the given asset id. Returns the asset price response.
+
+        '
+      tags:
+      - Blockchains & Assets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const supportedAssets = await fireblocks.setAssetPrice(id, currency, price);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AssetPriceResponse>> = fireblocks.blockchainsAssets.setAssetPrice(blockchainsAssetsApiSetAssetPriceRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AssetPriceResponse>> response = fireblocks.blockchainsAssets().setAssetPrice(id,
+            setAssetPriceRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchains_&_assets.set_asset_price(id, set_asset_price_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+        example: ETH
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetAssetPriceRequest'
+      responses:
+        '200':
+          description: Asset price has been set successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetPriceResponse'
+        '403':
+          description: '- Tenant is not allowed to set rate. Error code: 1002.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetPriceForbiddenErrorResponse'
+        '404':
+          description: '- Currency not found. Error code 1001
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetPriceNotFoundErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AssetPriceResponse>> = fireblocks.blockchainsAssets.setAssetPrice(blockchainsAssetsApiSetAssetPriceRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AssetPriceResponse>> response = fireblocks.blockchainsAssets().setAssetPrice(id,
+          setAssetPriceRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.blockchains_&_assets.set_asset_price(id, set_asset_price_request, idempotency_key);
+  /blockchains:
+    get:
+      operationId: listBlockchains
+      summary: List blockchains
+      description: 'Returns all blockchains supported by Fireblocks.</br>
+
+        '
+      tags:
+      - Blockchains & Assets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const blockchains = await fireblocks.listBlockchains(filters);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ListBlockchainsResponse>> = fireblocks.blockchainsAssetsBeta.listBlockchains(blockchainsAssetsBetaApiListBlockchainsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ListBlockchainsResponse>> response = fireblocks.blockchainsAssetsBeta().listBlockchains(protocol,
+            deprecated, test, pageCursor, pageSize);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchains_&_assets_beta.list_blockchains(protocol, deprecated, test, page_cursor,
+            page_size);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: protocol
+        required: false
+        in: query
+        description: Blockchain protocol
+        schema:
+          type: string
+        example: SOL
+      - name: deprecated
+        required: false
+        in: query
+        description: Is blockchain deprecated
+        schema:
+          type: boolean
+        example: false
+      - name: test
+        required: false
+        in: query
+        description: Is test blockchain
+        schema:
+          type: boolean
+        example: false
+      - name: ids
+        required: false
+        in: query
+        description: A list of blockchain IDs (max 100)
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - 3ed32525-70df-45c8-bae3-e69ab56dc095
+        - 3a3b5f06-61e7-44f0-9962-4425b55795ff
+        - MANTRA
+      - name: pageCursor
+        required: false
+        in: query
+        description: Page cursor to fetch
+        schema:
+          type: string
+        example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+      - name: pageSize
+        required: false
+        in: query
+        description: Items per page (max 500)
+        schema:
+          minimum: 1
+          maximum: 500
+          default: 500
+          type: number
+        example: 500
+      responses:
+        '200':
+          description: List of supported blockchains
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBlockchainsResponse'
+        '500':
+          description: Error occurred while listing blockchains
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetInternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ListBlockchainsResponse>> = fireblocks.blockchainsAssetsBeta.listBlockchains(blockchainsAssetsBetaApiListBlockchainsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ListBlockchainsResponse>> response = fireblocks.blockchainsAssetsBeta().listBlockchains(protocol,
+          deprecated, test, pageCursor, pageSize);
+      - lang: Python
+        source: response = fireblocks.blockchains_&_assets_beta.list_blockchains(protocol, deprecated, test, page_cursor,
+          page_size);
+  /blockchains/{id}:
+    get:
+      operationId: getBlockchain
+      summary: Get a Blockchain by ID
+      description: 'Returns a blockchain by ID or legacyID.
+
+        '
+      tags:
+      - Blockchains & Assets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const blockchain = await fireblocks.getBlockchain(blockchainId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<BlockchainResponse>> = fireblocks.blockchainsAssetsBeta.getBlockchain(blockchainsAssetsBetaApiGetBlockchainByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<BlockchainResponse>> response = fireblocks.blockchainsAssetsBeta().getBlockchain(id);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchains_&_assets_beta.get_blockchain_by_id(id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID or legacyId of the blockchain
+        schema:
+          type: string
+        example: ETH
+      responses:
+        '200':
+          description: Blockchain with requested identification
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlockchainResponse'
+        '404':
+          description: '- Blockchain with specified ID or legacy ID is not found. Error code 1505
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlockchainNotFoundErrorResponse'
+        '500':
+          description: Error occurred while getting blockchain
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetInternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<BlockchainResponse>> = fireblocks.blockchainsAssetsBeta.getBlockchainById(blockchainsAssetsBetaApiGetBlockchainByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<BlockchainResponse>> response = fireblocks.blockchainsAssetsBeta().getBlockchainById(id);
+      - lang: Python
+        source: response = fireblocks.blockchains_&_assets_beta.get_blockchain_by_id(id);
+  /transactions/validate_address/{assetId}/{address}:
+    get:
+      summary: Validate destination address
+      description: 'Checks if an address is valid and active (for XRP, DOT, XLM, and EOS).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Blockchains & Assets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const result = await fireblocks.(assetId, address);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ValidateAddressResponse>> = fireblocks.transactions.validateAddress(transactionsApiValidateAddressRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ValidateAddressResponse>> response = fireblocks.transactions().validateAddress(assetId,
+            address);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.transactions.validate_address(asset_id, address);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: assetId
+        required: true
+        description: The asset of the address
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: XRP
+      - in: path
+        name: address
+        required: true
+        description: The address to validate
+        schema:
+          type: string
+          example: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+      responses:
+        '200':
+          description: Validate Address Response Object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateAddressResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: validateAddress
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ValidateAddressResponse>> = fireblocks.transactions.validateAddress(transactionsApiValidateAddressRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ValidateAddressResponse>> response = fireblocks.transactions().validateAddress(assetId,
+          address);
+      - lang: Python
+        source: response = fireblocks.transactions.validate_address(asset_id, address);
+  /estimate_network_fee:
+    get:
+      summary: Estimate the required fee for an asset
+      description: "Gets the estimated required fee for an asset.\nFireblocks fetches, calculates and caches the result every\
+        \ 30 seconds.\nCustomers should query this API while taking the caching interval into consideration.\nNotes:\n- The\
+        \ `networkFee` parameter is the `gasPrice` with a given delta added, multiplied by the gasLimit plus the delta. -\
+        \ The estimation provided depends on the asset type.\n    - For UTXO-based assets, the response contains the `feePerByte`\
+        \ parameter\n    - For ETH-based and all EVM based assets, the response will contain `gasPrice` parameter. This is\
+        \ calculated by adding the `baseFee` to the `actualPriority` based on the latest 12 blocks. The response for ETH-based\
+        \  contains the `baseFee`, `gasPrice`, and `priorityFee` parameters.\n    - For ADA-based assets, the response will\
+        \ contain the parameter `networkFee` and `feePerByte` parameters.\n    - For XRP and XLM, the response will contain\
+        \ the transaction fee.\n    - For other assets, the response will contain the `networkFee` parameter.\n\nLearn more\
+        \ about Fireblocks Fee Management in the following [guide](https://developers.fireblocks.com/reference/estimate-transaction-fee).\n\
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+      tags:
+      - Blockchains & Assets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const feeResult = await fireblocks.getFeeForAsset(assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<EstimatedNetworkFeeResponse>> = fireblocks.transactions.estimateNetworkFee(transactionsApiEstimateNetworkFeeRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<EstimatedNetworkFeeResponse>> response = fireblocks.transactions().estimateNetworkFee(assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.transactions.estimate_network_fee(asset_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: query
+        name: assetId
+        description: The asset for which to estimate the fee
+        required: true
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: ETH
+      responses:
+        '200':
+          description: Estimated fees response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstimatedNetworkFeeResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: estimateNetworkFee
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<EstimatedNetworkFeeResponse>> = fireblocks.transactions.estimateNetworkFee(transactionsApiEstimateNetworkFeeRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<EstimatedNetworkFeeResponse>> response = fireblocks.transactions().estimateNetworkFee(assetId);
+      - lang: Python
+        source: response = fireblocks.transactions.estimate_network_fee(asset_id);
+  /supported_assets:
+    get:
+      summary: List assets (Legacy)
+      description: '**This legacy endpoint has not been deprecated but it should not be used in your operations. Instead,
+        use the new [List assets](https://developers.fireblocks.com/reference/listassets) endpoint for better performance
+        and to retrieve more detailed asset information.**
+
+
+        Retrieves all assets supported by Fireblocks in your workspace.
+
+
+        **Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor.
+
+        '
+      tags:
+      - Blockchains & Assets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const supportedAssets = await fireblocks.getSupportedAssets();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetSupportedAssetsResponse>> = fireblocks.blockchainsAssets.getSupportedAssets();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<AssetTypeResponse>>> response = fireblocks.blockchainsAssets().getSupportedAssets();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchains_&_assets.get_supported_assets();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Supported Assets Response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSupportedAssetsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getSupportedAssets
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetSupportedAssetsResponse>> = fireblocks.blockchainsAssets.getSupportedAssets();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<AssetTypeResponse>>> response = fireblocks.blockchainsAssets().getSupportedAssets();
+      - lang: Python
+        source: response = fireblocks.blockchains_&_assets.get_supported_assets();
+components:
+  schemas:
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the asset
+          example: 9f9f7062-df90-4fc0-8697-96685184358d
+        legacyId:
+          type: string
+          description: The Legacy ID of the asset
+          example: USDT_ERC20
+        blockchainId:
+          type: string
+          description: The ID of the asset's blockchain
+          example: e85208ff-3b15-44e9-af14-0ed0280b2a15
+        displayName:
+          type: string
+          description: Asset's display name
+          example: Tether USD
+        displaySymbol:
+          type: string
+          description: Asset's display symbol
+          example: USDT
+        assetClass:
+          $ref: '#/components/schemas/AssetClass'
+        onchain:
+          $ref: '#/components/schemas/AssetDetailsOnchain'
+        metadata:
+          $ref: '#/components/schemas/AssetDetailsMetadata'
+      required:
+      - id
+      - legacyId
+      - assetClass
+      - metadata
+      - displayName
+      - displaySymbol
+    AssetBadRequestErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Bad request error code
+          example: Listing an asset on the requested blockchain is not supported
+        code:
+          type: string
+          description: Error code
+          example: 3001
+      required:
+      - message
+      - code
+    AssetClass:
+      type: string
+      example: FT
+      enum:
+      - NATIVE
+      - FT
+      - FIAT
+      - NFT
+      - SFT
+    AssetConflictErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Conflict error code
+          example: Asset already listed
+        code:
+          type: string
+          description: Error code
+          example: 3002
+      required:
+      - message
+      - code
+    AssetDetailsMetadata:
+      type: object
+      properties:
+        scope:
+          $ref: '#/components/schemas/AssetScope'
+        deprecated:
+          type: boolean
+          description: Is asset deprecated
+          example: false
+        deprecationReferralId:
+          type: string
+          description: New asset ID replacement
+          example: 056776ab-9efa-4219-9820-9ece0cc4d90d
+        verified:
+          type: boolean
+          description: Is asset verified by Fireblocks
+          example: false
+        website:
+          type: string
+          description: "Vendor\u2019s website"
+          example: https://example.org
+        media:
+          description: "Asset\u2019s media"
+          type: array
+          items:
+            $ref: '#/components/schemas/Media'
+        note:
+          $ref: '#/components/schemas/AssetNote'
+        features:
+          description: Asset features
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetFeature'
+      required:
+      - scope
+      - verified
+      - deprecated
+    AssetDetailsOnchain:
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: The asset symbol
+          example: USDT
+        name:
+          type: string
+          description: The asset name
+          example: Tether USD
+        address:
+          type: string
+          description: The asset address
+          example: '0xdAC17F958D2ee523a2206206994597C13D831ec8'
+        decimals:
+          type: number
+          description: Number of decimals
+          example: 6
+        standards:
+          description: Supported standards
+          type: array
+          items:
+            type: string
+          example:
+          - ERC20
+      required:
+      - symbol
+      - name
+      - decimals
+    AssetFeature:
+      type: string
+      description: Asset feature
+      example: STABLECOIN
+      enum:
+      - STABLECOIN
+    AssetForbiddenErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Forbidden error code
+          example: Asset creation quota reached
+        code:
+          type: string
+          description: Error code
+          example: 3006
+      required:
+      - message
+      - code
+    AssetInternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Internal server error code
+          example: Internal server error
+        code:
+          type: string
+          description: Error code
+          example: 3005
+      required:
+      - message
+      - code
+    AssetMetadata:
+      type: object
+      properties:
+        scope:
+          type: string
+          description: The scope of the asset
+          example: Global
+          enum:
+          - Global
+          - Local
+        deprecated:
+          type: boolean
+          description: Is asset deprecated
+          example: false
+      required:
+      - scope
+      - deprecated
+    AssetMetadataRequest:
+      type: object
+      properties:
+        note:
+          $ref: '#/components/schemas/AssetNoteRequest'
+    AssetNotFoundErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not found error code
+          example: Asset with specified ID not found
+        code:
+          type: number
+          description: Error code
+          example: 1504
+      required:
+      - message
+      - code
+    AssetNote:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Note content
+          example: Pay attention to ETH gas fees
+        userId:
+          type: string
+          format: uuid
+          description: Who updated the note (UUID)
+          example: 056776ab-9efa-4219-9820-9ece0cc4d90d
+        userName:
+          type: string
+          description: User name
+          example: Test test
+        updatedAt:
+          type: string
+          format: date-time
+          description: ISO Timestamp when last updated
+          example: '2025-06-08T19:42:49.000Z'
+      required:
+      - text
+      - userId
+      - userName
+      - updatedAt
+    AssetNoteRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Asset user note
+          example: Pay attention to ETH gas fees
+    AssetOnchain:
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: The asset symbol
+          example: TST3
+        name:
+          type: string
+          description: The asset name
+          example: Test 3
+        address:
+          type: string
+          description: The asset address
+          example: 0xe7A9as1oa38bc4da0248s179E30aa94CcF453991
+        decimals:
+          type: number
+          description: Number of decimals
+          example: 18
+        standard:
+          type: string
+          description: The asset standard
+          example: ERC20
+      required:
+      - symbol
+      - name
+      - decimals
+    AssetPriceForbiddenErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Forbidden error message
+          example: Tenant is not allowed to update asset
+        code:
+          type: number
+          description: Error code
+          example: 3002
+      required:
+      - message
+      - code
+    AssetPriceNotFoundErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not found error message
+          example: Currency not found
+        code:
+          type: number
+          description: Error code
+          example: 3001
+      required:
+      - message
+      - code
+    AssetPriceResponse:
+      type: object
+      properties:
+        legacyId:
+          type: string
+          description: The ID of the asset
+          example: ETH
+        lastUpdateAt:
+          type: number
+          description: Time of last price update
+          example: 1716898542
+        currency:
+          type: string
+          description: Currency (according to ISO 4217 currency codes)
+          example: USD
+        price:
+          type: number
+          description: Price in currency
+          example: 3500
+        source:
+          type: string
+          description: Source of the price data
+          example: PRIVATE
+          enum:
+          - PUBLIC
+          - PRIVATE
+      required:
+      - legacyId
+      - lastUpdateAt
+      - currency
+      - price
+      - source
+    AssetResponse:
+      type: object
+      properties:
+        legacyId:
+          type: string
+          example: TST3_ETH
+        assetClass:
+          type: string
+          example: FT
+          enum:
+          - NATIVE
+          - FT
+          - NFT
+          - SFT
+        onchain:
+          $ref: '#/components/schemas/AssetOnchain'
+        metadata:
+          $ref: '#/components/schemas/AssetMetadata'
+      required:
+      - legacyId
+      - assetClass
+      - displayName
+      - displaySymbol
+      - onchain
+      - metadata
+    AssetScope:
+      type: string
+      description: The scope of the asset
+      example: GLOBAL
+      enum:
+      - GLOBAL
+      - LOCAL
+    AssetTypeResponse:
+      type: object
+      description: Supported Asset Object
+      properties:
+        id:
+          type: string
+          description: Unique asset identifier
+          example: BTC
+        name:
+          type: string
+          description: The name of the asset
+          example: Bitcoin
+        type:
+          type: string
+          description: Asset type
+          enum:
+          - BASE_ASSET
+          - ERC20
+          - BEP20
+          - COMPOUND
+          - TRON_TRC20
+          - NEAR_ASSET
+          - SOL_ASSET
+          - FIAT
+          - ALGO_ASSET
+          - XLM_ASSET
+          - XDB_ASSET
+        contractAddress:
+          type: string
+          description: Contract address of EVM based tokens
+          example: '0x97fB6Fc2AD532033Af97043B563131C5204F8A35'
+        nativeAsset:
+          type: string
+          description: The native asset ID
+          example: ETH
+        decimals:
+          type: number
+          description: Decimals of the asset
+          example: 18
+      required:
+      - id
+      - name
+      - type
+    BlockchainExplorer:
+      type: object
+      properties:
+        base:
+          type: string
+          description: Explorer base url
+          example: https://example.com
+        address:
+          type: string
+          description: Explorer address url
+          example: https://example.com/address/{address}
+        tx:
+          type: string
+          description: Explorer transaction url
+          example: https://example.com/tx/{tx}
+        token:
+          type: string
+          description: Explorer token url
+          example: https://example.com/nft/{contract}/{tokenId}
+      required:
+      - base
+    BlockchainMedia:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Media URL
+          example: https://example.com/image.png
+        type:
+          type: string
+          description: Media type
+          example: image/svg+xml
+          enum:
+          - image/svg+xml
+          - image/png
+      required:
+      - url
+      - type
+    BlockchainMetadata:
+      type: object
+      properties:
+        scope:
+          $ref: '#/components/schemas/AssetScope'
+        deprecated:
+          type: boolean
+          description: Is blockchain deprecated
+          example: false
+        media:
+          description: "Blockchain\u2019s media"
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockchainMedia'
+        explorer:
+          $ref: '#/components/schemas/BlockchainExplorer'
+      required:
+      - scope
+      - deprecated
+    BlockchainNotFoundErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not found error code
+          example: Blockchain with specified ID not found
+        code:
+          type: number
+          description: Error code
+          example: 1505
+      required:
+      - message
+      - code
+    BlockchainOnchain:
+      type: object
+      properties:
+        protocol:
+          type: string
+          description: The protocol of the blockchain
+          example: EVM
+        chainId:
+          type: string
+          description: Network/chain ID
+          example: 1
+        test:
+          type: boolean
+          description: Is test blockchain
+          example: false
+        signingAlgo:
+          enum:
+          - ECDSA_SECP256K1
+          - EDDSA_ED25519
+          type: string
+          description: Signing alghorithm
+          example: ECDSA_SECP256K1
+      required:
+      - protocol
+      - test
+      - signingAlgo
+    BlockchainResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the blockchain
+          example: 9f9f7062-df90-4fc0-8697-96685184357b
+        legacyId:
+          type: string
+          description: The old blockchain ID representation of the blockchain
+          example: ETH
+        displayName:
+          type: string
+          description: The name of the blockchain
+          example: Ethereum
+        nativeAssetId:
+          type: string
+          description: Native asset ID of this blockchain
+          example: 9f9f7062-df90-4fc0-8697-96685184356a
+        onchain:
+          $ref: '#/components/schemas/BlockchainOnchain'
+        metadata:
+          $ref: '#/components/schemas/BlockchainMetadata'
+      required:
+      - id
+      - legacyId
+      - displayName
+      - nativeAssetId
+      - onchain
+      - metadata
+    EstimatedNetworkFeeResponse:
+      type: object
+      properties:
+        low:
+          $ref: '#/components/schemas/NetworkFee'
+        medium:
+          $ref: '#/components/schemas/NetworkFee'
+        high:
+          $ref: '#/components/schemas/NetworkFee'
+      required:
+      - low
+      - medium
+      - high
+    GetSupportedAssetsResponse:
+      type: array
+      description: An Array of Supported Assets Objects
+      items:
+        $ref: '#/components/schemas/AssetTypeResponse'
+    ListAssetsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data on the current page
+          items:
+            $ref: '#/components/schemas/Asset'
+        next:
+          type: string
+          description: Cursor to the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+          nullable: true
+      required:
+      - data
+      - next
+    ListBlockchainsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/BlockchainResponse'
+        next:
+          type: string
+          description: Cursor to the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+          nullable: true
+      required:
+      - data
+      - next
+    Media:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Media URL
+          example: https://example.com/image.png
+        type:
+          type: string
+          description: Media type
+          example: image/svg+xml
+          enum:
+          - image/svg+xml
+          - image/png
+        attributes:
+          description: Media attributes
+          type: object
+          properties:
+            monochrome:
+              type: boolean
+              description: Monochrome flag
+              example: true
+      required:
+      - url
+      - type
+    NetworkFee:
+      type: object
+      properties:
+        feePerByte:
+          description: The fee per byte value for UTXO based assets
+          type: string
+          example: '21.6'
+        gasPrice:
+          description: Gas price in gwei units for EVM based networks
+          type: string
+          example: '32'
+        networkFee:
+          description: The full network fee for non EVM and UTXO based assets (in the base asset units)
+          type: string
+          example: '0.0001'
+        baseFee:
+          description: (optional) Base Fee according to EIP-1559 (ETH assets)
+          type: string
+          example: '10'
+        priorityFee:
+          description: (optional) Priority Fee according to EIP-1559 (ETH assets)
+          type: string
+          example: '22'
+    RegisterNewAssetRequest:
+      type: object
+      properties:
+        blockchainId:
+          type: string
+          description: Native asset of blockchain
+          example: ETH
+        address:
+          type: string
+          description: 'Asset address.
+
+            - EVM-based chains: Token contract address
+
+            - Algorand (ALGO): Asset ID
+
+            - NEAR: Token address
+
+            - Solana: Token''s mint account address
+
+            - Stellar (XLM): Issuer address
+
+            - Sui: The token''s type
+
+            - TRON (TRX): Token contract address
+
+            '
+          example: 0xe7A9as1oa38bc4da0248s179E30aa94CcF453991
+        symbol:
+          type: string
+          description: Asset symbol
+          example: TST3
+      required:
+      - blockchainId
+      - address
+    SetAssetPriceRequest:
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency (according to ISO 4217 currency codes)
+          example: USD
+        price:
+          type: number
+          description: Price in currency
+          example: 3100
+      required:
+      - currency
+      - price
+    TokenInfoNotFoundErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not found error code
+          example: Invalid address, could not get asset information
+        code:
+          type: number
+          description: Error code
+          example: 3009
+      required:
+      - message
+      - code
+    UpdateAssetUserMetadataRequest:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/AssetMetadataRequest'
+    ValidateAddressResponse:
+      type: object
+      properties:
+        isValid:
+          type: boolean
+        isActive:
+          type: boolean
+        requiresTag:
+          type: boolean
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
+        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+    X-End-User-Wallet-Id:
+      name: X-End-User-Wallet-Id
+      in: header
+      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'

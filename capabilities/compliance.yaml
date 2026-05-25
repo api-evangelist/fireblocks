@@ -1,0 +1,1074 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: "Fireblocks Compliance \u2014 Compliance"
+  description: Fireblocks Compliance business capability. 28 operations against the Fireblocks REST API v1.
+  tags:
+  - Fireblocks
+  - Compliance
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    FIREBLOCKS_API_KEY: FIREBLOCKS_API_KEY
+    FIREBLOCKS_API_SECRET: FIREBLOCKS_API_SECRET
+capability:
+  consumes:
+  - type: http
+    namespace: compliance
+    baseUri: https://api.fireblocks.io/v1
+    description: Fireblocks Compliance REST capability. JWT-signed using API key + RSA private key.
+    resources:
+    - name: validatetravelruletransaction
+      path: /screening/travel_rule/transaction/validate
+      operations:
+      - name: validatetravelruletransaction
+        method: POST
+        description: Validate Travel Rule Transaction
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: validatefulltravelruletransaction
+      path: /screening/travel_rule/transaction/validate/full
+      operations:
+      - name: validatefulltravelruletransaction
+        method: POST
+        description: Validate Full Travel Rule Transaction
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getvaspbydid
+      path: /screening/travel_rule/vasp/{did}
+      operations:
+      - name: getvaspbydid
+        method: GET
+        description: Get VASP details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getvasps
+      path: /screening/travel_rule/vasp
+      operations:
+      - name: getvasps
+        method: GET
+        description: Get All VASPs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updatevasp
+      path: /screening/travel_rule/vasp/update
+      operations:
+      - name: updatevasp
+        method: PUT
+        description: Update VASP Details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getpostscreeningpolicy
+      path: /screening/travel_rule/post_screening_policy
+      operations:
+      - name: getpostscreeningpolicy
+        method: GET
+        description: Travel Rule - View Post-Screening Policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getscreeningpolicy
+      path: /screening/travel_rule/screening_policy
+      operations:
+      - name: getscreeningpolicy
+        method: GET
+        description: Travel Rule - View Screening Policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getvaspforvault
+      path: /screening/travel_rule/vault/{vaultAccountId}/vasp
+      operations:
+      - name: getvaspforvault
+        method: GET
+        description: Get assigned VASP to vault
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: setvaspforvault
+      path: /screening/travel_rule/vault/{vaultAccountId}/vasp
+      operations:
+      - name: setvaspforvault
+        method: POST
+        description: Assign VASP to vault
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getscreeningconfiguration
+      path: /screening/travel_rule/policy_configuration
+      operations:
+      - name: getscreeningconfiguration
+        method: GET
+        description: Get Travel Rule Screening Policy Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updatetravelruleconfig
+      path: /screening/travel_rule/policy_configuration
+      operations:
+      - name: updatetravelruleconfig
+        method: PUT
+        description: Update Travel Rule Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getamlscreeningconfiguration
+      path: /screening/aml/policy_configuration
+      operations:
+      - name: getamlscreeningconfiguration
+        method: GET
+        description: Get AML Screening Policy Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updateamlscreeningconfiguration
+      path: /screening/aml/policy_configuration
+      operations:
+      - name: updateamlscreeningconfiguration
+        method: PUT
+        description: Update AML Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getamlscreeningpolicy
+      path: /screening/aml/screening_policy
+      operations:
+      - name: getamlscreeningpolicy
+        method: GET
+        description: AML - View Screening Policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getamlpostscreeningpolicy
+      path: /screening/aml/post_screening_policy
+      operations:
+      - name: getamlpostscreeningpolicy
+        method: GET
+        description: AML - View Post-Screening Policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updatescreeningconfiguration
+      path: /screening/configurations
+      operations:
+      - name: updatescreeningconfiguration
+        method: PUT
+        description: Screening Configuration Update
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: retryrejectedtransactionbypassscreeningchecks
+      path: /screening/transaction/{txId}/bypass_screening_policy
+      operations:
+      - name: retryrejectedtransactionbypassscreeningchecks
+        method: POST
+        description: Bypass Screening Policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getscreeningfulldetails
+      path: /screening/transaction/{txId}
+      operations:
+      - name: getscreeningfulldetails
+        method: GET
+        description: Get Screening Full Details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: setamlverdict
+      path: /screening/aml/verdict/manual
+      operations:
+      - name: setamlverdict
+        method: POST
+        description: Set AML verdict for Manual Screening Verdict
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getactivepolicy
+      path: /tap/active_policy
+      operations:
+      - name: getactivepolicy
+        method: GET
+        description: Get the active policy and its validation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getdraft
+      path: /tap/draft
+      operations:
+      - name: getdraft
+        method: GET
+        description: Get the active draft
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updatedraft
+      path: /tap/draft
+      operations:
+      - name: updatedraft
+        method: PUT
+        description: Update the draft with a new set of rules
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: publishdraft
+      path: /tap/draft
+      operations:
+      - name: publishdraft
+        method: POST
+        description: Send publish request for a certain draft id
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: publishpolicyrules
+      path: /tap/publish
+      operations:
+      - name: publishpolicyrules
+        method: POST
+        description: Send publish request for a set of policy rules
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getactivev2policy
+      path: /policy/active_policy
+      operations:
+      - name: getactivev2policy
+        method: GET
+        description: Get the active policy and its validation by policy type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getv2draft
+      path: /policy/draft
+      operations:
+      - name: getv2draft
+        method: GET
+        description: Get the active draft by policy type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: updatev2draft
+      path: /policy/draft
+      operations:
+      - name: updatev2draft
+        method: PUT
+        description: Update the draft with a new set of rules by policy types
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: publishv2draft
+      path: /policy/draft
+      operations:
+      - name: publishv2draft
+        method: POST
+        description: Send publish request for a certain draft ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: X-API-Key
+      value: '{{env.FIREBLOCKS_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: compliance-rest
+    port: 8080
+    description: REST adapter for Fireblocks Compliance.
+    resources:
+    - path: /v1/screening/travel_rule/transaction/validate
+      name: validatetravelruletransaction
+      description: Validate Travel Rule Transaction
+      operations:
+      - method: POST
+        name: validatetravelruletransaction
+        description: Validate Travel Rule Transaction
+        call: compliance.validatetravelruletransaction
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/screening/travel_rule/transaction/validate/full
+      name: validatefulltravelruletransaction
+      description: Validate Full Travel Rule Transaction
+      operations:
+      - method: POST
+        name: validatefulltravelruletransaction
+        description: Validate Full Travel Rule Transaction
+        call: compliance.validatefulltravelruletransaction
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/screening/travel_rule/vasp/{did}
+      name: getvaspbydid
+      description: Get VASP details
+      operations:
+      - method: GET
+        name: getvaspbydid
+        description: Get VASP details
+        call: compliance.getvaspbydid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/screening/travel_rule/vasp
+      name: getvasps
+      description: Get All VASPs
+      operations:
+      - method: GET
+        name: getvasps
+        description: Get All VASPs
+        call: compliance.getvasps
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/screening/travel_rule/vasp/update
+      name: updatevasp
+      description: Update VASP Details
+      operations:
+      - method: PUT
+        name: updatevasp
+        description: Update VASP Details
+        call: compliance.updatevasp
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/screening/travel_rule/post_screening_policy
+      name: getpostscreeningpolicy
+      description: Travel Rule - View Post-Screening Policy
+      operations:
+      - method: GET
+        name: getpostscreeningpolicy
+        description: Travel Rule - View Post-Screening Policy
+        call: compliance.getpostscreeningpolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/screening/travel_rule/screening_policy
+      name: getscreeningpolicy
+      description: Travel Rule - View Screening Policy
+      operations:
+      - method: GET
+        name: getscreeningpolicy
+        description: Travel Rule - View Screening Policy
+        call: compliance.getscreeningpolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/screening/travel_rule/vault/{vaultAccountId}/vasp
+      name: getvaspforvault
+      description: Get assigned VASP to vault
+      operations:
+      - method: GET
+        name: getvaspforvault
+        description: Get assigned VASP to vault
+        call: compliance.getvaspforvault
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/screening/travel_rule/vault/{vaultAccountId}/vasp
+      name: setvaspforvault
+      description: Assign VASP to vault
+      operations:
+      - method: POST
+        name: setvaspforvault
+        description: Assign VASP to vault
+        call: compliance.setvaspforvault
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/screening/travel_rule/policy_configuration
+      name: getscreeningconfiguration
+      description: Get Travel Rule Screening Policy Configuration
+      operations:
+      - method: GET
+        name: getscreeningconfiguration
+        description: Get Travel Rule Screening Policy Configuration
+        call: compliance.getscreeningconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/screening/travel_rule/policy_configuration
+      name: updatetravelruleconfig
+      description: Update Travel Rule Configuration
+      operations:
+      - method: PUT
+        name: updatetravelruleconfig
+        description: Update Travel Rule Configuration
+        call: compliance.updatetravelruleconfig
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/screening/aml/policy_configuration
+      name: getamlscreeningconfiguration
+      description: Get AML Screening Policy Configuration
+      operations:
+      - method: GET
+        name: getamlscreeningconfiguration
+        description: Get AML Screening Policy Configuration
+        call: compliance.getamlscreeningconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/screening/aml/policy_configuration
+      name: updateamlscreeningconfiguration
+      description: Update AML Configuration
+      operations:
+      - method: PUT
+        name: updateamlscreeningconfiguration
+        description: Update AML Configuration
+        call: compliance.updateamlscreeningconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/screening/aml/screening_policy
+      name: getamlscreeningpolicy
+      description: AML - View Screening Policy
+      operations:
+      - method: GET
+        name: getamlscreeningpolicy
+        description: AML - View Screening Policy
+        call: compliance.getamlscreeningpolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/screening/aml/post_screening_policy
+      name: getamlpostscreeningpolicy
+      description: AML - View Post-Screening Policy
+      operations:
+      - method: GET
+        name: getamlpostscreeningpolicy
+        description: AML - View Post-Screening Policy
+        call: compliance.getamlpostscreeningpolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/screening/configurations
+      name: updatescreeningconfiguration
+      description: Screening Configuration Update
+      operations:
+      - method: PUT
+        name: updatescreeningconfiguration
+        description: Screening Configuration Update
+        call: compliance.updatescreeningconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/screening/transaction/{txId}/bypass_screening_policy
+      name: retryrejectedtransactionbypassscreeningchecks
+      description: Bypass Screening Policy
+      operations:
+      - method: POST
+        name: retryrejectedtransactionbypassscreeningchecks
+        description: Bypass Screening Policy
+        call: compliance.retryrejectedtransactionbypassscreeningchecks
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/screening/transaction/{txId}
+      name: getscreeningfulldetails
+      description: Get Screening Full Details
+      operations:
+      - method: GET
+        name: getscreeningfulldetails
+        description: Get Screening Full Details
+        call: compliance.getscreeningfulldetails
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/screening/aml/verdict/manual
+      name: setamlverdict
+      description: Set AML verdict for Manual Screening Verdict
+      operations:
+      - method: POST
+        name: setamlverdict
+        description: Set AML verdict for Manual Screening Verdict
+        call: compliance.setamlverdict
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/tap/active_policy
+      name: getactivepolicy
+      description: Get the active policy and its validation
+      operations:
+      - method: GET
+        name: getactivepolicy
+        description: Get the active policy and its validation
+        call: compliance.getactivepolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tap/draft
+      name: getdraft
+      description: Get the active draft
+      operations:
+      - method: GET
+        name: getdraft
+        description: Get the active draft
+        call: compliance.getdraft
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tap/draft
+      name: updatedraft
+      description: Update the draft with a new set of rules
+      operations:
+      - method: PUT
+        name: updatedraft
+        description: Update the draft with a new set of rules
+        call: compliance.updatedraft
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/tap/draft
+      name: publishdraft
+      description: Send publish request for a certain draft id
+      operations:
+      - method: POST
+        name: publishdraft
+        description: Send publish request for a certain draft id
+        call: compliance.publishdraft
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/tap/publish
+      name: publishpolicyrules
+      description: Send publish request for a set of policy rules
+      operations:
+      - method: POST
+        name: publishpolicyrules
+        description: Send publish request for a set of policy rules
+        call: compliance.publishpolicyrules
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/policy/active_policy
+      name: getactivev2policy
+      description: Get the active policy and its validation by policy type
+      operations:
+      - method: GET
+        name: getactivev2policy
+        description: Get the active policy and its validation by policy type
+        call: compliance.getactivev2policy
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/policy/draft
+      name: getv2draft
+      description: Get the active draft by policy type
+      operations:
+      - method: GET
+        name: getv2draft
+        description: Get the active draft by policy type
+        call: compliance.getv2draft
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/policy/draft
+      name: updatev2draft
+      description: Update the draft with a new set of rules by policy types
+      operations:
+      - method: PUT
+        name: updatev2draft
+        description: Update the draft with a new set of rules by policy types
+        call: compliance.updatev2draft
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/policy/draft
+      name: publishv2draft
+      description: Send publish request for a certain draft ID
+      operations:
+      - method: POST
+        name: publishv2draft
+        description: Send publish request for a certain draft ID
+        call: compliance.publishv2draft
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+  - type: mcp
+    namespace: compliance-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Fireblocks Compliance. One tool per consumed operation.
+    tools:
+    - name: fireblocks-validatetravelruletransaction
+      description: Validate Travel Rule Transaction
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: compliance.validatetravelruletransaction
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-validatefulltravelruletransaction
+      description: Validate Full Travel Rule Transaction
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: compliance.validatefulltravelruletransaction
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getvaspbydid
+      description: Get VASP details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getvaspbydid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getvasps
+      description: Get All VASPs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getvasps
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updatevasp
+      description: Update VASP Details
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: compliance.updatevasp
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getpostscreeningpolicy
+      description: Travel Rule - View Post-Screening Policy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getpostscreeningpolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getscreeningpolicy
+      description: Travel Rule - View Screening Policy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getscreeningpolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getvaspforvault
+      description: Get assigned VASP to vault
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getvaspforvault
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-setvaspforvault
+      description: Assign VASP to vault
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: compliance.setvaspforvault
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getscreeningconfiguration
+      description: Get Travel Rule Screening Policy Configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getscreeningconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updatetravelruleconfig
+      description: Update Travel Rule Configuration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: compliance.updatetravelruleconfig
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getamlscreeningconfiguration
+      description: Get AML Screening Policy Configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getamlscreeningconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updateamlscreeningconfiguration
+      description: Update AML Configuration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: compliance.updateamlscreeningconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getamlscreeningpolicy
+      description: AML - View Screening Policy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getamlscreeningpolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getamlpostscreeningpolicy
+      description: AML - View Post-Screening Policy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getamlpostscreeningpolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updatescreeningconfiguration
+      description: Screening Configuration Update
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: compliance.updatescreeningconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-retryrejectedtransactionbypassscreeningchecks
+      description: Bypass Screening Policy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: compliance.retryrejectedtransactionbypassscreeningchecks
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getscreeningfulldetails
+      description: Get Screening Full Details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getscreeningfulldetails
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-setamlverdict
+      description: Set AML verdict for Manual Screening Verdict
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: compliance.setamlverdict
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getactivepolicy
+      description: Get the active policy and its validation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getactivepolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getdraft
+      description: Get the active draft
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getdraft
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updatedraft
+      description: Update the draft with a new set of rules
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: compliance.updatedraft
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-publishdraft
+      description: Send publish request for a certain draft id
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: compliance.publishdraft
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-publishpolicyrules
+      description: Send publish request for a set of policy rules
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: compliance.publishpolicyrules
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getactivev2policy
+      description: Get the active policy and its validation by policy type
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getactivev2policy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getv2draft
+      description: Get the active draft by policy type
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance.getv2draft
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-updatev2draft
+      description: Update the draft with a new set of rules by policy types
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: compliance.updatev2draft
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-publishv2draft
+      description: Send publish request for a certain draft ID
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: compliance.publishv2draft
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body

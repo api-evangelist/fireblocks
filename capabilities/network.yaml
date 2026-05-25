@@ -1,0 +1,768 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: "Fireblocks Network \u2014 Network"
+  description: Fireblocks Network business capability. 20 operations against the Fireblocks REST API v1.
+  tags:
+  - Fireblocks
+  - Network
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    FIREBLOCKS_API_KEY: FIREBLOCKS_API_KEY
+    FIREBLOCKS_API_SECRET: FIREBLOCKS_API_SECRET
+capability:
+  consumes:
+  - type: http
+    namespace: network
+    baseUri: https://api.fireblocks.io/v1
+    description: Fireblocks Network REST capability. JWT-signed using API key + RSA private key.
+    resources:
+    - name: getnetworkconnections
+      path: /network_connections
+      operations:
+      - name: getnetworkconnections
+        method: GET
+        description: List network connections
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: createnetworkconnection
+      path: /network_connections
+      operations:
+      - name: createnetworkconnection
+        method: POST
+        description: Creates a new network connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: setroutingpolicy
+      path: /network_connections/{connectionId}/set_routing_policy
+      operations:
+      - name: setroutingpolicy
+        method: PATCH
+        description: Update network connection routing policy.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: checkthirdpartyrouting
+      path: /network_connections/{connectionId}/is_third_party_routing/{assetType}
+      operations:
+      - name: checkthirdpartyrouting
+        method: GET
+        description: Retrieve third-party network routing validation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getnetwork
+      path: /network_connections/{connectionId}
+      operations:
+      - name: getnetwork
+        method: GET
+        description: Get a network connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deletenetworkconnection
+      path: /network_connections/{connectionId}
+      operations:
+      - name: deletenetworkconnection
+        method: DELETE
+        description: Deletes a network connection by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getnetworkids
+      path: /network_ids
+      operations:
+      - name: getnetworkids
+        method: GET
+        description: Get all network IDs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: createnetworkid
+      path: /network_ids
+      operations:
+      - name: createnetworkid
+        method: POST
+        description: Creates a new Network ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getroutingpolicyassetgroups
+      path: /network_ids/routing_policy_asset_groups
+      operations:
+      - name: getroutingpolicyassetgroups
+        method: GET
+        description: Returns all enabled routing policy asset groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: searchnetworkids
+      path: /network_ids/search
+      operations:
+      - name: searchnetworkids
+        method: GET
+        description: Get both local IDs and discoverable remote IDs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getnetworkid
+      path: /network_ids/{networkId}
+      operations:
+      - name: getnetworkid
+        method: GET
+        description: Returns specific network ID.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deletenetworkid
+      path: /network_ids/{networkId}
+      operations:
+      - name: deletenetworkid
+        method: DELETE
+        description: Deletes specific network ID.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: setnetworkidroutingpolicy
+      path: /network_ids/{networkId}/set_routing_policy
+      operations:
+      - name: setnetworkidroutingpolicy
+        method: PATCH
+        description: Update network id routing policy.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: setnetworkiddiscoverability
+      path: /network_ids/{networkId}/set_discoverability
+      operations:
+      - name: setnetworkiddiscoverability
+        method: PATCH
+        description: Update network ID's discoverability.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: setnetworkidname
+      path: /network_ids/{networkId}/set_name
+      operations:
+      - name: setnetworkidname
+        method: PATCH
+        description: Update network ID's name.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: addoffexchange
+      path: /off_exchange/add
+      operations:
+      - name: addoffexchange
+        method: POST
+        description: Add Collateral
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: removeoffexchange
+      path: /off_exchange/remove
+      operations:
+      - name: removeoffexchange
+        method: POST
+        description: Remove Collateral
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: settleoffexchangetrades
+      path: /off_exchange/settlements/trader
+      operations:
+      - name: settleoffexchangetrades
+        method: POST
+        description: Create Settlement for a Trader
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: getoffexchangesettlementtransactions
+      path: /off_exchange/settlements/transactions
+      operations:
+      - name: getoffexchangesettlementtransactions
+        method: GET
+        description: Get Settlements Transactions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: getoffexchangecollateralaccounts
+      path: /off_exchange/collateral_accounts/{mainExchangeAccountId}
+      operations:
+      - name: getoffexchangecollateralaccounts
+        method: GET
+        description: Find a specific collateral exchange account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: X-API-Key
+      value: '{{env.FIREBLOCKS_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: network-rest
+    port: 8080
+    description: REST adapter for Fireblocks Network.
+    resources:
+    - path: /v1/network_connections
+      name: getnetworkconnections
+      description: List network connections
+      operations:
+      - method: GET
+        name: getnetworkconnections
+        description: List network connections
+        call: network.getnetworkconnections
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/network_connections
+      name: createnetworkconnection
+      description: Creates a new network connection
+      operations:
+      - method: POST
+        name: createnetworkconnection
+        description: Creates a new network connection
+        call: network.createnetworkconnection
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/network_connections/{connectionId}/set_routing_policy
+      name: setroutingpolicy
+      description: Update network connection routing policy.
+      operations:
+      - method: PATCH
+        name: setroutingpolicy
+        description: Update network connection routing policy.
+        call: network.setroutingpolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/network_connections/{connectionId}/is_third_party_routing/{assetType}
+      name: checkthirdpartyrouting
+      description: Retrieve third-party network routing validation
+      operations:
+      - method: GET
+        name: checkthirdpartyrouting
+        description: Retrieve third-party network routing validation
+        call: network.checkthirdpartyrouting
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/network_connections/{connectionId}
+      name: getnetwork
+      description: Get a network connection
+      operations:
+      - method: GET
+        name: getnetwork
+        description: Get a network connection
+        call: network.getnetwork
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/network_connections/{connectionId}
+      name: deletenetworkconnection
+      description: Deletes a network connection by ID
+      operations:
+      - method: DELETE
+        name: deletenetworkconnection
+        description: Deletes a network connection by ID
+        call: network.deletenetworkconnection
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/network_ids
+      name: getnetworkids
+      description: Get all network IDs
+      operations:
+      - method: GET
+        name: getnetworkids
+        description: Get all network IDs
+        call: network.getnetworkids
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/network_ids
+      name: createnetworkid
+      description: Creates a new Network ID
+      operations:
+      - method: POST
+        name: createnetworkid
+        description: Creates a new Network ID
+        call: network.createnetworkid
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/network_ids/routing_policy_asset_groups
+      name: getroutingpolicyassetgroups
+      description: Returns all enabled routing policy asset groups
+      operations:
+      - method: GET
+        name: getroutingpolicyassetgroups
+        description: Returns all enabled routing policy asset groups
+        call: network.getroutingpolicyassetgroups
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/network_ids/search
+      name: searchnetworkids
+      description: Get both local IDs and discoverable remote IDs
+      operations:
+      - method: GET
+        name: searchnetworkids
+        description: Get both local IDs and discoverable remote IDs
+        call: network.searchnetworkids
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/network_ids/{networkId}
+      name: getnetworkid
+      description: Returns specific network ID.
+      operations:
+      - method: GET
+        name: getnetworkid
+        description: Returns specific network ID.
+        call: network.getnetworkid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/network_ids/{networkId}
+      name: deletenetworkid
+      description: Deletes specific network ID.
+      operations:
+      - method: DELETE
+        name: deletenetworkid
+        description: Deletes specific network ID.
+        call: network.deletenetworkid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/network_ids/{networkId}/set_routing_policy
+      name: setnetworkidroutingpolicy
+      description: Update network id routing policy.
+      operations:
+      - method: PATCH
+        name: setnetworkidroutingpolicy
+        description: Update network id routing policy.
+        call: network.setnetworkidroutingpolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/network_ids/{networkId}/set_discoverability
+      name: setnetworkiddiscoverability
+      description: Update network ID's discoverability.
+      operations:
+      - method: PATCH
+        name: setnetworkiddiscoverability
+        description: Update network ID's discoverability.
+        call: network.setnetworkiddiscoverability
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/network_ids/{networkId}/set_name
+      name: setnetworkidname
+      description: Update network ID's name.
+      operations:
+      - method: PATCH
+        name: setnetworkidname
+        description: Update network ID's name.
+        call: network.setnetworkidname
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/off_exchange/add
+      name: addoffexchange
+      description: Add Collateral
+      operations:
+      - method: POST
+        name: addoffexchange
+        description: Add Collateral
+        call: network.addoffexchange
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/off_exchange/remove
+      name: removeoffexchange
+      description: Remove Collateral
+      operations:
+      - method: POST
+        name: removeoffexchange
+        description: Remove Collateral
+        call: network.removeoffexchange
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/off_exchange/settlements/trader
+      name: settleoffexchangetrades
+      description: Create Settlement for a Trader
+      operations:
+      - method: POST
+        name: settleoffexchangetrades
+        description: Create Settlement for a Trader
+        call: network.settleoffexchangetrades
+        outputParameters:
+        - type: object
+          mapping: $.
+        with:
+          body: rest.body
+    - path: /v1/off_exchange/settlements/transactions
+      name: getoffexchangesettlementtransactions
+      description: Get Settlements Transactions
+      operations:
+      - method: GET
+        name: getoffexchangesettlementtransactions
+        description: Get Settlements Transactions
+        call: network.getoffexchangesettlementtransactions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/off_exchange/collateral_accounts/{mainExchangeAccountId}
+      name: getoffexchangecollateralaccounts
+      description: Find a specific collateral exchange account
+      operations:
+      - method: GET
+        name: getoffexchangecollateralaccounts
+        description: Find a specific collateral exchange account
+        call: network.getoffexchangecollateralaccounts
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: network-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Fireblocks Network. One tool per consumed operation.
+    tools:
+    - name: fireblocks-getnetworkconnections
+      description: List network connections
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: network.getnetworkconnections
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-createnetworkconnection
+      description: Creates a new network connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: network.createnetworkconnection
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-setroutingpolicy
+      description: Update network connection routing policy.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: network.setroutingpolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-checkthirdpartyrouting
+      description: Retrieve third-party network routing validation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: network.checkthirdpartyrouting
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getnetwork
+      description: Get a network connection
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: network.getnetwork
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-deletenetworkconnection
+      description: Deletes a network connection by ID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: network.deletenetworkconnection
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getnetworkids
+      description: Get all network IDs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: network.getnetworkids
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-createnetworkid
+      description: Creates a new Network ID
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: network.createnetworkid
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getroutingpolicyassetgroups
+      description: Returns all enabled routing policy asset groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: network.getroutingpolicyassetgroups
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-searchnetworkids
+      description: Get both local IDs and discoverable remote IDs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: network.searchnetworkids
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getnetworkid
+      description: Returns specific network ID.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: network.getnetworkid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-deletenetworkid
+      description: Deletes specific network ID.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: network.deletenetworkid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-setnetworkidroutingpolicy
+      description: Update network id routing policy.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: network.setnetworkidroutingpolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-setnetworkiddiscoverability
+      description: Update network ID's discoverability.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: network.setnetworkiddiscoverability
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-setnetworkidname
+      description: Update network ID's name.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: network.setnetworkidname
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-addoffexchange
+      description: Add Collateral
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: network.addoffexchange
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-removeoffexchange
+      description: Remove Collateral
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: network.removeoffexchange
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-settleoffexchangetrades
+      description: Create Settlement for a Trader
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: network.settleoffexchangetrades
+      outputParameters:
+      - type: object
+        mapping: $.
+      with:
+        body: tools.body
+    - name: fireblocks-getoffexchangesettlementtransactions
+      description: Get Settlements Transactions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: network.getoffexchangesettlementtransactions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fireblocks-getoffexchangecollateralaccounts
+      description: Find a specific collateral exchange account
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: network.getoffexchangecollateralaccounts
+      outputParameters:
+      - type: object
+        mapping: $.

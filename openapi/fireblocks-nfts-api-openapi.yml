@@ -1,0 +1,1275 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks NFTs API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
+    platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+paths:
+  /nfts/ownership/tokens:
+    put:
+      operationId: updateOwnershipTokens
+      summary: Refresh vault account tokens
+      description: 'Updates all tokens and balances per blockchain and vault account.
+
+        Learn more about Fireblocks NFT management in the following [guide](https://developers.fireblocks.com/reference/deploy-an-nft-collection).
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateOwnershipTokens(nFTsApiUpdateOwnershipTokensRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateOwnershipTokens(blockchainDescriptor,
+            vaultAccountId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.n_f_ts.update_ownership_tokens(blockchain_descriptor, vault_account_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: blockchainDescriptor
+        required: true
+        in: query
+        description: Blockchain descriptor filter
+        schema:
+          enum:
+          - ETH
+          - ETH_TEST5
+          - ETH_TEST6
+          - POLYGON
+          - POLYGON_TEST_MUMBAI
+          - AMOY_POLYGON_TEST
+          - BASECHAIN_ETH
+          - BASECHAIN_ETH_TEST5
+          - ETHERLINK
+          - ETHERLINK_TEST
+          - MANTLE
+          - MANTLE_TEST
+          - GUN_GUNZILLA_TEST
+          - ETH_SONEIUM
+          - SONEIUM_MINATO_TEST
+          - IOTX_IOTEX
+          type: string
+      - name: vaultAccountId
+        required: true
+        in: query
+        description: Vault account filter
+        schema:
+          type: string
+          example: '0'
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '202':
+          description: ''
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      tags:
+      - NFTs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateOwnershipTokens(nFTsApiUpdateOwnershipTokensRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateOwnershipTokens(blockchainDescriptor,
+          vaultAccountId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.n_f_ts.update_ownership_tokens(blockchain_descriptor, vault_account_id, idempotency_key);
+    get:
+      operationId: getOwnershipTokens
+      summary: List all owned tokens (paginated)
+      description: 'Returns all tokens and their data in your workspace.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      parameters:
+      - name: blockchainDescriptor
+        required: false
+        in: query
+        description: Blockchain descriptor filter
+        schema:
+          enum:
+          - ETH
+          - ETH_TEST3
+          - ETH_TEST5
+          - ETH_TEST6
+          - POLYGON
+          - POLYGON_TEST_MUMBAI
+          - AMOY_POLYGON_TEST
+          - XTZ
+          - XTZ_TEST
+          - BASECHAIN_ETH
+          - BASECHAIN_ETH_TEST3
+          - BASECHAIN_ETH_TEST5
+          - ETHERLINK
+          - ETHERLINK_TEST
+          - MANTLE
+          - MANTLE_TEST
+          - GUN_GUNZILLA_TEST
+          - ETH_SONEIUM
+          - SONEIUM_MINATO_TEST
+          - IOTX_IOTEX
+          type: string
+      - name: vaultAccountIds
+        required: false
+        in: query
+        description: A comma separated list of Vault Account IDs. Up to 100 are allowed in a single request.  This field will
+          be ignored when walletType=END_USER_WALLET or ncwId is provided.
+        schema:
+          type: string
+          example: '0'
+      - name: ncwId
+        required: false
+        in: query
+        description: Non-Custodial Wallet ID
+        schema:
+          type: string
+          example: 523ea95a-93a7-43c8-8dbc-ed31f53e6539
+      - name: ncwAccountIds
+        required: false
+        in: query
+        description: A comma separated list of Non-Custodial account IDs. Up to 100 are allowed in a single request. This
+          field will be ignored when walletType=VAULT_ACCOUNT or ncwId is not provided.
+        schema:
+          type: string
+          example: 0,1,2
+      - name: walletType
+        required: false
+        in: query
+        description: Wallet type, it can be `VAULT_ACCOUNT` or `END_USER_WALLET`
+        schema:
+          default: VAULT_ACCOUNT
+          enum:
+          - VAULT_ACCOUNT
+          - END_USER_WALLET
+          type: string
+      - name: ids
+        required: false
+        in: query
+        description: A comma separated list of NFT IDs. Up to 100 are allowed in a single request.
+        schema:
+          type: string
+          example: NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f, NFT-aaabdababb0ecb3495beb17d8540a513c966bbb
+      - name: collectionIds
+        required: false
+        in: query
+        description: A comma separated list of collection IDs. Up to 100 are allowed in a single request.
+        schema:
+          type: string
+          example: 0x2953399124F0cBB46d2CbACD8A89cF0599974963, 0xababab9124F0cBB46d2CbACD8A89cF0599ababab
+      - name: pageCursor
+        required: false
+        in: query
+        description: Page cursor to fetch
+        schema:
+          type: string
+          example: MjAyNC0wNS0yNiAxMDowNTowMy4zNjggKzAwOjAw:NjkxNDI3Mw==
+      - name: pageSize
+        required: false
+        in: query
+        description: Items per page (max 100)
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+          example: 20
+      - name: sort
+        required: false
+        in: query
+        description: Sort by param, it can be one param or a list of params separated by comma
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - ownershipLastUpdateTime
+            - name
+            - collection.name
+            - blockchainDescriptor
+      - name: order
+        required: false
+        in: query
+        description: Order direction, it can be `ASC` for ascending or `DESC` for descending
+        schema:
+          default: ASC
+          enum:
+          - DESC
+          - ASC
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: Token ownership status
+        schema:
+          default: LISTED
+          enum:
+          - LISTED
+          - ARCHIVED
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: 'Search owned tokens and their collections. Possible criteria for search:  token name and id within the
+          contract/collection, collection name, blockchain descriptor and name.'
+        schema:
+          maximum: 100
+          type: string
+          example: MyNFTName
+      - name: spam
+        required: false
+        in: query
+        description: Token ownership spam status.
+        schema:
+          enum:
+          - 'true'
+          - 'false'
+          - all
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOwnershipTokensResponse'
+      tags:
+      - NFTs
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetOwnershipTokensResponse>> = fireblocks.nFTs.getOwnershipTokens(nFTsApiGetOwnershipTokensRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetOwnershipTokensResponse>> response = fireblocks.nFTs().getOwnershipTokens(blockchainDescriptor,
+            vaultAccountIds, ncwId, ncwAccountIds, walletType, ids, collectionIds, pageCursor, pageSize, sort, order, status,
+            search, spam);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.n_f_ts.get_ownership_tokens(blockchain_descriptor, vault_account_ids, ncw_id, ncw_account_ids,
+            wallet_type, ids, collection_ids, page_cursor, page_size, sort, order, status, search, spam);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetOwnershipTokensResponse>> = fireblocks.nFTs.getOwnershipTokens(nFTsApiGetOwnershipTokensRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetOwnershipTokensResponse>> response = fireblocks.nFTs().getOwnershipTokens(blockchainDescriptor,
+          vaultAccountIds, ncwId, ncwAccountIds, walletType, ids, collectionIds, pageCursor, pageSize, sort, order, status,
+          search, spam);
+      - lang: Python
+        source: response = fireblocks.n_f_ts.get_ownership_tokens(blockchain_descriptor, vault_account_ids, ncw_id, ncw_account_ids,
+          wallet_type, ids, collection_ids, page_cursor, page_size, sort, order, status, search, spam);
+  /nfts/ownership/assets:
+    get:
+      operationId: listOwnedTokens
+      summary: List all distinct owned tokens (paginated)
+      description: 'Returns all owned distinct tokens (for your workspace) and their data in your workspace.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ListOwnedTokensResponse>> = fireblocks.nFTs.listOwnedTokens(nFTsApiListOwnedTokensRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ListOwnedTokensResponse>> response = fireblocks.nFTs().listOwnedTokens(ncwId,
+            walletType, pageCursor, pageSize, sort, order, status, search, spam);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.n_f_ts.list_owned_tokens(ncw_id, wallet_type, page_cursor, page_size, sort, order, status,
+            search, spam);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ncwId
+        required: false
+        in: query
+        description: Non-Custodial Wallet ID
+        schema:
+          type: string
+          example: 523ea95a-93a7-43c8-8dbc-ed31f53e6539
+      - name: walletType
+        required: false
+        in: query
+        description: Wallet type, it can be `VAULT_ACCOUNT` or `END_USER_WALLET`
+        schema:
+          default: VAULT_ACCOUNT
+          enum:
+          - VAULT_ACCOUNT
+          - END_USER_WALLET
+          type: string
+      - name: pageCursor
+        required: false
+        in: query
+        description: Page cursor to fetch
+        schema:
+          type: string
+          example: MTcyNzg3Nw==
+      - name: pageSize
+        required: false
+        in: query
+        description: Items per page (max 100)
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+      - name: sort
+        required: false
+        in: query
+        description: Sort by param, it can be one param or a list of params separated by comma
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - name
+      - name: order
+        required: false
+        in: query
+        description: Order direction, it can be `ASC` for ascending or `DESC` for descending
+        schema:
+          default: ASC
+          enum:
+          - DESC
+          - ASC
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: Token ownership status
+        schema:
+          default: LISTED
+          enum:
+          - LISTED
+          - ARCHIVED
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: Search owned tokens by token name
+        schema:
+          maximum: 100
+          type: string
+          example: MyTokenName
+      - name: spam
+        required: false
+        in: query
+        description: Token ownership spam status.
+        schema:
+          enum:
+          - 'true'
+          - 'false'
+          - all
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOwnedTokensResponse'
+      tags:
+      - NFTs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ListOwnedTokensResponse>> = fireblocks.nFTs.listOwnedTokens(nFTsApiListOwnedTokensRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ListOwnedTokensResponse>> response = fireblocks.nFTs().listOwnedTokens(ncwId,
+          walletType, pageCursor, pageSize, sort, order, status, search, spam);
+      - lang: Python
+        source: response = fireblocks.n_f_ts.list_owned_tokens(ncw_id, wallet_type, page_cursor, page_size, sort, order, status,
+          search, spam);
+  /nfts/ownership/collections:
+    get:
+      operationId: listOwnedCollections
+      summary: List owned collections (paginated)
+      description: 'Returns all collections in your workspace.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ListOwnedCollectionsResponse>> = fireblocks.nFTs.listOwnedCollections(nFTsApiListOwnedCollectionsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ListOwnedCollectionsResponse>> response = fireblocks.nFTs().listOwnedCollections(ncwId,
+            walletType, search, pageCursor, pageSize, sort, order, status);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.n_f_ts.list_owned_collections(ncw_id, wallet_type, search, page_cursor, page_size, sort,
+            order, status);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ncwId
+        required: false
+        in: query
+        description: Tenant's Non-Custodial Wallet ID
+        schema:
+          type: string
+          example: 523ea95a-93a7-43c8-8dbc-ed31f53e6539
+      - name: walletType
+        required: false
+        in: query
+        description: Wallet type, it can be `VAULT_ACCOUNT` or `END_USER_WALLET`
+        schema:
+          default: VAULT_ACCOUNT
+          enum:
+          - VAULT_ACCOUNT
+          - END_USER_WALLET
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: 'Search owned collections. Possible criteria for search: collection name, collection contract address.'
+        schema:
+          maximum: 100
+          type: string
+          example: MyTokenName
+      - name: pageCursor
+        required: false
+        in: query
+        description: Page cursor to fetch
+        schema:
+          type: string
+          example: MTcyNzg3Nw==
+      - name: pageSize
+        required: false
+        in: query
+        description: Items per page (max 100)
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+          example: 10
+      - name: sort
+        required: false
+        in: query
+        description: Sort by param, it can be one param or a list of params separated by comma
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - name
+      - name: order
+        required: false
+        in: query
+        description: Order direction, it can be `ASC` for ascending or `DESC` for descending
+        schema:
+          default: ASC
+          enum:
+          - DESC
+          - ASC
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: Token ownership status
+        schema:
+          default: LISTED
+          enum:
+          - LISTED
+          - ARCHIVED
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOwnedCollectionsResponse'
+      tags:
+      - NFTs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ListOwnedCollectionsResponse>> = fireblocks.nFTs.listOwnedCollections(nFTsApiListOwnedCollectionsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ListOwnedCollectionsResponse>> response = fireblocks.nFTs().listOwnedCollections(ncwId,
+          walletType, search, pageCursor, pageSize, sort, order, status);
+      - lang: Python
+        source: response = fireblocks.n_f_ts.list_owned_collections(ncw_id, wallet_type, search, page_cursor, page_size, sort,
+          order, status);
+  /nfts/tokens/{id}:
+    put:
+      operationId: refreshNFTMetadata
+      summary: Refresh token metadata
+      description: 'Updates the latest token metadata.
+
+        Learn more about Fireblocks NFT management in the following [guide](https://developers.fireblocks.com/reference/deploy-an-nft-collection).
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.refreshNFTMetadata(nFTsApiRefreshNFTMetadataRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().refreshNFTMetadata(id, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.n_f_ts.refresh_n_f_t_metadata(id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: NFT ID
+        schema:
+          type: string
+          example: NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '202':
+          description: ''
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      tags:
+      - NFTs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.refreshNFTMetadata(nFTsApiRefreshNFTMetadataRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().refreshNFTMetadata(id, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.n_f_ts.refresh_n_f_t_metadata(id, idempotency_key);
+    get:
+      operationId: getNFT
+      summary: List token data by ID
+      description: 'Returns the requested token data.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TokenResponse>> = fireblocks.nFTs.getNFT(nFTsApiGetNFTRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TokenResponse>> response = fireblocks.nFTs().getNFT(id);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.n_f_ts.get_n_f_t(id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: NFT ID
+        schema:
+          type: string
+          example: NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd
+      responses:
+        '200':
+          description: ''
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+      tags:
+      - NFTs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TokenResponse>> = fireblocks.nFTs.getNFT(nFTsApiGetNFTRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TokenResponse>> response = fireblocks.nFTs().getNFT(id);
+      - lang: Python
+        source: response = fireblocks.n_f_ts.get_n_f_t(id);
+  /nfts/tokens:
+    get:
+      operationId: getNFTs
+      summary: List tokens by IDs
+      description: 'Returns the requested tokens data.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetNFTsResponse>> = fireblocks.nFTs.getNFTs(nFTsApiGetNFTsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetNFTsResponse>> response = fireblocks.nFTs().getNFTs(ids, pageCursor, pageSize,
+            sort, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.n_f_ts.get_n_f_ts(ids, page_cursor, page_size, sort, order);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ids
+        required: true
+        in: query
+        description: A comma separated list of NFT IDs. Up to 100 are allowed in a single request.
+        schema:
+          type: string
+          example: NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd, NFT-cbcbcbcbcbcbabcdefabcdefabcdefabcdefabab
+      - name: pageCursor
+        required: false
+        in: query
+        description: Page cursor to fetch
+        schema:
+          type: string
+          example: MjAyNC0wNS0yNiAxMDowNTowMy4zNjggKzAwOjAw:NjkxNDI3Mw==
+      - name: pageSize
+        required: false
+        in: query
+        description: Items per page (max 100)
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+          example: 20
+      - name: sort
+        required: false
+        in: query
+        description: Sort by param, it can be one param or a list of params separated by comma
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - collection.name
+            - name
+            - blockchainDescriptor
+      - name: order
+        required: false
+        in: query
+        description: Order direction, it can be `ASC` for ascending or `DESC` for descending
+        schema:
+          default: ASC
+          enum:
+          - DESC
+          - ASC
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNFTsResponse'
+      tags:
+      - NFTs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetNFTsResponse>> = fireblocks.nFTs.getNFTs(nFTsApiGetNFTsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetNFTsResponse>> response = fireblocks.nFTs().getNFTs(ids, pageCursor, pageSize,
+          sort, order);
+      - lang: Python
+        source: response = fireblocks.n_f_ts.get_n_f_ts(ids, page_cursor, page_size, sort, order);
+  /nfts/ownership/tokens/{id}/status:
+    put:
+      operationId: updateTokenOwnershipStatus
+      summary: Update token ownership status
+      description: 'Updates token status for a workspace, in all workspace vaults.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokenOwnershipStatus(nFTsApiUpdateTokenOwnershipStatusRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokenOwnershipStatus(updateTokenOwnershipStatusDto,
+            id, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.n_f_ts.update_token_ownership_status(update_token_ownership_status_dto, id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: NFT ID
+        schema:
+          type: string
+          example: NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTokenOwnershipStatusDto'
+      responses:
+        '200':
+          description: ''
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      tags:
+      - NFTs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokenOwnershipStatus(nFTsApiUpdateTokenOwnershipStatusRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokenOwnershipStatus(updateTokenOwnershipStatusDto,
+          id, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.n_f_ts.update_token_ownership_status(update_token_ownership_status_dto, id, idempotency_key);
+  /nfts/ownership/tokens/status:
+    put:
+      operationId: updateTokensOwnershipStatus
+      summary: Update tokens ownership status
+      description: 'Updates tokens status for a workspace, in all vault accounts.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokensOwnershipStatus(nFTsApiUpdateTokensOwnershipStatusRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipStatus(tokenOwnershipStatusUpdatePayload,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.n_f_ts.update_tokens_ownership_status(token_ownership_status_update_payload, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTokensOwnershipStatusRequest'
+      responses:
+        '200':
+          description: All token statuses have been updated
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '400':
+          description: Invalid data sent
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '404':
+          description: Ownership for token ID is not found
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      tags:
+      - NFTs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokensOwnershipStatus(nFTsApiUpdateTokensOwnershipStatusRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipStatus(tokenOwnershipStatusUpdatePayload,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.n_f_ts.update_tokens_ownership_status(token_ownership_status_update_payload, idempotency_key);
+  /nfts/ownership/tokens/spam:
+    put:
+      operationId: updateTokensOwnershipSpam
+      summary: Update tokens ownership spam property
+      description: 'Updates tokens spam property for a workspace''s token ownerships, in all vault accounts.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokensOwnershipSpam(nFTsApiUpdateTokensOwnershipSpamRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipSpam(tokenOwnershipSpamUpdatePayload,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.n_f_ts.update_tokens_ownership_spam(token_ownership_spam_update_payload, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTokensOwnershipSpamRequest'
+      responses:
+        '200':
+          description: All token spam properties have been updated
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '400':
+          description: Invalid data sent
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '404':
+          description: Ownership for token ID is not found
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      tags:
+      - NFTs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokensOwnershipSpam(nFTsApiUpdateTokensOwnershipSpamRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipSpam(tokenOwnershipSpamUpdatePayload,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.n_f_ts.update_tokens_ownership_spam(token_ownership_spam_update_payload, idempotency_key);
+components:
+  schemas:
+    CollectionOwnershipResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Fireblocks collection id
+          example: 0b7baa6a62b00c565fd027e91927d610872e0bd5
+        name:
+          type: string
+          description: Collection name
+          example: OpenSea Collections
+        symbol:
+          type: string
+          description: Collection symbol
+          example: OPENSTORE
+        standard:
+          type: string
+          description: Collection contract standard
+          example: ERC1155
+        blockchainDescriptor:
+          enum:
+          - ETH
+          - ETH_TEST3
+          - ETH_TEST5
+          - ETH_TEST6
+          - POLYGON
+          - POLYGON_TEST_MUMBAI
+          - AMOY_POLYGON_TEST
+          - XTZ
+          - XTZ_TEST
+          - BASECHAIN_ETH
+          - BASECHAIN_ETH_TEST3
+          - BASECHAIN_ETH_TEST5
+          - ETHERLINK
+          - ETHERLINK_TEST
+          - MANTLE
+          - MANTLE_TEST
+          - GUN_GUNZILLA_TEST
+          - ETH_SONEIUM
+          - SONEIUM_MINATO_TEST
+          - IOTX_IOTEX
+          type: string
+          description: Collection's blockchain
+        contractAddress:
+          type: string
+          description: Collection contract standard
+          example: '0x2953399124F0cBB46d2CbACD8A89cF0599974963'
+      required:
+      - id
+      - blockchainDescriptor
+    GetNFTsResponse:
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenResponse'
+    GetOwnershipTokensResponse:
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenOwnershipResponse'
+    ListOwnedCollectionsResponse:
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionOwnershipResponse'
+    ListOwnedTokensResponse:
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenResponse'
+    MediaEntityResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Cached accessible URL
+          example: https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0
+        contentType:
+          type: string
+          enum:
+          - IMAGE
+          - VIDEO
+          - ANIMATION
+          - THREE_D
+          - TEXT
+          - GIF
+          - UNKNOWN_TYPE
+          - SVG
+          - AUDIO
+          description: Media type
+      required:
+      - url
+      - contentType
+    Paging:
+      type: object
+      properties:
+        next:
+          type: string
+          description: Cursor to the next page
+      required:
+      - next
+    SpamOwnershipResponse:
+      type: object
+      properties:
+        result:
+          type: boolean
+          description: Token spam result
+        source:
+          type: string
+          description: Source of Token's Spam status value
+          enum:
+          - OWNER
+          - SYSTEM
+      required:
+      - result
+      - source
+    SpamTokenResponse:
+      type: object
+      properties:
+        result:
+          type: boolean
+          description: Token spam result
+          example: true
+      required:
+      - result
+    TokenCollectionResponse:
+      type: object
+      properties:
+        id:
+          description: Collection's ID
+          type: string
+          example: '0x2953399124F0cBB46d2CbACD8A89cF0599974963'
+        name:
+          description: Collection's Name
+          type: string
+          example: OpenSea Collections
+        symbol:
+          description: Collection's Symbol
+          type: string
+          example: OPENSTORE
+      required:
+      - id
+    TokenOwnershipResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The Fireblocks NFT asset id
+          example: NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f
+        tokenId:
+          type: string
+          description: Token id within the contract/collection
+          example: '59254621688950848715672884047857802075662195255933291242201099097856995753985'
+        standard:
+          type: string
+          description: Token's standard
+          example: ERC721
+        metadataURI:
+          type: string
+          description: URL of the original token JSON metadata
+          example: https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952
+        cachedMetadataURI:
+          type: string
+          description: URL of the cached token JSON metadata
+          example: https://static.fireblocks.io/nft/cb6db032c00fcc483ae0dea333a7f6b2279/metadata.json
+        media:
+          description: Media items extracted from metadata JSON
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaEntityResponse'
+        spam:
+          description: Owned Token's Spam status
+          allOf:
+          - $ref: '#/components/schemas/SpamOwnershipResponse'
+        collection:
+          description: Parent collection information
+          allOf:
+          - $ref: '#/components/schemas/TokenCollectionResponse'
+        balance:
+          description: Token's balance
+          type: string
+          example: '1'
+        vaultAccountId:
+          description: Fireblocks Vault Account ID
+          type: string
+          example: '0'
+        ownershipStartTime:
+          description: Ownership start timestamp (epoch)
+          type: number
+          example: 1687865341
+        ownershipLastUpdateTime:
+          description: Ownership start last update time (epoch)
+          type: number
+          example: 1687865341
+        blockchainDescriptor:
+          description: Token's blockchain
+          enum:
+          - ETH
+          - ETH_TEST3
+          - ETH_TEST5
+          - ETH_TEST6
+          - POLYGON
+          - POLYGON_TEST_MUMBAI
+          - AMOY_POLYGON_TEST
+          - XTZ
+          - XTZ_TEST
+          - BASECHAIN_ETH
+          - BASECHAIN_ETH_TEST3
+          - BASECHAIN_ETH_TEST5
+          - ETHERLINK
+          - ETHERLINK_TEST
+          - MANTLE
+          - MANTLE_TEST
+          - GUN_GUNZILLA_TEST
+          - ETH_SONEIUM
+          - SONEIUM_MINATO_TEST
+          - IOTX_IOTEX
+          type: string
+        description:
+          description: Token's metadata description
+          type: string
+          example: MyNFT Description from the metada
+        name:
+          description: Token's name
+          type: string
+          example: MyNFTName
+        ncwId:
+          type: string
+          description: Ownership Non-Custodial Wallet ID
+          example: 523ea95a-93a7-43c8-8dbc-ed31f53e6539
+        ncwAccountId:
+          type: string
+          description: Ownership Non-Custodial Wallet's account ID
+          example: '0'
+        status:
+          type: string
+          description: Owned Token's status
+          enum:
+          - LISTED
+          - ARCHIVED
+      required:
+      - id
+      - tokenId
+      - standard
+      - balance
+      - ownershipStartTime
+      - ownershipLastUpdateTime
+      - blockchainDescriptor
+      - status
+    TokenOwnershipSpamUpdatePayload:
+      type: object
+      properties:
+        assetId:
+          type: string
+          description: Token's asset id
+          example: NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd
+          x-fb-entity: asset
+        spam:
+          type: boolean
+          description: Token's ownership new spam value
+          example: true
+      required:
+      - assetId
+      - spam
+    TokenOwnershipStatusUpdatePayload:
+      type: object
+      properties:
+        assetId:
+          type: string
+          description: Token's asset id
+          example: NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd
+          x-fb-entity: asset
+        status:
+          type: string
+          description: Token's ownership new status
+          enum:
+          - LISTED
+          - ARCHIVED
+          example: ARCHIVED
+      required:
+      - assetId
+      - status
+    TokenResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The Fireblocks NFT asset id
+          example: NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f
+        tokenId:
+          type: string
+          description: Token id within the contract/collection
+          example: '592546216889508487156728840478578020756621952559332912422010991022550422'
+        standard:
+          type: string
+          description: ERC721 / ERC1155
+          example: ERC1155
+        metadataURI:
+          type: string
+          description: URL of the original token JSON metadata
+          example: https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952559332912422010991022550422
+        cachedMetadataURI:
+          type: string
+          description: URL of the cached token JSON metadata
+          example: https://static.fireblocks.io/nft/ad1bd7bf6b0ecb3495beb17d8540a513c96/metadata.json
+        media:
+          description: Media items extracted from metadata JSON
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaEntityResponse'
+        spam:
+          description: Token spam status
+          allOf:
+          - $ref: '#/components/schemas/SpamTokenResponse'
+        collection:
+          description: Parent collection information
+          allOf:
+          - $ref: '#/components/schemas/TokenCollectionResponse'
+        blockchainDescriptor:
+          type: string
+          enum:
+          - ETH
+          - ETH_TEST3
+          - ETH_TEST5
+          - ETH_TEST6
+          - POLYGON
+          - POLYGON_TEST_MUMBAI
+          - AMOY_POLYGON_TEST
+          - XTZ
+          - XTZ_TEST
+          - BASECHAIN_ETH
+          - BASECHAIN_ETH_TEST3
+          - BASECHAIN_ETH_TEST5
+          - ETHERLINK
+          - ETHERLINK_TEST
+          - MANTLE
+          - MANTLE_TEST
+          - GUN_GUNZILLA_TEST
+          - ETH_SONEIUM
+          - SONEIUM_MINATO_TEST
+          - IOTX_IOTEX
+        description:
+          description: Token's metadata description
+          type: string
+          example: This is MyNFT's description fetched from the metadata
+        name:
+          type: string
+          description: Token's metadata name
+          example: MyNFTName
+      required:
+      - id
+      - tokenId
+      - standard
+      - blockchainDescriptor
+    UpdateTokenOwnershipStatusDto:
+      type: object
+      properties:
+        status:
+          description: Token's status in Fireblocks
+          type: string
+          enum:
+          - LISTED
+          - ARCHIVED
+      required:
+      - status
+    UpdateTokensOwnershipSpamRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/TokenOwnershipSpamUpdatePayload'
+    UpdateTokensOwnershipStatusRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/TokenOwnershipStatusUpdatePayload'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
+        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+    X-End-User-Wallet-Id:
+      name: X-End-User-Wallet-Id
+      in: header
+      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'

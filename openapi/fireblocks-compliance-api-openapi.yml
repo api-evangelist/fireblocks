@@ -1,0 +1,4226 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Compliance and Policy API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
+    platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+paths:
+  /screening/travel_rule/transaction/validate:
+    post:
+      operationId: validateTravelRuleTransaction
+      summary: Validate Travel Rule Transaction
+      description: 'Validate Travel Rule transactions.
+
+        Checks what beneficiary VASP details are required by your jurisdiction and the beneficiary''s jurisdiction.
+
+        **Deprecation Notice** This endpoint will be deprecated soon in favor of the [validate full](https://developers.fireblocks.com/reference/validatefulltravelruletransaction)
+        endpoint. Please update your integrations to use the  [validate full](https://developers.fireblocks.com/reference/validatefulltravelruletransaction)
+        endpoint to ensure compatibility with future releases.
+
+        Checks what beneficiary VASP details are required by your jurisdiction and the beneficiary''s jurisdiction.
+
+        Learn more about Fireblocks Travel Rule management in the following [guide](https://developers.fireblocks.com/docs/define-travel-rule-policies).
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - name: notation
+        in: query
+        description: 'Specifies the notation of the transaction. Possible values are: - `notabene`: Uses Notabene notation
+          (default behavior). - `fireblocks`: Uses Fireblocks notation, with automatic translation of asset tickers and amounts.
+          - `<none>`: Defaults to `notabene` for backward compatibility.
+
+          **Note:** The default value for the `notation` parameter will change from `notabene` to `fireblocks` Update your
+          integrations accordingly.'
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRuleValidateTransactionRequest'
+      responses:
+        '200':
+          description: Transaction validated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleValidateTransactionResponse'
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleValidateTransactionResponse>> = fireblocks.travelRuleBeta.validateTravelRuleTransaction(travelRuleBetaApiValidateTravelRuleTransactionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleValidateTransactionResponse>> response = fireblocks.travelRuleBeta().validateTravelRuleTransaction(travelRuleValidateTransactionRequest,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule_beta.validate_travel_rule_transaction(travel_rule_validate_transaction_request,
+            idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleValidateTransactionResponse>> = fireblocks.travelRuleBeta.validateTravelRuleTransaction(travelRuleBetaApiValidateTravelRuleTransactionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleValidateTransactionResponse>> response = fireblocks.travelRuleBeta().validateTravelRuleTransaction(travelRuleValidateTransactionRequest,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.travel_rule_beta.validate_travel_rule_transaction(travel_rule_validate_transaction_request,
+          idempotency_key);
+  /screening/travel_rule/transaction/validate/full:
+    post:
+      operationId: validateFullTravelRuleTransaction
+      summary: Validate Full Travel Rule Transaction
+      description: 'Validate Full Travel Rule transaction.
+
+        Checks for all required information on the originator and beneficiary VASPs.
+
+        Learn more about Fireblocks Travel Rule management in the following [guide](https://developers.fireblocks.com/docs/define-travel-rule-policies).
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - name: notation
+        in: query
+        description: 'Specifies the notation of the transaction. Possible values are
+
+          - `notabene`: Uses Notabene notation (default behavior).
+
+          - `fireblocks`: Uses Fireblocks notation, with automatic translation of asset tickers and amounts.
+
+          - `<none>`: Defaults to `notabene` for backward compatibility.
+
+
+          **Note:** The default value for the `notation` parameter will change from
+
+          `notabene` to `fireblocks` Update your integrations accordingly.
+
+          '
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRuleValidateFullTransactionRequest'
+      responses:
+        '200':
+          description: Transaction validated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleValidateTransactionResponse'
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleValidateTransactionResponse>> = fireblocks.travelRuleBeta.validateFullTravelRuleTransaction(travelRuleBetaApiValidateFullTravelRuleTransactionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleValidateTransactionResponse>> response = fireblocks.travelRuleBeta().validateFullTravelRuleTransaction(travelRuleValidateFullTransactionRequest,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule_beta.validate_full_travel_rule_transaction(travel_rule_validate_full_transaction_request,
+            idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleValidateTransactionResponse>> = fireblocks.travelRuleBeta.validateFullTravelRuleTransaction(travelRuleBetaApiValidateFullTravelRuleTransactionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleValidateTransactionResponse>> response = fireblocks.travelRuleBeta().validateFullTravelRuleTransaction(travelRuleValidateFullTransactionRequest,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.travel_rule_beta.validate_full_travel_rule_transaction(travel_rule_validate_full_transaction_request,
+          idempotency_key);
+  /screening/travel_rule/vasp/{did}:
+    get:
+      operationId: getVASPByDID
+      summary: Get VASP details
+      description: 'Get VASP Details.
+
+        Returns information about a VASP that has the specified DID.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - name: did
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: fields
+        required: false
+        in: query
+        description: CSV of fields to return (all, "blank" or see list of all field names below)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transaction validated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleVASP'
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleVASP>> = fireblocks.travelRuleBeta.getVASPByDID(travelRuleBetaApiGetVASPByDIDRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleVASP>> response = fireblocks.travelRuleBeta().getVASPByDID(did, fields);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule_beta.get_v_a_s_p_by_d_i_d(did, fields);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleVASP>> = fireblocks.travelRuleBeta.getVASPByDID(travelRuleBetaApiGetVASPByDIDRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleVASP>> response = fireblocks.travelRuleBeta().getVASPByDID(did, fields);
+      - lang: Python
+        source: response = fireblocks.travel_rule_beta.get_v_a_s_p_by_d_i_d(did, fields);
+  /screening/travel_rule/vasp:
+    get:
+      operationId: getVASPs
+      summary: Get All VASPs
+      description: 'Get All VASPs.
+
+        Returns a list of VASPs. VASPs can be searched and sorted and results are paginated.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - name: order
+        required: false
+        in: query
+        description: Field to order by
+        schema:
+          type: string
+      - name: per_page
+        required: false
+        in: query
+        description: Records per page
+        schema:
+          type: number
+      - name: page
+        required: false
+        in: query
+        description: Page number
+        schema:
+          type: number
+      - name: fields
+        required: false
+        in: query
+        description: CSV of fields to return (all, "blank" or see list of all field names below)
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: Search query
+        schema:
+          type: string
+      - name: reviewValue
+        required: false
+        in: query
+        description: 'Filter by the VASP''s review status. Possible values include: "TRUSTED", "BLOCKED", "MANUAL", or "NULL".
+          When provided, only VASPs that match the specified reviewValue will be returned (i.e., VASPs that have already been
+          reviewed to this status).'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get all VASPs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleGetAllVASPsResponse'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleGetAllVASPsResponse>> = fireblocks.travelRuleBeta.getVASPs(travelRuleBetaApiGetVASPsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleGetAllVASPsResponse>> response = fireblocks.travelRuleBeta().getVASPs(order,
+            perPage, page, fields);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule_beta.get_v_a_s_ps(order, per_page, page, fields);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleGetAllVASPsResponse>> = fireblocks.travelRuleBeta.getVASPs(travelRuleBetaApiGetVASPsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleGetAllVASPsResponse>> response = fireblocks.travelRuleBeta().getVASPs(order,
+          perPage, page, fields);
+      - lang: Python
+        source: response = fireblocks.travel_rule_beta.get_v_a_s_ps(order, per_page, page, fields);
+  /screening/travel_rule/vasp/update:
+    put:
+      operationId: updateVasp
+      summary: Update VASP Details
+      description: 'Updates a VASP with the provided parameters. Use this endpoint to add your public jsonDIDkey generated
+        by Notabene.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRuleUpdateVASPDetails'
+      responses:
+        '200':
+          description: VASP updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleUpdateVASPDetails'
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleUpdateVASPDetails>> = fireblocks.travelRuleBeta.updateVasp(travelRuleBetaApiUpdateVaspRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleUpdateVASPDetails>> response = fireblocks.travelRuleBeta().updateVasp(travelRuleUpdateVASPDetails,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule_beta.update_vasp(travel_rule_update_v_a_s_p_details, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleUpdateVASPDetails>> = fireblocks.travelRuleBeta.updateVasp(travelRuleBetaApiUpdateVaspRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleUpdateVASPDetails>> response = fireblocks.travelRuleBeta().updateVasp(travelRuleUpdateVASPDetails,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.travel_rule_beta.update_vasp(travel_rule_update_v_a_s_p_details, idempotency_key);
+  /screening/travel_rule/post_screening_policy:
+    get:
+      operationId: getPostScreeningPolicy
+      summary: Travel Rule - View Post-Screening Policy
+      description: 'Get the post-screening policy for Travel Rule.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters: []
+      responses:
+        '200':
+          description: Post-screening policy retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreeningPolicyResponse'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ScreeningPolicyResponse>> = fireblocks.compliance.getPostScreeningPolicy();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ScreeningPolicyResponse>> response = fireblocks.compliance().getPostScreeningPolicy();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance.get_post_screening_policy();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ScreeningPolicyResponse>> = fireblocks.compliance.getPostScreeningPolicy();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ScreeningPolicyResponse>> response = fireblocks.compliance().getPostScreeningPolicy();
+      - lang: Python
+        source: response = fireblocks.compliance.get_post_screening_policy();
+  /screening/travel_rule/screening_policy:
+    get:
+      operationId: getScreeningPolicy
+      summary: Travel Rule - View Screening Policy
+      description: 'Get the screening policy for Travel Rule.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters: []
+      responses:
+        '200':
+          description: Screening policy retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreeningProviderRulesConfigurationResponse'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ScreeningProviderRulesConfigurationResponse>> = fireblocks.compliance.getScreeningPolicy();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ScreeningProviderRulesConfigurationResponse>> response = fireblocks.compliance().getScreeningPolicy();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance.get_screening_policy();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ScreeningProviderRulesConfigurationResponse>> = fireblocks.compliance.getScreeningPolicy();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ScreeningProviderRulesConfigurationResponse>> response = fireblocks.compliance().getScreeningPolicy();
+      - lang: Python
+        source: response = fireblocks.compliance.get_screening_policy();
+  /screening/travel_rule/vault/{vaultAccountId}/vasp:
+    get:
+      summary: Get assigned VASP to vault
+      description: "Get assigned VASP DID for a specific vault. \nReturns empty `vaspDid` string value in response if none\
+        \ assigned.\n"
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.getVaspForVault(vaultAccountId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleVaspForVault>> = fireblocks.travelRuleBeta.getVaspForVault(travelRuleBetaApiGetVaspForVaultRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleVaspForVault>> response = fireblocks.travelRuleBeta().getVaspForVault(vaultAccountId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule_beta.get_vasp_for_vault(vault_account_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        example: 1
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleVaspForVault'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getVaspForVault
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleVaspForVault>> = fireblocks.travelRuleBeta.getVaspForVault(travelRuleBetaApiGetVaspForVaultRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleVaspForVault>> response = fireblocks.travelRuleBeta().getVaspForVault(vaultAccountId);
+      - lang: Python
+        source: response = fireblocks.travel_rule_beta.get_vasp_for_vault(vault_account_id);
+    post:
+      summary: Assign VASP to vault
+      description: "Sets the VASP DID for a specific vault. \nPass empty string to remove an existing one.\n"
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.setVaspForVault(vaultAccountId, vaspDid);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleVaspForVault>> = fireblocks.travelRuleBeta.setVaspForVault(travelRuleBetaApiSetVaspForVaultRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleVaspForVault>> response = fireblocks.travelRuleBeta().setVaspForVault(travelRuleVaspForVault,
+            vaultAccountId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule_beta.set_vasp_for_vault(travel_rule_vasp_for_vault, vault_account_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleVaspForVault>> = fireblocks.travelRuleBeta.setVaspForVault(travelRuleBetaApiSetVaspForVaultRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleVaspForVault>> response = fireblocks.travelRuleBeta().setVaspForVault(travelRuleVaspForVault,
+          vaultAccountId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.travel_rule_beta.set_vasp_for_vault(travel_rule_vasp_for_vault, vault_account_id, idempotency_key);
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRuleVaspForVault'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleVaspForVault'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setVaspForVault
+  /screening/travel_rule/policy_configuration:
+    get:
+      operationId: getScreeningConfiguration
+      summary: Get Travel Rule Screening Policy Configuration
+      description: 'Retrieves the configuration for Travel Rule screening policy.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters: []
+      responses:
+        '200':
+          description: Screening policy configuration retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreeningConfigurationsRequest'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ScreeningConfigurationsRequest>> = fireblocks.complianceScreeningConfiguration.getScreeningConfiguration();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ScreeningConfigurationsRequest>> response = fireblocks.complianceScreeningConfiguration().getScreeningConfiguration();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance_screening_configuration.get_screening_configuration();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ScreeningConfigurationsRequest>> = fireblocks.complianceScreeningConfiguration.getScreeningConfiguration();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ScreeningConfigurationsRequest>> response = fireblocks.complianceScreeningConfiguration().getScreeningConfiguration();
+      - lang: Python
+        source: response = fireblocks.compliance_screening_configuration.get_screening_configuration();
+    put:
+      operationId: updateTravelRuleConfig
+      summary: Update Travel Rule Configuration
+      description: 'Updates bypass screening, inbound delay, or outbound delay configurations for Travel Rule.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Configuration updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreeningConfigurationsRequest'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ScreeningConfigurationsRequest>> = fireblocks.compliance.updateTravelRuleConfig(complianceApiUpdateTravelRuleConfigRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ScreeningConfigurationsRequest>> response = fireblocks.compliance().updateTravelRuleConfig(idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance.update_travel_rule_config(idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ScreeningConfigurationsRequest>> = fireblocks.compliance.updateTravelRuleConfig(complianceApiUpdateTravelRuleConfigRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ScreeningConfigurationsRequest>> response = fireblocks.compliance().updateTravelRuleConfig(idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.compliance.update_travel_rule_config(idempotency_key);
+  /screening/aml/policy_configuration:
+    get:
+      operationId: getAmlScreeningConfiguration
+      summary: Get AML Screening Policy Configuration
+      description: 'Retrieves the configuration for Travel Rule screening policy.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters: []
+      responses:
+        '200':
+          description: Screening policy configuration retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreeningConfigurationsRequest'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ScreeningConfigurationsRequest>> = fireblocks.complianceScreeningConfiguration.getAmlScreeningConfiguration();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ScreeningConfigurationsRequest>> response = fireblocks.complianceScreeningConfiguration().getAmlScreeningConfiguration();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance_screening_configuration.get_aml_screening_configuration();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ScreeningConfigurationsRequest>> = fireblocks.complianceScreeningConfiguration.getAmlScreeningConfiguration();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ScreeningConfigurationsRequest>> response = fireblocks.complianceScreeningConfiguration().getAmlScreeningConfiguration();
+      - lang: Python
+        source: response = fireblocks.compliance_screening_configuration.get_aml_screening_configuration();
+    put:
+      operationId: updateAmlScreeningConfiguration
+      summary: Update AML Configuration
+      description: 'Updates bypass screening, inbound delay, or outbound delay configurations for AML.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Configuration updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreeningConfigurationsRequest'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ScreeningConfigurationsRequest>> = fireblocks.compliance.updateAmlScreeningConfiguration(complianceApiUpdateAmlScreeningConfigurationRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ScreeningConfigurationsRequest>> response = fireblocks.compliance().updateAmlScreeningConfiguration(idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance.update_aml_screening_configuration(idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ScreeningConfigurationsRequest>> = fireblocks.compliance.updateAmlScreeningConfiguration(complianceApiUpdateAmlScreeningConfigurationRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ScreeningConfigurationsRequest>> response = fireblocks.compliance().updateAmlScreeningConfiguration(idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.compliance.update_aml_screening_configuration(idempotency_key);
+  /screening/aml/screening_policy:
+    get:
+      operationId: getAmlScreeningPolicy
+      summary: AML - View Screening Policy
+      description: 'Get the screening policy for AML.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters: []
+      responses:
+        '200':
+          description: Screening policy retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreeningProviderRulesConfigurationResponse'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ScreeningProviderRulesConfigurationResponse>> = fireblocks.compliance.getAmlScreeningPolicy();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ScreeningProviderRulesConfigurationResponse>> response = fireblocks.compliance().getAmlScreeningPolicy();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance.get_aml_screening_policy();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ScreeningProviderRulesConfigurationResponse>> = fireblocks.compliance.getAmlScreeningPolicy();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ScreeningProviderRulesConfigurationResponse>> response = fireblocks.compliance().getAmlScreeningPolicy();
+      - lang: Python
+        source: response = fireblocks.compliance.get_aml_screening_policy();
+  /screening/aml/post_screening_policy:
+    get:
+      operationId: getAmlPostScreeningPolicy
+      summary: AML - View Post-Screening Policy
+      description: 'Get the post-screening policy for AML.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters: []
+      responses:
+        '200':
+          description: Post-screening policy retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreeningPolicyResponse'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ScreeningPolicyResponse>> = fireblocks.compliance.getAmlPostScreeningPolicy();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ScreeningPolicyResponse>> response = fireblocks.compliance().getAmlPostScreeningPolicy();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance.get_aml_post_screening_policy();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ScreeningPolicyResponse>> = fireblocks.compliance.getAmlPostScreeningPolicy();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ScreeningPolicyResponse>> response = fireblocks.compliance().getAmlPostScreeningPolicy();
+      - lang: Python
+        source: response = fireblocks.compliance.get_aml_post_screening_policy();
+  /screening/configurations:
+    put:
+      operationId: updateScreeningConfiguration
+      summary: Screening Configuration Update
+      description: 'Update Tenant screening configuration.
+
+        Learn more about Fireblocks AML management in the following [guide](https://developers.fireblocks.com/docs/define-aml-policies).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScreeningUpdateConfigurations'
+      responses:
+        '200':
+          description: Tenant Screening configuration updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreeningUpdateConfigurations'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ScreeningUpdateConfigurations>> = fireblocks.compliance.updateScreeningConfiguration(complianceApiUpdateScreeningConfigurationRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ScreeningUpdateConfigurations>> response = fireblocks.compliance().updateScreeningConfiguration(screeningUpdateConfigurations,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance.update_screening_configuration(screening_update_configurations, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ScreeningUpdateConfigurations>> = fireblocks.compliance.updateScreeningConfiguration(complianceApiUpdateScreeningConfigurationRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ScreeningUpdateConfigurations>> response = fireblocks.compliance().updateScreeningConfiguration(screeningUpdateConfigurations,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.compliance.update_screening_configuration(screening_update_configurations, idempotency_key);
+  /screening/transaction/{txId}/bypass_screening_policy:
+    post:
+      operationId: retryRejectedTransactionBypassScreeningChecks
+      summary: Bypass Screening Policy
+      description: 'This endpoint is restricted to Admin API users and is only applicable to outgoing transactions.
+
+        Calling the "Bypass Screening Policy" API endpoint triggers a new transaction, with the API user as the initiator,
+        bypassing the screening policy check
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - in: path
+        name: txId
+        required: true
+        description: The transaction id that was rejected by screening checks
+        example: 550e8400-e29b-41d4-a716-446655440000
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '201':
+          description: A transaction object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTransactionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateTransactionResponse>> = fireblocks.compliance.retryRejectedTransactionBypassScreeningChecks(complianceApiRetryRejectedTransactionBypassScreeningChecksRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateTransactionResponse>> response = fireblocks.compliance().retryRejectedTransactionBypassScreeningChecks(txId,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance.retry_rejected_transaction_bypass_screening_checks(tx_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateTransactionResponse>> = fireblocks.compliance.retryRejectedTransactionBypassScreeningChecks(complianceApiRetryRejectedTransactionBypassScreeningChecksRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateTransactionResponse>> response = fireblocks.compliance().retryRejectedTransactionBypassScreeningChecks(txId,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.compliance.retry_rejected_transaction_bypass_screening_checks(tx_id, idempotency_key);
+  /screening/transaction/{txId}:
+    get:
+      operationId: getScreeningFullDetails
+      summary: Get Screening Full Details
+      description: 'Provides all the compliance details for the given screened transaction.
+
+        </br>Endpoint Permission: All users.'
+      parameters:
+      - in: path
+        name: txId
+        required: true
+        description: Fireblocks transaction ID of the screened transaction
+        example: 550e8400-e29b-41d4-a716-446655440000
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A compliance object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceResultFullPayload'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Compliance
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ComplianceResultFullPayload>> = fireblocks.compliance.getScreeningFullDetails(complianceApiGetScreeningFullDetailsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ComplianceResultFullPayload>> response = fireblocks.compliance().getScreeningFullDetails(txId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.compliance.get_screening_full_details(tx_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ComplianceResultFullPayload>> = fireblocks.compliance.getScreeningFullDetails(complianceApiGetScreeningFullDetailsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ComplianceResultFullPayload>> response = fireblocks.compliance().getScreeningFullDetails(txId);
+      - lang: Python
+        source: response = fireblocks.compliance.get_screening_full_details(tx_id);
+  /screening/aml/verdict/manual:
+    post:
+      operationId: setAmlVerdict
+      summary: Set AML verdict for Manual Screening Verdict
+      description: Set AML verdict for incoming transactions when the Manual Screening Verdict feature is enabled.
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AmlVerdictManualRequest'
+      responses:
+        '200':
+          description: AML verdict set successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AmlVerdictManualResponse'
+        '400':
+          description: Feature not enabled for tenant.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '425':
+          description: Too Early - transaction not yet in pending screening.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '500':
+          description: Internal server error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Compliance
+      x-rate-limit-category: write
+  /tap/active_policy:
+    get:
+      operationId: getActivePolicy
+      summary: Get the active policy and its validation
+      description: 'Returns the active policy and its validation. </br>
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success
+        Manager or send an email to CSM@fireblocks.com.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Policy Editor (Beta)
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const policy = await fireblocks.getActivePolicy();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PolicyAndValidationResponse>> = fireblocks.policyEditorBeta.getActivePolicy();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PolicyAndValidationResponse>> response = fireblocks.policyEditorBeta().getActivePolicy();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.policy_editor_beta.get_active_policy();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: A policy object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyAndValidationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PolicyAndValidationResponse>> = fireblocks.policyEditorBeta.getActivePolicy();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PolicyAndValidationResponse>> response = fireblocks.policyEditorBeta().getActivePolicy();
+      - lang: Python
+        source: response = fireblocks.policy_editor_beta.get_active_policy();
+  /tap/draft:
+    get:
+      operationId: getDraft
+      summary: Get the active draft
+      description: 'Returns the active draft and its validation. </br>
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success
+        Manager or send an email to CSM@fireblocks.com.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Policy Editor (Beta)
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const policy = await fireblocks.getDraft();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.getDraft();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().getDraft();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.policy_editor_beta.get_draft();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: A draft validation response object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftReviewAndValidationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.getDraft();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().getDraft();
+      - lang: Python
+        source: response = fireblocks.policy_editor_beta.get_draft();
+    put:
+      operationId: updateDraft
+      summary: Update the draft with a new set of rules
+      description: 'Update the draft and return its validation. </br>
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success
+        Manager or send an email to CSM@fireblocks.com.
+
+        Learn more about Fireblocks Transaction Authorization Policy in the following [guide](https://developers.fireblocks.com/docs/set-transaction-authorization-policy).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Policy Editor (Beta)
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const policy = await fireblocks.updateDraft();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.updateDraft(policyEditorBetaApiUpdateDraftRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().updateDraft(policyRules,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.policy_editor_beta.update_draft(policy_rules, idempotency_key);
+          name: Fireblocks SDK Python example
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyRules'
+      responses:
+        '200':
+          description: A draft validation response object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftReviewAndValidationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.updateDraft(policyEditorBetaApiUpdateDraftRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().updateDraft(policyRules,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.policy_editor_beta.update_draft(policy_rules, idempotency_key);
+    post:
+      operationId: publishDraft
+      summary: Send publish request for a certain draft id
+      description: 'Send publish request of certain draft id and returns the response. </br>
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success
+        Manager or send an email to CSM@fireblocks.com.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Policy Editor (Beta)
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const policy = await fireblocks.publishDraft();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PublishResult>> = fireblocks.policyEditorBeta.publishDraft(policyEditorBetaApiPublishDraftRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PublishResult>> response = fireblocks.policyEditorBeta().publishDraft(publishDraftRequest,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.policy_editor_beta.publish_draft(publish_draft_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublishDraftRequestV2'
+      responses:
+        '201':
+          description: A policy publish result object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishResult'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PublishResult>> = fireblocks.policyEditorBeta.publishDraft(policyEditorBetaApiPublishDraftRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PublishResult>> response = fireblocks.policyEditorBeta().publishDraft(publishDraftRequest,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.policy_editor_beta.publish_draft(publish_draft_request, idempotency_key);
+  /tap/publish:
+    post:
+      operationId: publishPolicyRules
+      summary: Send publish request for a set of policy rules
+      description: 'Send publish request of set of policy rules and returns the response. </br>
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success
+        Manager or send an email to CSM@fireblocks.com.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Policy Editor (Beta)
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const policy = await fireblocks.publishRules();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PublishResult>> = fireblocks.policyEditorBeta.publishPolicyRules(policyEditorBetaApiPublishPolicyRulesRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PublishResult>> response = fireblocks.policyEditorBeta().publishPolicyRules(policyRules,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.policy_editor_beta.publish_policy_rules(policy_rules, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyRules'
+      responses:
+        '201':
+          description: A policy publish result object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishResult'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PublishResult>> = fireblocks.policyEditorBeta.publishPolicyRules(policyEditorBetaApiPublishPolicyRulesRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PublishResult>> response = fireblocks.policyEditorBeta().publishPolicyRules(policyRules,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.policy_editor_beta.publish_policy_rules(policy_rules, idempotency_key);
+  /policy/active_policy:
+    get:
+      operationId: getActiveV2Policy
+      summary: Get the active policy and its validation by policy type
+      description: '**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the
+        Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.
+
+
+        Returns the active policy and its validation for a specific policy type.
+
+
+        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.
+
+        '
+      tags:
+      - Policy Editor V2 (Beta)
+      x-rate-limit-category: query
+      parameters:
+      - name: policyType
+        in: query
+        required: true
+        description: The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g.,
+          ?policyType=TRANSFER&policyType=MINT).
+        schema:
+          $ref: '#/components/schemas/PolicyTypeV2'
+      x-readme:
+        code-samples:
+        - language: python
+          code: '# Single policy type
+
+            policy = fireblocks.get_active_policy(policyType="TRANSFER")
+
+            # Multiple policy types
+
+            policy = fireblocks.get_active_policy(policyType=["TRANSFER", "MINT"])
+
+            '
+          name: Fireblocks SDK Python example
+        - language: javascript
+          code: '// Single policy type
+
+            const policy = await fireblocks.getActivePolicy({policyType: "TRANSFER"});
+
+            // Multiple policy types
+
+            const policy = await fireblocks.getActivePolicy({policyType: ["TRANSFER", "MINT"]});
+
+            '
+          name: Fireblocks SDK Javascript example
+      responses:
+        '200':
+          description: A policy object with validation
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyAndValidationResponseV2'
+        default:
+          $ref: '#/components/responses/Error'
+  /policy/draft:
+    get:
+      operationId: getV2Draft
+      summary: Get the active draft by policy type
+      description: '**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the
+        Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.
+
+
+        Returns the active draft and its validation for a specific policy type.
+
+
+        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.
+
+        '
+      tags:
+      - Policy Editor V2 (Beta)
+      x-rate-limit-category: read
+      parameters:
+      - name: policyType
+        in: query
+        required: true
+        description: The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g.,
+          ?policyType=TRANSFER&policyType=MINT).
+        schema:
+          $ref: '#/components/schemas/PolicyTypeV2'
+      x-readme:
+        code-samples:
+        - language: python
+          code: '# Single policy type
+
+            draft = fireblocks.get_draft(policyType="TRANSFER")
+
+            # Multiple policy types
+
+            draft = fireblocks.get_draft(policyType=["TRANSFER", "MINT"])
+
+            '
+          name: Fireblocks SDK Python example
+        - language: javascript
+          code: '// Single policy type
+
+            const draft = await fireblocks.getDraft({policyType: "TRANSFER"});
+
+            // Multiple policy types
+
+            const draft = await fireblocks.getDraft({policyType: ["TRANSFER", "MINT"]});
+
+            '
+          name: Fireblocks SDK Javascript example
+      responses:
+        '200':
+          description: A draft validation response object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftReviewAndValidationResponseV2'
+        default:
+          $ref: '#/components/responses/Error'
+    put:
+      operationId: updateV2Draft
+      summary: Update the draft with a new set of rules by policy types
+      description: "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the\
+        \ Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nUpdates\
+        \ the draft and returns its validation for specific policy types.  \n\n**Endpoint Permissions:** Owner, Admin, Non-Signing\
+        \ Admin.\n"
+      tags:
+      - Policy Editor V2 (Beta)
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      x-readme:
+        code-samples:
+        - language: python
+          code: 'draft = fireblocks.update_draft({"policyTypes": ["TRANSFER"], "rules": rules})
+
+            '
+          name: Fireblocks SDK Python example
+        - language: javascript
+          code: 'const draft = await fireblocks.updateDraft({policyTypes: ["TRANSFER"], rules: rules});
+
+            '
+          name: Fireblocks SDK Javascript example
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDraftRequestV2'
+      responses:
+        '200':
+          description: A draft validation response object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftReviewAndValidationResponseV2'
+        default:
+          $ref: '#/components/responses/Error'
+    post:
+      operationId: publishV2Draft
+      summary: Send publish request for a certain draft ID
+      description: "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the\
+        \ Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nPublishes\
+        \ a draft policy by request, and returns the response.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\
+        \        \n"
+      tags:
+      - Policy Editor V2 (Beta)
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: python
+          code: 'policy = fireblocks.publish_draft({"policyTypes": ["TRANSFER"], "draftId": "draft-123"})
+
+            '
+          name: Fireblocks SDK Python example
+        - language: javascript
+          code: 'const policy = await fireblocks.publishDraft({policyTypes: ["TRANSFER"], draftId: "draft-123"});
+
+            '
+          name: Fireblocks SDK Javascript example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublishDraftRequestV2'
+      responses:
+        '201':
+          description: A policy publish result object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishResultV2'
+        default:
+          $ref: '#/components/responses/Error'
+components:
+  schemas:
+    AccountConfigV2:
+      type: object
+      description: Policy source/destination configuration
+      properties:
+        type:
+          $ref: '#/components/schemas/AccountTypeV2'
+        subType:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountIdentifierV2'
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountIdentifierV2'
+        operator:
+          $ref: '#/components/schemas/PolicyOperatorV2'
+        matchFrom:
+          type: string
+          enum:
+          - ACCOUNT
+          - SOURCE
+          description: Whether to match from account or source
+      example: ACCOUNT
+      required:
+      - type
+      - operator
+    AccountIdentifierV2:
+      type: object
+      description: Account identifier with type, ID, subtype, and address
+      properties:
+        type:
+          $ref: '#/components/schemas/AccountTypeV2'
+        id:
+          type: string
+          description: Account ID
+          example: account123
+        subType:
+          type: string
+          description: Account subtype
+          example: INTERNAL
+        address:
+          type: string
+          description: Account address
+          example: 0x123...
+      required:
+      - type
+    AccountTypeV2:
+      type: string
+      enum:
+      - EXCHANGE
+      - UNMANAGED
+      - VAULT
+      - GLOBAL_WHITELIST
+      - NETWORK_CONNECTION
+      - FIAT_ACCOUNT
+      - CONNECTED_ACCOUNT
+      - ONE_TIME_ADDRESS
+      - SRC_DST_NA
+      - MULTIPLE_VENUES
+      - END_USER_WALLET
+      - OEC_PARTNER
+      - CONTRACT
+      - INTERNAL
+      - EXTERNAL
+      - DAPP_CONNECTION
+      - UNKNOWN
+      - '*'
+      - ANY
+      description: Type of account
+      example: VAULT
+    AmlRegistrationResultFullPayload:
+      type: object
+      properties:
+        provider:
+          type: string
+        success:
+          type: boolean
+        timestamp:
+          type: number
+    AmlVerdictManualRequest:
+      type: object
+      required:
+      - verdict
+      - txId
+      properties:
+        verdict:
+          type: string
+          enum:
+          - ACCEPT
+          - REJECT
+          description: The AML verdict to set for the transaction.
+          example: ACCEPT
+        txId:
+          type: string
+          format: uuid
+          description: The transaction ID to set the verdict for.
+          example: 550e8400-e29b-41d4-a716-446655440000
+    AmlVerdictManualResponse:
+      type: object
+      required:
+      - success
+      - message
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: AML verdict set successfully
+    AmountAggregationTimePeriodMethod:
+      type: string
+      enum:
+      - PER_SINGLE_MATCH
+      - ACROSS_ALL_MATCHES
+      description: '* PER_SINGLE_MATCH - Apply the limit to each listed entity
+
+        * ACROSS_ALL_MATCHES - Apply the limit to the sum of all listed entities
+
+        '
+    AmountOverTimeConfigV2:
+      type: object
+      description: Amount over time configuration
+      properties:
+        range:
+          type: object
+          description: Amount range configuration
+          properties:
+            min:
+              type: string
+              description: Minimum amount
+              example: '100'
+            max:
+              type: string
+              description: Maximum amount (optional)
+              example: '10000'
+          required:
+          - min
+        currency:
+          type: string
+          enum:
+          - NATIVE
+          - USD
+          - EUR
+          description: Currency for the amount
+          example: USD
+        timePeriod:
+          $ref: '#/components/schemas/TimePeriodConfigV2'
+      required:
+      - range
+      - timePeriod
+    AmountRangeV2:
+      type: object
+      description: Amount range configuration
+      properties:
+        min:
+          type: string
+          description: Minimum amount
+          example: '100'
+        max:
+          type: string
+          description: Maximum amount
+          example: '10000'
+        currency:
+          type: string
+          description: Currency for the amount
+          example: USD
+      required:
+      - min
+      - max
+      - currency
+      example:
+        min: '100'
+        max: '10000'
+        currency: USD
+    ApproversConfigV2:
+      type: object
+      description: Approvers configuration
+      properties:
+        canInitiatorApprove:
+          type: boolean
+          description: Whether initiator can approve
+          example: false
+        operator:
+          type: string
+          enum:
+          - AND
+          - OR
+          description: Operator for approval groups
+          example: AND
+        allowOperatorAsAuthorizer:
+          type: boolean
+          description: Whether operator can be authorizer
+          example: false
+        approvalGroups:
+          type: array
+          items:
+            type: object
+            properties:
+              threshold:
+                type: number
+                description: Approval threshold
+                example: 2
+              users:
+                $ref: '#/components/schemas/PolicyUserIdsV2'
+              groups:
+                $ref: '#/components/schemas/PolicyGroupIdsV2'
+            required:
+            - threshold
+          description: List of approval groups
+          example:
+          - threshold: 2
+            users:
+            - user1
+            - user2
+    AssetConfigV2:
+      type: object
+      description: Policy asset configuration
+      properties:
+        nftTransfer:
+          type: boolean
+          description: Whether this is an NFT transfer
+          example: false
+        assetTypes:
+          $ref: '#/components/schemas/AssetTypesConfigV2'
+        operator:
+          $ref: '#/components/schemas/PolicyOperatorV2'
+      required:
+      - nftTransfer
+    AssetTypesConfigV2:
+      type: array
+      items:
+        oneOf:
+        - type: string
+        - enum:
+          - '*'
+      description: List of asset types
+      example:
+      - FUNGIBLE
+      - NFT
+      - '*'
+    ComplianceResultFullPayload:
+      type: object
+      description: The result of the Compliance AML/Travel Rule screening.
+      properties:
+        aml:
+          type: object
+          description: The end result of the AML screening.
+          items:
+            $ref: '#/components/schemas/ComplianceScreeningResultFullPayload'
+        tr:
+          type: object
+          description: The result of the Travel Rule screening.
+          items:
+            $ref: '#/components/schemas/ComplianceScreeningResultFullPayload'
+        amlList:
+          type: array
+          description: The list of all results of the AML screening.
+          items:
+            $ref: '#/components/schemas/ComplianceScreeningResultFullPayload'
+        status:
+          type: string
+          description: Status of compliance result screening.
+          enum:
+          - Started
+          - NetworkConnectionAddressResolve
+          - ScreeningPrepare
+          - AMLStarted
+          - AMLCompleted
+          - AMLFailed
+          - AMLInBackground
+          - TRPreconditionChecks
+          - TRStarted
+          - TRCompleted
+          - TRFailed
+          - Completed
+          - IncomingStarted
+          - IncomingScreeningPrepare
+          - IncomingWaitForFirstConfirmation
+          - AMLIncomingStarted
+          - AMLIncomingCompleted
+          - AMLIncomingFailed
+          - AMLIncomingInBackground
+          - TRIncomingStarted
+          - TRIncomingCompleted
+          - TRIncomingFailed
+          - IncomingCompleted
+        amlRegistration:
+          type: object
+          description: The results of the AML address registration.
+          items:
+            $ref: '#/components/schemas/AmlRegistrationResultFullPayload'
+    ComplianceScreeningResultFullPayload:
+      type: object
+      properties:
+        provider:
+          type: string
+        payload:
+          type: object
+          description: 'The payload of the screening result.
+
+            The payload is a JSON object that contains the screening result.
+
+            The payload is different for each screening provider.
+
+            '
+        bypassReason:
+          type: string
+        screeningStatus:
+          type: string
+          enum:
+          - COMPLETED
+          - PENDING
+          - BYPASSED
+          - FAILED
+          - FROZEN
+        timestamp:
+          type: number
+          format: date-time
+    ContractMethodConfigV2:
+      type: object
+      description: Contract method configuration
+      properties:
+        methodCalls:
+          type: array
+          items:
+            type: string
+        operator:
+          type: string
+          enum:
+          - EITHER
+          - EXACT
+          description: Operator for method calls
+          example: EITHER
+        payloadSuffix:
+          type: string
+          description: Payload suffix for method calls
+          example: 0x123...
+      required:
+      - methodCalls
+      - operator
+      example:
+        methodCalls:
+        - transfer
+        - approve
+        operator: EITHER
+    ContractMethodPatternV2:
+      oneOf:
+      - type: string
+        enum:
+        - '*'
+        description: All methods allowed
+        example: '*'
+      - $ref: '#/components/schemas/ContractMethodConfigV2'
+    CreateTransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique Fireblocks identifier of the transaction
+        status:
+          type: string
+          description: The primary status of the transaction. For details, see [Primary transaction statuses.] (https://developers.fireblocks.com/reference/primary-transaction-statuses)
+        systemMessages:
+          $ref: '#/components/schemas/SystemMessageInfo'
+    DerivationPathConfigV2:
+      type: object
+      description: Derivation path configuration
+      properties:
+        path:
+          type: array
+          items:
+            type: number
+          description: Derivation path as array of numbers
+          example:
+          - 44
+          - 0
+          - 0
+          - 0
+          - 0
+        partial:
+          type: boolean
+          description: Whether this is a partial path
+          example: false
+      required:
+      - path
+      example:
+        path:
+        - 44
+        - 0
+        - 0
+        - 0
+        - 0
+        partial: false
+    DesignatedSignersConfigV2:
+      type: object
+      description: Designated signers configuration
+      properties:
+        type:
+          type: string
+          enum:
+          - SINGLE
+          - MULTIPLE
+          - INITIATOR
+          description: Type of designated signers
+          example: SINGLE
+        users:
+          $ref: '#/components/schemas/PolicyUserIdsV2'
+        groups:
+          $ref: '#/components/schemas/PolicyGroupIdsV2'
+      required:
+      - type
+    DestinationConfigV2:
+      type: object
+      description: Destination configuration for policy rules
+      properties:
+        type:
+          $ref: '#/components/schemas/AccountTypeV2'
+        subType:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountIdentifierV2'
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountIdentifierV2'
+        operator:
+          $ref: '#/components/schemas/PolicyOperatorV2'
+        matchFrom:
+          type: string
+          enum:
+          - ACCOUNT
+          - SOURCE
+          description: Whether to match from account or source
+          example: ACCOUNT
+        addressType:
+          type: string
+          enum:
+          - ALL
+          - '*'
+          - WHITELISTED
+          - ONE_TIME
+          - OEC_PARTNER
+          description: Type of destination addresses allowed
+          example: WHITELISTED
+      required:
+      - type
+      - operator
+      - addressType
+      example:
+        type:
+        - EXTERNAL
+        operator: INCLUDES
+        addressType: WHITELISTED
+    DraftResponse:
+      type: object
+      description: Response object for draft operations
+      properties:
+        status:
+          type: string
+          description: Operation status
+        rules:
+          type: array
+          description: Draft rules
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+        draftId:
+          type: string
+          description: Draft unique id
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadata'
+      required:
+      - draftId
+      - status
+      - rules
+      - metadata
+    DraftResponseV2:
+      type: object
+      description: Response object for draft operations
+      properties:
+        status:
+          type: string
+          description: Operation status
+        rules:
+          type: array
+          description: Draft rules
+          items:
+            $ref: '#/components/schemas/PolicyRuleV2'
+        draftId:
+          type: string
+          description: Draft unique id
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadataV2'
+      required:
+      - draftId
+      - status
+      - rules
+      - metadata
+    DraftReviewAndValidationResponse:
+      type: object
+      description: Draft validation
+      properties:
+        draftResponse:
+          $ref: '#/components/schemas/DraftResponse'
+        validation:
+          $ref: '#/components/schemas/PolicyValidation'
+      required:
+      - draftResponse
+      - validation
+    DraftReviewAndValidationResponseV2:
+      type: object
+      description: Draft validation
+      properties:
+        draftResponse:
+          $ref: '#/components/schemas/DraftResponseV2'
+        validation:
+          $ref: '#/components/schemas/PolicyValidationV2'
+      required:
+      - draftResponse
+      - validation
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    InitiatorConfigPatternV2:
+      oneOf:
+      - type: string
+        enum:
+        - '*'
+        description: All users are allowed
+        example: '*'
+      - $ref: '#/components/schemas/InitiatorConfigV2'
+    InitiatorConfigV2:
+      type: object
+      description: Policy rule initiator configuration
+      properties:
+        users:
+          $ref: '#/components/schemas/PolicyUserIdsV2'
+        groups:
+          $ref: '#/components/schemas/PolicyGroupIdsV2'
+        services:
+          type: array
+          items:
+            type: string
+        fbAdminGroups:
+          type: array
+          items:
+            type: string
+        exchange:
+          type: array
+          items:
+            type: string
+        operator:
+          $ref: '#/components/schemas/PolicyOperatorV2'
+      required:
+      - operator
+    PolicyAndValidationResponse:
+      type: object
+      description: Policy validation
+      properties:
+        policy:
+          $ref: '#/components/schemas/PolicyResponse'
+        validation:
+          $ref: '#/components/schemas/PolicyValidation'
+      required:
+      - policy
+      - validation
+    PolicyAndValidationResponseV2:
+      type: object
+      description: Policy validation
+      properties:
+        policy:
+          $ref: '#/components/schemas/PolicyResponseV2'
+        validation:
+          $ref: '#/components/schemas/PolicyValidationV2'
+      required:
+      - policy
+      - validation
+    PolicyCheckResult:
+      type: object
+      description: Policy rules validation result
+      properties:
+        errors:
+          type: number
+          description: Number of errors
+        result:
+          type: array
+          description: A set of validation results
+          items:
+            $ref: '#/components/schemas/PolicyRuleCheckResult'
+      required:
+      - errors
+      - result
+    PolicyCheckResultV2:
+      type: object
+      description: Policy rules validation result
+      properties:
+        errors:
+          type: number
+          description: Number of errors
+        results:
+          type: array
+          description: A set of validation results
+          items:
+            $ref: '#/components/schemas/PolicyRuleCheckResultV2'
+      required:
+      - errors
+      - results
+    PolicyGroupIdsV2:
+      type: array
+      items:
+        type: string
+      description: List of policy group IDs
+      example:
+      - group1
+      - group2
+    PolicyMetadata:
+      type: object
+      description: Policy related metadata
+      properties:
+        editedBy:
+          type: string
+          description: The user id of the user who last edited the policy
+        editedAt:
+          type: string
+          description: The timestamp of the last edit of the policy
+        publishedBy:
+          type: string
+          description: The user id of the user who last published the policy
+        publishedAt:
+          type: string
+          description: The timestamp of the last publish of the policy
+    PolicyMetadataV2:
+      type: object
+      description: Policy metadata
+      properties:
+        editedBy:
+          type: string
+          description: The user ID of the user who last edited the policy
+          example: user123
+        editedAt:
+          type: string
+          description: The timestamp of the last edit of the policy
+          example: '2024-01-15T10:30:00Z'
+        publishedBy:
+          type: string
+          description: The user ID of the user who last published the policy
+          example: user456
+        publishedAt:
+          type: string
+          description: The timestamp of the last publish of the policy
+          example: '2024-01-15T11:00:00Z'
+        policyType:
+          $ref: '#/components/schemas/PolicyTypeV2'
+      required:
+      - policyType
+    PolicyOperatorV2:
+      type: string
+      enum:
+      - INCLUDES
+      - EXCLUDES
+      description: Operator for selection
+      example: INCLUDES
+    PolicyResponse:
+      type: object
+      description: Response object for policy operations
+      properties:
+        rules:
+          type: array
+          description: A set of policy rules
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadata'
+      required:
+      - rules
+      - metadata
+    PolicyResponseV2:
+      type: object
+      description: Response object for policy operations
+      properties:
+        rules:
+          type: array
+          description: A set of policy rules
+          items:
+            $ref: '#/components/schemas/PolicyRuleV2'
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadataV2'
+      required:
+      - rules
+      - metadata
+    PolicyRule:
+      type: object
+      description: Policy rule which is enforced on transactions
+      properties:
+        operator:
+          type: string
+          description: (deprecated - replaced by "operators")  | Defines users who can initiate the type of transaction to
+            which the rule applies. options are * "*" - All users are allowed * Specific User id
+          deprecated: true
+        operators:
+          type: object
+          description: Defines users/groups who can initiate the type of transaction to which the rule applies.
+          properties:
+            wildcard:
+              type: string
+              enum:
+              - '*'
+              description: 'If used then this property should appear as the only child property
+
+                * "*" - All users are allowed
+
+                '
+            users:
+              type: array
+              description: Set of users ids
+              items:
+                type: string
+            usersGroups:
+              type: array
+              description: Set of group ids
+              items:
+                type: string
+            services:
+              type: array
+              description: set of services to initiate transactions
+              items:
+                type: string
+        transactionType:
+          type: string
+          enum:
+          - TRANSFER
+          - CONTRACT_CALL
+          - PROGRAM_CALL
+          - APPROVE
+          - MINT
+          - BURN
+          - SUPPLY
+          - REDEEM
+          - STAKE
+          - RAW
+          - TYPED_MESSAGE
+          description: "Defines the type of transaction to which the rule applies.\n  * TRANSFER - Default. Transfers funds\
+            \ from one account to another\n  * CONTRACT_CALL - Calls a smart contract, mainly for DeFi operations.\n  * PROGRAM_CALL\
+            \ - Calls a smart contract for web3 operations on the Solana blockchain. \n  * APPROVE - Allows a smart contract\
+            \ to withdraw from a designated wallet.\n  * MINT - Perform a mint operation (increase supply) on a supported\
+            \ token\n  * BURN - Perform a burn operation (reduce supply) on a supported token\n  * SUPPLY - Use for DeFi to\
+            \ lend assets\n  * REDEEM - Use for DeFi to get lending back\n  * STAKE - Allows you to allocate and lock certain\
+            \ assets for earning staking rewards.\n  * RAW - An off-chain message with no predefined format, use it to sign\
+            \ any message with your private key.\n  * TYPED_MESSAGE - An off-chain message type that follows a predefined\
+            \ format, used to sign specific messages that are not actual transactions.\n"
+        designatedSigner:
+          type: string
+          description: (deprecated - replaced by "designatedSigners") Id representing the user who signs transactions that
+            match a specific rule
+          deprecated: true
+        designatedSigners:
+          type: object
+          description: Set of ids representing the users who signs transactions that match a specific rule
+          properties:
+            users:
+              type: array
+              description: Set of users ids
+              items:
+                type: string
+            usersGroups:
+              type: array
+              description: Set of group ids
+              items:
+                type: string
+        type:
+          type: string
+          description: Policy rule type
+          enum:
+          - TRANSFER
+        action:
+          type: string
+          enum:
+          - ALLOW
+          - BLOCK
+          - 2-TIER
+          description: "Defines what occurs when a transaction meets the rule's criteria\n* ALLOW - The transaction goes through\
+            \ and can be signed without requiring additional approvals\n* BLOCK - The transaction is automatically blocked\n\
+            * 2-TIER - Only these users or user groups can approve \n           If any of them reject the transaction before\
+            \ the required approval threshold is met, the transaction doesn't go through\n           The list of entities\
+            \ are set is \"authorizationGroups\" field\n"
+        asset:
+          type: string
+          description: 'Defines the type of asset being transacted, options are
+
+            * "*" - All assets
+
+            * Specific asset
+
+            '
+        srcType:
+          description: (deprecated - replaced by "src") source account type
+          deprecated: true
+          allOf:
+          - $ref: '#/components/schemas/PolicySrcOrDestType'
+        srcSubType:
+          description: (deprecated - replaced by "src") source sub account type
+          deprecated: true
+          allOf:
+          - $ref: '#/components/schemas/PolicySrcOrDestSubType'
+        srcId:
+          description: (deprecated - replaced by "src") source account id
+          deprecated: true
+          allOf:
+          - $ref: '#/components/schemas/PolicySrcOrDestId'
+        src:
+          type: object
+          description: Defines source accounts the rule allows transfers to originate from
+          properties:
+            ids:
+              type: array
+              description: A set of ids in a tuple format
+              items:
+                $ref: '#/components/schemas/SrcOrDestAttributes'
+        dstType:
+          description: (deprecated - replaced by "dst") destination account type
+          deprecated: true
+          allOf:
+          - $ref: '#/components/schemas/PolicySrcOrDestType'
+        dstSubType:
+          description: (deprecated - replaced by "dst") destination sub account type
+          deprecated: true
+          allOf:
+          - $ref: '#/components/schemas/PolicySrcOrDestSubType'
+        dstId:
+          description: (deprecated - replaced by "dst") destination account id
+          deprecated: true
+          allOf:
+          - $ref: '#/components/schemas/PolicySrcOrDestId'
+        dst:
+          type: object
+          description: Defines the destination accounts the rule allows transfers to
+          properties:
+            ids:
+              type: array
+              description: A set of ids in a tuple format
+              items:
+                $ref: '#/components/schemas/SrcOrDestAttributes'
+        dstAddressType:
+          type: string
+          enum:
+          - WHITELISTED
+          - ONE_TIME
+          - '*'
+          description: "Defines whether the destination to which you are sending funds must be whitelisted, to allow one-time\
+            \ transfers to non-whitelisted external addresses, or both.\nBy default, you can only transfer to an external\
+            \ address after it\u2019s whitelisted.\n  * WHITELISTED - Can only be sent to whitelisted addresses.\n  * ONE_TIME\
+            \ - Can only be sent to non-whitelisted external addresses.\n  * \"*\" - can be sent to whitelisted addresses\
+            \ or non-whitelisted external\n"
+        amountCurrency:
+          type: string
+          enum:
+          - USD
+          - EUR
+          - NATIVE
+          description: '* USD - Limits the amount of any asset users can transfer based on the USD equivalent of the asset.
+
+            * EUR - Limits the amount of any asset users can transfer based on the EURO equivalent of the asset.
+
+            * NATIVE - Limits the amount of an asset a user can transfer when using a specific asset.
+
+            '
+        amountScope:
+          type: string
+          enum:
+          - SINGLE_TX
+          - TIMEFRAME
+          description: '* SINGLE_TX - limit applies to a single transaction
+
+            * TIMEFRAME - limit applies to all transactions within the defined time period
+
+            '
+        amount:
+          description: Defines the value a transaction must exceed for the rule to apply to it (according to the amountCurrency
+            field)
+          anyOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        periodSec:
+          type: number
+          description: 'Time period in seconds applied by the amountScope field to accumulate transferred amounts in transactions
+            that match the rule, until the total exceeds the value you specify under Minimum.
+
+            When the specified amount is reached within that period, whether by one or many transactions, further transactions
+            in that period either fail or require more approvals.
+
+            '
+        authorizers:
+          type: array
+          description: (deprecated - replaced by "authorizationGroups") Allowed entities which can approves a transaction
+          deprecated: true
+          items:
+            type: string
+        authorizersCount:
+          type: number
+          description: (deprecated - replaced by "authorizationGroups") Min amount of entities which are needed to approve
+            a transaction
+          deprecated: true
+        authorizationGroups:
+          type: object
+          description: Defines the transaction approval terms
+          properties:
+            logic:
+              type: string
+              enum:
+              - AND
+              - OR
+              description: '* AND - requires approval of all authorization groups
+
+                * OR - requires approval of at least one of the authorization groups
+
+                '
+            allowOperatorAsAuthorizer:
+              type: boolean
+              description: Defines whether the user who initiates a transaction can approve their own transaction and count
+                toward the approval threshold for their transaction
+            groups:
+              type: array
+              description: Groups of entities which can approve the transaction
+              items:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    description: User ids
+                    items:
+                      type: string
+                  usersGroups:
+                    type: array
+                    description: Group ids
+                    items:
+                      type: string
+                  th:
+                    type: number
+                    description: Represents the min amount of entities which are required to approve the transaction, default
+                      is 1.
+        amountAggregation:
+          type: object
+          description: 'Defines the method by which the Policy Engine calculates accumulation.
+
+            It uses the Initiator, Source, and Destination to calculate accumulation toward the value under Minimum, for the
+            time under Time Period.
+
+            '
+          properties:
+            operators:
+              $ref: '#/components/schemas/AmountAggregationTimePeriodMethod'
+            srcTransferPeers:
+              $ref: '#/components/schemas/AmountAggregationTimePeriodMethod'
+            dstTransferPeers:
+              $ref: '#/components/schemas/AmountAggregationTimePeriodMethod'
+        rawMessageSigning:
+          type: object
+          description: Raw message signing configuration
+          properties:
+            algorithm:
+              type: string
+            derivationPath:
+              type: object
+              properties:
+                path:
+                  type: array
+                  items:
+                    type: number
+        applyForApprove:
+          type: boolean
+          description: Applying this rule over APPROVE type transactions (can only be enabled when rule's transaction type
+            is TRANSFER)
+        applyForTypedMessage:
+          type: boolean
+          description: Applying this rule over TYPED_MESSAGE type transactions (can only be enabled when rule's transaction
+            type is CONTRACT_CALL)
+        externalDescriptor:
+          type: string
+          description: A unique id identifying the rule
+      required:
+      - type
+      - action
+      - asset
+      - amountCurrency
+      - amountScope
+      - amount
+      - periodSec
+    PolicyRuleCheckResult:
+      type: object
+      description: The rule validation result
+      properties:
+        index:
+          type: number
+          description: Rule index number in the policy
+        status:
+          type: string
+          description: Validation status
+          enum:
+          - ok
+          - failure
+        errors:
+          type: array
+          description: A set of rule validation error objects
+          items:
+            $ref: '#/components/schemas/PolicyRuleError'
+      required:
+      - index
+      - status
+      - errors
+    PolicyRuleCheckResultV2:
+      type: object
+      description: The rule validation result
+      properties:
+        index:
+          type: number
+          description: Rule index number in the policy
+        status:
+          type: string
+          description: Validation status
+          enum:
+          - ok
+          - failure
+        errors:
+          type: array
+          description: A set of rule validation error objects
+          items:
+            $ref: '#/components/schemas/PolicyRuleErrorV2'
+      required:
+      - index
+      - status
+      - errors
+    PolicyRuleError:
+      type: object
+      description: Rule validation result error
+      properties:
+        errorMessage:
+          type: string
+          description: Error message
+        errorCode:
+          type: number
+          description: error code
+        errorCodeName:
+          type: string
+          description: error code name
+        errorField:
+          type: string
+          enum:
+          - operator
+          - operators
+          - authorizationGroups
+          - designatedSigner
+          - designatedSigners
+          - contractMethods
+          - amountAggregation
+          - src
+          - dst
+          description: 'The field which the error relates to
+
+            * operator - transaction initiator
+
+            * operators - transaction initiators
+
+            * authorizationGroups - transaction authorizer groups
+
+            * designatedSigner - transaction signer
+
+            * designatedSigners - transaction signers
+
+            * contractMethods - contract methods
+
+            * amountAggregation - transaction amount aggregation configuration
+
+            * src - transaction source asset configuration
+
+            * dst - transaction destination asset configuration
+
+            '
+      required:
+      - errorMessage
+      - errorCode
+      - errorCodeName
+      - errorField
+    PolicyRuleErrorV2:
+      type: object
+      description: Rule validation result error
+      properties:
+        errorMessage:
+          type: string
+          description: Error message
+        errorCode:
+          type: number
+          description: error code
+        errorCodeName:
+          type: string
+          description: error code name
+        errorField:
+          type: string
+          enum:
+          - operator
+          - operators
+          - authorizationGroups
+          - designatedSigner
+          - designatedSigners
+          - contractMethods
+          - amountAggregation
+          - src
+          - dst
+          description: 'The field which the error relates to:
+
+            * operator - transaction initiator
+
+            * operators - transaction initiators
+
+            * authorizationGroups - transaction authorizer groups
+
+            * designatedSigner - transaction signer
+
+            * designatedSigners - transaction signers
+
+            * contractMethods - contract methods
+
+            * amountAggregation - transaction amount aggregation configuration
+
+            * src - transaction source asset configuration
+
+            * dst - transaction destination asset configuration
+
+            '
+      required:
+      - errorMessage
+      - errorCode
+      - errorCodeName
+      - errorField
+    PolicyRuleV2:
+      type: object
+      description: V2 Policy rule which is enforced on transactions
+      properties:
+        name:
+          type: string
+          description: Name of the policy rule
+          example: High Value Transfer Policy
+        id:
+          type: string
+          description: Unique identifier for the policy rule
+          example: policy_rule_001
+        policyEngineVersion:
+          type: string
+          enum:
+          - v2
+          description: Policy engine version
+          example: v2
+        type:
+          $ref: '#/components/schemas/PolicyTypeV2'
+        subType:
+          $ref: '#/components/schemas/PolicyTypeV2'
+        initiator:
+          $ref: '#/components/schemas/InitiatorConfigPatternV2'
+        asset:
+          $ref: '#/components/schemas/AssetConfigV2'
+        source:
+          $ref: '#/components/schemas/AccountConfigV2'
+        destination:
+          $ref: '#/components/schemas/DestinationConfigV2'
+        account:
+          $ref: '#/components/schemas/AccountConfigV2'
+        verdict:
+          $ref: '#/components/schemas/VerdictConfigV2'
+        amountOverTime:
+          $ref: '#/components/schemas/AmountOverTimeConfigV2'
+        amount:
+          $ref: '#/components/schemas/AmountRangeV2'
+        externalDescriptor:
+          type: string
+          description: External descriptor for the rule
+          example: High value transfer policy for institutional clients
+        method:
+          $ref: '#/components/schemas/ContractMethodPatternV2'
+        isGlobalPolicy:
+          type: boolean
+          description: Whether this is a global policy
+          example: false
+        programCall:
+          $ref: '#/components/schemas/ProgramCallConfigV2'
+        screeningMetadata:
+          $ref: '#/components/schemas/ScreeningMetadataConfigV2'
+        quoteAsset:
+          $ref: '#/components/schemas/AssetConfigV2'
+        baseAsset:
+          $ref: '#/components/schemas/AssetConfigV2'
+        quoteAmount:
+          $ref: '#/components/schemas/AmountRangeV2'
+        baseAmount:
+          $ref: '#/components/schemas/AmountRangeV2'
+        derivationPath:
+          $ref: '#/components/schemas/DerivationPathConfigV2'
+        index:
+          type: number
+          description: Index for the policy rule
+          example: 1
+      required:
+      - name
+      - id
+      - policyEngineVersion
+      - type
+      - initiator
+      - asset
+      - source
+      - verdict
+    PolicyRules:
+      type: object
+      properties:
+        rules:
+          description: Policy rules
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+    PolicySrcOrDestId:
+      type: string
+      description: 'Defines the account id, options are
+
+        * "*" - All accounts
+
+        * Specific account id
+
+        '
+    PolicySrcOrDestSubType:
+      type: string
+      enum:
+      - EXTERNAL
+      - INTERNAL
+      - CONTRACT
+      - EXCHANGETEST
+      - '*'
+      description: '* EXTERNAL - A whitelisted wallet assigned as external is typically used for addresses managed by your
+        clients and counterparties
+
+        * INTERNAL - A whitelisted wallet assigned as internal, is typically used for addresses that you control outside of
+        your Fireblocks workspace
+
+        * CONTRACT - A whitelisted wallet assigned as contract is for identifying and managing external smart contracts
+
+        * EXCHANGETEST - Exchanges which operate only on testnet assets
+
+        * "*" - All subtypes
+
+        '
+    PolicySrcOrDestType:
+      type: string
+      enum:
+      - EXCHANGE
+      - UNMANAGED
+      - VAULT
+      - NETWORK_CONNECTION
+      - COMPOUND
+      - FIAT_ACCOUNT
+      - ONE_TIME_ADDRESS
+      - '*'
+      description: '* EXCHANGE - A third-party exchange account connected to your workspace
+
+        * UNMANAGED - A unmanaged wallet outside of Fireblocks workspace
+
+        * VAULT - An account in your Fireblocks Vault
+
+        * NETWORK_CONNECTION - A connection in your Fireblocks network
+
+        * COMPOUND - (deprecated) An asset retrieved by using the Compound DeFI protocol
+
+        * FIAT_ACCOUNT - A third-party fiat account connected to your workspace
+
+        * ONE_TIME_ADDRESS - A non-whitelisted asset from your Fireblocks Workspace
+
+        * "*" - All types
+
+        '
+    PolicyStatus:
+      type: string
+      enum:
+      - SUCCESS
+      - UNVALIDATED
+      - INVALID_CONFIGURATION
+      - PENDING
+      - PENDING_CONSOLE_APPROVAL
+      - AWAITING_QUORUM
+      - UNHANDLED_ERROR
+      description: '* SUCCESS - success
+
+        * UNVALIDATED - not validated yet
+
+        * INVALID_CONFIGURATION - at least one rule is invalid
+
+        * PENDING - pending approval
+
+        * PENDING_CONSOLE_APPROVAL - pending approval from the console app
+
+        * AWAITING_QUORUM - pending quorum approval
+
+        * UNHANDLED_ERROR - unhandled error
+
+        '
+    PolicyStatusV2:
+      type: string
+      enum:
+      - SUCCESS
+      - UNVALIDATED
+      - INVALID_CONFIGURATION
+      - PENDING
+      - PENDING_CONSOLE_APPROVAL
+      - AWAITING_QUORUM
+      - UNHANDLED_ERROR
+      description: '* SUCCESS - success
+
+        * UNVALIDATED - not validated yet
+
+        * INVALID_CONFIGURATION - at least one rule is invalid
+
+        * PENDING - pending approval
+
+        * PENDING_CONSOLE_APPROVAL - pending approval from the console app
+
+        * AWAITING_QUORUM - pending quorum approval
+
+        * UNHANDLED_ERROR - unhandled error
+
+        '
+    PolicyTypeV2:
+      type: string
+      enum:
+      - TRANSFER
+      - STAKE
+      - CONTRACT_CALL
+      - TYPED_MESSAGE
+      - APPROVE
+      - MINT
+      - BURN
+      - RAW
+      - COMPLIANCE
+      - DEPLOYMENT
+      - PROGRAM_CALL
+      - DAPP_CONNECTION
+      - UPGRADE
+      - ORDER
+      - AML_CHAINALYSIS_V2_SCREENING
+      - AML_CHAINALYSIS_V2_POST_SCREENING
+      - AML_ELLIPTIC_HOLISTIC_SCREENING
+      - AML_ELLIPTIC_HOLISTIC_POST_SCREENING
+      - TR_NOTABENE_SCREENING
+      - TR_NOTABENE_POST_SCREENING
+      description: Policy type enumeration
+      example: TRANSFER
+    PolicyUserIdsV2:
+      type: array
+      items:
+        type: string
+      description: List of user IDs
+      example:
+      - user1
+      - user2
+    PolicyValidation:
+      type: object
+      description: Policy validation object
+      properties:
+        status:
+          type: string
+          description: Validation status
+        checkResult:
+          $ref: '#/components/schemas/PolicyCheckResult'
+      required:
+      - status
+      - checkResult
+    PolicyValidationV2:
+      type: object
+      description: Policy validation object
+      properties:
+        status:
+          type: string
+          description: Validation status
+        checkResult:
+          $ref: '#/components/schemas/PolicyCheckResultV2'
+      required:
+      - status
+      - checkResult
+    ProgramCallConfigV2:
+      type: object
+      description: Program call configuration
+      properties:
+        allowedSolanaProgramCalls:
+          type: string
+          enum:
+          - '*'
+          - WHITELISTED
+          description: Whether Solana program calls are allowed
+          example: WHITELISTED
+      required:
+      - allowedSolanaProgramCalls
+    PublishDraftRequestV2:
+      type: object
+      description: Request schema for publishing draft with policy types and draft ID
+      required:
+      - policyTypes
+      - draftId
+      properties:
+        policyTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTypeV2'
+        draftId:
+          type: string
+          description: The ID of the draft to publish
+          example: draft-123
+    PublishResult:
+      type: object
+      description: Response object of the publish policy operation
+      properties:
+        status:
+          $ref: '#/components/schemas/PolicyStatus'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+        checkResult:
+          $ref: '#/components/schemas/PolicyCheckResult'
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadata'
+      required:
+      - status
+      - rules
+      - checkResult
+      - metadata
+    PublishResultV2:
+      type: object
+      description: Response object of the publish policy operation
+      properties:
+        status:
+          $ref: '#/components/schemas/PolicyStatusV2'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRuleV2'
+        checkResult:
+          $ref: '#/components/schemas/PolicyCheckResultV2'
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadataV2'
+      required:
+      - status
+      - rules
+      - checkResult
+      - metadata
+    ScreeningConfigurationsRequest:
+      type: object
+      properties:
+        bypassScreeningDuringServiceOutages:
+          type: boolean
+          description: Flag to enable or disable bypass screening during service outages.
+        inboundTransactionDelay:
+          type: number
+          description: Inbound transaction delay in seconds.
+        outboundTransactionDelay:
+          type: number
+          description: Outbound transaction delay in seconds.
+    ScreeningMetadataConfigV2:
+      type: object
+      description: Screening metadata configuration
+      properties:
+        direction:
+          type: string
+          enum:
+          - INBOUND
+          - OUTBOUND
+          - ANY
+          description: Direction of transaction
+          example: OUTBOUND
+        provider:
+          type: string
+          enum:
+          - CHAINALYSIS
+          - CHAINALYSIS_V2
+          - ELLIPTIC
+          - ELLIPTIC_HOLISTIC
+          - NOTABENE
+          nullable: true
+          description: Screening provider
+          example: CHAINALYSIS
+        riskRating:
+          type: string
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          - SEVERE
+          - ANY
+          description: Risk rating threshold
+          example: MEDIUM
+        riskScore:
+          type: string
+          description: Risk score threshold
+          example: '0.8'
+        exposureType:
+          type: string
+          enum:
+          - DIRECT
+          - INDIRECT
+          - ANY
+          description: Exposure type
+          example: DIRECT
+        category:
+          type: array
+          items:
+            type: string
+        name:
+          type: array
+          items:
+            type: string
+        categoryId:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum:
+          - COMPLETED
+          - PENDING
+          - REJECTED
+          - FAILED
+          - CANCELED
+          - BLOCKING_TIME_EXPIRED
+          description: Transaction status
+          example: COMPLETED
+        sourceAddress:
+          type: string
+          description: Source address
+          example: 0x123...
+        destAddress:
+          type: string
+          description: Destination address
+          example: 0x456...
+      required:
+      - direction
+    ScreeningPolicyResponse:
+      type: object
+      properties:
+        policy:
+          $ref: '#/components/schemas/TravelRulePolicyRuleResponse'
+        policyStatus:
+          type: string
+        isDefault:
+          type: boolean
+        createDate:
+          format: date-time
+          type: string
+        lastUpdate:
+          format: date-time
+          type: string
+      required:
+      - policy
+      - isDefault
+      - lastUpdate
+    ScreeningProviderRulesConfigurationResponse:
+      type: object
+      properties:
+        direction:
+          type: string
+          enum:
+          - INBOUND
+          - OUTBOUND
+        status:
+          type: string
+          enum:
+          - COMPLETED
+          - PENDING
+          - REJECTED
+          - FAILED
+          - CANCELED
+          - BLOCKING_TIME_EXPIRED
+        amountUSD:
+          type: number
+        amount:
+          type: number
+        asset:
+          type: string
+        action:
+          type: string
+          enum:
+          - ACCEPT
+          - REJECT
+          - ALERT
+          - WAIT
+          - FREEZE
+          - CANCEL
+      required:
+      - action
+    ScreeningUpdateConfigurations:
+      type: object
+      properties:
+        disableBypass:
+          type: boolean
+          description: Flag to enable or disable bypass screening on workspace configuration.
+        disableUnfreeze:
+          type: boolean
+          description: Flag to enable or disable unfreeze of transaction frozen by policy rule on workspace configuration.
+    SrcOrDestAttributes:
+      type: array
+      description: 'Defines source or destination component, options are:
+
+        * id only
+
+        * id and type - first item in the array MUST be id.
+
+        * id, type and subtype - first item in the array MUST be id and second item MUST be type.
+
+        '
+      items:
+        anyOf:
+        - $ref: '#/components/schemas/PolicySrcOrDestId'
+        - $ref: '#/components/schemas/PolicySrcOrDestType'
+        - $ref: '#/components/schemas/PolicySrcOrDestSubType'
+      minItems: 1
+      maxItems: 3
+    SystemMessageInfo:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - WARN
+          - BLOCK
+        message:
+          type: string
+          description: A response from Fireblocks that communicates a message about the health of the process being performed.
+            If this object is returned with data, you should expect potential delays or incomplete transaction statuses.
+          example: Slow transaction processing. Outgoing transactions might be stuck.
+    TimePeriodConfigV2:
+      type: object
+      description: Time period configuration
+      properties:
+        seconds:
+          type: string
+          description: Time period in seconds
+          example: '86400'
+        initiator:
+          $ref: '#/components/schemas/TimePeriodMatchTypeV2'
+        source:
+          $ref: '#/components/schemas/TimePeriodMatchTypeV2'
+        destination:
+          $ref: '#/components/schemas/TimePeriodMatchTypeV2'
+      required:
+      - seconds
+      - initiator
+      - source
+      - destination
+    TimePeriodMatchTypeV2:
+      type: string
+      enum:
+      - PER_SINGLE_MATCH
+      - ACROSS_ALL_MATCHES
+      description: Type of match for time period application
+      example: PER_SINGLE_MATCH
+    TravelRuleAddress:
+      type: object
+      properties:
+        street:
+          type: string
+          example: 1234 Example St
+          description: Street address
+        city:
+          type: string
+          example: New York
+          description: City
+        state:
+          type: string
+          example: NY
+          description: State or province
+        postalCode:
+          type: string
+          example: '10001'
+          description: Postal or ZIP code
+      required:
+      - street
+      - city
+      - state
+      - postalCode
+    TravelRuleDateAndPlaceOfBirth:
+      type: object
+      description: Represents the date and place of birth for a natural person
+      properties:
+        dateOfBirth:
+          type: string
+          description: Date of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+        placeOfBirth:
+          type: string
+          description: Place of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    TravelRuleGeographicAddress:
+      type: object
+      properties:
+        streetName:
+          type: string
+          description: Name of a street or thoroughfare. The value must be encrypted.
+          example: QmZGXXsKPk5iPS97LLjXB5e8Qs555ocdzcpbPMXvt84Ji9
+        townName:
+          type: string
+          description: Name of a built-up area, with defined boundaries, and a local government. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+        country:
+          type: string
+          description: Nation with its own government (ISO-3166 Alpha-2 country code). The value must be encrypted.
+          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
+        buildingNumber:
+          type: string
+          description: Number that identifies the position of a building on a street. The value must be encrypted.
+          example: QmUFpNkxdsVtebDSUz5eP51kzoysXmqj2gBgeH11PD7SVP
+        postCode:
+          type: string
+          description: Identifier consisting of a group of letters and/or numbers added to a postal address to assist the
+            sorting of mail. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        addressType:
+          type: string
+          description: 'Specifies the type of address. Acceptable values are: - ''HOME'': Residential, the home address -
+            ''BIZZ'': Business, the business address - ''GEOG'': Geographic, an unspecified physical (geographical) address
+            The value must be encrypted.'
+          example: Qmdr9LcChZsoivS6uAhe7Qk7cGLDAx73wBZTVvq4WoU71H
+        department:
+          type: string
+          description: Identification of a division of a large organisation or building. The value must be encrypted.
+          example: QmN7fb65x5MyA7RKyhbXaUKvJ7U4Y9eqpEZTmJYpNyEG8
+        subDepartment:
+          type: string
+          description: Identification of a sub-division of a large organisation or building. The value must be encrypted.
+          example: QmTkfyGh54tXNqFxyEGK9NyTJZYpQ6RZ9zpNykxykME8s
+        buildingName:
+          type: string
+          description: Name of the building or house. The value must be encrypted.
+          example: QmXJfGk85t6RKyhbXaEK9Nz4MEeMKypq6EY9zpJyC9nM9
+        floor:
+          type: string
+          description: Floor or storey within a building. The value must be encrypted.
+          example: QmZP5G7fhZpMyQxXnT9KyR6ybXaEM9zpJy4ME9MkTJGE1
+        postBox:
+          type: string
+          description: Numbered box in a post office. The value must be encrypted.
+          example: QmTkfYRGK54xFqXyJYNZyE9kY9zpMKytJnXy5z9EME9sJ
+        room:
+          type: string
+          description: Building room number. The value must be encrypted.
+          example: QmRYXnT9KyhbXaEMZpMyxMkZ9zpYNYTJ4ME5kCGE7fhMJ
+        townLocationName:
+          type: string
+          description: Specific location name within the town. The value must be encrypted.
+          example: QmNpZTyXJXnT9K6EYZpQxYNYMkC5p4kGEfhnkMJzpYT9Jm
+        districtName:
+          type: string
+          description: Identifies a subdivision within a country subdivision. The value must be encrypted.
+          example: QmT9p6ERKyNYXnTyhbpMYJ4zpYT9kMJZT9QmEMGZ5kMhCy
+        countrySubDivision:
+          type: string
+          description: Identifies a subdivision of a country, such as a state, region, or province. The value must be encrypted.
+          example: QmK9yTbXaZpMYJYTYp6NT9QmEMGZT9p9kMJfhyGE4Z7k5C
+        addressLine:
+          type: array
+          items:
+            type: string
+          description: Information that locates and identifies a specific address, presented in free-format text. Each item
+            must be encrypted.
+          example:
+          - QmNp9kMjfhGZ5kMJzpNYXZTy6NQmZYEMGZ4kZT9Y6pNYT
+    TravelRuleGetAllVASPsResponse:
+      type: object
+      properties:
+        vasps:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleVASP'
+      required:
+      - vasps
+    TravelRuleIssuer:
+      type: object
+      properties:
+        issuerDid:
+          type: string
+      required:
+      - issuerDid
+    TravelRuleIssuers:
+      type: object
+      properties:
+        yearFounded:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        isRegulated:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        regulatoryAuthorities:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        name:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        logo:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        website:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        legalName:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        legalStructure:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        incorporationCountry:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        businessNumber:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        addressLine1:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        city:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        country:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        description:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+      required:
+      - yearFounded
+      - isRegulated
+      - regulatoryAuthorities
+      - name
+      - logo
+      - website
+      - legalName
+      - legalStructure
+      - incorporationCountry
+      - businessNumber
+      - addressLine1
+      - city
+      - country
+      - description
+    TravelRuleLegalPerson:
+      type: object
+      properties:
+        name:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleLegalPersonNameIdentifier'
+          description: The structured name of the legal person, referencing name identifiers.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: The array of geographic addresses associated with the legal person.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleNationalIdentification'
+        customerIdentification:
+          type: string
+          description: A unique identifier that identifies the customer in the organization's context. The value must be encrypted.
+          example: QmRY9AA4Uit2JRTxDzfzshrJdTK86Kf5HriA3dXDnihDmy
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must
+            be encrypted.
+          example: QmXvyML3AJUFpBbJqL5NVp7Vn7xNkuedTsSMk93duLCNW8
+        countryOfRegistration:
+          type: string
+          description: The ISO-3166 Alpha-2 country code where the legal person is registered. The value must be encrypted.
+          example: QmeoTk6UPruEAYNbJEAHdQYc53ap9BXmpnPMcuvs8wutdr
+    TravelRuleLegalPersonNameIdentifier:
+      type: object
+      properties:
+        legalPersonName:
+          type: string
+          description: Name by which the legal person is known. The value must be encrypted.
+          example: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
+        legalPersonNameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official
+            registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name.
+            The value must be encrypted.'
+          example: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
+    TravelRuleNationalIdentification:
+      type: object
+      description: Represents a national identifier for a person or entity
+      properties:
+        countryOfIssue:
+          type: string
+          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code). The value must be encrypted.
+          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
+        nationalIdentifier:
+          type: string
+          description: National identifier (max 35 characters). The value must be encrypted.
+          example: QmdR6qLnZ7Kwf5cBaXG8QFQenEvRg9JNZeoPranVuGd63z
+        nationalIdentifierType:
+          type: string
+          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'':
+            National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security
+            number The value must be encrypted.'
+          example: QmUKTg3aFJFhMz1o9gPqA3MgTRwd2LvDLwWTPHYUoMEYVi
+        registrationAuthority:
+          type: string
+          description: Registration authority (format -> RA followed by 6 digits). The value must be encrypted.
+          example: QmV9KJMyT9RJzpYfhME5xNCZ4G67fEkzTpRMyJzp9kTNYk
+    TravelRuleNaturalNameIdentifier:
+      type: object
+      properties:
+        primaryIdentifier:
+          type: string
+          description: The primary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+        secondaryIdentifier:
+          type: string
+          description: The secondary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+        nameIdentifierType:
+          type: string
+          description: 'The type of the name identifier. The value must be encrypted. The value must be one of the following:
+            [LEGL, DBA, TRAD, NICK, ALIA, MAID, FORM, PREV, BORN, OTHR].'
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+    TravelRuleNaturalPerson:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalPersonNameIdentifier'
+          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier
+            schema.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress
+            schema.
+        nationalIdentification:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleNationalIdentification'
+          description: The national identification of the natural person, referencing the TravelRuleNationalIdentification
+            schema.
+        dateAndPlaceOfBirth:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleDateAndPlaceOfBirth'
+          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
+        customerIdentification:
+          type: string
+          description: A unique identifier for the customer within the organization's context. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        countryOfResidence:
+          type: string
+          description: The ISO-3166 Alpha-2 country code of the natural person's residence. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must
+            be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+    TravelRuleNaturalPersonNameIdentifier:
+      type: object
+      properties:
+        nameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+        localNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+        phoneticNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+    TravelRuleOwnershipProof:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'The type of ownership proof. Example values: - `eip-191`: Ethereum signature proof - `eip-712`: Ethereum
+            typed data signature proof - `bip-137`: Bitcoin signature proof - `microtransfer`: Microtransaction (Satoshi test)
+            - `screenshot`: Uploaded screenshot of the wallet - `self-declaration`: Checkbox attestation of ownership'
+          example: eip-191
+        proof:
+          type: string
+          description: 'The cryptographic signature, transaction hash, or other proof depending on the type. Examples: - For
+            `eip-191`: `0x3dd4a17a...ce4a2bcd1b` - For `microtransfer`: The transaction hash `H3V8GXBy39Dz...tr3TSTkY=`'
+          example: 0x3dd4a17a...ce4a2bcd1b
+        attestation:
+          type: string
+          description: 'A human-readable statement of wallet ownership. Required for signature proofs and self-declarations.
+            Examples: - `I certify that ETH account 0x896B...0b9b belongs to me.` - `I hereby declare that the blockchain
+            address 0xa437bEed902AF9338B7DEB23848e195d85019510 is under my control.`'
+          example: I certify that ETH account 0x896B...0b9b belongs to me.
+        address:
+          type: string
+          description: 'The wallet address being verified. Examples: - For Ethereum: `0x896B...0b9b` - For Bitcoin: `1442...dxhsQ`'
+          example: 0x896B...0b9b
+        wallet_provider:
+          type: string
+          description: 'The wallet provider or method used for verification. Examples: - For Metamask: `Metamask` - For manual
+            signature: `manual`'
+          example: Metamask
+        url:
+          type: string
+          description: 'The URL for the uploaded screenshot (for `screenshot` proof types only). Example: `https://example.com/uploaded_image.png`'
+          example: https://example.com/uploaded_image.png
+        confirmed:
+          type: boolean
+          description: 'Whether the user confirmed ownership of the wallet (for `self-declaration` proofs). Example: `true`'
+          example: true
+    TravelRulePerson:
+      type: object
+      properties:
+        naturalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleNaturalPerson'
+        legalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleLegalPerson'
+    TravelRulePersons:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TravelRulePerson'
+    TravelRulePiiIVMS:
+      type: object
+      properties:
+        originatorPersons:
+          type: array
+          description: Information about the originator of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePersons'
+        beneficiaryPersons:
+          type: array
+          description: Information about the beneficiary of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePersons'
+        accountNumber:
+          type: array
+          description: Beneficiary account number. The value must be encrypted.
+          items:
+            type: string
+            example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    TravelRulePolicyRuleResponse:
+      type: object
+      properties:
+        sourceType:
+          type: string
+        sourceSubType:
+          type: string
+        destType:
+          type: string
+        destSubType:
+          type: string
+        destAddress:
+          type: string
+        sourceId:
+          type: string
+        destId:
+          type: string
+        asset:
+          type: string
+        baseAsset:
+          type: string
+        amount:
+          type: number
+        amountUSD:
+          type: number
+        networkProtocol:
+          type: string
+        operation:
+          type: string
+        action:
+          type: string
+          enum:
+          - SCREEN
+          - PASS
+          - FREEZE
+      required:
+      - action
+    TravelRuleTransactionBlockchainInfo:
+      type: object
+      properties:
+        txHash:
+          type: string
+          description: The hash of the transaction
+          example: 66857308435587568925907217391782424136140297125402684115258137778343590111402
+        origin:
+          type: string
+          description: The origin address of the transaction
+          example: 841132469470587054656177892491842814721854784787
+        destination:
+          type: string
+          description: The destination address of the transaction
+          example: 841132469470587054656177892491842814721854784787
+    TravelRuleUpdateVASPDetails:
+      type: object
+      properties:
+        did:
+          type: string
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+          description: The decentralized identifier of the VASP
+        pii_didkey:
+          type: string
+          example: did:key:z6Mks5CZRaiooKYhq5TwtXQC1gWhwiZnmiKfFrMnYY62MhYf
+          description: The PII DID key of the VASP
+      required:
+      - did
+      - pii_didkey
+    TravelRuleVASP:
+      type: object
+      properties:
+        did:
+          type: string
+        name:
+          type: string
+        verificationStatus:
+          type: string
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        emailDomains:
+          type: string
+        website:
+          type: string
+        logo:
+          type: string
+        legalStructure:
+          type: string
+        legalName:
+          type: string
+        yearFounded:
+          type: string
+        incorporationCountry:
+          type: string
+        isRegulated:
+          type: string
+        otherNames:
+          type: string
+        identificationType:
+          type: string
+        identificationCountry:
+          type: string
+        businessNumber:
+          type: string
+        regulatoryAuthorities:
+          type: string
+        jurisdictions:
+          type: string
+        street:
+          type: string
+        number:
+          type: string
+        unit:
+          type: string
+        postCode:
+          type: string
+        state:
+          type: string
+        certificates:
+          type: string
+        description:
+          type: string
+        travelRule_OPENVASP:
+          type: string
+        travelRule_SYGNA:
+          type: string
+        travelRule_TRISA:
+          type: string
+        travelRule_TRLIGHT:
+          type: string
+        travelRule_EMAIL:
+          type: string
+        travelRule_TRP:
+          type: string
+        travelRule_SHYFT:
+          type: string
+        travelRule_USTRAVELRULEWG:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+        updatedBy:
+          type: string
+        lastSentDate:
+          type: string
+        lastReceivedDate:
+          type: string
+        documents:
+          type: string
+        hasAdmin:
+          type: boolean
+        isNotifiable:
+          type: boolean
+        issuers:
+          $ref: '#/components/schemas/TravelRuleIssuers'
+      required:
+      - did
+      - name
+      - verificationStatus
+      - addressLine1
+      - addressLine2
+      - city
+      - country
+      - emailDomains
+      - website
+      - logo
+      - legalStructure
+      - legalName
+      - yearFounded
+      - incorporationCountry
+      - isRegulated
+      - otherNames
+      - identificationType
+      - identificationCountry
+      - businessNumber
+      - regulatoryAuthorities
+      - jurisdictions
+      - street
+      - number
+      - unit
+      - postCode
+      - state
+      - certificates
+      - description
+      - travelRule_OPENVASP
+      - travelRule_SYGNA
+      - travelRule_TRISA
+      - travelRule_TRLIGHT
+      - travelRule_EMAIL
+      - travelRule_TRP
+      - travelRule_SHYFT
+      - travelRule_USTRAVELRULEWG
+      - createdAt
+      - createdBy
+      - updatedAt
+      - updatedBy
+      - lastSentDate
+      - lastReceivedDate
+      - documents
+      - hasAdmin
+      - isNotifiable
+      - issuers
+    TravelRuleValidateDateAndPlaceOfBirth:
+      type: object
+      description: Represents the date and place of birth for a natural person
+      properties:
+        dateOfBirth:
+          type: string
+          description: Date of birth in ISO 8601 format (YYYY-MM-DD)
+          example: 1990-01-01
+        placeOfBirth:
+          type: string
+          description: Place of birth (max 70 characters)
+          maxLength: 70
+          example: New York, USA
+    TravelRuleValidateFullTransactionRequest:
+      type: object
+      properties:
+        originatorVASPdid:
+          type: string
+          description: The Decentralized Identifier (DID) of the exchange (VASP) that is sending the virtual assets. This
+            identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene
+            network.
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+        beneficiaryVASPdid:
+          type: string
+          description: The Decentralized Identifier (DID) of the exchange (VASP) that is receiving the virtual assets. This
+            identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene
+            network.
+          example: did:ethr:0x17fe2dd11a2daa7f6c1fdf22532a4763f963aea6
+        transactionAsset:
+          type: string
+          description: "Transaction asset symbol (e.g., BTC, ETH, USDC). \nBy using the `notation` query string, users can\
+            \ select the type of asset notation \n- `fireblocks`: Converts asset symbols to Fireblocks notation. \n- `notabene`:\
+            \ Retains the original Notabene asset symbol format.\n"
+          example: BTC
+        transactionAmount:
+          type: string
+          description: "Transaction amount in the transaction asset. For example, if the asset is BTC, the amount \nis the\
+            \ value in BTC units. \nBy using the `notation` query string, users can select the type of amount notation\n-\
+            \ `fireblocks`: Converts the amount to Fireblocks notation (e.g., adjusted for decimals).\n- `notabene`: Retains\
+            \ the original Notabene amount format.\n"
+          example: '10'
+        originatorVASPname:
+          type: string
+          description: The name of the VASP acting as the transaction originator.
+          example: Originator VASP Ltd.
+        beneficiaryVASPname:
+          type: string
+          description: The name of the VASP acting as the transaction beneficiary.
+          example: Beneficiary VASP Inc.
+        transactionBlockchainInfo:
+          description: Information about the blockchain transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleTransactionBlockchainInfo'
+        originator:
+          description: Information about the originator of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleValidatePiiIVMS'
+        beneficiary:
+          description: Information about the beneficiary of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleValidatePiiIVMS'
+        encrypted:
+          type: string
+          description: Encrypted data related to the transaction.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        protocol:
+          type: string
+          description: The protocol used to perform the travel rule.
+          example: IVMS101
+        skipBeneficiaryDataValidation:
+          type: boolean
+          description: Whether to skip validation of beneficiary data.
+          example: false
+        travelRuleBehavior:
+          type: boolean
+          description: Whether to check if the transaction complies with the travel rule in the beneficiary VASP's jurisdiction.
+          example: true
+        originatorRef:
+          type: string
+          description: A reference ID related to the originator of the transaction.
+          example: ORG123456
+        beneficiaryRef:
+          type: string
+          description: A reference ID related to the beneficiary of the transaction.
+          example: BEN654321
+        travelRuleBehaviorRef:
+          type: string
+          description: A reference ID related to the travel rule behavior.
+          example: TRB987654
+        originatorProof:
+          description: Ownership proof related to the originator of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
+        beneficiaryProof:
+          description: Ownership proof related to the beneficiary of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
+        beneficiaryDid:
+          type: string
+          description: "The Decentralized Identifier (DID) of the person at the receiving exchange (VASP).  This identifier\
+            \ is generated when the customer is registered in the Notabene network,  or automatically created based on the\
+            \ `beneficiaryRef`.  - If neither `beneficiaryRef` nor `beneficiaryDid` is provided in the `txCreate` payload,\
+            \ \n  a new random DID is generated for every transaction."
+          example: did:key:z6Mkf67890Zghijkl67890
+        originatorDid:
+          type: string
+          description: "The Decentralized Identifier (DID) of the person at the exchange (VASP) who is requesting the withdrawal.\
+            \ This identifier is generated when the customer is registered in the Notabene network or automatically created\
+            \ based on the `originatorRef`.  - If neither `originatorRef` nor `originatorDid` is provided in the `txCreate`\
+            \ payload, \n  a new random DID is generated for every transaction."
+          example: did:key:z6Mkf12345Zabcdef12345
+        isNonCustodial:
+          type: boolean
+          description: Indicates if the transaction involves a non-custodial wallet.
+          example: true
+        notificationEmail:
+          type: string
+          description: The email address where a notification should be sent upon completion of the travel rule
+        pii:
+          description: Personal identifiable information related to the transaction
+          allOf:
+          - $ref: '#/components/schemas/TravelRulePiiIVMS'
+        pii_url:
+          type: string
+          description: The URL of the personal identifiable information related to the transaction
+      required:
+      - originator
+      - beneficiary
+    TravelRuleValidateGeographicAddress:
+      type: object
+      properties:
+        streetName:
+          type: string
+          description: Name of a street or thoroughfare
+          example: 123 Main St
+        townName:
+          type: string
+          description: Name of a built-up area, with defined boundaries, and a local government
+          example: New York
+        country:
+          type: string
+          description: Nation with its own government (ISO-3166 Alpha-2 country code)
+          example: US
+        buildingNumber:
+          type: string
+          description: Number that identifies the position of a building on a street
+          example: 123
+        postCode:
+          type: string
+          description: Identifier consisting of a group of letters and/or numbers added to a postal address to assist the
+            sorting of mail
+          example: 12345
+        addressType:
+          type: string
+          description: 'Specifies the type of address. Acceptable values are: - ''HOME'': Residential, the home address -
+            ''BIZZ'': Business, the business address - ''GEOG'': Geographic, an unspecified physical (geographical) address'
+          enum:
+          - HOME
+          - BIZZ
+          - GEOG
+          example: HOME
+        department:
+          type: string
+          description: Identification of a division of a large organisation or building
+          example: IT
+        subDepartment:
+          type: string
+          description: Identification of a sub-division of a large organisation or building
+          example: Security
+        buildingName:
+          type: string
+          description: Name of the building or house
+          example: Acme Building
+        floor:
+          type: string
+          description: Floor or storey within a building
+          example: 1
+        postBox:
+          type: string
+          description: Numbered box in a post office
+          example: 123
+        room:
+          type: string
+          description: Building room number
+          example: 101
+        townLocationName:
+          type: string
+          description: Specific location name within the town
+          example: Downtown
+        districtName:
+          type: string
+          description: Identifies a subdivision within a country subdivision
+          example: Manhattan
+        countrySubDivision:
+          type: string
+          description: Identifies a subdivision of a country such as state, region, or province
+          example: New York
+        addressLine:
+          type: array
+          items:
+            type: string
+          description: Information that locates and identifies a specific address, presented in free format text
+          example:
+          - 123 Main St
+          - New York
+          - NY 12345
+    TravelRuleValidateLegalPerson:
+      type: object
+      properties:
+        name:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleValidateLegalPersonNameIdentifier'
+          description: The structured name of the legal person, referencing name identifiers.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateGeographicAddress'
+          description: The array of geographic addresses associated with the legal person.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleValidateNationalIdentification'
+        customerIdentification:
+          type: string
+          description: A unique identifier that identifies the customer in the organization's context.
+          example: CUST987654
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization.
+          example: 123456789
+        countryOfRegistration:
+          type: string
+          description: The ISO-3166 Alpha-2 country code where the legal person is registered.
+          example: US
+    TravelRuleValidateLegalPersonNameIdentifier:
+      type: object
+      properties:
+        legalPersonName:
+          type: string
+          description: Name by which the legal person is known.
+          maxLength: 100
+          example: Acme Corporation
+        legalPersonNameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official
+            registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name.'
+          enum:
+          - REGISTERED
+          - TRADE
+          - OTHER
+          example: REGISTERED
+    TravelRuleValidateNationalIdentification:
+      type: object
+      description: Represents a national identifier for a person or entity
+      properties:
+        countryOfIssue:
+          type: string
+          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code)
+          example: US
+        nationalIdentifier:
+          type: string
+          description: National identifier (max 35 characters)
+          maxLength: 35
+          example: 123456789
+        nationalIdentifierType:
+          type: string
+          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'':
+            National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security
+            number'
+          enum:
+          - PASSPORT
+          - NATIONAL_ID
+          - TAX_ID
+          - SOCIAL_SECURITY
+          example: NATIONAL_ID
+        registrationAuthority:
+          type: string
+          description: Registration authority (format -> RA followed by 6 digits)
+          pattern: ^RA\d{6}$
+          example: RA123456
+    TravelRuleValidateNaturalNameIdentifier:
+      type: object
+      properties:
+        primaryIdentifier:
+          type: string
+          description: The primary identifier of the name
+          example: John
+        secondaryIdentifier:
+          type: string
+          description: The secondary identifier of the name
+          example: Doe
+        nameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a natural person. Acceptable values are: - ''ALIA'': Alias name, a
+            name other than the legal name by which a natural person is also known. - ''BIRT'': Name at birth, the name given
+            to a natural person at birth. - ''MAID'': Maiden name, the original name of a natural person who has changed their
+            name after marriage. - ''LEGL'': Legal name, the name that identifies a natural person for legal, official, or
+            administrative purposes. - ''MISC'': Unspecified, a name by which a natural person may be known but cannot otherwise
+            be categorized.'
+          enum:
+          - ALIA
+          - BIRT
+          - MAID
+          - LEGL
+          - MISC
+          example: LEGL
+    TravelRuleValidateNaturalPerson:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalPersonNameIdentifier'
+          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier
+            schema.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateGeographicAddress'
+          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress
+            schema.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleValidateNationalIdentification'
+        dateAndPlaceOfBirth:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleValidateDateAndPlaceOfBirth'
+          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
+        customerIdentification:
+          type: string
+          description: A unique identifier for the customer within the organization's context.
+          example: CUST123456
+        countryOfResidence:
+          type: string
+          description: The ISO-3166 Alpha-2 country code of the natural person's residence.
+          example: US
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization.
+          example: 123456789
+    TravelRuleValidateNaturalPersonNameIdentifier:
+      type: object
+      properties:
+        nameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
+        localNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
+        phoneticNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
+    TravelRuleValidatePerson:
+      type: object
+      properties:
+        naturalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleValidateNaturalPerson'
+        legalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleValidateLegalPerson'
+    TravelRuleValidatePersons:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TravelRuleValidatePerson'
+    TravelRuleValidatePiiIVMS:
+      type: object
+      properties:
+        originatorPersons:
+          type: array
+          description: Information about the originator of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRuleValidatePersons'
+        beneficiaryPersons:
+          type: array
+          description: Information about the beneficiary of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRuleValidatePersons'
+        accountNumber:
+          type: array
+          description: Beneficiary account number
+          items:
+            type: string
+    TravelRuleValidateTransactionRequest:
+      type: object
+      properties:
+        transactionAsset:
+          type: string
+          example: BTC
+          description: Transaction asset symbol BTC,ETH)
+        destination:
+          type: string
+          example: bc1qxy2kgdygjrsqtzq2n0yrf1234p83kkfjhx0wlh
+          description: Transaction destination address
+        transactionAmount:
+          type: string
+          example: '10'
+          description: Transaction amount in the transaction asset
+        originatorVASPdid:
+          type: string
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+          description: This is the identifier assigned to your VASP
+        originatorEqualsBeneficiary:
+          type: boolean
+          example: false
+          description: '"True" if the originator and beneficiary is the same person and you therefore do not need to collect
+            any information. "False" if it is a third-party transfer.'
+        travelRuleBehavior:
+          type: boolean
+          example: true
+          description: This will also check if the transaction is a TRAVEL_RULE in the beneficiary VASP's jurisdiction
+        beneficiaryVASPdid:
+          type: string
+          example: did:ethr:0x46a7ed5813ce735387df2bfb245bd7722e0de992
+          description: This is the identifier assigned to the VASP the funds are being sent to
+        beneficiaryVASPname:
+          type: string
+          example: HelloCrypto
+          description: Beneficiary VASP name
+        beneficiaryName:
+          type: string
+          example: John Doe
+          description: Beneficiary  name
+        beneficiaryAccountNumber:
+          type: string
+          example: 1234-1234-1234-12234
+          description: Beneficiary  name
+        beneficiaryAddress:
+          example: '{"addressLine: [Wayne Manor, Gotham City, New York, USA]"}'
+          description: Beneficiary  name
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleAddress'
+      required:
+      - transactionAsset
+      - destination
+      - transactionAmount
+      - originatorVASPdid
+      - originatorEqualsBeneficiary
+    TravelRuleValidateTransactionResponse:
+      type: object
+      properties:
+        isValid:
+          type: boolean
+          description: '"isValid" will tell you if you have collected all the information needed for the travel rule data
+            transfer. Once this field = "true", you can move on to the next step which is to transfer the front-end information
+            to your back-end and perform Travel Rule Transaction create'
+          example: true
+        type:
+          type: string
+          description: '"type" will tell you if the virtual asset value converted to FIAT value of the withdrawal request
+            is above (=TRAVELRULE) or below (=BELOW_THRESHOLD) the threshold in your jurisdiction. If it is to an unhosted
+            wallet which does not require travel rule information to be sent and only collected, it will say NON_CUSTODIAL.'
+          example: TRAVELRULE
+        beneficiaryAddressType:
+          type: string
+          description: '"beneficiaryAddressType" will tell you if your blockchain analytics provider or internal address book
+            has been able to identify the wallet address.'
+          example: UNKNOWN
+        addressSource:
+          type: string
+          description: '"addressSource" will tell you if the address was found in your internal address book or identified
+            by the blockchain analytics provider.'
+          example: UNKNOWN
+        beneficiaryVASPdid:
+          type: string
+          description: The VASP DID of the beneficiary VASP
+          example: did:ethr:0x46a7ed5813ce735387df2bfb245bd7722e0de992
+        beneficiaryVASPname:
+          type: string
+          description: '"beneficiaryVASPname" will tell you the name of the VASP that has been identified as the owner of
+            the wallet address. This name is used in a subsequent call to get its DID.'
+          example: Fireblocks
+        warnings:
+          description: '"errors/warnings" will tell you what information about the beneficiary you need to collect from the
+            sender.'
+          example:
+          - optional-beneficiaryAccountNumber
+          type: array
+          items:
+            type: string
+      required:
+      - isValid
+      - type
+      - beneficiaryAddressType
+      - addressSource
+      - beneficiaryVASPdid
+      - beneficiaryVASPname
+      - warnings
+    TravelRuleVaspForVault:
+      type: object
+      properties:
+        vaspDid:
+          description: VASP DID
+          type: string
+          example: did:ethr:0x5dddec8dd669c49304ddbcba36ccc6e0798534dc
+    UpdateDraftRequestV2:
+      type: object
+      description: Request schema for updating draft with policy types and rules
+      required:
+      - policyTypes
+      - rules
+      properties:
+        policyTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTypeV2'
+        rules:
+          type: array
+          description: Array of policy rules
+          items:
+            $ref: '#/components/schemas/PolicyRuleV2'
+    VerdictConfigV2:
+      type: object
+      description: Verdict configuration
+      properties:
+        action:
+          type: string
+          enum:
+          - ALLOW
+          - BLOCK
+          - 2-TIER
+          - ACCEPT
+          - REJECT
+          - ALERT
+          - SCREEN
+          - PASS
+          - WAIT
+          - FREEZE
+          - CANCEL
+          description: Verdict action
+          example: ALLOW
+        approvers:
+          $ref: '#/components/schemas/ApproversConfigV2'
+        designatedSigners:
+          $ref: '#/components/schemas/DesignatedSignersConfigV2'
+      required:
+      - action
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
+        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+    X-End-User-Wallet-Id:
+      name: X-End-User-Wallet-Id
+      in: header
+      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'

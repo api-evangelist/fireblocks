@@ -1,0 +1,325 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Gas Station API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
+    platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+paths:
+  /gas_station:
+    get:
+      summary: Get gas station settings
+      description: 'Returns gas station settings and ETH balance.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Gas Station
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const gasStationInfo = await fireblocks.gasStationInfo();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GasStationPropertiesResponse>> = fireblocks.gasStations.getGasStationInfo();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GasStationPropertiesResponse>> response = fireblocks.gasStations().getGasStationInfo();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.gas_stations.get_gas_station_info();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Gas Station properties
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GasStationPropertiesResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getGasStationInfo
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GasStationPropertiesResponse>> = fireblocks.gasStations.getGasStationInfo();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GasStationPropertiesResponse>> response = fireblocks.gasStations().getGasStationInfo();
+      - lang: Python
+        source: response = fireblocks.gas_stations.get_gas_station_info();
+  /gas_station/{assetId}:
+    get:
+      summary: Get gas station settings by asset
+      description: 'Returns gas station settings and balances for a requested asset.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Gas Station
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const gasStationInfo = await fireblocks.gasStationInfo(assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GasStationPropertiesResponse>> = fireblocks.gasStations.getGasStationByAssetId(gasStationsApiGetGasStationByAssetIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GasStationPropertiesResponse>> response = fireblocks.gasStations().getGasStationByAssetId(assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.gas_stations.get_gas_station_by_asset_id(asset_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        required: true
+        name: assetId
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: ETH
+      responses:
+        '200':
+          description: Gas Station properties
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GasStationPropertiesResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getGasStationByAssetId
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GasStationPropertiesResponse>> = fireblocks.gasStations.getGasStationByAssetId(gasStationsApiGetGasStationByAssetIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GasStationPropertiesResponse>> response = fireblocks.gasStations().getGasStationByAssetId(assetId);
+      - lang: Python
+        source: response = fireblocks.gas_stations.get_gas_station_by_asset_id(asset_id);
+  /gas_station/configuration:
+    put:
+      summary: Edit gas station settings
+      description: 'Configures gas station settings for ETH.
+
+        Learn more about the Fireblocks Gas Station in the following [guide](https://developers.fireblocks.com/docs/work-with-gas-station).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Gas Station
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const gasStation = await fireblocks.setGasStationConfiguration(gasThreshold, gasCap, maxGasPrice)
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<EditGasStationConfigurationResponse>> = fireblocks.gasStations.updateGasStationConfiguration(gasStationsApiUpdateGasStationConfigurationRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfiguration(gasStationConfiguration,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.gas_stations.update_gas_station_configuration(gas_station_configuration, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GasStationConfiguration'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditGasStationConfigurationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: updateGasStationConfiguration
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<EditGasStationConfigurationResponse>> = fireblocks.gasStations.updateGasStationConfiguration(gasStationsApiUpdateGasStationConfigurationRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfiguration(gasStationConfiguration,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.gas_stations.update_gas_station_configuration(gas_station_configuration, idempotency_key);
+  /gas_station/configuration/{assetId}:
+    put:
+      operationId: updateGasStationConfigurationByAssetId
+      summary: Edit gas station settings for an asset
+      description: 'Configures gas station settings for a requested asset.
+
+        Learn more about the Fireblocks Gas Station in the following [guide](https://developers.fireblocks.com/docs/work-with-gas-station).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Gas Station
+      parameters:
+      - in: path
+        required: true
+        name: assetId
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: ETH
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GasStationConfiguration'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditGasStationConfigurationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<EditGasStationConfigurationResponse>> = fireblocks.gasStations.updateGasStationConfigurationByAssetId(gasStationsApiUpdateGasStationConfigurationByAssetIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfigurationByAssetId(gasStationConfiguration,
+            assetId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.gas_stations.update_gas_station_configuration_by_asset_id(gas_station_configuration,
+            asset_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<EditGasStationConfigurationResponse>> = fireblocks.gasStations.updateGasStationConfigurationByAssetId(gasStationsApiUpdateGasStationConfigurationByAssetIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfigurationByAssetId(gasStationConfiguration,
+          assetId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.gas_stations.update_gas_station_configuration_by_asset_id(gas_station_configuration,
+          asset_id, idempotency_key);
+components:
+  schemas:
+    EditGasStationConfigurationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether editing the gas station configuration was successful
+      required:
+      - success
+    GasStationConfiguration:
+      type: object
+      properties:
+        gasThreshold:
+          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the
+            gasThreshold value
+          type: string
+          default: '0.005'
+          example: '0.005'
+        gasCap:
+          description: The Gas Station will top up the vault account with gas until the balance reaches the gasCap value
+          example: '0.01'
+          default: '0.01'
+          type: string
+        maxGasPrice:
+          description: Maximum gas price for the fueling transaction (in gwei)
+          nullable: true
+          example: '20'
+          default: null
+          type: string
+    GasStationConfigurationResponse:
+      type: object
+      properties:
+        gasThreshold:
+          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the
+            gasThreshold value
+          type: string
+          default: '0.005'
+          example: '0.005'
+        gasCap:
+          description: The Gas Station will top up the vault account with gas until the balance reaches the gasCap value
+          example: '0.01'
+          default: '0.01'
+          type: string
+        maxGasPrice:
+          description: Maximum gas price for the fueling transaction (in gwei)
+          nullable: true
+          example: '20'
+          default: null
+          type: string
+    GasStationPropertiesResponse:
+      type: object
+      properties:
+        balance:
+          type: object
+        configuration:
+          $ref: '#/components/schemas/GasStationConfigurationResponse'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
+        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+    X-End-User-Wallet-Id:
+      name: X-End-User-Wallet-Id
+      in: header
+      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'

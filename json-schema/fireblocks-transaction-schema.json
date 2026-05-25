@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/fireblocks/main/json-schema/fireblocks-transaction-schema.json",
+  "title": "Fireblocks Transaction",
+  "description": "A Fireblocks Transaction represents any digital-asset movement initiated through Fireblocks — transfers, raw signings, contract calls, swaps, payouts. Each transaction is bound by the workspace Policy Engine and signed by the MPC quorum.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "description": "Fireblocks-assigned transaction identifier." },
+    "externalTxId": { "type": "string", "description": "Idempotency / external reference identifier supplied by the API client." },
+    "status": {
+      "type": "string",
+      "description": "Current lifecycle status of the transaction.",
+      "enum": ["SUBMITTED", "PENDING_AML_SCREENING", "PENDING_ENRICHMENT", "PENDING_AUTHORIZATION", "QUEUED", "PENDING_SIGNATURE", "PENDING_3RD_PARTY_MANUAL_APPROVAL", "PENDING_3RD_PARTY", "BROADCASTING", "CONFIRMING", "PARTIALLY_COMPLETED", "PENDING_CONSOLE_APPROVAL", "CANCELLING", "CANCELLED", "REJECTED", "BLOCKED", "FAILED", "COMPLETED", "TIMEOUT"]
+    },
+    "subStatus": { "type": "string", "description": "Detailed reason for the current status (e.g. INSUFFICIENT_FUNDS, AUTHORIZER_NOT_FOUND)." },
+    "txHash": { "type": "string", "description": "On-chain transaction hash, once broadcast." },
+    "operation": {
+      "type": "string",
+      "description": "Type of operation Fireblocks is executing.",
+      "enum": ["TRANSFER", "MINT", "BURN", "CONTRACT_CALL", "RAW", "TYPED_MESSAGE", "STAKE", "UNSTAKE", "WITHDRAW", "REDEEM_FROM_COMPOUND", "SUPPLY_TO_COMPOUND", "SUPPLY_TO_AAVE"]
+    },
+    "assetId": { "type": "string", "description": "Fireblocks asset id (e.g. BTC, ETH, USDC_ETH, USDC_POLYGON)." },
+    "source": {
+      "type": "object",
+      "description": "Source of the transfer.",
+      "properties": {
+        "type": { "type": "string", "enum": ["VAULT_ACCOUNT", "EXCHANGE_ACCOUNT", "INTERNAL_WALLET", "EXTERNAL_WALLET", "FIAT_ACCOUNT", "NETWORK_CONNECTION", "COMPOUND", "GAS_STATION", "ONE_TIME_ADDRESS", "END_USER_WALLET"] },
+          "id": { "type": "string" },
+          "name": { "type": "string" }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "description": "Destination of the transfer.",
+      "properties": {
+        "type": { "type": "string", "enum": ["VAULT_ACCOUNT", "EXCHANGE_ACCOUNT", "INTERNAL_WALLET", "EXTERNAL_WALLET", "FIAT_ACCOUNT", "NETWORK_CONNECTION", "COMPOUND", "ONE_TIME_ADDRESS", "END_USER_WALLET"] },
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "oneTimeAddress": {
+          "type": "object",
+          "properties": {
+            "address": { "type": "string" },
+            "tag": { "type": "string" }
+          }
+        }
+      }
+    },
+    "amount": { "type": "string", "description": "Amount to transfer in the asset's native unit." },
+    "amountUSD": { "type": "string", "description": "USD-equivalent value of the amount at the time of submission." },
+    "netAmount": { "type": "string", "description": "Net amount after deducting network fees." },
+    "fee": { "type": "string", "description": "Network fee charged in the asset's native unit." },
+    "networkFee": { "type": "string", "description": "Network gas/fee paid to miners or validators." },
+    "feeLevel": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH"] },
+    "note": { "type": "string", "description": "Free-form note attached to the transaction (visible in Console)." },
+    "createdAt": { "type": "integer", "description": "Unix epoch millis when the transaction was created." },
+    "lastUpdated": { "type": "integer", "description": "Unix epoch millis when the transaction was last updated." },
+    "createdBy": { "type": "string", "description": "User or API key identifier that initiated the transaction." },
+    "signedBy": { "type": "array", "items": { "type": "string" }, "description": "List of signers participating in the MPC quorum." },
+    "rejectedBy": { "type": "string", "description": "User who rejected the transaction, if applicable." },
+    "authorizationInfo": {
+      "type": "object",
+      "description": "Quorum approval state of the transaction under the workspace policy engine."
+    },
+    "exchangeTxId": { "type": "string", "description": "External exchange transaction identifier, if routed via an exchange account." },
+    "blockInfo": {
+      "type": "object",
+      "properties": {
+        "blockHeight": { "type": "string" },
+        "blockHash": { "type": "string" }
+      }
+    },
+    "addressType": { "type": "string", "description": "Destination address type, e.g. ONE_TIME or WHITELISTED." },
+    "extraParameters": {
+      "type": "object",
+      "description": "Operation-specific parameters (raw signing message, contract call data, etc.)."
+    }
+  },
+  "required": ["id", "status", "operation"]
+}

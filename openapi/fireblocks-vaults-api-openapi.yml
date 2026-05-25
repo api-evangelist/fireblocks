@@ -1,0 +1,3175 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Vaults API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
+    platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+paths:
+  /vault/accounts:
+    get:
+      x-internal: true
+      deprecated: true
+      summary: Get vault accounts
+      description: 'DEPRECATED - Please use `/vault/accounts_paged` endpoint instead.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAccounts = await fireblocks.getVaultAccounts();
+          name: Fireblocks SDK Javascript example
+      parameters:
+      - in: query
+        name: namePrefix
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: nameSuffix
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: minAmountThreshold
+        required: false
+        schema:
+          type: number
+      - in: query
+        name: assetId
+        required: false
+        schema:
+          type: string
+          x-fb-entity: asset
+      responses:
+        '200':
+          description: A list of vault accounts
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetVaultAccountsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getVaultAccounts
+    post:
+      summary: Create a new vault account
+      operationId: createVaultAccount
+      description: 'Creates a new vault account with the requested name.
+
+        **Note: ** Vault account names should consist of ASCII characters only.
+
+        Learn more about Fireblocks Vault Accounts in the following [guide](https://developers.fireblocks.com/reference/create-vault-account).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAccount = await fireblocks.createVaultAccount(name, hiddenOnUI, customerRefId, autoFueling);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultAccount>> = fireblocks.vaults.createVaultAccount(vaultsApiCreateVaultAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultAccount>> response = fireblocks.vaults().createVaultAccount(createVaultAccountRequest,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.create_vault_account(create_vault_account_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVaultAccountRequest'
+      responses:
+        '200':
+          description: A Vault Account object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultAccount'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultAccount>> = fireblocks.vaults.createVaultAccount(vaultsApiCreateVaultAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultAccount>> response = fireblocks.vaults().createVaultAccount(createVaultAccountRequest,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.create_vault_account(create_vault_account_request, idempotency_key);
+  /vault/accounts/addresses/bulk:
+    post:
+      operationId: createMultipleDepositAddresses
+      summary: Bulk creation of new deposit addresses
+      description: '- **For UTXO blockchains only.**
+
+        - **This endpoint is currently in beta mode and may be subject to change. To learn more, contact your Fireblocks Customer
+        Success Manager or email csm@fireblocks.com.**
+
+
+        Create multiple deposit addresses by running an async job.
+
+        - The target Vault account should already have a UTXO asset wallet with a permanent address.
+
+        - Limited to a maximum of 10,000 addresses per operation. Use multiple operations for the same Vault account/permanent
+        address if needed.
+
+
+        **Endpoint Permissions:** Admin, Non-Signing Admin.
+
+        '
+      tags:
+      - Vaults
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMultipleDepositAddressesRequest'
+      responses:
+        '200':
+          description: A JobCreated object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobCreated'
+        default:
+          $ref: '#/components/responses/Error'
+  /vault/accounts/addresses/bulk/{jobId}:
+    get:
+      summary: Get the job status of the bulk deposit address creation
+      description: "Returns the current status of (or an error for) the specified deposit addresss bulk creation job.\n\n\
+        **Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor, and Viewer.            \n"
+      tags:
+      - Vaults
+      parameters:
+      - in: path
+        name: jobId
+        required: true
+        description: The ID of the job to create addresses
+        schema:
+          type: string
+        example: 019681b4-107d-7243-942d-4c3c30e36fae
+      responses:
+        '200':
+          description: A Job with status
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateMultipleDepositAddressesJobStatus'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getCreateMultipleDepositAddressesJobStatus
+  /vault/accounts/bulk/:
+    post:
+      operationId: createMultipleAccounts
+      summary: Bulk creation of new vault accounts
+      description: "- **This endpoint is currently in Early Availability (EA) mode and may be subject to change. To learn\
+        \ more, contact your Fireblocks Customer Success Manager or email csm@fireblocks.com.**\n\nCreate multiple vault accounts\
+        \ by running an async job.      \n- The HBAR, TON, SUI, TERRA, ALGO, and DOT blockchains are not supported.\n- Limited\
+        \ to a maximum of 10,000 accounts per operation.\n\n**Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver,\
+        \ Editor.\n"
+      tags:
+      - Vaults
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMultipleAccountsRequest'
+      responses:
+        '200':
+          description: A JobCreated object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobCreated'
+        default:
+          $ref: '#/components/responses/Error'
+  /vault/accounts/bulk/{jobId}:
+    get:
+      summary: Get job status of bulk creation of new vault accounts
+      description: 'Returns the current status of (or error for) the specified vault account bulk creation job.
+
+
+        **Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.
+
+        '
+      tags:
+      - Vaults
+      x-rate-limit-category: async
+      parameters:
+      - in: path
+        name: jobId
+        required: true
+        description: The ID of the job to create addresses
+        schema:
+          type: string
+        example: 019681b4-107d-7243-942d-4c3c30e36fae
+      responses:
+        '200':
+          description: A Job with status
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateMultipleVaultAccountsJobStatus'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getCreateMultipleVaultAccountsJobStatus
+  /vault/accounts/attached_tags:
+    post:
+      summary: Attach or detach tags from vault accounts
+      description: 'Attach or detach one or more tags from the requested vault accounts.
+
+
+        **Endpoint Permissions:**
+
+        - For protected tags: Owner, Admin, Non-Signing Admin.
+
+        - For non protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.
+
+        '
+      tags:
+      - Vaults
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VaultAccountsTagAttachmentOperationsRequest'
+      responses:
+        '200':
+          description: Tags were attached/detached successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultAccountsTagAttachmentOperationsResponse'
+        '400':
+          description: '- Invalid request parameters.
+
+            - Same tag ID is provided in both tagIdsToAttach and tagIdsToDetach.
+
+            - Vault accounts are archived.
+
+            '
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '404':
+          description: '- Tags with the requested ID not found.
+
+            - Vault accounts with the requested ID not found.
+
+            '
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+      operationId: attachOrDetachTagsFromVaultAccounts
+  /vault/accounts_paged:
+    get:
+      summary: Get vault accounts (Paginated)
+      description: "Retrieves a paginated list of all vault accounts in your workspace matching your query's criteria. \n\n\
+        **Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.\n"
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAccounts = await fireblocks.getVaultAccountsWithPageInfo(filters);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultAccountsPagedResponse>> = fireblocks.vaults.getPagedVaultAccounts(vaultsApiGetPagedVaultAccountsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultAccountsPagedResponse>> response = fireblocks.vaults().getPagedVaultAccounts(namePrefix,
+            nameSuffix, minAmountThreshold, assetId, orderBy, before, after, limit);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_paged_vault_accounts(name_prefix, name_suffix, min_amount_threshold, asset_id,
+            order_by, before, after, limit);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: query
+        name: namePrefix
+        required: false
+        schema:
+          type: string
+          example: MyVaultPrefix
+      - in: query
+        name: nameSuffix
+        required: false
+        schema:
+          type: string
+          example: MyVaultSuffix
+      - in: query
+        name: minAmountThreshold
+        required: false
+        description: Specifying minAmountThreshold will filter accounts with balances greater than this value, otherwise,
+          it will return all accounts. The amount set in this parameter is the native asset amount and not its USD value.
+        schema:
+          type: number
+          example: 10
+      - in: query
+        name: assetId
+        required: false
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: ETH
+      - in: query
+        name: orderBy
+        required: false
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          default: DESC
+      - in: query
+        name: before
+        required: false
+        schema:
+          type: string
+          example: c3RhcnRpbmdWYXVsdElkeD04NTgzNzA2Mw==
+      - in: query
+        name: after
+        required: false
+        schema:
+          type: string
+          example: c3RhcnRpbmdWYXVsdElkeD01NTM1NzUzNg==
+      - in: query
+        name: limit
+        required: false
+        schema:
+          type: number
+          minimum: 1
+          maximum: 500
+          default: 200
+      - in: query
+        name: tagIds
+        required: false
+        description: List of tag IDs to filter vault accounts.
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 100
+      responses:
+        '200':
+          description: A VaultAccountsPagedResponse object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultAccountsPagedResponse'
+      operationId: getPagedVaultAccounts
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultAccountsPagedResponse>> = fireblocks.vaults.getPagedVaultAccounts(vaultsApiGetPagedVaultAccountsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultAccountsPagedResponse>> response = fireblocks.vaults().getPagedVaultAccounts(namePrefix,
+          nameSuffix, minAmountThreshold, assetId, orderBy, before, after, limit);
+      - lang: Python
+        source: response = fireblocks.vaults.get_paged_vault_accounts(name_prefix, name_suffix, min_amount_threshold, asset_id,
+          order_by, before, after, limit);
+  /vault/accounts/{vaultAccountId}:
+    get:
+      summary: Get a vault account by ID
+      description: 'Get a vault account by its unique ID.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAccount = await fireblocks.getVaultAccount(vault_account_id);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultAccount>> = fireblocks.vaults.getVaultAccount(vaultsApiGetVaultAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultAccount>> response = fireblocks.vaults().getVaultAccount(vaultAccountId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_vault_account(vault_account_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      responses:
+        '200':
+          description: A Vault Account object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultAccount'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getVaultAccount
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultAccount>> = fireblocks.vaults.getVaultAccount(vaultsApiGetVaultAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultAccount>> response = fireblocks.vaults().getVaultAccount(vaultAccountId);
+      - lang: Python
+        source: response = fireblocks.vaults.get_vault_account(vault_account_id);
+    put:
+      summary: Rename a vault account
+      description: 'Renames the requested vault account.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAccount = await fireblocks.updateVaultAccount(vautlAccountId, name);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<RenameVaultAccountResponse>> = fireblocks.vaults.updateVaultAccount(vaultsApiUpdateVaultAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<RenameVaultAccountResponse>> response = fireblocks.vaults().updateVaultAccount(updateVaultAccountRequest,
+            vaultAccountId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.update_vault_account(update_vault_account_request, vault_account_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateVaultAccountRequest'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RenameVaultAccountResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: updateVaultAccount
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<RenameVaultAccountResponse>> = fireblocks.vaults.updateVaultAccount(vaultsApiUpdateVaultAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<RenameVaultAccountResponse>> response = fireblocks.vaults().updateVaultAccount(updateVaultAccountRequest,
+          vaultAccountId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.update_vault_account(update_vault_account_request, vault_account_id, idempotency_key);
+  /vault/asset_wallets:
+    get:
+      summary: Get vault wallets (Paginated)
+      description: "Get all vault wallets of the vault accounts in your workspace. \nA vault wallet is an asset in a vault\
+        \ account. \n\nThis method allows fast traversal of all account balances.\n</br>Endpoint Permission: Admin, Non-Signing\
+        \ Admin, Signer, Approver, Editor, Viewer."
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAccounts = await fireblocks.getAssetWallets(filters);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PaginatedAssetWalletResponse>> = fireblocks.vaults.getAssetWallets(vaultsApiGetAssetWalletsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PaginatedAssetWalletResponse>> response = fireblocks.vaults().getAssetWallets(totalAmountLargerThan,
+            assetId, orderBy, before, after, limit);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_asset_wallets(total_amount_larger_than, asset_id, order_by, before, after,
+            limit);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: query
+        name: totalAmountLargerThan
+        description: When specified, only vault wallets with total balance greater than this amount are returned.
+        required: false
+        schema:
+          type: number
+          example: 14
+      - in: query
+        name: assetId
+        required: false
+        description: When specified, only vault wallets with the specified ID are returned.
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: ETH
+      - in: query
+        name: orderBy
+        required: false
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          default: DESC
+      - in: query
+        name: before
+        required: false
+        description: "Fetches the next paginated response before this element. \nThis element is a cursor and is returned\
+          \ at the response of the previous page.\n"
+        schema:
+          type: string
+          example: c3RhcnRpbmdWYXVsdElkeD04NTgzNzA2Mw
+      - in: query
+        name: after
+        required: false
+        description: Fetches the next paginated response after this element. This element is a cursor and is returned at the
+          response of the previous page.
+        schema:
+          type: string
+          example: c3RhcnRpbmdWYXVsdElkeD01NTM1NzUzNg
+      - in: query
+        name: limit
+        required: false
+        description: "The maximum number of vault wallets in a single response. \n\nThe default is 200 and the maximum is\
+          \ 1000.\n"
+        schema:
+          type: number
+          minimum: 1
+          maximum: 1000
+          default: 200
+      responses:
+        '200':
+          description: A PaginatedAssetWalletResponse object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAssetWalletResponse'
+      operationId: getAssetWallets
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PaginatedAssetWalletResponse>> = fireblocks.vaults.getAssetWallets(vaultsApiGetAssetWalletsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PaginatedAssetWalletResponse>> response = fireblocks.vaults().getAssetWallets(totalAmountLargerThan,
+          assetId, orderBy, before, after, limit);
+      - lang: Python
+        source: response = fireblocks.vaults.get_asset_wallets(total_amount_larger_than, asset_id, order_by, before, after,
+          limit);
+  /vault/accounts/{vaultAccountId}/hide:
+    post:
+      summary: Hide a vault account in the console
+      description: 'Hides the requested vault account from the web console view.
+
+        This operation is required when creating thousands of vault accounts to serve your end-users.
+
+        Used for preventing the web console to be swamped with too much vault accounts.
+
+        Learn more in the following [guide](https://developers.fireblocks.com/docs/create-direct-custody-wallets#hiding-vault-accounts).
+
+        NOTE: Hiding the vault account from the web console will also hide all the related transactions to/from this vault.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.hideVaultAccount(vaultAccountId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.hideVaultAccount(vaultsApiHideVaultAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().hideVaultAccount(vaultAccountId,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.hide_vault_account(vault_account_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The vault account to hide
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultActionStatus'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: hideVaultAccount
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.hideVaultAccount(vaultsApiHideVaultAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().hideVaultAccount(vaultAccountId,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.hide_vault_account(vault_account_id, idempotency_key);
+  /vault/accounts/{vaultAccountId}/unhide:
+    post:
+      summary: Unhide a vault account in the console
+      description: 'Makes a hidden vault account visible in web console view.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.unhideVaultAccount(vaultAccountId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.unhideVaultAccount(vaultsApiUnhideVaultAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().unhideVaultAccount(vaultAccountId,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.unhide_vault_account(vault_account_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The vault account to unhide
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultActionStatus'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: unhideVaultAccount
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.unhideVaultAccount(vaultsApiUnhideVaultAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().unhideVaultAccount(vaultAccountId,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.unhide_vault_account(vault_account_id, idempotency_key);
+  /vault/accounts/{vaultAccountId}/{assetId}/activate:
+    post:
+      summary: Activate a wallet in a vault account
+      description: "Initiates activation for a wallet in a vault account. \nActivation is required for tokens that need an\
+        \ on-chain transaction for creation (XLM tokens, SOL tokens etc).\n</br>Endpoint Permission: Admin, Non-Signing Admin,\
+        \ Signer, Approver, Editor."
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateVaultAssetResponse>> = fireblocks.vaults.activateAssetForVaultAccount(vaultsApiActivateAssetForVaultAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateVaultAssetResponse>> response = fireblocks.vaults().activateAssetForVaultAccount(vaultAccountId,
+            assetId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.activate_asset_for_vault_account(vault_account_id, asset_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      tags:
+      - Vaults
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: SOL_USDC_PTHX
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateVaultAssetResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: activateAssetForVaultAccount
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateVaultAssetResponse>> = fireblocks.vaults.activateAssetForVaultAccount(vaultsApiActivateAssetForVaultAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateVaultAssetResponse>> response = fireblocks.vaults().activateAssetForVaultAccount(vaultAccountId,
+          assetId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.activate_asset_for_vault_account(vault_account_id, asset_id, idempotency_key);
+  /vault/accounts/{vaultAccountId}/set_customer_ref_id:
+    post:
+      summary: Set an AML/KYT ID for a vault account
+      description: 'Assigns an AML/KYT customer reference ID for the vault account.
+
+        Learn more about Fireblocks AML management in the following [guide](https://developers.fireblocks.com/docs/define-aml-policies).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.setCustomerRefIdForVaultAccount(vaultAccountId, customerRefId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.setVaultAccountCustomerRefId(vaultsApiSetVaultAccountCustomerRefIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().setVaultAccountCustomerRefId(setCustomerRefIdRequest,
+            vaultAccountId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.set_vault_account_customer_ref_id(set_customer_ref_id_request, vault_account_id,
+            idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The vault account ID
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetCustomerRefIdRequest'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultActionStatus'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setVaultAccountCustomerRefId
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.setVaultAccountCustomerRefId(vaultsApiSetVaultAccountCustomerRefIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().setVaultAccountCustomerRefId(setCustomerRefIdRequest,
+          vaultAccountId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.set_vault_account_customer_ref_id(set_customer_ref_id_request, vault_account_id,
+          idempotency_key);
+  /vault/accounts/{vaultAccountId}/set_auto_fuel:
+    post:
+      summary: Set auto fueling to on or off
+      description: 'Toggles the auto fueling property of the vault account to enabled or disabled.
+
+        Vault Accounts with ''autoFuel=true'' are monitored and auto fueled by the Fireblocks Gas Station.
+
+        Learn more about the Fireblocks Gas Station in the following [guide](https://developers.fireblocks.com/docs/work-with-gas-station).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.setVaultAccountAutoFuel(vaultsApiSetVaultAccountAutoFuelRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().setVaultAccountAutoFuel(setAutoFuelRequest,
+            vaultAccountId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.set_vault_account_auto_fuel(set_auto_fuel_request, vault_account_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      tags:
+      - Vaults
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The vault account ID
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetAutoFuelRequest'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultActionStatus'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setVaultAccountAutoFuel
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.setVaultAccountAutoFuel(vaultsApiSetVaultAccountAutoFuelRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().setVaultAccountAutoFuel(setAutoFuelRequest,
+          vaultAccountId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.set_vault_account_auto_fuel(set_auto_fuel_request, vault_account_id, idempotency_key);
+  /vault/accounts/{vaultAccountId}/{assetId}:
+    get:
+      summary: Get the asset balance for a vault account
+      description: "Returns a specific vault wallet balance information for a specific asset.\n\n</br>Endpoint Permission:\
+        \ Admin, Non-Signing Admin, Signer, Approver, Editor,\n  Viewer."
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.getVaultAccountAsset(vaultAccountId, assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultAsset>> = fireblocks.vaults.getVaultAccountAsset(vaultsApiGetVaultAccountAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultAsset>> response = fireblocks.vaults().getVaultAccountAsset(vaultAccountId,
+            assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_vault_account_asset(vault_account_id, asset_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      responses:
+        '200':
+          description: A VaultAsset object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultAsset'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getVaultAccountAsset
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultAsset>> = fireblocks.vaults.getVaultAccountAsset(vaultsApiGetVaultAccountAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultAsset>> response = fireblocks.vaults().getVaultAccountAsset(vaultAccountId,
+          assetId);
+      - lang: Python
+        source: response = fireblocks.vaults.get_vault_account_asset(vault_account_id, asset_id);
+    post:
+      summary: Create a new vault wallet
+      description: 'Creates a wallet for a specific asset in a vault account.
+
+        Learn more about Fireblocks Vault Wallets in the following [guide](https://developers.fireblocks.com/reference/create-vault-wallet).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.createVaultAsset(vaultAccountId, assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateVaultAssetResponse>> = fireblocks.vaults.createVaultAccountAsset(vaultsApiCreateVaultAccountAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateVaultAssetResponse>> response = fireblocks.vaults().createVaultAccountAsset(vaultAccountId,
+            assetId, createAssetsRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.create_vault_account_asset(vault_account_id, asset_id, create_assets_request,
+            idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account to return, or 'default' for the default vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssetsRequest'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateVaultAssetResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: createVaultAccountAsset
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateVaultAssetResponse>> = fireblocks.vaults.createVaultAccountAsset(vaultsApiCreateVaultAccountAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateVaultAssetResponse>> response = fireblocks.vaults().createVaultAccountAsset(vaultAccountId,
+          assetId, createAssetsRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.create_vault_account_asset(vault_account_id, asset_id, create_assets_request,
+          idempotency_key);
+  /vault/accounts/{vaultAccountId}/{assetId}/balance:
+    post:
+      summary: Refresh asset balance data
+      description: 'Updates the balance of a specific asset in a vault account.
+
+
+        This API endpoint is subject to a strict rate limit.
+
+        Should be used by clients in very specific scenarios.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.refreshVaultAssetBalance(vaultAccountId, assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultAsset>> = fireblocks.vaults.updateVaultAccountAssetBalance(vaultsApiUpdateVaultAccountAssetBalanceRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultAsset>> response = fireblocks.vaults().updateVaultAccountAssetBalance(vaultAccountId,
+            assetId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.update_vault_account_asset_balance(vault_account_id, asset_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account to return
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: A VaultAsset object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultAsset'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: updateVaultAccountAssetBalance
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultAsset>> = fireblocks.vaults.updateVaultAccountAssetBalance(vaultsApiUpdateVaultAccountAssetBalanceRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultAsset>> response = fireblocks.vaults().updateVaultAccountAssetBalance(vaultAccountId,
+          assetId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.update_vault_account_asset_balance(vault_account_id, asset_id, idempotency_key);
+  /vault/accounts/{vaultAccountId}/{assetId}/addresses:
+    get:
+      deprecated: true
+      summary: Get asset addresses
+      description: 'DEPRECATED!
+
+
+        - If your application logic or scripts rely on the deprecated endpoint, you should update to account for GET/V1/vault/accounts/{vaultAccountId}/{assetId}/addresses_paginated
+        before Mar 31,2024.
+
+        - All workspaces created after Mar 31,2024. will have it disabled. If it is disabled for your workspace and you attempt
+        to use it, you will receive the following error message: "This endpoint is unavailable.
+
+        - Please use the GET /v1/vault/accounts/{vaultAccountId}/{assetId}/addresses_paginated endpoint to return all the
+        wallet addresses associated with the specified vault account and asset in a paginated list.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - Vaults
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account to return
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+      responses:
+        '200':
+          description: A list of deposit addresses
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetVaultAccountAssetAddressesResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getVaultAccountAssetAddresses
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const depositAddresses = await fireblocks.getDepositAddresses(vaultAccountId, assetId);
+          name: Fireblocks SDK Javascript example
+    post:
+      summary: Create new asset deposit address
+      description: 'Creates a new deposit address for an asset of a vault account.
+
+        Should be used for UTXO or Tag/Memo based assets ONLY.
+
+
+        Requests with account based assets will fail.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const address = await fireblocks.generateNewAddress(vaultAccountId, assetId, description, customerRefId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateAddressResponse>> = fireblocks.vaults.createVaultAccountAssetAddress(vaultsApiCreateVaultAccountAssetAddressRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateAddressResponse>> response = fireblocks.vaults().createVaultAccountAssetAddress(vaultAccountId,
+            assetId, createAddressRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.create_vault_account_asset_address(vault_account_id, asset_id, create_address_request,
+            idempotency_key);
+          name: Fireblocks SDK Python example
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAddressRequest'
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account to return
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: The created address
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAddressResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: createVaultAccountAssetAddress
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateAddressResponse>> = fireblocks.vaults.createVaultAccountAssetAddress(vaultsApiCreateVaultAccountAssetAddressRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateAddressResponse>> response = fireblocks.vaults().createVaultAccountAssetAddress(vaultAccountId,
+          assetId, createAddressRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.create_vault_account_asset_address(vault_account_id, asset_id, create_address_request,
+          idempotency_key);
+  /vault/accounts/{vaultAccountId}/{assetId}/addresses_paginated:
+    get:
+      summary: Get addresses (Paginated)
+      description: 'Returns a paginated response of the addresses for a given vault account and asset.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const addresses = await fireblocks.getPaginatedAddresses("0","ETH_TEST3");
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PaginatedAddressResponse>> = fireblocks.vaults.getVaultAccountAssetAddressesPaginated(vaultsApiGetVaultAccountAssetAddressesPaginatedRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PaginatedAddressResponse>> response = fireblocks.vaults().getVaultAccountAssetAddressesPaginated(vaultAccountId,
+            assetId, limit, before, after);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_vault_account_asset_addresses_paginated(vault_account_id, asset_id, limit,
+            before, after);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account to return
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      - in: query
+        name: limit
+        description: Limit the number of results per page
+        schema:
+          type: number
+          example: 50
+      - in: query
+        name: before
+        description: Cursor string for the previous page
+        schema:
+          type: string
+          example: eyJhZGRyZXNzSWQiOiIzNjg4MzE5MiIsInZhdWx0QWNjb3VudElkIjoiMCIsImFzc2V0SWQiOiJCVEMifQ==
+      - in: query
+        name: after
+        description: Cursor string for the next page
+        schema:
+          type: string
+          example: eyJhZGRyZXNzSWQiOiIzNDU3MDM4MSIsInZhdWx0QWNjb3VudElkIjoiMCIsImFzc2V0SWQiOiJCVEMifQ==
+      responses:
+        '200':
+          description: A paginated list of addresses, and pagination info.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAddressResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getVaultAccountAssetAddressesPaginated
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PaginatedAddressResponse>> = fireblocks.vaults.getVaultAccountAssetAddressesPaginated(vaultsApiGetVaultAccountAssetAddressesPaginatedRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PaginatedAddressResponse>> response = fireblocks.vaults().getVaultAccountAssetAddressesPaginated(vaultAccountId,
+          assetId, limit, before, after);
+      - lang: Python
+        source: response = fireblocks.vaults.get_vault_account_asset_addresses_paginated(vault_account_id, asset_id, limit,
+          before, after);
+  /vault/accounts/{vaultAccountId}/{assetId}/max_spendable_amount:
+    get:
+      summary: Get max spendable amount in a transaction
+      description: '**UTXO assets only.**
+
+
+        Retrieve the maximum amount of the specified asset that can be spent in a single transaction from the specified vault
+        account.
+
+
+        **Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.
+
+        '
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetMaxSpendableAmountResponse>> = fireblocks.vaults.getMaxSpendableAmount(vaultsApiGetMaxSpendableAmountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetMaxSpendableAmountResponse>> response = fireblocks.vaults().getMaxSpendableAmount(vaultAccountId,
+            assetId, manualSigning);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_max_spendable_amount(vault_account_id, asset_id, manual_signing);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account, or 'default' for the default vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      - in: query
+        name: manualSigning
+        description: False by default. The maximum number of inputs depends on whether the transaction will be signed by an
+          automated co-signer server or on a mobile device.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMaxSpendableAmountResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getMaxSpendableAmount
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetMaxSpendableAmountResponse>> = fireblocks.vaults.getMaxSpendableAmount(vaultsApiGetMaxSpendableAmountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetMaxSpendableAmountResponse>> response = fireblocks.vaults().getMaxSpendableAmount(vaultAccountId,
+          assetId, manualSignging);
+      - lang: Python
+        source: response = fireblocks.vaults.get_max_spendable_amount(vault_account_id, asset_id, manual_signging);
+  /vault/accounts/{vaultAccountId}/{assetId}/addresses/{addressId}:
+    put:
+      summary: Update address description
+      description: 'Updates the description of an existing address of an asset in a vault account.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const address = await fireblocks.setAddressDescription(vaultAccountId, assetId, address, tag, description);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.updateVaultAccountAssetAddress(vaultsApiUpdateVaultAccountAssetAddressRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().updateVaultAccountAssetAddress(vaultAccountId,
+            assetId, addressId, updateVaultAccountAssetAddressRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.update_vault_account_asset_address(vault_account_id, asset_id, address_id, update_vault_account_asset_address_request,
+            idempotency_key);
+          name: Fireblocks SDK Python example
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateVaultAccountAssetAddressRequest'
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      - in: path
+        name: addressId
+        required: true
+        description: The address for which to add a description. For XRP, use <address>:<tag>, for all other assets, use only
+          the address
+        schema:
+          type: string
+          example: 1Fn5bZ9V9bkt8F1wVZTouG2xVfAT9ZX4Lv
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultActionStatus'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: updateVaultAccountAssetAddress
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.updateVaultAccountAssetAddress(vaultsApiUpdateVaultAccountAssetAddressRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().updateVaultAccountAssetAddress(vaultAccountId,
+          assetId, addressId, updateVaultAccountAssetAddressRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.update_vault_account_asset_address(vault_account_id, asset_id, address_id, update_vault_account_asset_address_request,
+          idempotency_key);
+  /vault/accounts/{vaultAccountId}/{assetId}/addresses/{addressId}/set_customer_ref_id:
+    post:
+      summary: Assign AML customer reference ID
+      description: 'Sets an AML/KYT customer reference ID for a specific address.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.setCustomerRefIdForAddress(vaultAccountId, assetId, addressId, customerRefId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.setCustomerRefIdForAddress(vaultsApiSetCustomerRefIdForAddressRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().setCustomerRefIdForAddress(setCustomerRefIdForAddressRequest,
+            vaultAccountId, assetId, addressId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.set_customer_ref_id_for_address(set_customer_ref_id_for_address_request, vault_account_id,
+            asset_id, address_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      - in: path
+        name: addressId
+        required: true
+        description: The address for which to add a description. For XRP, use <address>:<tag>, for all other assets, use only
+          the address
+        schema:
+          type: string
+          example: ltc1qt7d7pcaycq9r0n35d9k2tuff5sf8qdsl84aex6
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetCustomerRefIdForAddressRequest'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultActionStatus'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setCustomerRefIdForAddress
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultActionStatus>> = fireblocks.vaults.setCustomerRefIdForAddress(vaultsApiSetCustomerRefIdForAddressRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultActionStatus>> response = fireblocks.vaults().setCustomerRefIdForAddress(setCustomerRefIdForAddressRequest,
+          vaultAccountId, assetId, addressId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.set_customer_ref_id_for_address(set_customer_ref_id_for_address_request, vault_account_id,
+          asset_id, address_id, idempotency_key);
+  /vault/accounts/{vaultAccountId}/{assetId}/addresses/{addressId}/create_legacy:
+    post:
+      summary: Convert a segwit address to legacy format
+      description: 'Converts an existing segwit address to the legacy format.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Vaults
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      - in: path
+        name: addressId
+        required: true
+        description: The segwit address to translate
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: The created address
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAddressResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: createLegacyAddress
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateAddressResponse>> = fireblocks.vaults.createLegacyAddress(vaultsApiCreateLegacyAddressRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateAddressResponse>> response = fireblocks.vaults().createLegacyAddress(vaultAccountId,
+            assetId, addressId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.create_legacy_address(vault_account_id, asset_id, address_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateAddressResponse>> = fireblocks.vaults.createLegacyAddress(vaultsApiCreateLegacyAddressRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateAddressResponse>> response = fireblocks.vaults().createLegacyAddress(vaultAccountId,
+          assetId, addressId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.vaults.create_legacy_address(vault_account_id, asset_id, address_id, idempotency_key);
+  /vault/accounts/{vaultAccountId}/{assetId}/unspent_inputs:
+    get:
+      summary: Get UTXO unspent inputs information
+      description: 'Returns unspent inputs information of an UTXO asset in a vault account.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.getUnspentInputs(vaultAccountId, assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetUnspentInputsResponse>> = fireblocks.vaults.getUnspentInputs(vaultsApiGetUnspentInputsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<UnspentInputsResponse>>> response = fireblocks.vaults().getUnspentInputs(vaultAccountId,
+            assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_unspent_inputs(vault_account_id, asset_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      responses:
+        '200':
+          description: List of Unspent information per input
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUnspentInputsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getUnspentInputs
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetUnspentInputsResponse>> = fireblocks.vaults.getUnspentInputs(vaultsApiGetUnspentInputsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<UnspentInputsResponse>>> response = fireblocks.vaults().getUnspentInputs(vaultAccountId,
+          assetId);
+      - lang: Python
+        source: response = fireblocks.vaults.get_unspent_inputs(vault_account_id, asset_id);
+  /vault/public_key_info:
+    get:
+      summary: Get the public key for a derivation path
+      description: 'Gets the public key information based on derivation path and signing algorithm.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: 'const PublicKeyInfoArgs = { algorithm: ''MPC_ECDSA_SECP256K1'', derivationPath: ''[44,0,0,0,0]'' } const
+            pubKey = await fireblocks.getPublicKeyInfo(PublicKeyInfoArgs);
+
+            '
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PublicKeyInformation>> = fireblocks.vaults.getPublicKeyInfo(vaultsApiGetPublicKeyInfoRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PublicKeyInformation>> response = fireblocks.vaults().getPublicKeyInfo(derivationPath,
+            algorithm, compressed);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_public_key_info(derivation_path, algorithm, compressed);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: query
+        name: derivationPath
+        description: "An array of integers representing the full BIP44 derivation path of the requested public key. \nThe\
+          \ first element must always be 44.\n"
+        required: true
+        schema:
+          type: array
+          maxItems: 5
+          minItems: 5
+          items:
+            type: integer
+      - in: query
+        name: algorithm
+        required: true
+        schema:
+          type: string
+          enum:
+          - MPC_ECDSA_SECP256K1
+          - MPC_ECDSA_SECP256R1
+          - MPC_EDDSA_ED25519
+      - in: query
+        name: compressed
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Public key information
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicKeyInformation'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getPublicKeyInfo
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PublicKeyInformation>> = fireblocks.vaults.getPublicKeyInfo(vaultsApiGetPublicKeyInfoRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PublicKeyInformation>> response = fireblocks.vaults().getPublicKeyInfo(derivationPath,
+          algorithm, compressed);
+      - lang: Python
+        source: response = fireblocks.vaults.get_public_key_info(derivation_path, algorithm, compressed);
+  /vault/accounts/{vaultAccountId}/{assetId}/{change}/{addressIndex}/public_key_info:
+    get:
+      summary: Get an asset's public key
+      description: 'Get the public key information for a specific asset in a vault account.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: 'const PublicKeyInfoArgs = { assetId: ''ETH'', vaultAccountId: 0, change: 0, addressIndex: 0, compressed:
+            true } const pubKey = await fireblocks.getPublicKeyInfoForVaultAccount(PublicKeyInfoArgs);
+
+            '
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PublicKeyInformation>> = fireblocks.vaults.getPublicKeyInfoForAddress(vaultsApiGetPublicKeyInfoForAddressRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PublicKeyInformation>> response = fireblocks.vaults().getPublicKeyInfoForAddress(vaultAccountId,
+            assetId, change, addressIndex, compressed);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_public_key_info_for_address(vault_account_id, asset_id, change, address_index,
+            compressed);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          example: '0'
+      - in: path
+        name: assetId
+        required: true
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: BTC
+      - in: path
+        name: change
+        description: BIP44 derivation path - change value
+        required: true
+        schema:
+          type: number
+          example: 0
+      - in: path
+        name: addressIndex
+        description: BIP44 derivation path - index value
+        required: true
+        schema:
+          type: number
+          example: 0
+      - in: query
+        name: compressed
+        description: Compressed/Uncompressed public key format
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Public Key Information
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicKeyInformation'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getPublicKeyInfoForAddress
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PublicKeyInformation>> = fireblocks.vaults.getPublicKeyInfoForAddress(vaultsApiGetPublicKeyInfoForAddressRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PublicKeyInformation>> response = fireblocks.vaults().getPublicKeyInfoForAddress(vaultAccountId,
+          assetId, change, addressIndex, compressed);
+      - lang: Python
+        source: response = fireblocks.vaults.get_public_key_info_for_address(vault_account_id, asset_id, change, address_index,
+          compressed);
+  /vault/accounts/attached/tags/attach:
+    post:
+      summary: Attach tags to a vault accounts
+      deprecated: true
+      description: '**This endpoint has been deprecated. Please use `vault/accounts/attached_tags` instead.**
+
+
+        Attach one or more tags to the requested vault accounts.
+
+        '
+      tags:
+      - Vaults
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VaultAccountsTagAttachmentsRequest'
+      responses:
+        '204':
+          description: Tags were attached successfully
+      operationId: attachTagsToVaultAccounts
+  /vault/accounts/attached/tags/detached:
+    post:
+      summary: Detach tags from a vault accounts
+      deprecated: true
+      description: '**This endpoint has been deprecated. Please use `/vault/accounts/attached_tags` instead.**
+
+
+        Detach one or more tags from the requested vault account.
+
+        '
+      tags:
+      - Vaults
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VaultAccountsTagAttachmentsRequest'
+      responses:
+        '204':
+          description: Tags were detached successfully
+      operationId: detachTagsFromVaultAccounts
+  /vault/assets:
+    get:
+      summary: Get asset balance for chosen assets
+      description: 'Gets the assets amount summary for all accounts or filtered accounts.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const assetsBalance = await fireblocks.getVaultAssetsBalance(filters);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetVaultAssetsResponse>> = fireblocks.vaults.getVaultAssets(vaultsApiGetVaultAssetsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<VaultAsset>>> response = fireblocks.vaults().getVaultAssets(accountNamePrefix,
+            accountNameSuffix);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_vault_assets(account_name_prefix, account_name_suffix);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: query
+        name: accountNamePrefix
+        required: false
+        schema:
+          type: string
+          example: MyVaultPrefix
+      - in: query
+        name: accountNameSuffix
+        required: false
+        schema:
+          type: string
+          example: MyVaultSuffix
+      responses:
+        '200':
+          description: Amount by asset
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetVaultAssetsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getVaultAssets
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetVaultAssetsResponse>> = fireblocks.vaults.getVaultAssets(vaultsApiGetVaultAssetsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<VaultAsset>>> response = fireblocks.vaults().getVaultAssets(accountNamePrefix,
+          accountNameSuffix);
+      - lang: Python
+        source: response = fireblocks.vaults.get_vault_assets(account_name_prefix, account_name_suffix);
+  /vault/assets/{assetId}:
+    get:
+      summary: Get vault balance by an asset
+      description: 'Get the total balance of an asset across all the vault accounts.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - Vaults
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const assetsBalance = await fireblocks.getVaultBalanceByAsset(assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<VaultAsset>> = fireblocks.vaults.getVaultBalanceByAsset(vaultsApiGetVaultBalanceByAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<VaultAsset>> response = fireblocks.vaults().getVaultBalanceByAsset(assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.vaults.get_vault_balance_by_asset(asset_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: assetId
+        required: true
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: ETH
+      responses:
+        '200':
+          description: Vault amount by asset
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultAsset'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getVaultBalanceByAsset
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<VaultAsset>> = fireblocks.vaults.getVaultBalanceByAsset(vaultsApiGetVaultBalanceByAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<VaultAsset>> response = fireblocks.vaults().getVaultBalanceByAsset(assetId);
+      - lang: Python
+        source: response = fireblocks.vaults.get_vault_balance_by_asset(asset_id);
+  /tags:
+    post:
+      summary: Create a tag
+      description: 'Create a new tag.
+
+
+        **Endpoint Permissions:**
+
+        - For protected tags: Owner, Admin, Non-Signing Admin.
+
+        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.
+
+        '
+      tags:
+      - Tags
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTagRequest'
+      responses:
+        '200':
+          description: A tag object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+      operationId: createTag
+    get:
+      summary: Get list of tags
+      description: Retrieve a paged list of all tags according to filters.
+      tags:
+      - Tags
+      x-rate-limit-category: query
+      parameters:
+      - in: query
+        name: pageCursor
+        description: Page cursor to get the next page.
+        example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: pageSize
+        required: false
+        description: Maximum number of items in the page
+        schema:
+          type: number
+          minimum: 1
+          maximum: 100
+          default: 100
+      - in: query
+        name: label
+        required: false
+        description: Label prefix to filter by.
+        example: VIP
+        schema:
+          type: string
+      - in: query
+        name: tagIds
+        required: false
+        description: List of tag IDs to filter by.
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 100
+      - in: query
+        name: includePendingApprovalsInfo
+        required: false
+        description: Include pending approval information for each tag
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: A TagsPagedResponse object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsPagedResponse'
+      operationId: getTags
+  /tags/{tagId}:
+    get:
+      summary: Get a tag
+      description: Retrieve an existing tag by ID.
+      tags:
+      - Tags
+      x-rate-limit-category: read
+      parameters:
+      - in: path
+        name: tagId
+        required: true
+        description: The ID of the tag to retrieve
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: A tag object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+      operationId: getTag
+    patch:
+      summary: Update a tag
+      description: 'Update an existing specified tag.
+
+
+        **Endpoint Permissions:**
+
+        - For protected tags: Owner, Admin, Non-Signing Admin.
+
+        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.
+
+        '
+      tags:
+      - Tags
+      x-rate-limit-category: write
+      parameters:
+      - in: path
+        name: tagId
+        required: true
+        description: The ID of the tag to update
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTagRequest'
+      responses:
+        '200':
+          description: A tag object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+      operationId: updateTag
+    delete:
+      summary: Delete a tag
+      description: 'Delete the specified tag.
+
+
+        **Endpoint Permissions:**
+
+        - For protected tags: Owner, Admin, Non-Signing Admin.
+
+        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.
+
+        '
+      tags:
+      - Tags
+      x-rate-limit-category: write
+      parameters:
+      - in: path
+        name: tagId
+        required: true
+        description: The ID of the tag to retrieve
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Tag was deleted successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      operationId: deleteTag
+components:
+  schemas:
+    ApprovalRequest:
+      type: object
+      description: Approval request details
+      properties:
+        id:
+          type: string
+          format: numeric
+          description: The approval request identifier
+          example: '12345'
+        type:
+          type: string
+          description: The approval request type
+          enum:
+          - TAG_UPDATE
+          - TAG_DELETE
+          - TAG_ATTACH_DETACH
+        state:
+          type: string
+          description: The approval request state
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          - FAILED
+          - CANCELLED
+          - EXPIRED
+      required:
+      - id
+      - type
+      - state
+    AssetWallet:
+      type: object
+      properties:
+        vaultId:
+          description: ID of the vault account. You can [get the vault account by this ID](https://developers.fireblocks.com/reference/get_vault-accounts-vaultaccountid)
+            to retrieve vault properties such as its name, auto fueling, hidden on UI or customer reference ID.
+          type: string
+          example: '0'
+        assetId:
+          description: ID of the asset. You can get more information about this asset by using the [supported assets API](https://developers.fireblocks.com/reference/get_supported-assets)
+          type: string
+          example: ETH
+        available:
+          description: Available balance, available to use in a transaction.
+          type: string
+          example: '11'
+        total:
+          description: Total balance at the asset wallet, as seen at the blockchain explorers. This includes balance available,
+            and any kind of unavailable balance such as locked, frozen, or others.
+          type: string
+        pending:
+          description: Pending balance (an incoming transaction that hasn't yet reached the necessary number of confirmations)
+          type: string
+          example: '0'
+        staked:
+          description: Staked balance (for DOT staking with Raw signing only)
+          type: string
+          example: '0'
+        frozen:
+          description: Funds frozen due to the anti-money laundering policy at this workspace.
+          type: string
+          example: '0'
+        lockedAmount:
+          description: Locked balance.
+          type: string
+          example: '0'
+        blockHeight:
+          description: The height (number) of the block of the balance. Can by empty.
+          nullable: true
+          type: string
+          example: '19953092'
+        blockHash:
+          description: The hash of the block of the balance. Can by empty.
+          type: string
+          nullable: true
+          example: '0x85fb70a1d600349666f4a8e79fd48f8911c02fa3ff702374cf9ec5e797c80603'
+        creationTimestamp:
+          description: Unix timestamp of the time the asset wallet was created.
+          type: string
+          example: '1618220338000'
+    CreateAddressRequest:
+      type: object
+      properties:
+        description:
+          description: (Optional) Attach a description to the new address
+          type: string
+        customerRefId:
+          description: Optional - Sets a customer reference ID
+          type: string
+    CreateAddressResponse:
+      type: object
+      properties:
+        address:
+          type: string
+        legacyAddress:
+          type: string
+        enterpriseAddress:
+          type: string
+        tag:
+          type: string
+        bip44AddressIndex:
+          type: integer
+    CreateAssetsRequest:
+      type: object
+      properties:
+        eosAccountName:
+          description: Optional - when creating an EOS wallet, the account name. If not provided, a random name will be generated
+          type: string
+    CreateMultipleAccountsRequest:
+      type: object
+      properties:
+        count:
+          description: Count
+          type: integer
+          example: 1000
+        baseAssetIds:
+          description: Array of asset IDs
+          type: array
+          items:
+            type: string
+          example:
+          - ETH
+          - BTC
+          - SOL
+        names:
+          description: Names to assign to vault accounts. if vaultAccountNamesStartingIndex or prefix is used it'll fail
+          type: array
+          items:
+            type: string
+          example:
+          - first va
+          - client 65502e71-ecdf-48da-a074-c1753befc7fb
+        vaultAccountNamesStartingIndex:
+          description: Copy vault accounts names starting from this index. If names array is used it'll fail
+          type: integer
+          example: 0
+        prefix:
+          description: When copying from existing vault accounts (vaultAccountNamesStartingIndex) then adding a prefix to
+            the names. If names array is used it'll fail
+          type: string
+          example: 'Copied from: '
+      required:
+      - baseAssetIds
+      - count
+    CreateMultipleDepositAddressesJobStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewAddress'
+          example:
+          - address: addr_test1qp07k5kdwdfx4rpfqud8ry65acxgtgfgrxw0t35cwvl4uasjneqjdc868eqlex5p2f0nyekyyk4ze5xuanvj50ysrj3qqxqhsn
+            index: 0
+            description: Address one
+        errorMessage:
+          type: string
+          example: Asset not supported
+      required:
+      - status
+    CreateMultipleDepositAddressesRequest:
+      type: object
+      properties:
+        vaultAccountId:
+          description: Existing Vault account ID to add deposit addresses to
+          type: integer
+          example: 5
+        assetId:
+          description: asset ID
+          type: string
+          example: ADA
+        count:
+          description: Count of deposit addresses to issue
+          type: integer
+          example: 10
+        descriptions:
+          description: Desctiptions of the newly created addresses
+          type: array
+          items:
+            type: string
+          example:
+          - First address
+          - Second address
+          - df4c0987-30da-4976-8dcf-bc2dd41ae331
+        vaultAccountToCopyDescFrom:
+          description: Existing Vault Account ID to copy deposit addresses descriptions from in case no descriptions were
+            provided
+          type: integer
+          example: 0
+        vaultAccountToCopyDescFromIndex:
+          description: Existing length within the vault account to copy deposit addresses descriptions from
+          type: integer
+          example: 1000
+      required:
+      - vaultAccountId
+      - assetId
+      - count
+    CreateMultipleVaultAccountsJobStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        vaultAccounts:
+          type: object
+          description: Mapping between VaultAccountId to a mapping of asset to address
+          additionalProperties:
+            type: object
+            description: Mapping between asset (key) to address (value)
+            additionalProperties:
+              type: string
+          example:
+            '0':
+              BTC_TEST: bcrt1qs0zzqytuw49w2jqkmfhzgdh2lylzde2uw4zncz
+              ETH_TEST: '0x460395Edb2338023c6f137259C6e20B6C37dDE95'
+        errorMessage:
+          type: string
+          example: Asset not supported
+      required:
+      - status
+    CreateTagRequest:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The tag label
+          minLength: 2
+          maxLength: 30
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          maxLength: 250
+          example: Tag for VIP customers
+        color:
+          type: string
+          description: The tag color in hex format
+          example: '#FF5733'
+        isProtected:
+          type: boolean
+          description: Indication of whether the tag is protected
+          default: false
+      required:
+      - label
+    CreateVaultAccountRequest:
+      type: object
+      properties:
+        name:
+          description: Vault Account name
+          type: string
+          example: MyVaultAccount
+        hiddenOnUI:
+          description: Optional - if true, the created account and all related transactions will not be shown on Fireblocks
+            console
+          type: boolean
+        customerRefId:
+          description: Optional - Sets a customer reference ID for AML integrations
+          type: string
+          example: some-reference
+        autoFuel:
+          description: Optional - Sets the autoFuel property of the vault account for the Fireblocks Gas Station
+          type: boolean
+        vaultType:
+          default: MPC
+          description: Type of vault account. The default type will be set to MPC.<br/>  If the workspace does not support
+            the selected type, it will return an error.
+          type: string
+          enum:
+          - MPC
+          - KEY_LINK
+        autoAssign:
+          default: false
+          description: Applicable only when the vault account type is KEY_LINK. For MPC, this parameter will be ignored.<br/>
+            If set to true and there are available keys, random keys will be assigned to the newly created vault account.<br/>
+            If set to true and there are no available keys to be assigned, it will return an error.<br/> If set to false,
+            the vault account will be created without any keys.
+          type: boolean
+    CreateVaultAssetResponse:
+      type: object
+      required:
+      - id
+      - address
+      properties:
+        id:
+          type: string
+          example: '0'
+        address:
+          type: string
+          example: bc1qzrclj9a6ljrkegggv047zk4gqrjxrznul3hf4p
+        legacyAddress:
+          description: For BTC and some BTC forked assets only
+          type: string
+          example: 12YbgefQANXKJZUCF1QrymUxCtKJR59e7g
+        enterpriseAddress:
+          description: For ADA (Cardano) only
+          type: string
+        tag:
+          description: For Tag/Memo based assets only
+          type: string
+          example: '247016305'
+        eosAccountName:
+          description: For EOS only
+          type: string
+        status:
+          type: string
+          example: PENDING_ACTIVATION
+        activationTxId:
+          type: string
+          example: 1fe6f159-fb00-4f2e-8907-051ba05a5880
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    GetMaxSpendableAmountResponse:
+      type: object
+      properties:
+        maxSpendableAmount:
+          type: string
+          description: The maximum amount that can be spent from the vault account
+          example: '0.009'
+    GetUnspentInputsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UnspentInputsResponse'
+    GetVaultAccountAssetAddressesResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/VaultWalletAddress'
+    GetVaultAccountsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/VaultAccount'
+    GetVaultAssetsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/VaultAsset'
+    JobCreated:
+      type: object
+      properties:
+        jobId:
+          type: string
+    NewAddress:
+      type: object
+      properties:
+        address:
+          type: string
+          description: The address string.
+          example: addr_test1qp07k5kdwdfx4rpfqud8ry65acxgtgfgrxw0t35cwvl4uasjneqjdc868eqlex5p2f0nyekyyk4ze5xuanvj50ysrj3qqxqhsn
+        index:
+          type: integer
+          description: The index of the address in the list.
+          example: 0
+        description:
+          type: string
+          description: A description of the address.
+          example: Address one
+      required:
+      - address
+      - index
+      - description
+    PaginatedAddressResponse:
+      type: object
+      properties:
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/VaultWalletAddress'
+        paging:
+          type: object
+          properties:
+            before:
+              description: "A string representing a cursor. Users can use this with a new request to this API endpoint as\
+                \ the \u201Cbefore\u201D request parameter to fetch the previous page of results."
+              type: string
+              example: eyJhZGRyZXNzSWQiOiIzNjg4MzE5MiIsInZhdWx0QWNjb3VudElkIjoiMCIsImFzc2V0SWQiOiJCVEMifQ
+            after:
+              description: "A string representing a cursor. Users can use this with a new request to this API endpoint as\
+                \ the \u201Cafter\u201D request parameter to fetch the next page of results."
+              type: string
+              example: eyJhZGRyZXNzSWQiOiIzNDU3MDM4MSIsInZhdWx0QWNjb3VudElkIjoiMCIsImFzc2V0SWQiOiJCVEMifQ
+    PaginatedAssetWalletResponse:
+      type: object
+      properties:
+        assetWallets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetWallet'
+        paging:
+          type: object
+          properties:
+            before:
+              description: "A string representing a cursor. Users can use this with a new request to this API endpoint as\
+                \ the \u201Cbefore\u201D request parameter to fetch the previous page of results."
+              type: string
+            after:
+              description: "A string representing a cursor. Users can use this with a new request to this API endpoint as\
+                \ the \u201Cbefore\u201D request parameter to fetch the next page of results."
+              type: string
+    PublicKeyInformation:
+      type: object
+      properties:
+        algorithm:
+          type: string
+          description: Elliptic Curve
+          enum:
+          - MPC_ECDSA_SECP256K1
+          - MPC_ECDSA_SECP256R1
+          - MPC_EDDSA_ED25519
+        derivationPath:
+          example:
+          - 44
+          - 0
+          - 0
+          - 0
+          - 0
+          description: BIP44 derivation path
+          type: array
+          items:
+            type: integer
+            minItems: 5
+            maxItems: 5
+        publicKey:
+          description: Compressed/Uncompressed public key value in hex representation
+          example: 1044c36403c1802818b472398f546a43a0d91569d5583a6e807c3825b155c7bd
+          type: string
+    RenameVaultAccountResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The new name of the vault account
+          example: MyVaultAccount
+        id:
+          type: string
+          description: The ID of the vault account
+          example: '0'
+    RewardsInfo:
+      type: object
+      properties:
+        pendingRewards:
+          description: Amount that is pending for rewards
+          type: string
+          example: '12'
+    SetAutoFuelRequest:
+      type: object
+      properties:
+        autoFuel:
+          description: Auto Fuel
+          type: boolean
+    SetCustomerRefIdForAddressRequest:
+      type: object
+      properties:
+        customerRefId:
+          description: Customer reference ID
+          type: string
+          example: customer_reference
+    SetCustomerRefIdRequest:
+      type: object
+      properties:
+        customerRefId:
+          description: Customer reference ID
+          type: string
+          example: some-customer-reference
+    Tag:
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the tag
+          type: string
+          format: uuid
+          example: df4c0987-30da-4976-8dcf-bc2dd41ae331
+        label:
+          type: string
+          description: The tag label
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          example: Tag for VIP customers
+        color:
+          type: string
+          description: The tag color in hex format
+          example: '#FF5733'
+        isProtected:
+          type: boolean
+          description: Indication of whether the tag is a protected tag
+          default: false
+        updatedAt:
+          type: number
+          description: The date and time the tag was last updated
+          example: 1717084800000
+        pendingApprovalRequest:
+          $ref: '#/components/schemas/ApprovalRequest'
+      required:
+      - id
+      - label
+      - isProtected
+      - updatedAt
+    TagAttachmentOperationAction:
+      type: string
+      enum:
+      - ATTACH
+      - DETACH
+    TagsPagedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        next:
+          type: string
+          description: Cursor to the next page
+          example: MjAyNS0wNy0wOSAxMDo1MzoxMy40NTI=:NA==
+          nullable: true
+      required:
+      - data
+      - next
+    UnspentInput:
+      description: 'A representation of an Unspent Transaction Output (UTXO).
+
+        '
+      type: object
+      properties:
+        txHash:
+          description: Transaction Hash
+          type: string
+          example: 6b21446af4a5e3ec588960d2338ab52428a3eb729038146ea09905199723061f
+        index:
+          description: The UTXO index (vOut)
+          type: number
+          example: 0
+    UnspentInputsResponse:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/UnspentInput'
+        address:
+          type: string
+          description: The blockchain address associated with the UTXO
+          example: bc1qjhm0h7vhdyu0d0luv34dlz654rmsvg8twywk99
+        amount:
+          type: string
+          description: The quantity of the asset held in the UTXO, expressed in base asset units
+          example: '0.0009'
+        confirmations:
+          type: number
+          description: The count of confirmations on the blockchain for this UTXO
+          example: 4780
+        status:
+          type: string
+          description: UTXO Status
+          enum:
+          - AVAILABLE
+          - PENDING
+          - FROZEN
+    UpdateTagRequest:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The tag label
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          example: Tag for VIP customers
+    UpdateVaultAccountAssetAddressRequest:
+      type: object
+      properties:
+        description:
+          description: The address description
+          type: string
+          example: some_description
+    UpdateVaultAccountRequest:
+      type: object
+      properties:
+        name:
+          description: Account Name
+          type: string
+          example: MyVaultAccount
+    VaultAccount:
+      type: object
+      required:
+      - id
+      - name
+      - assets
+      - hiddenOnUI
+      properties:
+        id:
+          type: string
+          example: '0'
+          description: Vault Account unique identifier
+        name:
+          type: string
+          example: MyVaultAccount
+          description: Vault Account name
+        assets:
+          type: array
+          description: An array of vault assets
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/VaultAsset'
+        hiddenOnUI:
+          description: Whether the Vault Account is visible in the UI or not
+          type: boolean
+        customerRefId:
+          type: string
+          description: Customer reference ID for AML integrations
+          example: some-reference
+        autoFuel:
+          description: Whether the Vault Account is monitored by the Fireblocks Gas Station or not
+          type: boolean
+        tags:
+          type: array
+          description: List of tags attached to the vault account
+          items:
+            $ref: '#/components/schemas/Tag'
+    VaultAccountTagAttachmentOperation:
+      type: object
+      properties:
+        vaultAccountId:
+          description: The ID of the Vault account
+          example: '1'
+          type: string
+          format: numeric
+        tagId:
+          description: The tag ID
+          example: f0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
+          type: string
+          format: uuid
+        action:
+          $ref: '#/components/schemas/TagAttachmentOperationAction'
+      required:
+      - vaultAccountId
+      - tagId
+      - action
+    VaultAccountTagAttachmentPendingOperation:
+      type: object
+      properties:
+        vaultAccountId:
+          description: The ID of the vault account
+          example: '1'
+          type: string
+          format: numeric
+        tagId:
+          description: Tag ID
+          example: f0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
+          type: string
+          format: uuid
+        action:
+          $ref: '#/components/schemas/TagAttachmentOperationAction'
+        approvalRequestId:
+          description: Pending approval request ID
+          example: '12345'
+          type: string
+      required:
+      - vaultAccountId
+      - tagId
+      - action
+      - approvalRequestId
+    VaultAccountTagAttachmentRejectedOperation:
+      type: object
+      properties:
+        vaultAccountId:
+          description: The ID of the vault account
+          example: '1'
+          type: string
+          format: numeric
+        tagId:
+          description: Tag ID
+          example: f0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
+          type: string
+          format: uuid
+        action:
+          $ref: '#/components/schemas/TagAttachmentOperationAction'
+        reason:
+          description: Reason for rejection
+          type: string
+          enum:
+          - CAPACITY_EXCEEDED
+          - ATTACHMENT_ALREADY_EXISTS
+          - ATTACHMENT_DOES_NOT_EXIST
+          - PENDING_REQUEST_EXISTS
+      required:
+      - vaultAccountId
+      - tagId
+      - action
+      - reason
+    VaultAccountsPagedResponse:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/VaultAccount'
+        paging:
+          type: object
+          properties:
+            before:
+              type: string
+            after:
+              type: string
+        previousUrl:
+          type: string
+        nextUrl:
+          type: string
+    VaultAccountsTagAttachmentOperationsRequest:
+      type: object
+      properties:
+        vaultAccountIds:
+          description: The IDs of the vault accounts to attach tags to
+          example:
+          - '0'
+          - '1'
+          type: array
+          minItems: 1
+          maxItems: 100
+          items:
+            type: string
+            format: numeric
+        tagIdsToAttach:
+          description: The IDs of the tags to attach
+          example:
+          - df4c0987-30da-4976-8dcf-bc2dd41ae331
+          - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            type: string
+            format: uuid
+        tagIdsToDetach:
+          description: The IDs of the tags to detach
+          example:
+          - df4c0987-30da-4976-8dcf-bc2dd41ae331
+          - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            type: string
+            format: uuid
+      required:
+      - vaultAccountIds
+    VaultAccountsTagAttachmentOperationsResponse:
+      type: object
+      properties:
+        appliedOperations:
+          description: The operations that were applied
+          type: array
+          items:
+            $ref: '#/components/schemas/VaultAccountTagAttachmentOperation'
+        pendingOperations:
+          description: The operations that are pending
+          type: array
+          items:
+            $ref: '#/components/schemas/VaultAccountTagAttachmentPendingOperation'
+        rejectedOperations:
+          description: The operations that were rejected
+          type: array
+          items:
+            $ref: '#/components/schemas/VaultAccountTagAttachmentRejectedOperation'
+    VaultAccountsTagAttachmentsRequest:
+      type: object
+      properties:
+        tagIds:
+          description: The IDs of the tags to attach
+          example:
+          - df4c0987-30da-4976-8dcf-bc2dd41ae331
+          - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: array
+          minItems: 1
+          maxItems: 200
+          items:
+            type: string
+            format: uuid
+        vaultAccountIds:
+          description: The IDs of the vault accounts to attach tags to
+          example:
+          - '0'
+          - '1'
+          type: array
+          minItems: 1
+          maxItems: 200
+          items:
+            type: string
+            format: numeric
+      required:
+      - tagIds
+      - vaultAccountIds
+    VaultActionStatus:
+      type: object
+      properties:
+        success:
+          type: boolean
+    VaultAsset:
+      type: object
+      required:
+      - id
+      - total
+      - available
+      - pending
+      - frozen
+      - lockedAmount
+      properties:
+        id:
+          type: string
+          example: ETH
+        total:
+          description: "The total wallet balance. \nTotal = available + pending + lockedAmount + frozen\n- In EOS this value\
+            \ includes the network balance, self staking and pending refund. \n- For all other coins it is the balance as\
+            \ it appears on the blockchain.\n"
+          type: string
+          example: '10.5'
+        balance:
+          deprecated: true
+          description: Deprecated - replaced by "total"
+          type: string
+          example: '10.5'
+        available:
+          description: 'Funds available for transfer. Equals: "total" minus "lockedAmount" minus "frozen" minus "pending"
+
+            '
+          type: string
+          example: '9'
+        pending:
+          description: The cumulative balance of all transactions pending to be cleared
+          type: string
+          example: '0.5'
+        frozen:
+          description: The cumulative frozen balance
+          type: string
+          example: '0.5'
+        lockedAmount:
+          description: Funds in outgoing transactions that are not yet published to the network
+          type: string
+          example: '0.5'
+        staked:
+          deprecated: true
+          description: Deprecated
+          type: string
+        totalStakedCPU:
+          type: number
+          deprecated: true
+          description: Deprecated
+        totalStakedNetwork:
+          deprecated: true
+          type: string
+          description: Deprecated
+        selfStakedCPU:
+          deprecated: true
+          type: string
+          description: Deprecated
+        selfStakedNetwork:
+          deprecated: true
+          type: string
+          description: Deprecated
+        pendingRefundCPU:
+          type: string
+          deprecated: true
+          description: Deprecated
+        pendingRefundNetwork:
+          type: string
+          deprecated: true
+          description: Deprecated
+        blockHeight:
+          description: The height (number) of the block of the balance
+          type: string
+          example: '19911062'
+        blockHash:
+          description: The hash of the block of the balance
+          type: string
+          example: '0xcc16c4ab5e018d1f05d3a18fcd122a3ef94276c10a4c89bbab10830f5c1ca742'
+        rewardsInfo:
+          $ref: '#/components/schemas/RewardsInfo'
+    VaultWalletAddress:
+      type: object
+      properties:
+        assetId:
+          type: string
+          x-fb-entity: asset
+        address:
+          type: string
+        description:
+          type: string
+        tag:
+          type: string
+        type:
+          type: string
+        customerRefId:
+          type: string
+        addressFormat:
+          type: string
+          enum:
+          - SEGWIT
+          - LEGACY
+          - BASE
+          - PAYMENT
+        legacyAddress:
+          type: string
+        enterpriseAddress:
+          type: string
+        bip44AddressIndex:
+          type: integer
+        userDefined:
+          type: boolean
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
+        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+    X-End-User-Wallet-Id:
+      name: X-End-User-Wallet-Id
+      in: header
+      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'

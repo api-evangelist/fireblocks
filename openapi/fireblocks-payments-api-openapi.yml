@@ -1,0 +1,3825 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Payments API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
+    platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+paths:
+  /payments/payout:
+    post:
+      tags:
+      - Payments - Payout
+      description: '**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine
+        endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>
+
+        </br>These endpoints are currently in beta and might be subject to changes.</br>
+
+        </br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager
+        or email CSM@fireblocks.com. </br>
+
+        </br> <b u>Create a payout instruction set.</b> </u></br>
+
+        A payout instruction set is a set of instructions for distributing payments from a single payment account to a list
+        of payee accounts. </br>
+
+        The instruction set defines: </br>
+
+        <ul>
+
+        <li>the payment account and its account type (vault, exchange, or fiat). </li>
+
+        <li>the account type (vault account, exchange account, whitelisted address, network connection, fiat account, or merchant
+        account), the amount, and the asset of payment for each payee account.</li>
+
+        </ul>
+
+        Learn more about Fireblocks Payments - Payouts in the following [guide](https://developers.fireblocks.com/docs/create-payouts).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      summary: Create a payout instruction set
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePayoutRequest'
+            example:
+              paymentAccount:
+                id: EX_SUB1
+                type: EXCHANGE_ACCOUNT
+              instructionSet:
+              - payeeAccount:
+                  id: bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3
+                  type: EXTERNAL_WALLET
+                amount:
+                  amount: '43'
+                  assetId: USDC
+              - payeeAccount:
+                  id: 3adc1f92-e791-44a8-9aee-7f31c2108b78
+                  type: NETWORK_CONNECTION
+                amount:
+                  amount: '4423'
+                  assetId: USDC
+      responses:
+        '200':
+          description: The payout instruction set creation succeeded and returns the generated instruction set with a unique
+            payout IDThe payout ID will be used for executing the payout and checking the payout status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutResponse'
+              example:
+                payoutId: 1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7
+                paymentAccount:
+                  id: EX_SUB2
+                  type: EXCHANGE_ACCOUNT
+                createdAt: 1645365800
+                state: REQUESTED
+                status: REGISTERED
+                initMethod: API
+                instructionSet:
+                - id: 6ea4a016-536b-49af-b1a0-40b343ccf879
+                  name: payee-wallet-name
+                  payeeAccount:
+                    id: bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3
+                    type: EXTERNAL_WALLET
+                  amount:
+                    amount: '43'
+                    assetId: USDC
+                  state: NOT_STARTED
+                  transactions: []
+                - id: e783a79b-6acc-4d18-885d-ed533cad8eeb
+                  name: payee-by-network
+                  payeeAccount:
+                    id: 3adc1f92-e791-44a8-9aee-7f31c2108b78
+                    type: NETWORK_CONNECTION
+                  amount:
+                    amount: '4423.23'
+                    assetId: USDC
+                  state: NOT_STARTED
+                  transactions: []
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: createPayout
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PayoutResponse>> = fireblocks.paymentsPayout.createPayout(paymentsPayoutApiCreatePayoutRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PayoutResponse>> response = fireblocks.paymentsPayout().createPayout(createPayoutRequest,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.payments_payout.create_payout(create_payout_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PayoutResponse>> = fireblocks.paymentsPayout.createPayout(paymentsPayoutApiCreatePayoutRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PayoutResponse>> response = fireblocks.paymentsPayout().createPayout(createPayoutRequest,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.payments_payout.create_payout(create_payout_request, idempotency_key);
+  /payments/payout/{payoutId}/actions/execute:
+    post:
+      tags:
+      - Payments - Payout
+      summary: Execute a payout instruction set
+      description: '**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine
+        endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>
+
+        </br>These endpoints are currently in beta and might be subject to changes.</br>
+
+        </br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager
+        or email CSM@fireblocks.com. </br>
+
+        </br><b u>Execute a payout instruction set.</b> </u> </br>
+
+        </br>The instruction set will be verified and executed.</br>
+
+        <b><u>Source locking</br></b> </u>
+
+        If you are executing a payout instruction set from a payment account with an already active payout the active payout
+        will complete before the new payout instruction set can be executed. </br>
+
+        You cannot execute the same payout instruction set more than once.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      parameters:
+      - name: payoutId
+        description: the payout id received from the creation of the payout instruction set
+        in: path
+        schema:
+          type: string
+        required: true
+        example: 1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Executed the payout instruction set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DispatchPayoutResponse'
+              example:
+                payoutId: 1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: executePayoutAction
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DispatchPayoutResponse>> = fireblocks.paymentsPayout.executePayoutAction(paymentsPayoutApiExecutePayoutActionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DispatchPayoutResponse>> response = fireblocks.paymentsPayout().executePayoutAction(payoutId,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.payments_payout.execute_payout_action(payout_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DispatchPayoutResponse>> = fireblocks.paymentsPayout.executePayoutAction(paymentsPayoutApiExecutePayoutActionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DispatchPayoutResponse>> response = fireblocks.paymentsPayout().executePayoutAction(payoutId,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.payments_payout.execute_payout_action(payout_id, idempotency_key);
+  /payments/payout/{payoutId}:
+    get:
+      tags:
+      - Payments - Payout
+      summary: Get the status of a payout instruction set
+      description: '**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine
+        endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>
+
+        </br>These endpoints are currently in beta and might be subject to changes.</br>
+
+        </br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager
+        or email CSM@fireblocks.com. </br>
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      parameters:
+      - name: payoutId
+        description: the payout id received from the creation of the payout instruction set
+        in: path
+        schema:
+          type: string
+        required: true
+        example: 1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7
+      responses:
+        '200':
+          description: Returns the current status of the payout instruction set, including the status of each payout instruction
+            and the transactions created in the process.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutResponse'
+              example:
+                payoutId: 1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7
+                paymentAccount:
+                  id: EX_SUB3
+                  type: EXCHANGE_ACCOUNT
+                createdAt: 1645365800
+                state: FINALIZED
+                status: DONE
+                initMethod: API
+                instructionSet:
+                - id: 6ea4a016-536b-49af-b1a0-40b343ccf879
+                  name: payee-wallet-name
+                  payeeAccount:
+                    id: bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3
+                    type: EXTERNAL_WALLET
+                  amount:
+                    amount: '4312'
+                    assetId: USDC
+                  state: COMPLETED
+                  transactions:
+                  - id: 35a4b10c-1f83-4f0b-ba2a-da0e73be2d6e
+                    state: COMPLETED
+                    timestamp: 1645367429
+                - id: e783a79b-6acc-4d18-885d-ed533cad8eeb
+                  name: payee-by-network
+                  payeeAccount:
+                    id: 3adc1f92-e791-44a8-9aee-7f31c2108b78
+                    type: NETWORK_CONNECTION
+                  amount:
+                    amount: '4423.23'
+                    assetId: USDC
+                  state: COMPLETED
+                  transactions:
+                  - id: 4505e7d9-bfc7-41bc-9750-54311fcbbf26
+                    state: COMPLETED
+                    timestamp: 1645367449
+                reportUrl: https://some-url.com/reports/cc5777c1-75a9-4337-aebd-f1f5a40a9391
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: No payout with the given payout ID exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: getPayout
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PayoutResponse>> = fireblocks.paymentsPayout.getPayout(paymentsPayoutApiGetPayoutRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PayoutResponse>> response = fireblocks.paymentsPayout().getPayout(payoutId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.payments_payout.get_payout(payout_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PayoutResponse>> = fireblocks.paymentsPayout.getPayout(paymentsPayoutApiGetPayoutRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PayoutResponse>> response = fireblocks.paymentsPayout().getPayout(payoutId);
+      - lang: Python
+        source: response = fireblocks.payments_payout.get_payout(payout_id);
+  /payments/workflow_config:
+    post:
+      x-internal: true
+      tags:
+      - Payments - Flows
+      description: 'Generate a new configuration ID to be used for initiating executions in subsequent phases. This configuration
+        should include the operations you intend to incorporate into the workflow, such as TRANSFER, CONVERT, and DISBURSE,
+        in addition to your pre-screening preferences, which are disabled by default.
+
+        Learn more about Fireblocks Payments - Flows in the following [guide](https://developers.fireblocks.com/docs/payment-flows-copy).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      summary: Create payment flow configuration
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWorkflowConfigurationRequest'
+      responses:
+        '202':
+          description: Configuration is being generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowConfiguration'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: createFlowConfiguration
+  /payments/workflow_config/{configId}:
+    get:
+      x-internal: true
+      tags:
+      - Payments - Flows
+      description: 'Retrieve a previously created workflow configuration using the specified "configId".
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      summary: Retrieve workflow configuration
+      parameters:
+      - name: configId
+        in: path
+        schema:
+          type: string
+          description: The created configuration unique identifier
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+        required: true
+      responses:
+        '200':
+          description: Returns a workflow configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowConfiguration'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: getFlowConfiguration
+    delete:
+      x-internal: true
+      tags:
+      - Payments - Flows
+      description: 'Delete a configuration using the specified "configId".
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      summary: Delete workflow configuration
+      parameters:
+      - name: configId
+        in: path
+        schema:
+          type: string
+          description: The created configuration unique identifier
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+        required: true
+      responses:
+        '200':
+          description: The specified configuration has been deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowConfigurationId'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: deleteFlowConfiguration
+  /payments/workflow_execution:
+    post:
+      x-internal: true
+      tags:
+      - Payments - Flows
+      description: 'Validate the "workflow-config" previously created by utilizing the unique "configId". This step requires
+        the mandatory field amount, and allows for modifications to other fields defined via the "workflow-config" endpoint,
+        including pre-screening preferences. A response containing the "workflowExecutionId" and detailing the validation
+        status will be provided. Execution is ready when the "workflow-execution" status is READY_FOR_LAUNCH, at which point
+        it can be initiated with "POST /workflow-execution/{workflowExecutionId}/actions/execute".
+
+        Learn more about Fireblocks Payments - Flows in the following [guide](https://developers.fireblocks.com/docs/payment-flows-copy).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      summary: Create workflow execution
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWorkflowExecutionRequest'
+      responses:
+        '200':
+          description: Workflow execution entity has been created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowExecution'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: createFlowExecution
+  /payments/workflow_execution/{workflowExecutionId}:
+    get:
+      x-internal: true
+      tags:
+      - Payments - Flows
+      description: 'Retrieve details of a previously initiated workflow execution by specifying the "workflowExecutionId"
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      summary: Get workflow execution details
+      parameters:
+      - name: workflowExecutionId
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Returns workflow execution by id with preview info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowExecution'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: getFlowExecution
+  /payments/workflow_execution/{workflowExecutionId}/actions/execute:
+    post:
+      x-internal: true
+      tags:
+      - Payments - Flows
+      description: 'Launch the execution of a pre-configured workflow, identified by "workflowExecutionId", once it reaches
+        the READY_FOR_LAUNCH state. The workflow undergoes several phases during execution - EXECUTION_IN_PROGRESS - Marks
+        the start of the workflow execution. EXECUTION_COMPLETED or EXECUTION_FAILED - Indicates the execution has reached
+        a final state.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      summary: Execute the payments workflow
+      parameters:
+      - name: workflowExecutionId
+        in: path
+        schema:
+          type: string
+        required: true
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Workflow execution has been executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowExecution'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: launchFlowExecution
+  /smart-transfers:
+    post:
+      operationId: createTicket
+      summary: Create Ticket
+      description: 'Creates a new Smart Transfer ticket. Learn more about Fireblocks Smart Transfers [here](https://developers.fireblocks.com/docs/execute-smart-transfers).
+
+
+        **Note:** The `DVP` value is in Early Access and should only be used if Fireblocks has enabled it in your workspace.
+        Contact your Customer Success Manager for more information.
+
+
+        **Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor.
+
+        '
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.createTicket(smartTransferApiCreateTicketRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().createTicket(smartTransferCreateTicket,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.create_ticket(smart_transfer_create_ticket, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferCreateTicket'
+      responses:
+        '201':
+          description: Smart Transfer ticket was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.createTicket(smartTransferApiCreateTicketRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().createTicket(smartTransferCreateTicket,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.create_ticket(smart_transfer_create_ticket, idempotency_key);
+    get:
+      operationId: searchTickets
+      summary: Find Ticket
+      description: "Finds Smart Transfer tickets that match the submitted criteria.\n</br>Endpoint Permission: Admin, Non-Signing\
+        \ Admin, Signer, Approver, Editor,\n  Viewer."
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketFilteredResponse>> = fireblocks.smartTransfer.searchTickets(smartTransferApiSearchTicketsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketFilteredResponse>> response = fireblocks.smartTransfer().searchTickets(q,
+            statuses, networkId, createdByMe, expiresAfter, expiresBefore, type, externalRefId, after, limit);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.search_tickets(q, statuses, network_id, created_by_me, expires_after,
+            expires_before, type, external_ref_id, after, limit);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: q
+        required: false
+        in: query
+        description: Search string - counterparty name or asset or ticketId. Optional
+        schema:
+          minLength: 1
+          type: string
+          example: BTC
+      - name: statuses
+        required: false
+        in: query
+        description: Ticket statuses for Smart Transfer tickets. Optional
+        example:
+        - DRAFT
+        - OPEN
+        schema:
+          default: []
+          type: array
+          items:
+            type: string
+            enum:
+            - DRAFT
+            - PENDING_APPROVAL
+            - OPEN
+            - IN_SETTLEMENT
+            - FULFILLED
+            - EXPIRED
+            - CANCELED
+      - name: networkId
+        required: false
+        in: query
+        description: "NetworkId that is used in the ticket\t. Optional"
+        schema:
+          type: string
+          example: cf6c9e4b-916a-4dae-9421-8782b20a44ea
+      - name: createdByMe
+        required: false
+        in: query
+        description: Filter created tickets by created by self or by others. Optional
+        schema:
+          type: boolean
+      - name: expiresAfter
+        required: false
+        in: query
+        description: Lower bound of search range. Optional
+        schema:
+          format: date-time
+          type: string
+          example: '2017-07-21T17:32:28Z'
+      - name: expiresBefore
+        required: false
+        in: query
+        description: Upper bound of search range. Optional
+        schema:
+          format: date-time
+          type: string
+          example: '2017-07-21T17:32:28Z'
+      - name: type
+        required: false
+        in: query
+        description: Type of transfer. ASYNC executes transfers as they are funded, ATOMIC executes all terms (legs) as one
+          atomic transfer
+        schema:
+          enum:
+          - ASYNC
+          - DVP
+          type: string
+      - name: externalRefId
+        required: false
+        in: query
+        description: External ref. ID that workspace can use to identify ticket outside of Fireblocks system.
+        schema:
+          minLength: 1
+          maxLength: 64
+          type: string
+          example: some-external-reference
+      - name: after
+        required: false
+        in: query
+        description: ID of the record after which to fetch $limit records
+        schema:
+          type: string
+          example: aeda4201-7ec5-4276-a198-f0c62a5a8619
+      - name: limit
+        required: false
+        in: query
+        description: Number of records to fetch. By default, it is 100
+        schema:
+          minimum: 1
+          type: number
+          example: 20
+      responses:
+        '200':
+          description: Smart Transfer tickets were returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketFilteredResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketFilteredResponse>> = fireblocks.smartTransfer.searchTickets(smartTransferApiSearchTicketsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketFilteredResponse>> response = fireblocks.smartTransfer().searchTickets(q,
+          statuses, networkId, createdByMe, expiresAfter, expiresBefore, type, externalRefId, after, limit);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.search_tickets(q, statuses, network_id, created_by_me, expires_after,
+          expires_before, type, external_ref_id, after, limit);
+  /smart-transfers/{ticketId}:
+    get:
+      operationId: findTicketById
+      summary: Search Ticket by ID
+      description: 'Find Smart Transfer ticket by id.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.findTicketById(smartTransferApiFindTicketByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().findTicketById(ticketId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.find_ticket_by_id(ticket_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+          example: 118320d2-761f-46c7-96cf-65e71a370b36
+      responses:
+        '200':
+          description: Smart Transfer ticket returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.findTicketById(smartTransferApiFindTicketByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().findTicketById(ticketId);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.find_ticket_by_id(ticket_id);
+  /smart-transfers/{ticketId}/expires-in:
+    put:
+      operationId: setTicketExpiration
+      summary: Set expiration
+      description: 'Set expiration date on Smart Transfer ticket.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.setTicketExpiration(smartTransferApiSetTicketExpirationRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().setTicketExpiration(smartTransferSetTicketExpiration,
+            ticketId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.set_ticket_expiration(smart_transfer_set_ticket_expiration, ticket_id,
+            idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferSetTicketExpiration'
+      responses:
+        '200':
+          description: Successfully set expiration date on Smart Transfer ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.setTicketExpiration(smartTransferApiSetTicketExpirationRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().setTicketExpiration(smartTransferSetTicketExpiration,
+          ticketId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.set_ticket_expiration(smart_transfer_set_ticket_expiration, ticket_id,
+          idempotency_key);
+  /smart-transfers/{ticketId}/external-id:
+    put:
+      operationId: setExternalRefId
+      summary: Add external ref. ID
+      description: 'Set external id Smart Transfer ticket.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.setExternalRefId(smartTransferApiSetExternalRefIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().setExternalRefId(smartTransferSetTicketExternalId,
+            ticketId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.set_external_ref_id(smart_transfer_set_ticket_external_id, ticket_id,
+            idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferSetTicketExternalId'
+      responses:
+        '200':
+          description: Successfully set external id on Smart Transfer ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.setExternalRefId(smartTransferApiSetExternalRefIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().setExternalRefId(smartTransferSetTicketExternalId,
+          ticketId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.set_external_ref_id(smart_transfer_set_ticket_external_id, ticket_id,
+          idempotency_key);
+  /smart-transfers/{ticketId}/submit:
+    put:
+      operationId: submitTicket
+      summary: Submit ticket
+      description: 'Submit Smart Transfer ticket - change status into ready for approval if auto approval is not turned on,
+        or OPEN if auto approval is on.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.submitTicket(smartTransferApiSubmitTicketRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().submitTicket(smartTransferSubmitTicket,
+            ticketId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.submit_ticket(smart_transfer_submit_ticket, ticket_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferSubmitTicket'
+      responses:
+        '200':
+          description: Successfully submitted Smart Transfer ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.submitTicket(smartTransferApiSubmitTicketRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().submitTicket(smartTransferSubmitTicket,
+          ticketId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.submit_ticket(smart_transfer_submit_ticket, ticket_id, idempotency_key);
+  /smart-transfers/{ticketId}/fulfill:
+    put:
+      operationId: fulfillTicket
+      summary: Fund ticket manually
+      description: 'Manually fulfill ticket, in case when all terms (legs) are funded manually.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.fulfillTicket(smartTransferApiFulfillTicketRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().fulfillTicket(ticketId,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.fulfill_ticket(ticket_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Successfully fulfilled on Smart Transfer ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.fulfillTicket(smartTransferApiFulfillTicketRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().fulfillTicket(ticketId,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.fulfill_ticket(ticket_id, idempotency_key);
+  /smart_transfers/{ticketId}/dvp/fund:
+    put:
+      operationId: fundDvpTicket
+      summary: Fund dvp ticket
+      description: Create or fulfill DvP ticket order
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferFundDvpTicket'
+      responses:
+        '200':
+          description: Successfully started creating or fulfilling order on dvp Smart Transfer ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.fundDvpTicket(smartTransferApiFundDvpTicketRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().fundDvpTicket(smartTransferFundDvpTicket,
+            ticketId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.fund_dvp_ticket(smart_transfer_fund_dvp_ticket, ticket_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.fundDvpTicket(smartTransferApiFundDvpTicketRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().fundDvpTicket(smartTransferFundDvpTicket,
+          ticketId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.fund_dvp_ticket(smart_transfer_fund_dvp_ticket, ticket_id, idempotency_key);
+  /smart-transfers/{ticketId}/cancel:
+    put:
+      operationId: cancelTicket
+      summary: Cancel Ticket
+      description: 'Cancel Smart Transfer ticket.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.cancelTicket(smartTransferApiCancelTicketRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().cancelTicket(ticketId,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.cancel_ticket(ticket_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+          example: deea0e4a-c64d-41b5-b3c5-f7112369a7d4
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Smart Transfer ticket successfully canceled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketResponse>> = fireblocks.smartTransfer.cancelTicket(smartTransferApiCancelTicketRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketResponse>> response = fireblocks.smartTransfer().cancelTicket(ticketId,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.cancel_ticket(ticket_id, idempotency_key);
+  /smart-transfers/{ticketId}/terms:
+    post:
+      operationId: createTicketTerm
+      summary: Create leg (term)
+      description: 'Creates new smart transfer ticket term (when the ticket status is DRAFT).
+
+        Learn more about Fireblocks Smart Transfers in the following [guide](https://developers.fireblocks.com/docs/execute-smart-transfers).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.createTicketTerm(smartTransferApiCreateTicketTermRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().createTicketTerm(smartTransferCreateTicketTerm,
+            ticketId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.create_ticket_term(smart_transfer_create_ticket_term, ticket_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+          example: 900f04c3-83bc-428d-b681-aef682059637
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferCreateTicketTerm'
+      responses:
+        '201':
+          description: Smart Transfer ticket term was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketTermResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.createTicketTerm(smartTransferApiCreateTicketTermRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().createTicketTerm(smartTransferCreateTicketTerm,
+          ticketId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.create_ticket_term(smart_transfer_create_ticket_term, ticket_id, idempotency_key);
+  /smart-transfers/{ticketId}/terms/{termId}:
+    get:
+      operationId: findTicketTermById
+      summary: Get Smart Transfer ticket term
+      description: 'Find a specific term of a specific Smart Transfer ticket.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.findTicketTermById(smartTransferApiFindTicketTermByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().findTicketTermById(ticketId,
+            termId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.find_ticket_term_by_id(ticket_id, term_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+          example: 118320d2-761f-46c7-96cf-65e71a370b36
+      - name: termId
+        required: true
+        in: path
+        schema:
+          type: string
+          example: 88587a11-5a3e-4d90-8a63-5008d7a40fb4
+      responses:
+        '200':
+          description: Smart Transfer ticket term returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketTermResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.findTicketTermById(smartTransferApiFindTicketTermByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().findTicketTermById(ticketId,
+          termId);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.find_ticket_term_by_id(ticket_id, term_id);
+    put:
+      operationId: updateTicketTerm
+      summary: Update ticket leg (term)
+      description: 'Update ticket term (when ticket status is DRAFT).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: termId
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferUpdateTicketTerm'
+      responses:
+        '200':
+          description: Smart Transfer ticket term updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketTermResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+      tags:
+      - Smart Transfers
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.updateTicketTerm(smartTransferApiUpdateTicketTermRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().updateTicketTerm(smartTransferUpdateTicketTerm,
+            ticketId, termId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.update_ticket_term(smart_transfer_update_ticket_term, ticket_id, term_id,
+            idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.updateTicketTerm(smartTransferApiUpdateTicketTermRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().updateTicketTerm(smartTransferUpdateTicketTerm,
+          ticketId, termId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.update_ticket_term(smart_transfer_update_ticket_term, ticket_id, term_id,
+          idempotency_key);
+    delete:
+      operationId: removeTicketTerm
+      summary: Delete ticket leg (term)
+      description: 'Delete ticket term when ticket is in DRAFT status.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: termId
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Smart Transfer ticket term successfully removed
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+      tags:
+      - Smart Transfers
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.smartTransfer.removeTicketTerm(smartTransferApiRemoveTicketTermRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.smartTransfer().removeTicketTerm(ticketId, termId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.remove_ticket_term(ticket_id, term_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.smartTransfer.removeTicketTerm(smartTransferApiRemoveTicketTermRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.smartTransfer().removeTicketTerm(ticketId, termId);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.remove_ticket_term(ticket_id, term_id);
+  /smart-transfers/{ticketId}/terms/{termId}/fund:
+    put:
+      operationId: fundTicketTerm
+      summary: Define funding source
+      description: 'Set funding source for ticket term (in case of ASYNC tickets, this will execute transfer immediately).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.fundTicketTerm(smartTransferApiFundTicketTermRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().fundTicketTerm(smartTransferFundTerm,
+            ticketId, termId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.fund_ticket_term(smart_transfer_fund_term, ticket_id, term_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+          example: 118320d2-761f-46c7-96cf-65e71a370b36
+      - name: termId
+        required: true
+        in: path
+        schema:
+          type: string
+          example: 88587a11-5a3e-4d90-8a63-5008d7a40fb4
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferFundTerm'
+      responses:
+        '201':
+          description: Funding source for ticket term successfully done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketTermResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.fundTicketTerm(smartTransferApiFundTicketTermRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().fundTicketTerm(smartTransferFundTerm,
+          ticketId, termId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.fund_ticket_term(smart_transfer_fund_term, ticket_id, term_id, idempotency_key);
+  /smart_transfers/{ticketId}/terms/{termId}/dvp/approve:
+    put:
+      operationId: approveDvPTicketTerm
+      summary: Set funding source and approval
+      description: Set funding source for ticket term and creating approving transaction for contract to transfer asset
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: termId
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferApproveTerm'
+      responses:
+        '201':
+          description: Creating approval transaction started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketTermResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.approveDvPTicketTerm(smartTransferApiApproveDvPTicketTermRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().approveDvPTicketTerm(smartTransferApproveTerm,
+            ticketId, termId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.approve_dv_p_ticket_term(smart_transfer_approve_term, ticket_id, term_id,
+            idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.approveDvPTicketTerm(smartTransferApiApproveDvPTicketTermRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().approveDvPTicketTerm(smartTransferApproveTerm,
+          ticketId, termId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.approve_dv_p_ticket_term(smart_transfer_approve_term, ticket_id, term_id,
+          idempotency_key);
+  /smart-transfers/{ticketId}/terms/{termId}/manually-fund:
+    put:
+      operationId: manuallyFundTicketTerm
+      summary: Manually add term transaction
+      description: 'Manually set ticket term transaction.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.manuallyFundTicketTerm(smartTransferApiManuallyFundTicketTermRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().manuallyFundTicketTerm(smartTransferManuallyFundTerm,
+            ticketId, termId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.manually_fund_ticket_term(smart_transfer_manually_fund_term, ticket_id,
+            term_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - name: ticketId
+        required: true
+        in: path
+        schema:
+          type: string
+          example: 118320d2-761f-46c7-96cf-65e71a370b36
+      - name: termId
+        required: true
+        in: path
+        schema:
+          type: string
+          example: 88587a11-5a3e-4d90-8a63-5008d7a40fb4
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferManuallyFundTerm'
+      responses:
+        '201':
+          description: Successfully manually set ticket term transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferTicketTermResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferNotFoundResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferTicketTermResponse>> = fireblocks.smartTransfer.manuallyFundTicketTerm(smartTransferApiManuallyFundTicketTermRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferTicketTermResponse>> response = fireblocks.smartTransfer().manuallyFundTicketTerm(smartTransferManuallyFundTerm,
+          ticketId, termId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.manually_fund_ticket_term(smart_transfer_manually_fund_term, ticket_id,
+          term_id, idempotency_key);
+  /smart-transfers/settings/user-groups:
+    post:
+      operationId: setUserGroups
+      summary: Set user group
+      description: 'Set Smart Transfers user group to receive email notifications for Smart Transfers.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferUserGroupsResponse>> = fireblocks.smartTransfer.setUserGroups(smartTransferApiSetUserGroupsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferUserGroupsResponse>> response = fireblocks.smartTransfer().setUserGroups(smartTransferSetUserGroups,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.set_user_groups(smart_transfer_set_user_groups, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartTransferSetUserGroups'
+      responses:
+        '201':
+          description: User group settings were set successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferUserGroupsResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferUserGroupsResponse>> = fireblocks.smartTransfer.setUserGroups(smartTransferApiSetUserGroupsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferUserGroupsResponse>> response = fireblocks.smartTransfer().setUserGroups(smartTransferSetUserGroups,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.smart_transfer.set_user_groups(smart_transfer_set_user_groups, idempotency_key);
+    get:
+      operationId: getSmartTransferUserGroups
+      summary: Get user group
+      description: 'Get Smart Transfer user groups.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferUserGroupsResponse>> = fireblocks.smartTransfer.getSmartTransferUserGroups();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferUserGroupsResponse>> response = fireblocks.smartTransfer().getSmartTransferUserGroups();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.get_smart_transfer_user_groups();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: User group settings were returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferUserGroupsResponse'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        '422':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferBadRequestResponse'
+      tags:
+      - Smart Transfers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferUserGroupsResponse>> = fireblocks.smartTransfer.getSmartTransferUserGroups();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferUserGroupsResponse>> response = fireblocks.smartTransfer().getSmartTransferUserGroups();
+      - lang: Python
+        source: response = fireblocks.smart_transfer.get_smart_transfer_user_groups();
+  /smart_transfers/statistic:
+    get:
+      operationId: getSmartTransferStatistic
+      summary: Get smart transfers statistic
+      description: Get smart transfer statistic
+      responses:
+        '200':
+          description: Smart Transfer ticket statistic returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferStatistic'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartTransferForbiddenResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Smart Transfers
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SmartTransferStatistic>> = fireblocks.smartTransfer.getSmartTransferStatistic();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SmartTransferStatistic>> response = fireblocks.smartTransfer().getSmartTransferStatistic();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.smart_transfer.get_smart_transfer_statistic();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SmartTransferStatistic>> = fireblocks.smartTransfer.getSmartTransferStatistic();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SmartTransferStatistic>> response = fireblocks.smartTransfer().getSmartTransferStatistic();
+      - lang: Python
+        source: response = fireblocks.smart_transfer.get_smart_transfer_statistic();
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        accountId:
+          description: The unique ID of the account
+          type: string
+          example: '0'
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+      required:
+      - accountId
+      - accountType
+    AccountType:
+      type: string
+      description: Account type
+      enum:
+      - EXCHANGE_ACCOUNT
+      - UNMANAGED_WALLET
+      - VAULT_ACCOUNT
+      - NETWORK_CONNECTION
+      - FIAT_ACCOUNT
+    AssetAmount:
+      type: object
+      properties:
+        amount:
+          type: string
+        assetId:
+          type: string
+      required:
+      - amount
+      - assetId
+    ConfigConversionOperationSnapshot:
+      type: object
+      properties:
+        operationId:
+          type: string
+        type:
+          $ref: '#/components/schemas/ConversionOperationType'
+        params:
+          $ref: '#/components/schemas/ConversionOperationConfigParams'
+      required:
+      - operationId
+      - type
+      - params
+    ConfigDisbursementOperationSnapshot:
+      type: object
+      properties:
+        operationId:
+          type: string
+        type:
+          $ref: '#/components/schemas/DisbursementOperationType'
+        params:
+          $ref: '#/components/schemas/DisbursementOperationConfigParams'
+      required:
+      - operationId
+      - type
+      - params
+    ConfigOperation:
+      oneOf:
+      - $ref: '#/components/schemas/ConversionConfigOperation'
+      - $ref: '#/components/schemas/TransferConfigOperation'
+      - $ref: '#/components/schemas/DisbursementConfigOperation'
+    ConfigOperationSnapshot:
+      oneOf:
+      - $ref: '#/components/schemas/ConfigConversionOperationSnapshot'
+      - $ref: '#/components/schemas/ConfigTransferOperationSnapshot'
+      - $ref: '#/components/schemas/ConfigDisbursementOperationSnapshot'
+    ConfigOperationStatus:
+      type: string
+      enum:
+      - PENDING
+      - VALIDATION_IN_PROGRESS
+      - READY_FOR_EXECUTION
+      - VALIDATION_FAILED
+    ConfigTransferOperationSnapshot:
+      type: object
+      properties:
+        operationId:
+          type: string
+        type:
+          $ref: '#/components/schemas/TransferOperationType'
+        params:
+          $ref: '#/components/schemas/TransferOperationConfigParams'
+      required:
+      - operationId
+      - type
+      - params
+    ConversionConfigOperation:
+      type: object
+      properties:
+        operationId:
+          description: Operation unique identifier
+          example: 7bf16b28-6cd6-403f-af60-045c4b68a767
+          type: string
+        type:
+          $ref: '#/components/schemas/ConversionOperationType'
+        params:
+          $ref: '#/components/schemas/ConversionOperationConfigParams'
+        status:
+          $ref: '#/components/schemas/ConfigOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/ConversionValidationFailure'
+      required:
+      - operationId
+      - type
+      - params
+      - status
+    ConversionOperationConfigParams:
+      type: object
+      properties:
+        amount:
+          description: The amount to convert
+          type: string
+          example: '10'
+        accountId:
+          description: Source account ID
+          example: '0'
+          type: string
+        srcAssetId:
+          description: The asset ID to convert
+          type: string
+          example: ETH
+        destAssetId:
+          description: The asset ID to get as a result of the conversion
+          type: string
+          example: USDC
+        slippageBasisPoints:
+          type: integer
+          description: Slippage tolerance (basis points)
+          minimum: 0
+          maximum: 10000
+          example: 100
+      required:
+      - destAssetId
+    ConversionOperationExecution:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/ConversionOperationConfigParams'
+        output:
+          $ref: '#/components/schemas/ConversionOperationExecutionOutput'
+        startedAt:
+          type: number
+        finishedAt:
+          type: number
+        failure:
+          $ref: '#/components/schemas/ConversionOperationFailure'
+      required:
+      - input
+      - startedAt
+    ConversionOperationExecutionOutput:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/AssetAmount'
+        fee:
+          $ref: '#/components/schemas/AssetAmount'
+        conversionRate:
+          type: string
+      required:
+      - amount
+      - fee
+      - conversionRate
+    ConversionOperationExecutionParams:
+      type: object
+      properties:
+        configOperationId:
+          type: string
+        executionParams:
+          type: object
+          properties:
+            amount:
+              type: string
+            accountId:
+              type: string
+            srcAssetId:
+              type: string
+            destAssetId:
+              type: string
+            slippageBasisPoints:
+              type: integer
+              minimum: 0
+              maximum: 10000
+      required:
+      - configOperationId
+    ConversionOperationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - INVALID_AMOUNT
+          - SLIPPAGE_EXCEEDED
+          - AMOUNT_TOO_SMALL
+          - INSUFFICIENT_FUNDS
+        data:
+          type: object
+          additionalProperties: {}
+      required:
+      - reason
+    ConversionOperationPreview:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/ConversionOperationConfigParams'
+        output:
+          $ref: '#/components/schemas/ConversionOperationPreviewOutput'
+        failure:
+          $ref: '#/components/schemas/ConversionOperationFailure'
+      required:
+      - input
+    ConversionOperationPreviewOutput:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/AssetAmount'
+        fee:
+          $ref: '#/components/schemas/AssetAmount'
+        conversionRate:
+          type: string
+        timeSeconds:
+          type: number
+      required:
+      - amount
+      - fee
+      - conversionRate
+      - timeSeconds
+    ConversionOperationType:
+      type: string
+      description: Conversion Operation Type
+      enum:
+      - CONVERSION
+    ConversionValidationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - ACCOUNT_NOT_FOUND
+          - ACCOUNT_TYPE_NOT_SUPPORTED
+          - INSUFFICIENT_BALANCE
+          - ASSET_NOT_FOUND
+          - ASSETS_CONTINUITY_MISMATCH
+          - EXCHANGE_BASKETS_MISMATCH
+          - ACCOUNTS_CONTINUITY_MISMATCH
+          - ONE_TIME_ADDRESS_CONTINUITY_NOT_ALLOWED
+          - EQUAL_ACCOUNTS_NOT_ALLOWED
+          - EQUAL_ASSETS_NOT_ALLOWED
+          - INVALID_AMOUNT
+          - UNMANAGED_WALLET_AS_SOURCE_NOT_ALLOWED
+          - MANAGED_OPERATION_PARAMS_INVALID_SCHEMA
+          - ACCOUNT_IS_NOT_EXCHANGE
+          - UNSUPPORTED_TRADING_METHOD
+          - ASSETS_CAN_NOT_CONVERTED
+        data:
+          type: object
+          additionalProperties: {}
+      required:
+      - reason
+    CorrelationData:
+      x-internal: true
+      oneOf:
+      - type: object
+        additionalProperties:
+          type: string
+      - type: string
+    CreateConfigOperationRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateConversionConfigOperationRequest'
+      - $ref: '#/components/schemas/CreateTransferConfigOperationRequest'
+      - $ref: '#/components/schemas/CreateDisbursementConfigOperationRequest'
+    CreateConversionConfigOperationRequest:
+      type: object
+      description: Conversion Operation object
+      properties:
+        type:
+          $ref: '#/components/schemas/ConversionOperationType'
+        params:
+          $ref: '#/components/schemas/ConversionOperationConfigParams'
+      required:
+      - type
+      - params
+    CreateDisbursementConfigOperationRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DisbursementOperationType'
+        params:
+          $ref: '#/components/schemas/DisbursementOperationConfigParams'
+      required:
+      - type
+      - params
+    CreatePayoutRequest:
+      type: object
+      properties:
+        paymentAccount:
+          $ref: '#/components/schemas/PaymentAccount'
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayoutInstruction'
+      required:
+      - paymentAccount
+      - instructionSet
+    CreateTransferConfigOperationRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/TransferOperationType'
+        params:
+          $ref: '#/components/schemas/TransferOperationConfigParams'
+      required:
+      - type
+      - params
+    CreateWorkflowConfigurationRequest:
+      type: object
+      x-internal: true
+      properties:
+        configName:
+          description: Your configuration name
+          type: string
+          example: my_config_name
+        preScreening:
+          $ref: '#/components/schemas/PreScreening'
+        configOperations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateConfigOperationRequest'
+        externalCorrelationData:
+          $ref: '#/components/schemas/CorrelationData'
+      required:
+      - configName
+      - configOperations
+    CreateWorkflowExecutionRequest:
+      type: object
+      x-internal: true
+      properties:
+        configId:
+          description: The created configuration unique identifier
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+          type: string
+        preScreening:
+          $ref: '#/components/schemas/PreScreening'
+        params:
+          type: array
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/ConversionOperationExecutionParams'
+            - $ref: '#/components/schemas/TransferOperationExecutionParams'
+            - $ref: '#/components/schemas/DisbursementOperationExecutionParams'
+        externalCorrelationData:
+          $ref: '#/components/schemas/CorrelationData'
+      required:
+      - configId
+      - params
+    Destination:
+      oneOf:
+      - $ref: '#/components/schemas/Account'
+      - $ref: '#/components/schemas/OneTimeAddressAccount'
+    DisbursementAmountInstruction:
+      type: object
+      properties:
+        payeeAccount:
+          $ref: '#/components/schemas/Destination'
+        assetId:
+          description: Asset unique identifier
+          type: string
+          example: ETH
+        amount:
+          description: The amount to disburse
+          type: string
+          example: '100'
+      required:
+      - payeeAccount
+      - assetId
+      - amount
+    DisbursementConfigOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+        type:
+          $ref: '#/components/schemas/DisbursementOperationType'
+        params:
+          $ref: '#/components/schemas/DisbursementOperationConfigParams'
+        status:
+          $ref: '#/components/schemas/ConfigOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/DisbursementValidationFailure'
+      required:
+      - operationId
+      - type
+      - params
+      - status
+    DisbursementInstruction:
+      oneOf:
+      - $ref: '#/components/schemas/DisbursementAmountInstruction'
+      - $ref: '#/components/schemas/DisbursementPercentageInstruction'
+    DisbursementInstructionOutput:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/AssetAmount'
+        fee:
+          $ref: '#/components/schemas/AssetAmount'
+        payeeAccount:
+          $ref: '#/components/schemas/Destination'
+      required:
+      - amount
+      - fee
+      - payeeAccount
+    DisbursementOperationConfigParams:
+      type: object
+      properties:
+        paymentAccount:
+          $ref: '#/components/schemas/Account'
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisbursementInstruction'
+      required:
+      - instructionSet
+    DisbursementOperationExecution:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/DisbursementOperationInput'
+        output:
+          $ref: '#/components/schemas/DisbursementOperationExecutionOutput'
+        payoutId:
+          type: string
+        startedAt:
+          type: number
+        finishedAt:
+          type: number
+        failure:
+          $ref: '#/components/schemas/OperationExecutionFailure'
+      required:
+      - input
+      - startedAt
+    DisbursementOperationExecutionOutput:
+      type: object
+      properties:
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisbursementInstructionOutput'
+      required:
+      - instructionSet
+    DisbursementOperationExecutionParams:
+      type: object
+      properties:
+        configOperationId:
+          type: string
+        executionParams:
+          type: object
+          properties:
+            amount:
+              type: string
+            paymentAccount:
+              $ref: '#/components/schemas/Account'
+            instructionSet:
+              type: array
+              items:
+                $ref: '#/components/schemas/DisbursementInstruction'
+      required:
+      - configOperationId
+    DisbursementOperationInput:
+      type: object
+      properties:
+        amount:
+          type: string
+        paymentAccount:
+          $ref: '#/components/schemas/Account'
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisbursementInstruction'
+      required:
+      - paymentAccount
+      - instructionSet
+    DisbursementOperationPreview:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/DisbursementOperationInput'
+        output:
+          $ref: '#/components/schemas/DisbursementOperationPreviewOutput'
+        failure:
+          $ref: '#/components/schemas/OperationExecutionFailure'
+      required:
+      - input
+    DisbursementOperationPreviewOutput:
+      type: object
+      properties:
+        instructionSet:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/DisbursementInstructionOutput'
+            - type: object
+              properties:
+                timeSeconds:
+                  type: number
+              required:
+              - timeSeconds
+      required:
+      - instructionSet
+    DisbursementOperationType:
+      type: string
+      description: Disbursment operation type
+      enum:
+      - DISBURSEMENT
+    DisbursementPercentageInstruction:
+      type: object
+      properties:
+        payeeAccount:
+          $ref: '#/components/schemas/Destination'
+        assetId:
+          type: string
+          description: The asset ID to disburse
+          example: ETH
+        percentage:
+          description: The percentage of the asset's balance to disburse (i.e. '20' for 20% )
+          type: string
+          example: '20'
+      required:
+      - payeeAccount
+      - assetId
+      - percentage
+    DisbursementValidationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - ACCOUNT_NOT_FOUND
+          - ACCOUNT_TYPE_NOT_SUPPORTED
+          - INSUFFICIENT_BALANCE
+          - ASSET_NOT_FOUND
+          - ASSETS_CONTINUITY_MISMATCH
+          - EXCHANGE_BASKETS_MISMATCH
+          - ACCOUNTS_CONTINUITY_MISMATCH
+          - ONE_TIME_ADDRESS_CONTINUITY_NOT_ALLOWED
+          - EQUAL_ACCOUNTS_NOT_ALLOWED
+          - EQUAL_ASSETS_NOT_ALLOWED
+          - INVALID_AMOUNT
+          - UNMANAGED_WALLET_AS_SOURCE_NOT_ALLOWED
+          - MANAGED_OPERATION_PARAMS_INVALID_SCHEMA
+          - INSTRUCTIONS_EXCEED_HUNDRED_PERCENT
+          - INSTRUCTIONS_ARRAY_EMPTY
+        data:
+          type: object
+          additionalProperties: {}
+      required:
+      - reason
+    DispatchPayoutResponse:
+      type: object
+      properties:
+        payoutId:
+          type: string
+      required:
+      - payoutId
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - INTERNAL
+              - AUTHENTICATION
+              - AUTHORIZATION
+              - VALIDATION
+              - NOT_FOUND
+              - UNPROCESSABLE_ENTITY
+              - FORBIDDEN
+            message:
+              type: string
+          required:
+          - type
+          - message
+      required:
+      - error
+    ExecutionConversionOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+        status:
+          $ref: '#/components/schemas/ExecutionOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/ConversionValidationFailure'
+        operationType:
+          $ref: '#/components/schemas/ConversionOperationType'
+        preview:
+          $ref: '#/components/schemas/ConversionOperationPreview'
+        execution:
+          $ref: '#/components/schemas/ConversionOperationExecution'
+      required:
+      - operationId
+      - status
+      - operationType
+    ExecutionDisbursementOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+          description: Configuration unique identifier
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+        status:
+          $ref: '#/components/schemas/ExecutionOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/DisbursementValidationFailure'
+        operationType:
+          $ref: '#/components/schemas/DisbursementOperationType'
+        preview:
+          $ref: '#/components/schemas/DisbursementOperationPreview'
+        execution:
+          $ref: '#/components/schemas/DisbursementOperationExecution'
+      required:
+      - operationId
+      - status
+      - operationType
+    ExecutionOperationStatus:
+      type: string
+      enum:
+      - PENDING
+      - VALIDATION_IN_PROGRESS
+      - VALIDATION_FAILED
+      - VALIDATION_COMPLETED
+      - PREVIEW_REQUESTED
+      - PREVIEW_IN_PROGRESS
+      - PREVIEW_FAILED
+      - READY_FOR_LAUNCH
+      - EXECUTION_REQUESTED
+      - EXECUTION_IN_PROGRESS
+      - EXECUTION_COMPLETED
+      - EXECUTION_FAILED
+    ExecutionScreeningOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+          description: Operation unique identifier
+          example: 1cbf5105-b462-4c0b-83ca-d805251835e9
+        status:
+          $ref: '#/components/schemas/ExecutionOperationStatus'
+        operationType:
+          $ref: '#/components/schemas/ScreeningOperationType'
+        validationFailure:
+          $ref: '#/components/schemas/ScreeningValidationFailure'
+        execution:
+          $ref: '#/components/schemas/ScreeningOperationExecution'
+      required:
+      - operationId
+      - status
+      - operationType
+    ExecutionTransferOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+          example: 1cbf5105-b462-4c0b-83ca-d805251835e9
+          description: Operation unique identifier
+        status:
+          $ref: '#/components/schemas/ExecutionOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/TransferValidationFailure'
+        operationType:
+          $ref: '#/components/schemas/TransferOperationType'
+        preview:
+          $ref: '#/components/schemas/TransferOperationPreview'
+        execution:
+          $ref: '#/components/schemas/TransferOperationExecution'
+      required:
+      - operationId
+      - status
+      - operationType
+    InstructionAmount:
+      type: object
+      properties:
+        amount:
+          description: The amount as string
+          type: string
+          example: '20'
+        assetId:
+          description: Unique asset identifier
+          type: string
+          example: ETH
+      required:
+      - amount
+      - assetId
+    OneTimeAddressAccount:
+      type: object
+      description: Non whitelisted destination address
+      properties:
+        oneTimeAddress:
+          description: The destination address
+          type: string
+          example: '0xb794f5ea0ba39494ce839613fffba74279579268'
+        tag:
+          type: string
+          description: required For Tag/Memo based assets only
+          example: '123456'
+      required:
+      - oneTimeAddress
+    OperationExecutionFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+        data:
+          type: object
+          additionalProperties: {}
+      required:
+      - reason
+    PayeeAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/PayeeAccountType'
+      required:
+      - id
+      - type
+    PayeeAccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/PayeeAccountType'
+    PayeeAccountType:
+      type: string
+      enum:
+      - VAULT_ACCOUNT
+      - EXCHANGE_ACCOUNT
+      - INTERNAL_WALLET
+      - EXTERNAL_WALLET
+      - NETWORK_CONNECTION
+      - FIAT_ACCOUNT
+      description: "- VAULT_ACCOUNT  \ta native Fireblocks vault account\n- EXCHANGE_ACCOUNT \ta third-party exchange account\n\
+        - INTERNAL_WALLET \ta whitelisted address marked as internal to the workspace/organization\n- EXTERNAL_WALLET\ta whitelisted\
+        \ address marked as external\n- NETWORK_CONNECTION\ta member of the Fireblocks network\n- FIAT_ACCOUNT\ta third-party\
+        \ account of a fiat bank (Signature, BCB, etc)\n"
+    PaymentAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/PaymentAccountType'
+      required:
+      - id
+      - type
+    PaymentAccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/PaymentAccountType'
+    PaymentAccountType:
+      type: string
+      enum:
+      - VAULT_ACCOUNT
+      - EXCHANGE_ACCOUNT
+      - FIAT_ACCOUNT
+    PayoutInitMethod:
+      type: string
+      enum:
+      - FILE
+      - API
+    PayoutInstruction:
+      type: object
+      properties:
+        id:
+          type: string
+        payeeAccount:
+          $ref: '#/components/schemas/PayeeAccount'
+        amount:
+          $ref: '#/components/schemas/InstructionAmount'
+      required:
+      - amount
+      - payeeAccount
+    PayoutInstructionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        payeeAccount:
+          $ref: '#/components/schemas/PayeeAccountResponse'
+        amount:
+          $ref: '#/components/schemas/InstructionAmount'
+        state:
+          $ref: '#/components/schemas/PayoutInstructionState'
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+      required:
+      - amount
+      - payeeAccount
+      - state
+      - transactions
+    PayoutInstructionState:
+      type: string
+      enum:
+      - NOT_STARTED
+      - TRANSACTION_SENT
+      - COMPLETED
+      - FAILED
+      - TRANSLATION_ERROR
+      - SKIPPED
+      description: "- NOT_STARTED\t- waiting to start\n- TRANSACTION_SENT - an underlying transaction was sent\n- COMPLETED\t\
+        - completed successfully\n- FAILED - failed\n- TRANSLATION_ERROR -lookup of the destination failed (due to changes\
+        \ in the underlying whitelisted external wallet or similar)\n- SKIPPED- no transaction(s) created for this instruction\n"
+    PayoutResponse:
+      type: object
+      properties:
+        payoutId:
+          type: string
+        paymentAccount:
+          $ref: '#/components/schemas/PaymentAccountResponse'
+        createdAt:
+          type: number
+        state:
+          $ref: '#/components/schemas/PayoutState'
+        status:
+          $ref: '#/components/schemas/PayoutStatus'
+        reasonOfFailure:
+          type: string
+          description: "<ul> \n<li> INSUFFICIENT_BALANCE</li>\n<li> SOURCE_TRANSLATION</li>\n<li> SOURCE_NOT_UNIQUE</li>\n\
+            <li> SOURCE_NOT_FOUND</li>\n<li> SOURCE_TYPE_NOT_SUPPORTED</li>\n<li> EMPTY_SOURCE</li>\n<li> DESTINATION_TRANSLATION</li>\n\
+            <li> DESTINATION_NOT_UNIQUE</li>\n<li> DESTINATION_NOT_FOUND</li>\n<li> EMPTY_DESTINATION</li>\n<li> PARSING </li>\n\
+            <li> UNKNOWN</li>\n<li> FIREBLOCKS_CLIENT</li>\n<li> TRANSACTION_SUBMISSION</li>\n</ul>\n"
+        initMethod:
+          $ref: '#/components/schemas/PayoutInitMethod'
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayoutInstructionResponse'
+        reportUrl:
+          type: string
+      required:
+      - payoutId
+      - createdAt
+      - state
+      - status
+      - paymentAccount
+      - instructionSet
+    PayoutState:
+      type: string
+      enum:
+      - CREATED
+      - FILE_FOUND
+      - REQUESTED
+      - TRANSLATED
+      - PROCESSING
+      - SUBMITTED
+      - FINALIZED
+      - INSUFFICIENT_BALANCE
+      - FAILED
+      description: '- CREATED - payout instruction set created with all its details
+
+        - FILE_FOUND - new file found in the FTP
+
+        - REQUESTED - payout requested with all its details
+
+        - TRANSLATED - payout instruction account IDs identified and translated
+
+        - PROCESSING - payout instruction set executed and is processing
+
+        - SUBMITTED - transactions submitted for payout instructions
+
+        - FINALIZED - payout finished processing, all transactions processed successfully
+
+        - INSUFFICIENT_BALANCE - insufficient balance in the payment account (can be a temporary state)
+
+        - FAILED - one or more of the payout instructions failed
+
+        '
+    PayoutStatus:
+      type: string
+      enum:
+      - REGISTERED
+      - VERIFYING
+      - IN_PROGRESS
+      - DONE
+      - INSUFFICIENT_BALANCE
+      - FAILED
+      description: "- REQUESTED\tpayout requested with all its details\n- VERIFIED\tpayout instruction set details were verified\n\
+        - PROCESSING\tpayout instruction set executed and is processing\n- FINALIZED\tpayout done (all payout instructions\
+        \ completed successfully)\n- INSUFFICIENT_BALANCE\tinsufficient balance in the payment account (can be a temporary\
+        \ state)\n- FAILED\tone or more of the payout instructions failed\n"
+    PreScreening:
+      type: object
+      description: Should the configured AML pre-screening policy be enabled or not
+      properties:
+        enabled:
+          type: boolean
+      required:
+      - enabled
+    ScreeningOperationExecution:
+      type: object
+      properties:
+        output:
+          $ref: '#/components/schemas/ScreeningOperationExecutionOutput'
+        startedAt:
+          type: number
+        finishedAt:
+          type: number
+        failure:
+          $ref: '#/components/schemas/ScreeningOperationFailure'
+      required:
+      - startedAt
+    ScreeningOperationExecutionOutput:
+      type: object
+      properties:
+        verdicts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScreeningVerdict'
+      required:
+      - verdicts
+    ScreeningOperationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - AML_PROCESS_FAILED
+          - SCREENING_REJECTED
+        data:
+          $ref: '#/components/schemas/ScreeningOperationExecutionOutput'
+      required:
+      - reason
+    ScreeningOperationType:
+      type: string
+      enum:
+      - SCREENING
+    ScreeningValidationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - SCREENING_DISABLED_IN_TENANT
+        data:
+          type: object
+          additionalProperties: {}
+      required:
+      - reason
+    ScreeningVerdict:
+      type: object
+      properties:
+        verdict:
+          type: string
+          enum:
+          - PASSED
+          - PASSED_WITH_ALERT
+          - REJECTED
+          - FAILED
+          - BYPASSED
+        executionOperationId:
+          type: string
+        account:
+          $ref: '#/components/schemas/Destination'
+        assetId:
+          type: string
+        amount:
+          type: string
+        matchedRule:
+          type: object
+          properties:
+            action:
+              type: string
+            category:
+              type: array
+              items:
+                type: string
+      required:
+      - executionOperationId
+      - account
+      - verdict
+      - assetId
+      - amount
+    SmartTransferApproveTerm:
+      type: object
+      properties:
+        asset:
+          type: string
+          description: Asset name
+          example: USDC
+          x-fb-entity: asset
+        amount:
+          type: string
+          description: Amount
+          example: '133.789161216184'
+        srcId:
+          type: string
+          description: Id of the vault that is used as the source of the asset.
+          example: '2'
+        fee:
+          type: string
+          description: Transaction fee
+          example: '0.001'
+        feeLevel:
+          type: string
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          description: Transaction fee level.
+          example: MEDIUM
+        note:
+          type: string
+          description: Transaction note
+          example: Transaction note
+      required:
+      - asset
+      - amount
+      - srcId
+    SmartTransferBadRequestResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Bad request error message
+          example: Your request contains invalid data
+        code:
+          type: string
+          description: Bad request error code
+          example: 2e7a7a5d-c85c-4ea5-9adf-668cba8b4eb4
+      required:
+      - message
+      - code
+    SmartTransferCoinStatistic:
+      type: object
+      description: Smart transfer coin statistic
+      properties:
+        asset:
+          type: string
+          example: BTC
+        amount:
+          type: string
+          example: 15
+    SmartTransferCreateTicket:
+      type: object
+      properties:
+        createdByNetworkId:
+          type: string
+          example: cf6c9e4b-916a-4dae-9421-8782b20a44ea
+        type:
+          type: string
+          enum:
+          - ASYNC
+          - DVP
+          description: '**Note:** The `DVP` value is in Early Access and should only be used if Fireblocks has enabled it
+            in your workspace. Contact your Customer Success Manager for more information.'
+        expiresIn:
+          type: number
+          example: 24
+          minimum: 1
+          maximum: 48
+          description: Number of hours after which an OPEN ticket will expire if no term is funded.
+        terms:
+          type: array
+          items:
+            $ref: '#/components/schemas/SmartTransferCreateTicketTerm'
+        externalRefId:
+          type: string
+          maxLength: 64
+          example: abcdefg
+        note:
+          type: string
+          maxLength: 1024
+          example: Some Note
+        submit:
+          type: boolean
+      required:
+      - createdByNetworkId
+      - type
+    SmartTransferCreateTicketTerm:
+      type: object
+      properties:
+        asset:
+          type: string
+          description: Asset name
+          example: BTC
+          x-fb-entity: asset
+        amount:
+          type: number
+          description: Amount
+          example: '133.789161216184'
+        fromNetworkId:
+          type: string
+          description: Identifier of the origination Network Profile
+          example: 947c6115-1f5f-4fb4-9fd6-a1f9dee14670
+        toNetworkId:
+          type: string
+          description: Identifier of the destination Network Profile
+          example: 5d009697-c29b-48e0-aff8-1f4305d19dc2
+      required:
+      - asset
+      - amount
+      - fromNetworkId
+      - toNetworkId
+    SmartTransferForbiddenResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Forbidden error code
+          example: You do not have permission to execute this action
+        code:
+          type: string
+          description: Error code
+          example: 3002
+      required:
+      - message
+      - code
+    SmartTransferFundDvpTicket:
+      type: object
+      properties:
+        fee:
+          type: string
+          description: Transaction fee
+          example: '0.001'
+        feeLevel:
+          type: string
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          description: Transaction fee level.
+          example: MEDIUM
+        note:
+          type: string
+          description: Transaction note
+          example: Transaction note
+    SmartTransferFundTerm:
+      type: object
+      properties:
+        asset:
+          type: string
+          description: Asset name
+          example: BTC
+          x-fb-entity: asset
+        amount:
+          type: string
+          description: Amount
+          example: '133.789161216184'
+        networkConnectionId:
+          type: string
+          description: Id of the network connection used.
+          example: 0805153d-e77d-4f9b-8818-e507eeb2d122
+        srcId:
+          type: string
+          description: Id of the vault that is used as the source of the asset.
+          example: '2'
+        srcType:
+          type: string
+          description: Source of the asset.
+          example: VAULT_ACCOUNT
+        fee:
+          type: string
+          description: Transaction fee
+          example: '0.001'
+        feeLevel:
+          type: string
+          description: Transaction fee level.
+          example: MEDIUM
+        note:
+          type: string
+          description: Transaction note
+          example: Transaction note
+      required:
+      - asset
+      - amount
+      - networkConnectionId
+      - srcId
+      - srcType
+    SmartTransferManuallyFundTerm:
+      type: object
+      properties:
+        txHash:
+          type: string
+          maxLength: 64
+          example: 23bd90f86b9c65716b3929440c03dc19e5da0981632391e20a24d3057e4fa5e9
+      required:
+      - txHash
+    SmartTransferNotFoundResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not found error message
+          example: Requested entity not found
+        code:
+          type: string
+          description: Error code
+          example: c943bdb8-ada0-4ba6-8645-74fcf188a10f
+      required:
+      - message
+      - code
+    SmartTransferSetTicketExpiration:
+      type: object
+      properties:
+        expiresIn:
+          type: number
+          description: Sets ticket expiration time (in hours) after a ticket is submitted. If no funding source is set to
+            any term, the ticket will automatically expire after given time.
+          minimum: 1
+          maximum: 48
+      required:
+      - expiresIn
+    SmartTransferSetTicketExternalId:
+      type: object
+      properties:
+        externalRefId:
+          type: string
+          example: abcdefg
+          minLength: 5
+          maxLength: 64
+          description: Each workspace can set their own external id they want to refer to this Ticket
+      required:
+      - externalRefId
+    SmartTransferSetUserGroups:
+      type: object
+      properties:
+        userGroupIds:
+          type: array
+          items:
+            type: string
+            example: 1ad4e96c-b59b-4224-84d1-ade6932cacc4
+      required:
+      - userGroupIds
+    SmartTransferStatistic:
+      type: object
+      description: Smart transfers statistic
+      properties:
+        inflow:
+          type: object
+          description: Inflow tickets data
+          properties:
+            coins:
+              type: array
+              items:
+                $ref: '#/components/schemas/SmartTransferCoinStatistic'
+            ticketCount:
+              type: integer
+              example: 4
+        outflow:
+          type: object
+          description: Outflow tickets data
+          properties:
+            coins:
+              type: array
+              items:
+                $ref: '#/components/schemas/SmartTransferCoinStatistic'
+            ticketCount:
+              type: integer
+              example: 4
+        totalActiveTickets:
+          description: Number of total active tickets
+          type: integer
+          example: 5
+        totalInactiveTickets:
+          description: Number of total inactive tickets (expired, canceled, completed)
+          type: integer
+          example: 5
+      required:
+      - inflow
+      - outflow
+      - totalActiveTickets
+      - totalInactiveTickets
+    SmartTransferSubmitTicket:
+      type: object
+      properties:
+        expiresIn:
+          type: number
+          description: Sets the ticket expiration time (in hours) after the ticket is submitted. If no funding source is set
+            for any term, the ticket will automatically expire after given time. If expiresIn is not sent ticket will not
+            expire.
+          minimum: 1
+          maximum: 48
+          example: 24
+    SmartTransferTicket:
+      type: object
+      description: Data object with result data
+      nullable: true
+      properties:
+        id:
+          type: string
+          description: Unique id of Smart Transfer ticket
+          example: 118320d2-761f-46c7-96cf-65e71a370b36
+        type:
+          type: string
+          enum:
+          - ASYNC
+          description: Kind of Smart Transfer. Can be either `ASYNC` or `ATOMIC`
+          example: ASYNC
+        direction:
+          enum:
+          - EXCHANGE
+          - SEND
+          - RECEIVE
+          - INTERMEDIATE
+          type: string
+          description: Direction of Smart Transfer.
+          example: EXCHANGE
+        status:
+          enum:
+          - DRAFT
+          - PENDING_APPROVAL
+          - OPEN
+          - IN_SETTLEMENT
+          - FULFILLED
+          - EXPIRED
+          - CANCELED
+          type: string
+          description: Current status of Smart Transfer ticket
+          example: DRAFT
+        terms:
+          description: Ticket terms (legs)
+          example:
+          - id: 84601ee2-b10f-4aa8-be9c-dba259a3533a
+            ticketId: 118320d2-761f-46c7-96cf-65e71a370b36
+            amount: '10.00'
+            asset: ETH
+            fromNetworkId: 947c6115-1f5f-4fb4-9fd6-a1f9dee14670
+            toNetworkId: 5d009697-c29b-48e0-aff8-1f4305d19dc2
+            status: CREATED
+          - id: 84601ee2-b10f-4aa8-be9c-dba259a3533a
+            ticketId: 118320d2-761f-46c7-96cf-65e71a370b36
+            amount: '10.00'
+            asset: ETH
+            fromNetworkId: 947c6115-1f5f-4fb4-9fd6-a1f9dee14670
+            fromNetworkIdName: Source network profile 1
+            toNetworkId: 5d009697-c29b-48e0-aff8-1f4305d19dc2
+            toNetworkIdName: Destination network profile 1
+            status: FUNDING
+            connectionId: 14817440-d5c8-4dbd-a754-ad415683610c
+            fbTxId: 79075e8c-1fd9-4c97-9575-3bd9229e5c0d
+            createdAt: '2023-03-01T11:23:00.000Z'
+            updatedAt: '2023-03-01T11:23:00.000Z'
+          - id: 84601ee2-b10f-4aa8-be9c-dba259a3533a
+            ticketId: 118320d2-761f-46c7-96cf-65e71a370b36
+            amount: '10.00'
+            asset: ETH
+            fromNetworkId: 947c6115-1f5f-4fb4-9fd6-a1f9dee14670
+            fromNetworkIdName: Source network profile 2
+            toNetworkId: 5d009697-c29b-48e0-aff8-1f4305d19dc2
+            toNetworkIdName: Destination network profile 2
+            status: FUNDED
+            connectionId: 14817440-d5c8-4dbd-a754-ad415683610c
+            fbTxId: 79075e8c-1fd9-4c97-9575-3bd9229e5c0d
+            txHash: '0xb5c8bd9430b6cc87a0e2fe110ece6bf527fa4f170a4bc8cd032f768fc5219838'
+            createdAt: '2023-03-01T11:23:00.000Z'
+            updatedAt: '2023-03-01T11:23:00.000Z'
+          type: array
+          items:
+            $ref: '#/components/schemas/SmartTransferTicketTerm'
+        expiresIn:
+          type: number
+          description: Number of hours for expiration.This data is valid only it ticket not in DRAFT state and it will be
+            used to calculate expiresAt value
+          example: '13'
+        expiresAt:
+          format: date-time
+          type: string
+          description: Date and time at which the ticket will expire if no funding is performed.
+          example: '2023-03-01T11:23:00Z'
+        submittedAt:
+          format: date-time
+          type: string
+          description: Date and time when ticket is submitted.
+          example: '2023-03-01T11:23:00Z'
+        expiredAt:
+          format: date-time
+          type: string
+          description: Date and time when ticket is expired.
+          example: '2023-03-01T11:23:00Z'
+        canceledAt:
+          format: date-time
+          type: string
+          description: Date and time when ticket is canceled.
+          example: '2023-03-01T11:23:00Z'
+        fulfilledAt:
+          format: date-time
+          type: string
+          description: Date and time when ticket is fulfilled.
+          example: '2023-03-01T11:23:00Z'
+        externalRefId:
+          type: string
+          description: External Ref ID for Smart Transfer ticket.
+          example: 2631ffb9d8fe47c6b0825b5be28297da
+        note:
+          type: string
+          description: Note
+          example: Random note
+        createdByNetworkId:
+          type: string
+          description: ID of network profile that created ticket
+          example: 3eaa94c5-128b-4835-bb08-3111bb6564c7
+        createdByNetworkIdName:
+          type: string
+          description: Name of network profile that created ticket
+          example: Network id name
+        canceledByNetworkIdName:
+          type: string
+          description: Name of network profile that canceled ticket
+          example: Network id name
+        createdAt:
+          format: date-time
+          type: string
+          description: Date and time at which the ticket is created.
+          example: '2023-03-01T11:23:00Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: Date and time of last ticket update.
+          example: '2023-03-01T11:23:00Z'
+        canceledByMe:
+          type: boolean
+        createdByMe:
+          type: boolean
+      required:
+      - id
+      - type
+      - status
+      - createdByNetworkId
+      - createdByNetworkIdName
+      - createdAt
+      - updatedAt
+    SmartTransferTicketFilteredResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Result message
+          example: Success
+          nullable: true
+        after:
+          type: string
+          description: Unique id of next filtered result
+          example: 118320d2-761f-46c7-96cf-65e71a370b36
+        data:
+          description: Result that match given query criteria
+          type: array
+          items:
+            $ref: '#/components/schemas/SmartTransferTicket'
+      required:
+      - message
+      - after
+      - data
+    SmartTransferTicketResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Result message
+          example: Success
+          nullable: true
+        data:
+          $ref: '#/components/schemas/SmartTransferTicket'
+      required:
+      - message
+    SmartTransferTicketTerm:
+      type: object
+      description: Data object with result data
+      nullable: true
+      properties:
+        id:
+          type: string
+          description: Unique id of Smart Transfer ticket term
+          example: 84601ee2-b10f-4aa8-be9c-dba259a3533a
+        ticketId:
+          type: string
+          description: Unique id of Smart Transfer ticket
+          example: 900f04c3-83bc-428d-b681-aef682059637
+        asset:
+          type: string
+          description: Asset name
+          example: BTC
+          x-fb-entity: asset
+        amount:
+          type: string
+          description: Amount
+          example: '133.789161216184'
+        amountUsd:
+          type: string
+          description: Amount USD
+          example: '1333.789161216184'
+        fromNetworkId:
+          type: string
+          description: Identifier of the origination Network Profile
+          example: 947c6115-1f5f-4fb4-9fd6-a1f9dee14670
+        fromNetworkIdName:
+          type: string
+          description: Source network name
+          example: Source network profile name
+        toNetworkId:
+          type: string
+          description: Identifier of the destination Network Profile
+          example: 5d009697-c29b-48e0-aff8-1f4305d19dc2
+        toNetworkIdName:
+          type: string
+          description: Destination network name
+          example: Destination network profile name
+        txHash:
+          type: string
+          description: Blockchain TX hash
+          example: '0x2446f1fd773fbb9f080e674b60c6a033c7ed7427b8b9413cf28a2a4a6da9b56c'
+          nullable: true
+        fbTxId:
+          type: string
+          description: Fireblocks transaction ID. It is set when the funding transaction is created.
+          example: 79075e8c-1fd9-4c97-9575-3bd9229e5c0d
+          nullable: true
+        txStatus:
+          type: string
+          description: Ticket term transaction status
+          example: COMPLETED
+          nullable: true
+          enum:
+          - queued
+          - submitted
+          - pendingSignature
+          - pendingAuthorization
+          - broadcasting
+          - confirming
+          - pendingAmlScreening
+          - completed
+          - cancelled
+          - failed
+          - rejected
+          - blocked
+          - thirdPartyPendingManualApproval
+          - thirdPartyPending
+          - partiallyCompleted
+          - cancelling
+        status:
+          type: string
+          description: Ticket term status
+          example: CREATED
+          nullable: false
+          enum:
+          - CREATED
+          - FUNDING
+          - FUNDING_FAILED
+          - FUNDED
+          - REJECTED
+        createdAt:
+          format: date-time
+          type: string
+          description: Date and time when the term is created.
+          example: '2023-03-01T11:23:00Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: Date and time of last term update.
+          example: '2023-03-01T11:23:00Z'
+      required:
+      - id
+      - ticketId
+      - asset
+      - amount
+      - fromNetworkId
+      - fromNetworkIdName
+      - toNetworkId
+      - toNetworkIdName
+      - txHash
+      - fbTxId
+      - txStatus
+      - status
+      - createdAt
+      - updatedAt
+    SmartTransferTicketTermResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Result message
+          example: Success
+          nullable: true
+        data:
+          $ref: '#/components/schemas/SmartTransferTicketTerm'
+      required:
+      - message
+    SmartTransferUpdateTicketTerm:
+      type: object
+      properties:
+        asset:
+          type: string
+          description: Asset name
+          example: BTC
+          x-fb-entity: asset
+        amount:
+          type: number
+          description: Amount
+          example: '133.789161216184'
+        fromNetworkId:
+          type: string
+          description: Identifier of the origination Network Profile
+          example: 947c6115-1f5f-4fb4-9fd6-a1f9dee14670
+        toNetworkId:
+          type: string
+          description: Identifier of the destination Network Profile
+          example: 5d009697-c29b-48e0-aff8-1f4305d19dc2
+      required:
+      - asset
+      - amount
+      - fromNetworkId
+      - toNetworkId
+    SmartTransferUserGroups:
+      type: object
+      description: Smart Transfers User Groups Object
+      nullable: true
+      properties:
+        userGroupIds:
+          description: Data object with result data
+          nullable: true
+          type: array
+          items:
+            type: string
+            example: 1ad4e96c-b59b-4224-84d1-ade6932cacc4
+      required:
+      - userGroupIds
+    SmartTransferUserGroupsResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Result message
+          example: Success
+          nullable: true
+        data:
+          $ref: '#/components/schemas/SmartTransferUserGroups'
+      required:
+      - message
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        state:
+          type: string
+          enum:
+          - SUBMITTED
+          - QUEUED
+          - PENDING_AUTHORIZATION
+          - PENDING_SIGNATURE
+          - BROADCASTING
+          - PENDING_3RD_PARTY_MANUAL_APPROVAL
+          - PENDING_3RD_PARTY
+          - PENDING
+          - CONFIRMING
+          - CONFIRMED
+          - COMPLETED
+          - PARTIALLY_COMPLETED
+          - PENDING_AML_SCREENING
+          - CANCELLING
+          - CANCELLED
+          - REJECTED
+          - BLOCKED
+          - FAILED
+          - TIMEOUT
+        timestamp:
+          type: number
+          format: date-time
+        instructionId:
+          type: string
+      required:
+      - id
+      - state
+    TransferConfigOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+        type:
+          $ref: '#/components/schemas/TransferOperationType'
+        params:
+          $ref: '#/components/schemas/TransferOperationConfigParams'
+        status:
+          $ref: '#/components/schemas/ConfigOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/TransferValidationFailure'
+      required:
+      - operationId
+      - type
+      - params
+      - status
+    TransferOperationConfigParams:
+      type: object
+      properties:
+        amount:
+          description: The amount to transfer
+          type: string
+          example: '12'
+        assetId:
+          type: string
+          description: The assed ID to transfer
+          example: ETH
+        source:
+          $ref: '#/components/schemas/Account'
+        destination:
+          $ref: '#/components/schemas/Destination'
+      required:
+      - destination
+    TransferOperationExecution:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/TransferOperationConfigParams'
+        output:
+          $ref: '#/components/schemas/TransferOperationExecutionOutput'
+        txId:
+          type: string
+        startedAt:
+          type: number
+        finishedAt:
+          type: number
+        failure:
+          $ref: '#/components/schemas/TransferOperationFailure'
+      required:
+      - input
+      - startedAt
+    TransferOperationExecutionOutput:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/AssetAmount'
+        fee:
+          $ref: '#/components/schemas/AssetAmount'
+      required:
+      - amount
+      - fee
+    TransferOperationExecutionParams:
+      type: object
+      properties:
+        configOperationId:
+          type: string
+        executionParams:
+          type: object
+          properties:
+            amount:
+              type: string
+            assetId:
+              type: string
+            source:
+              $ref: '#/components/schemas/Account'
+            destination:
+              $ref: '#/components/schemas/Destination'
+      required:
+      - configOperationId
+    TransferOperationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - INVALID_AMOUNT
+          - SUBMISSION_FAILED
+          - TRANSACTION_FAILED
+        data:
+          type: object
+          properties:
+            txId:
+              type: string
+            txStatus:
+              type: string
+            txSubStatus:
+              type: string
+          required:
+          - txId
+          - txStatus
+      required:
+      - reason
+    TransferOperationPreview:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/TransferOperationConfigParams'
+        output:
+          $ref: '#/components/schemas/TransferOperationPreviewOutput'
+        failure:
+          $ref: '#/components/schemas/TransferOperationFailure'
+      required:
+      - input
+    TransferOperationPreviewOutput:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/AssetAmount'
+        fee:
+          $ref: '#/components/schemas/AssetAmount'
+        isSignRequired:
+          type: boolean
+        timeSeconds:
+          type: number
+      required:
+      - amount
+      - fee
+      - isSignRequired
+      - timeSeconds
+    TransferOperationType:
+      type: string
+      description: Transfer operation type
+      enum:
+      - TRANSFER
+    TransferValidationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - ACCOUNT_NOT_FOUND
+          - ACCOUNT_TYPE_NOT_SUPPORTED
+          - INSUFFICIENT_BALANCE
+          - ASSET_NOT_FOUND
+          - ASSETS_CONTINUITY_MISMATCH
+          - EXCHANGE_BASKETS_MISMATCH
+          - ACCOUNTS_CONTINUITY_MISMATCH
+          - ONE_TIME_ADDRESS_CONTINUITY_NOT_ALLOWED
+          - EQUAL_ACCOUNTS_NOT_ALLOWED
+          - EQUAL_ASSETS_NOT_ALLOWED
+          - INVALID_AMOUNT
+          - UNMANAGED_WALLET_AS_SOURCE_NOT_ALLOWED
+          - MANAGED_OPERATION_PARAMS_INVALID_SCHEMA
+        data:
+          type: object
+          additionalProperties: true
+      required:
+      - reason
+    WorkflowConfigStatus:
+      type: string
+      enum:
+      - PENDING
+      - VALIDATION_IN_PROGRESS
+      - VALIDATION_FAILED
+      - READY_FOR_EXECUTION
+    WorkflowConfiguration:
+      type: object
+      x-internal: true
+      properties:
+        configId:
+          description: Unqiue configuration ID
+          type: string
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+        configName:
+          description: Configuration name
+          type: string
+          example: my_cofig_name
+        preScreening:
+          $ref: '#/components/schemas/PreScreening'
+        status:
+          $ref: '#/components/schemas/WorkflowConfigStatus'
+        createdAt:
+          type: number
+          description: Created at timestamp
+          example: 1717325386
+        configOperations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigOperation'
+        externalCorrelationData:
+          $ref: '#/components/schemas/CorrelationData'
+      required:
+      - configId
+      - configName
+      - configOperations
+      - createdAt
+      - status
+    WorkflowConfigurationId:
+      type: object
+      properties:
+        configId:
+          type: string
+          description: Configuration unique ID
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+      required:
+      - configId
+    WorkflowConfigurationSnapshot:
+      type: object
+      x-internal: true
+      properties:
+        configId:
+          type: string
+          description: Configuration unique identifier
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+        configName:
+          type: string
+          description: You configuration name
+          example: my_config_name
+        createdAt:
+          description: Create at timestamp
+          example: 1717325386
+          type: number
+        configOperations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigOperationSnapshot'
+        externalCorrelationData:
+          $ref: '#/components/schemas/CorrelationData'
+      required:
+      - configId
+      - configName
+      - configOperations
+      - createdAt
+    WorkflowExecution:
+      type: object
+      x-internal: true
+      properties:
+        executionId:
+          description: Execution unique identifier
+          type: string
+          example: 507f6867-d76b-4cd6-92c8-cf84536be0b6
+        preScreening:
+          $ref: '#/components/schemas/PreScreening'
+        configSnapshot:
+          $ref: '#/components/schemas/WorkflowConfigurationSnapshot'
+        executionOperations:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowExecutionOperation'
+        status:
+          type: string
+          enum:
+          - PENDING
+          - VALIDATION_IN_PROGRESS
+          - VALIDATION_FAILED
+          - VALIDATION_COMPLETED
+          - PREVIEW_IN_PROGRESS
+          - PREVIEW_FAILED
+          - READY_FOR_LAUNCH
+          - EXECUTION_IN_PROGRESS
+          - EXECUTION_COMPLETED
+          - EXECUTION_FAILED
+        triggeredBy:
+          type: string
+        triggeredAt:
+          type: number
+        finishedAt:
+          type: number
+        externalCorrelationData:
+          $ref: '#/components/schemas/CorrelationData'
+      required:
+      - executionId
+      - status
+      - executionOperations
+      - configSnapshot
+    WorkflowExecutionOperation:
+      oneOf:
+      - $ref: '#/components/schemas/ExecutionScreeningOperation'
+      - $ref: '#/components/schemas/ExecutionConversionOperation'
+      - $ref: '#/components/schemas/ExecutionTransferOperation'
+      - $ref: '#/components/schemas/ExecutionDisbursementOperation'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
+        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+    X-End-User-Wallet-Id:
+      name: X-End-User-Wallet-Id
+      in: header
+      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
