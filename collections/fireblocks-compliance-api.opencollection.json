@@ -1,0 +1,585 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Compliance and Policy API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Compliance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Validate Travel Rule Transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/transaction/validate",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "notation",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the notation of the transaction. Possible values are: - `notabene`: Uses Notabene notation (default behavior). - `fireblocks`: Uses Fireblocks notation, with automatic translation of asset tickers and amounts. - `<none>`: Defaults to `notabene` for backward compatibility.\n**Note:** The default value for the `notation` parameter will change from `notabene` to `fireblocks` Update your integrations accordingly."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validate Travel Rule transactions.\nChecks what beneficiary VASP details are required by your jurisdiction and the beneficiary's jurisdiction.\n**Deprecation Notice** This endpoint will be deprecated soon in favor of the [validate full](https://developers.fireblocks.com/reference/validatefulltravelruletransaction) endpoint. Please update your integrations to use the  [validate full](https://developers.fireblocks.com/reference/validatefulltravelruletransaction) endpoint to ensure compatibility with"
+        },
+        {
+          "info": {
+            "name": "Validate Full Travel Rule Transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/transaction/validate/full",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "notation",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the notation of the transaction. Possible values are\n- `notabene`: Uses Notabene notation (default behavior).\n- `fireblocks`: Uses Fireblocks notation, with automatic translation of asset tickers and amounts.\n- `<none>`: Defaults to `notabene` for backward compatibility.\n\n**Note:** The default value for the `notation` parameter will change from\n`notabene` to `fireblocks` Update your integrations accordingly.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validate Full Travel Rule transaction.\nChecks for all required information on the originator and beneficiary VASPs.\nLearn more about Fireblocks Travel Rule management in the following [guide](https://developers.fireblocks.com/docs/define-travel-rule-policies).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Get VASP details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/vasp/:did",
+            "params": [
+              {
+                "name": "did",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "CSV of fields to return (all, \"blank\" or see list of all field names below)"
+              }
+            ]
+          },
+          "docs": "Get VASP Details.\nReturns information about a VASP that has the specified DID.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Get All VASPs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/vasp",
+            "params": [
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Records per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "CSV of fields to return (all, \"blank\" or see list of all field names below)"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search query"
+              },
+              {
+                "name": "reviewValue",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the VASP's review status. Possible values include: \"TRUSTED\", \"BLOCKED\", \"MANUAL\", or \"NULL\". When provided, only VASPs that match the specified reviewValue will be returned (i.e., VASPs that have already been reviewed to this status)."
+              }
+            ]
+          },
+          "docs": "Get All VASPs.\nReturns a list of VASPs. VASPs can be searched and sorted and results are paginated.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Update VASP Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/vasp/update",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a VASP with the provided parameters. Use this endpoint to add your public jsonDIDkey generated by Notabene.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Travel Rule - View Post-Screening Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/post_screening_policy"
+          },
+          "docs": "Get the post-screening policy for Travel Rule.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Travel Rule - View Screening Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/screening_policy"
+          },
+          "docs": "Get the screening policy for Travel Rule.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Get assigned VASP to vault",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/vault/:vaultAccountId/vasp",
+            "params": [
+              {
+                "name": "vaultAccountId",
+                "value": "1",
+                "type": "path",
+                "description": "The ID of the vault account"
+              }
+            ]
+          },
+          "docs": "Get assigned VASP DID for a specific vault. \nReturns empty `vaspDid` string value in response if none assigned.\n"
+        },
+        {
+          "info": {
+            "name": "Assign VASP to vault",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/vault/:vaultAccountId/vasp",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "vaultAccountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the vault account"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets the VASP DID for a specific vault. \nPass empty string to remove an existing one.\n"
+        },
+        {
+          "info": {
+            "name": "Get Travel Rule Screening Policy Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/policy_configuration"
+          },
+          "docs": "Retrieves the configuration for Travel Rule screening policy.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Update Travel Rule Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/screening/travel_rule/policy_configuration",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Updates bypass screening, inbound delay, or outbound delay configurations for Travel Rule.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Get AML Screening Policy Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/screening/aml/policy_configuration"
+          },
+          "docs": "Retrieves the configuration for Travel Rule screening policy.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Update AML Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/screening/aml/policy_configuration",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Updates bypass screening, inbound delay, or outbound delay configurations for AML.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "AML - View Screening Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/screening/aml/screening_policy"
+          },
+          "docs": "Get the screening policy for AML.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "AML - View Post-Screening Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/screening/aml/post_screening_policy"
+          },
+          "docs": "Get the post-screening policy for AML.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Screening Configuration Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/screening/configurations",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Tenant screening configuration.\nLearn more about Fireblocks AML management in the following [guide](https://developers.fireblocks.com/docs/define-aml-policies).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Bypass Screening Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/screening/transaction/:txId/bypass_screening_policy",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "txId",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "The transaction id that was rejected by screening checks"
+              }
+            ]
+          },
+          "docs": "This endpoint is restricted to Admin API users and is only applicable to outgoing transactions.\nCalling the \"Bypass Screening Policy\" API endpoint triggers a new transaction, with the API user as the initiator, bypassing the screening policy check\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get Screening Full Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/screening/transaction/:txId",
+            "params": [
+              {
+                "name": "txId",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Fireblocks transaction ID of the screened transaction"
+              }
+            ]
+          },
+          "docs": "Provides all the compliance details for the given screened transaction.\n</br>Endpoint Permission: All users."
+        },
+        {
+          "info": {
+            "name": "Set AML verdict for Manual Screening Verdict",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/screening/aml/verdict/manual",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set AML verdict for incoming transactions when the Manual Screening Verdict feature is enabled."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Policy Editor (Beta)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the active policy and its validation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tap/active_policy"
+          },
+          "docs": "Returns the active policy and its validation. </br>\n**Note:** These endpoints are currently in beta and might be subject to changes.\nIf you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get the active draft",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tap/draft"
+          },
+          "docs": "Returns the active draft and its validation. </br>\n**Note:** These endpoints are currently in beta and might be subject to changes.\nIf you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Send publish request for a certain draft id",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tap/draft",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send publish request of certain draft id and returns the response. </br>\n**Note:** These endpoints are currently in beta and might be subject to changes.\nIf you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Update the draft with a new set of rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/tap/draft",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the draft and return its validation. </br>\n**Note:** These endpoints are currently in beta and might be subject to changes.\nIf you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\nLearn more about Fireblocks Transaction Authorization Policy in the following [guide](https://developers.fireblocks.com/docs/set-transaction-authorization-policy).\n</br>Endpoint Permission: Admin, Non-Sign"
+        },
+        {
+          "info": {
+            "name": "Send publish request for a set of policy rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tap/publish",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send publish request of set of policy rules and returns the response. </br>\n**Note:** These endpoints are currently in beta and might be subject to changes.\nIf you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Policy Editor V2 (Beta)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the active policy and its validation by policy type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/policy/active_policy",
+            "params": [
+              {
+                "name": "policyType",
+                "value": "",
+                "type": "query",
+                "description": "The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT)."
+              }
+            ]
+          },
+          "docs": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nReturns the active policy and its validation for a specific policy type.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+        },
+        {
+          "info": {
+            "name": "Get the active draft by policy type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/policy/draft",
+            "params": [
+              {
+                "name": "policyType",
+                "value": "",
+                "type": "query",
+                "description": "The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT)."
+              }
+            ]
+          },
+          "docs": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nReturns the active draft and its validation for a specific policy type.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+        },
+        {
+          "info": {
+            "name": "Send publish request for a certain draft ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/policy/draft",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nPublishes a draft policy by request, and returns the response.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.        \n"
+        },
+        {
+          "info": {
+            "name": "Update the draft with a new set of rules by policy types",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/policy/draft",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nUpdates the draft and returns its validation for specific policy types.  \n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

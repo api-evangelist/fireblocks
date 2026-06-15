@@ -1,0 +1,573 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Transactions API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get transaction history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/transactions",
+            "params": [
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp in milliseconds. Returns only transactions created before the specified date.\nProvides an explicit end time. If not provided, default value will be applied, and may change over time. \nThe current default value is the past 90 days.\n"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp in milliseconds. Returns only transactions created after the specified date.\nProvides an explicit start time. If not provided, default value will be applied, and may change over time. \nThe current default value is the past 90 days.\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "You can filter by one of the statuses."
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "The field to order the results by.\n\n**Note:** Ordering by a field that is not `createdAt` may result in transactions that receive updates as you request the next or previous pages of results, resulting in missing those transactions.\n"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "The direction to order the results by"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limits the number of results. If not provided, a limit of 200 will be used. The maximum allowed limit is 500"
+              },
+              {
+                "name": "sourceType",
+                "value": "",
+                "type": "query",
+                "description": "The source type of the transaction"
+              },
+              {
+                "name": "sourceId",
+                "value": "",
+                "type": "query",
+                "description": "The source ID of the transaction"
+              },
+              {
+                "name": "destType",
+                "value": "",
+                "type": "query",
+                "description": "The destination type of the transaction"
+              },
+              {
+                "name": "destId",
+                "value": "",
+                "type": "query",
+                "description": "The destination ID of the transaction"
+              },
+              {
+                "name": "assets",
+                "value": "",
+                "type": "query",
+                "description": "A list of assets to filter by, seperated by commas"
+              },
+              {
+                "name": "txHash",
+                "value": "",
+                "type": "query",
+                "description": "Returns only results with a specified txHash"
+              },
+              {
+                "name": "sourceWalletId",
+                "value": "",
+                "type": "query",
+                "description": "Returns only results where the source is a specific end user wallet"
+              },
+              {
+                "name": "destWalletId",
+                "value": "",
+                "type": "query",
+                "description": "Returns only results where the destination is a specific end user wallet"
+              }
+            ]
+          },
+          "docs": "Get the transaction history for your workspace.\n\n**Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.\n"
+        },
+        {
+          "info": {
+            "name": "Create a new transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/transactions",
+            "headers": [
+              {
+                "name": "X-End-User-Wallet-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new transaction. This endpoint can be used for regular Transfers, Contract Calls, Raw & Typed message signing.\n- For Transfers, the required parameters are: `assetId`, `source`, `destination` and `amount`.\n\n- For Contract Calls, the required parameters are: `operation.CONTRACT_CALL`, `assetId` (Base Asset), `source`, `destination`, `amount` (usually 0) and `extraParameters` object with `contractCallData` string.\n- For Solana Program Calls, the required parameters are: `operation.PROGRA"
+        },
+        {
+          "info": {
+            "name": "Estimate transaction fee",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/transactions/estimate_fee",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Estimates the transaction fee for a specific transaction request.\nThis endpoint simulates a transaction which means that the system will expect to have the requested asset and balance in the specified wallet.\n\n\n**Note**: Supports all Fireblocks assets except ZCash (ZEC).\nLearn more about Fireblocks Fee Management in the following [guide](https://developers.fireblocks.com/reference/estimate-transaction-fee).\n</br>Endpoint Permission: Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Get a specific transaction by Fireblocks transaction ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/transactions/:txId",
+            "params": [
+              {
+                "name": "txId",
+                "value": "cfe5be48-9307-4aa3-8ead-b959fca35dd6",
+                "type": "path",
+                "description": "The ID of the transaction to return"
+              }
+            ]
+          },
+          "docs": "Get a specific transaction data by Fireblocks Transaction ID\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Get a specific transaction by external transaction ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/transactions/external_tx_id/:externalTxId",
+            "params": [
+              {
+                "name": "externalTxId",
+                "value": "",
+                "type": "path",
+                "description": "The external ID of the transaction to return"
+              }
+            ]
+          },
+          "docs": "Returns transaction by external transaction ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Set confirmation threshold by Fireblocks Transaction ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/transactions/:txId/set_confirmation_threshold",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "txId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the transaction"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Overrides the required number of confirmations for transaction completion Fireblocks Transaction ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Drop ETH (EVM) transaction by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/transactions/:txId/drop",
+            "headers": [
+              {
+                "name": "X-End-User-Wallet-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "txId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the transaction"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Drops a stuck ETH (EVM) transaction and creates a replacement transaction with 0 amount.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Cancel a transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/transactions/:txId/cancel",
+            "headers": [
+              {
+                "name": "X-End-User-Wallet-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "txId",
+                "value": "",
+                "type": "path",
+                "description": "The Fireblocks Transaction ID of the transaction to cancel"
+              }
+            ]
+          },
+          "docs": "Cancels a transaction by Fireblocks Transaction ID.\n\nCan be used only for transactions that did not get to the BROADCASTING state.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Freeze a transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/transactions/:txId/freeze",
+            "headers": [
+              {
+                "name": "X-End-User-Wallet-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "txId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the transaction to freeze"
+              }
+            ]
+          },
+          "docs": "Freezes a transaction by ID.\n\nUsually used for AML integrations when the incoming funds should be quarantined.\nFor account based assets - the entire amount of the transaction is frozen \nFor UTXO based assets - all UTXOs of the specified transaction are frozen\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Unfreeze a transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/transactions/:txId/unfreeze",
+            "headers": [
+              {
+                "name": "X-End-User-Wallet-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "txId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the transaction to unfreeze"
+              }
+            ]
+          },
+          "docs": "Unfreezes a transaction by Fireblocks Transaction ID and makes the transaction available again.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Set confirmation threshold by transaction hash",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/txHash/:txHash/set_confirmation_threshold",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "txHash",
+                "value": "",
+                "type": "path",
+                "description": "The TxHash"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Overrides the required number of confirmations for transaction completion by transaction hash.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Approval Requests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get an approval request by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tags/approval_requests/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get an approval request by id"
+        },
+        {
+          "info": {
+            "name": "Cancel an approval request by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tags/approval_requests/:id/cancel",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cancel an approval request by id.\n- Can only cancel requests in the `PENDING` status.\n- Returns `202 Accepted` when the cancellation is processed.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Job Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Return a list of jobs belonging to tenant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/batch/jobs",
+            "params": [
+              {
+                "name": "fromTime",
+                "value": "",
+                "type": "query",
+                "description": "Start of time range in ms since 1970"
+              },
+              {
+                "name": "toTime",
+                "value": "",
+                "type": "query",
+                "description": "End of time range in ms since 1970"
+              }
+            ]
+          },
+          "docs": "Get an array of objects including all active, paused, canceled, and complete jobs in a workspace."
+        },
+        {
+          "info": {
+            "name": "Get job details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/batch/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The requested job id"
+              }
+            ]
+          },
+          "docs": "Get an object describing the given job"
+        },
+        {
+          "info": {
+            "name": "Pause a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/batch/:jobId/pause",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The requested job id"
+              }
+            ]
+          },
+          "docs": "Pause the given job, after the current task is done. A paused job can later be resumed by calling ‘continue’, or canceled."
+        },
+        {
+          "info": {
+            "name": "Continue a paused job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/batch/:jobId/continue",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The requested job id"
+              }
+            ]
+          },
+          "docs": "Continue the given paused job."
+        },
+        {
+          "info": {
+            "name": "Cancel a running job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/batch/:jobId/cancel",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The requested job id"
+              }
+            ]
+          },
+          "docs": "Stop the given job immediately. If the job is in the ‘Active’ state, the job will be canceled after completing the current task. Vault accounts and Wallets that are already created will not be affected."
+        },
+        {
+          "info": {
+            "name": "Return a list of tasks for given job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/batch/:jobId/tasks",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The requested job id"
+              }
+            ]
+          },
+          "docs": "Return a list of tasks for given job"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

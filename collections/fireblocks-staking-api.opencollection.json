@@ -1,0 +1,318 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Staking API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Staking",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List supported chains for Fireblocks Staking",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/staking/chains"
+          },
+          "docs": "Return an alphabetical list of supported chains.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Merge operation on Solana stake accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/staking/chains/:chainDescriptor/merge",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "chainDescriptor",
+                "value": "SOL",
+                "type": "path",
+                "description": "The protocol identifier (e.g. \"SOL\"/\"SOL_TEST\") to use"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform a Solana Merge of two active stake accounts into one.\nEndpoint permissions: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Get chain-specific staking summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/staking/chains/:chainDescriptor/chainInfo",
+            "params": [
+              {
+                "name": "chainDescriptor",
+                "value": "SOL",
+                "type": "path",
+                "description": "The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\"/\"STETH_ETH\") to use"
+              }
+            ]
+          },
+          "docs": "Return chain-specific, staking-related information summary (e.g. epoch details, lockup durations, estimated rewards, etc.).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Initiate Stake Operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/staking/chains/:chainDescriptor/stake",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "chainDescriptor",
+                "value": "SOL",
+                "type": "path",
+                "description": "The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform a chain-specific Stake."
+        },
+        {
+          "info": {
+            "name": "Execute an Unstake operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/staking/chains/:chainDescriptor/unstake",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "chainDescriptor",
+                "value": "SOL",
+                "type": "path",
+                "description": "The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Execute an Unstake operation"
+        },
+        {
+          "info": {
+            "name": "Execute a Withdraw operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/staking/chains/:chainDescriptor/withdraw",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "chainDescriptor",
+                "value": "SOL",
+                "type": "path",
+                "description": "The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform a chain-specific Withdraw."
+        },
+        {
+          "info": {
+            "name": "Execute a Claim Rewards operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/staking/chains/:chainDescriptor/claim_rewards",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "chainDescriptor",
+                "value": "MATIC",
+                "type": "path",
+                "description": "The protocol identifier (e.g. \"MATIC\"/\"SOL\") to use"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform a chain-specific Claim Rewards."
+        },
+        {
+          "info": {
+            "name": "Execute a Split operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/staking/chains/:chainDescriptor/split",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "chainDescriptor",
+                "value": "SOL",
+                "type": "path",
+                "description": "The protocol identifier (e.g. \"SOL\"/\"SOL_TEST\") to use"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform a SOL/SOL_TEST Split on a stake account."
+        },
+        {
+          "info": {
+            "name": "List staking positions details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/staking/positions",
+            "params": [
+              {
+                "name": "chainDescriptor",
+                "value": "SOL",
+                "type": "query",
+                "description": "Use \"ETH\" / \"SOL\" / \"MATIC\" / \"STETH_ETH\" in order to obtain information related to the specific blockchain network or retrieve information about all chains that have data available by providing no argument."
+              }
+            ]
+          },
+          "docs": "Return detailed information on all staking positions, including the staked amount, rewards, status and more.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Get staking summary details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/staking/positions/summary"
+          },
+          "docs": "Return a summary of all vaults, categorized by their status (active, inactive), the total amounts staked and total rewards per-chain.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Get staking summary details by vault",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/staking/positions/summary/vaults"
+          },
+          "docs": "Return a summary for each vault, categorized by their status (active, inactive), the total amounts staked and total rewards per-chain.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Get staking position details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/staking/positions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the staking position"
+              }
+            ]
+          },
+          "docs": "Return detailed information on a staking position, including the staked amount, rewards, status and more.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "List staking providers details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/staking/providers"
+          },
+          "docs": "Return information on all the available staking providers.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Approve staking terms of service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/staking/providers/:providerId/approveTermsOfService",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "providerId",
+                "value": "kiln",
+                "type": "path",
+                "description": "The unique identifier of the staking provider"
+              }
+            ]
+          },
+          "docs": "Approve the terms of service of the staking provider.\nThis must be called before performing a staking action for the first time with this provider.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

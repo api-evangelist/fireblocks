@@ -1,0 +1,586 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Whitelisted Wallets API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Whitelisted Internal Wallets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List internal wallets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/internal_wallets"
+          },
+          "docs": "Gets a list of internal wallets.\n**Note**: \n- BTC-based assets belonging to whitelisted addresses cannot be retrieved between 00:00 UTC and 00:01 UTC daily due to third-party provider, Blockchain, being unavailable for this 60 second period.  Please wait until the next minute to retrieve BTC-based assets.\n- The list of assets returned will NOT include the balances anymore.\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n- You can see the balance of the Internal"
+        },
+        {
+          "info": {
+            "name": "Create an internal wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/internal_wallets",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new internal wallet with the requested name.\nLearn more about Whitelisted Internal Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Get assets for internal wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/internal_wallets/:walletId",
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the wallet to return"
+              }
+            ]
+          },
+          "docs": "**This endpoint will be deprecated on December 31, 2025. Currently, the endpoint will only return a wallet's addresses and not any balances.**\n\nRetrieves information about all the assets in an internal wallet, which is a wallet owned by you outside of your Fireblocks workspace. Please note that you cannot initiate transactions through Fireblocks using an internal wallet.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Delete an internal wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/internal_wallets/:walletId",
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the wallet to delete"
+              }
+            ]
+          },
+          "docs": "Deletes an internal wallet by ID.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "List assets in an internal wallet (Paginated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/internal_wallets/:walletId/assets",
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the internal wallet to return assets for"
+              },
+              {
+                "name": "pageSize",
+                "value": "10",
+                "type": "query"
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a paginated response of assets in an internal wallet.\n\nThis is a new paginated endpoint that gets all the assets from the wallet container with balances. </br>This endpoint returns a limited amount of results with a quick response time.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\nLearn more about Whitelis"
+        },
+        {
+          "info": {
+            "name": "Set an AML/KYT customer reference ID for internal wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/internal_wallets/:walletId/set_customer_ref_id",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The wallet ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets an AML/KYT customer reference ID for the specific internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n  Learn more about Whitelisted Internal Addresses\n[here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Appr"
+        },
+        {
+          "info": {
+            "name": "Get an asset from an internal wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/internal_wallets/:walletId/:assetId",
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the wallet"
+              },
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset to return"
+              }
+            ]
+          },
+          "docs": "Returns information for an asset in an internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Add an asset to an internal wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/internal_wallets/:walletId/:assetId",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the wallet"
+              },
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset to add"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds an asset to an existing internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n  Learn more about Whitelisted Internal Addresses\n[here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Delete a whitelisted address",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/internal_wallets/:walletId/:assetId",
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the wallet"
+              },
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset to delete"
+              }
+            ]
+          },
+          "docs": "Deletes a whitelisted address (for an asset) from an internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Whitelisted External Wallets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List external wallets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/external_wallets"
+          },
+          "docs": "Gets a list of external wallets under the workspace.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Create an external wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/external_wallets",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new external wallet with the requested name.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\nLearn more about Whitelisted External Wallet Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#external-wallets).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Appro"
+        },
+        {
+          "info": {
+            "name": "Find an external wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/external_wallets/:walletId",
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the wallet to return"
+              }
+            ]
+          },
+          "docs": "Returns an external wallet by ID.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Delete an external wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/external_wallets/:walletId",
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the wallet to delete"
+              }
+            ]
+          },
+          "docs": "Deletes an external wallet by ID.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Set an AML customer reference ID for an external wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/external_wallets/:walletId/set_customer_ref_id",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The wallet ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets an AML/KYT customer reference ID for the specific external wallet.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\nLearn more about Whitelisted External Wallet Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#external-wallets).\n</br>Endpoint Permission: Admin, Non-Signing Adm"
+        },
+        {
+          "info": {
+            "name": "Get an asset from an external wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/external_wallets/:walletId/:assetId",
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the wallet"
+              },
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset to return"
+              }
+            ]
+          },
+          "docs": "Returns an external wallet by wallet ID and asset ID.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor,\n  Viewer."
+        },
+        {
+          "info": {
+            "name": "Add an asset to an external wallet.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/external_wallets/:walletId/:assetId",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the wallet"
+              },
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset to add"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds an asset to an existing external wallet.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Delete an asset from an external wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/external_wallets/:walletId/:assetId",
+            "params": [
+              {
+                "name": "walletId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the wallet"
+              },
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset to delete"
+              }
+            ]
+          },
+          "docs": "Deletes an external wallet asset by ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Whitelisted Contracts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Whitelisted Contracts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/contracts"
+          },
+          "docs": "Gets a list of whitelisted contracts.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Create a Whitelisted Contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/contracts",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new whitelisted contract.\n\nLearn more about Whitelisted Smart Contracts [here](https://developers.fireblocks.com/docs/whitelist-addresses#contracts).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Find a Specific Whitelisted Contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/contracts/:contractId",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the contract to return"
+              }
+            ]
+          },
+          "docs": "Returns a whitelisted contract by Fireblocks Contract ID.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Delete a Whitelisted Contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/contracts/:contractId",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the contract to delete"
+              }
+            ]
+          },
+          "docs": "Deletes a whitelisted contract by Fireblocks Contract ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Find a whitelisted contract's asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/contracts/:contractId/:assetId",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the contract"
+              },
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset to return"
+              }
+            ]
+          },
+          "docs": "Returns a whitelisted contract's asset by ID.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Add an Asset to a Whitelisted Contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/contracts/:contractId/:assetId",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the contract"
+              },
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset to add"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds an asset to an existing whitelisted contract.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Delete a Whitelisted Contract's Asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/contracts/:contractId/:assetId",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the contract"
+              },
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset to delete"
+              }
+            ]
+          },
+          "docs": "Deletes a whitelisted contract's asset by Fireblocks Contract ID and Asset ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

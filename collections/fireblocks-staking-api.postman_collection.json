@@ -1,0 +1,2289 @@
+{
+  "item": [
+    {
+      "id": "8ee09fea-6ef2-4fb8-bb0f-8f4560e59213",
+      "name": "Staking",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fe352099-2d05-4ebb-8641-d62c41279dc0",
+          "name": "List supported chains for Fireblocks Staking",
+          "request": {
+            "name": "List supported chains for Fireblocks Staking",
+            "description": {
+              "content": "Return an alphabetical list of supported chains.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "chains"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "95a2177d-9baa-48e8-9904-2c1391862c52",
+              "name": "An array of supported chains was returned successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  \"ETH\",\n  \"ETH_TEST6\",\n  \"SOL\",\n  \"SOL_TEST\",\n  \"MATIC\"\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6f03614-7c0b-40b3-afeb-b3f6a7b22e3b",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3d354a6d-9bb0-4fbd-84ea-03a4b68f2789",
+          "name": "Merge operation on Solana stake accounts",
+          "request": {
+            "name": "Merge operation on Solana stake accounts",
+            "description": {
+              "content": "Perform a Solana Merge of two active stake accounts into one.\nEndpoint permissions: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "chains",
+                ":chainDescriptor",
+                "merge"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "chainDescriptor",
+                  "description": "(Required) The protocol identifier (e.g. \"SOL\"/\"SOL_TEST\") to use"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sourceId\": \"<uuid>\",\n  \"destinationId\": \"<uuid>\",\n  \"fee\": \"<string>\",\n  \"feeLevel\": \"<string>\",\n  \"txNote\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f51a43d9-d7b2-4a37-bacf-c801563b3ddd",
+              "name": "Merge action has been executed successfully on vault and is associated with 201 status code.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "merge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"SOL\"/\"SOL_TEST\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sourceId\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850f\",\n  \"destinationId\": \"<uuid>\",\n  \"fee\": \"7\",\n  \"feeLevel\": \"MEDIUM\",\n  \"txNote\": \"split 20 SOL out of 100 SOL, created on 02.04.23\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ab7c4474-f43f-de9d-8ea0-524c09ed65ad\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f349939b-67fe-4aaf-9575-4ffd3515b682",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "merge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"SOL\"/\"SOL_TEST\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sourceId\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850f\",\n  \"destinationId\": \"<uuid>\",\n  \"fee\": \"7\",\n  \"feeLevel\": \"MEDIUM\",\n  \"txNote\": \"split 20 SOL out of 100 SOL, created on 02.04.23\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9a444255-162a-4909-bc50-8c475a790d03",
+          "name": "Get chain-specific staking summary",
+          "request": {
+            "name": "Get chain-specific staking summary",
+            "description": {
+              "content": "Return chain-specific, staking-related information summary (e.g. epoch details, lockup durations, estimated rewards, etc.).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "chains",
+                ":chainDescriptor",
+                "chainInfo"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "chainDescriptor",
+                  "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\"/\"STETH_ETH\") to use"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "45662ea6-8689-4caf-9463-ba028d2559cb",
+              "name": "Chain specific info summary was returned successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "chainInfo"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\"/\"STETH_ETH\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"chainDescriptor\": \"SOL\",\n  \"currentEpoch\": 483,\n  \"epochElapsed\": 0.31,\n  \"epochDuration\": 172800000,\n  \"additionalInfo\": {\n    \"estimatedAnnualReward\": 6.48,\n    \"lockupPeriod\": 172800000,\n    \"activationPeriod\": 172800000\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6beddcaf-a6cc-41e7-9142-cfc603cf27e8",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "chainInfo"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\"/\"STETH_ETH\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3a5d6a61-9aed-4947-a257-38d2bd64f0e2",
+          "name": "Initiate Stake Operation",
+          "request": {
+            "name": "Initiate Stake Operation",
+            "description": {
+              "content": "Perform a chain-specific Stake.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "chains",
+                ":chainDescriptor",
+                "stake"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "chainDescriptor",
+                  "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vaultAccountId\": \"<string>\",\n  \"providerId\": \"<string>\",\n  \"stakeAmount\": \"<string>\",\n  \"txNote\": \"<string>\",\n  \"fee\": \"<string>\",\n  \"feeLevel\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5b2da315-4887-4d36-8cab-13e160a66042",
+              "name": "Stake action has been executed successfully on vault and is associated with 201 status code.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "stake"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vaultAccountId\": \"22\",\n  \"providerId\": \"kiln\",\n  \"stakeAmount\": \"100\",\n  \"txNote\": \"stake request id CcaHc2L43ZWjwCHART3oZoJvHLAe9hzT2DJNUpBzoTN1 of 100 SOL created on 02.04.23\",\n  \"feeLevel\": \"MEDIUM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"afedfd2e4-e3c9-4b70-90d6-eb0f74bfd4sd8\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bcb8e146-1b1d-462a-81c7-96a1f14f04ab",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "stake"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vaultAccountId\": \"22\",\n  \"providerId\": \"kiln\",\n  \"stakeAmount\": \"100\",\n  \"txNote\": \"stake request id CcaHc2L43ZWjwCHART3oZoJvHLAe9hzT2DJNUpBzoTN1 of 100 SOL created on 02.04.23\",\n  \"feeLevel\": \"MEDIUM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff4215cf-17b5-4c0d-bd80-8de036a18899",
+          "name": "Execute an Unstake operation",
+          "request": {
+            "name": "Execute an Unstake operation",
+            "description": {
+              "content": "Execute an Unstake operation",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "chains",
+                ":chainDescriptor",
+                "unstake"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "chainDescriptor",
+                  "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"fee\": \"<string>\",\n  \"feeLevel\": \"<string>\",\n  \"txNote\": \"<string>\",\n  \"amount\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5fe950c2-7ea4-43e4-9d60-7f500f41828a",
+              "name": "Unstake action has been executed successfully on vault and is associated with 201 status code.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "unstake"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850e\",\n  \"fee\": \"7\",\n  \"feeLevel\": \"MEDIUM\",\n  \"txNote\": \"unstake request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #ETH\",\n  \"amount\": \"75\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2dc1badb-c012-446a-92a3-1030f319ba68",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "unstake"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850e\",\n  \"fee\": \"7\",\n  \"feeLevel\": \"MEDIUM\",\n  \"txNote\": \"unstake request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #ETH\",\n  \"amount\": \"75\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a0421419-da09-43db-ae17-e967a45e0372",
+          "name": "Execute a Withdraw operation",
+          "request": {
+            "name": "Execute a Withdraw operation",
+            "description": {
+              "content": "Perform a chain-specific Withdraw.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "chains",
+                ":chainDescriptor",
+                "withdraw"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "chainDescriptor",
+                  "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"fee\": \"<string>\",\n  \"feeLevel\": \"<string>\",\n  \"txNote\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3cd4bba4-10c8-4477-8de5-3c16320360d1",
+              "name": "Withdraw action has been executed successfully on vault and is associated with 201 status code.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "withdraw"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850f\",\n  \"fee\": \"7\",\n  \"feeLevel\": \"MEDIUM\",\n  \"txNote\": \"withdraw request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #ETH\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "abfd3bcf-7d79-477d-915f-28791bed6b6d",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "withdraw"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"ETH\"/\"SOL\"/\"MATIC\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850f\",\n  \"fee\": \"7\",\n  \"feeLevel\": \"MEDIUM\",\n  \"txNote\": \"withdraw request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #ETH\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2b5cd174-6e34-4248-bdfa-be94bf308243",
+          "name": "Execute a Claim Rewards operation",
+          "request": {
+            "name": "Execute a Claim Rewards operation",
+            "description": {
+              "content": "Perform a chain-specific Claim Rewards.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "chains",
+                ":chainDescriptor",
+                "claim_rewards"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "chainDescriptor",
+                  "description": "(Required) The protocol identifier (e.g. \"MATIC\"/\"SOL\") to use"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"fee\": \"<string>\",\n  \"feeLevel\": \"<string>\",\n  \"txNote\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "19798feb-a0fc-40bb-a600-2ed554c63483",
+              "name": "Claim Rewards action has been executed successfully on vault and is associated with 201 status code.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "claim_rewards"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"MATIC\"/\"SOL\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850f\",\n  \"fee\": \"7\",\n  \"feeLevel\": \"MEDIUM\",\n  \"txNote\": \"claim rewards request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #MATIC\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c422bf42-a8dc-40a6-ac43-66ea8d317f80",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "claim_rewards"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"MATIC\"/\"SOL\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850f\",\n  \"fee\": \"7\",\n  \"feeLevel\": \"MEDIUM\",\n  \"txNote\": \"claim rewards request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #MATIC\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7742f28d-664f-4964-986e-e1f3b3f26a58",
+          "name": "Execute a Split operation",
+          "request": {
+            "name": "Execute a Split operation",
+            "description": {
+              "content": "Perform a SOL/SOL_TEST Split on a stake account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "chains",
+                ":chainDescriptor",
+                "split"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "chainDescriptor",
+                  "description": "(Required) The protocol identifier (e.g. \"SOL\"/\"SOL_TEST\") to use"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"amount\": \"<string>\",\n  \"fee\": \"<string>\",\n  \"feeLevel\": \"<string>\",\n  \"txNote\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a5f8488b-2360-4c3f-a989-02fbf931cba2",
+              "name": "Split action has been executed successfully on vault and is associated with 201 status code.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "split"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"SOL\"/\"SOL_TEST\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850f\",\n  \"amount\": \"20\",\n  \"fee\": \"7\",\n  \"feeLevel\": \"MEDIUM\",\n  \"txNote\": \"split 20 SOL out of 100 SOL, created on 02.04.23\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850d\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae2e4107-c301-4a48-871d-566a146b4c4e",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "chains",
+                    ":chainDescriptor",
+                    "split"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "chainDescriptor",
+                      "description": "(Required) The protocol identifier (e.g. \"SOL\"/\"SOL_TEST\") to use"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850f\",\n  \"amount\": \"20\",\n  \"fee\": \"7\",\n  \"feeLevel\": \"MEDIUM\",\n  \"txNote\": \"split 20 SOL out of 100 SOL, created on 02.04.23\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cbd2d7cd-f921-4933-913e-1e503e03205c",
+          "name": "List staking positions details",
+          "request": {
+            "name": "List staking positions details",
+            "description": {
+              "content": "Return detailed information on all staking positions, including the staked amount, rewards, status and more.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "positions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chainDescriptor",
+                  "value": "<string>",
+                  "description": "Use \"ETH\" / \"SOL\" / \"MATIC\" / \"STETH_ETH\" in order to obtain information related to the specific blockchain network or retrieve information about all chains that have data available by providing no argument."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a31a8476-6aaf-45c8-b6d6-6cd48091d163",
+              "name": "An array of position data was returned successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chainDescriptor",
+                      "value": "SOL"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850a\",\n    \"vaultAccountId\": \"2\",\n    \"validatorName\": \"FwR3P......tT59f\",\n    \"providerName\": \"Kiln\",\n    \"chainDescriptor\": \"SOL\",\n    \"amount\": \"0.05\",\n    \"rewardsAmount\": \"0.000856038\",\n    \"dateCreated\": \"2023-07-13T15:55:34.256Z\",\n    \"dateUpdated\": \"2023-07-13T15:55:34.256Z\",\n    \"status\": \"active\",\n    \"relatedTransactions\": [\n      {\n        \"txId\": \"b70601f4-d7b1-4795-a8ee-b09cdb4r850d\",\n        \"completed\": true\n      },\n      {\n        \"txId\": \"c80601f4-d7b1-4795-a8ee-b09cdb5b450c\",\n        \"completed\": false\n      }\n    ],\n    \"validatorAddress\": \"FwR3PbjS5iyqzLiLugrBqKSa5EKZ4vK9SKs7eQXtT59f\",\n    \"providerId\": \"kiln\",\n    \"availableActions\": [\n      \"unstake\"\n    ],\n    \"inProgress\": true,\n    \"blockchainPositionInfo\": {\n      \"stakeAccountAddress\": \"3Ru67FyzMTcdENmmRL4Eve4dtPd6AdpuypR21q5EQCdq\",\n      \"stakeAccountDerivationChangeValue\": 7\n    },\n    \"inProgressTxId\": \"c80601f4-d7b1-4795-a8ee-b09cdb5b450c\",\n    \"relatedRequests\": [\n      {\n        \"status\": \"deactivating\",\n        \"inProgress\": false,\n        \"amount\": \"0.05\",\n        \"txId\": \"c80601f4-d7b1-4795-a8ee-b09cdb5b450c\"\n      }\n    ]\n  },\n  {\n    \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850a\",\n    \"vaultAccountId\": \"2\",\n    \"validatorName\": \"FwR3P......tT59f\",\n    \"providerName\": \"Kiln\",\n    \"chainDescriptor\": \"SOL\",\n    \"amount\": \"0.05\",\n    \"rewardsAmount\": \"0.000856038\",\n    \"dateCreated\": \"2023-07-13T15:55:34.256Z\",\n    \"dateUpdated\": \"2023-07-13T15:55:34.256Z\",\n    \"status\": \"active\",\n    \"relatedTransactions\": [\n      {\n        \"txId\": \"b70601f4-d7b1-4795-a8ee-b09cdb4r850d\",\n        \"completed\": true\n      },\n      {\n        \"txId\": \"c80601f4-d7b1-4795-a8ee-b09cdb5b450c\",\n        \"completed\": false\n      }\n    ],\n    \"validatorAddress\": \"FwR3PbjS5iyqzLiLugrBqKSa5EKZ4vK9SKs7eQXtT59f\",\n    \"providerId\": \"kiln\",\n    \"availableActions\": [\n      \"unstake\"\n    ],\n    \"inProgress\": true,\n    \"blockchainPositionInfo\": {\n      \"stakeAccountAddress\": \"3Ru67FyzMTcdENmmRL4Eve4dtPd6AdpuypR21q5EQCdq\",\n      \"stakeAccountDerivationChangeValue\": 7\n    },\n    \"inProgressTxId\": \"c80601f4-d7b1-4795-a8ee-b09cdb5b450c\",\n    \"relatedRequests\": [\n      {\n        \"status\": \"deactivating\",\n        \"inProgress\": false,\n        \"amount\": \"0.05\",\n        \"txId\": \"c80601f4-d7b1-4795-a8ee-b09cdb5b450c\"\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "51e0a570-f2b8-4ad6-8642-675a5f2cc793",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chainDescriptor",
+                      "value": "SOL"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "207960c2-f1f6-4719-ae03-a5d770ff5306",
+          "name": "Get staking summary details",
+          "request": {
+            "name": "Get staking summary details",
+            "description": {
+              "content": "Return a summary of all vaults, categorized by their status (active, inactive), the total amounts staked and total rewards per-chain.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "positions",
+                "summary"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "af2a47d7-55cb-400d-874a-a68cce50c94b",
+              "name": "A summary for all vaults were returned successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "positions",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"active\": [\n    {\n      \"chainDescriptor\": \"ETH\",\n      \"amount\": \"64.036604667\"\n    },\n    {\n      \"chainDescriptor\": \"SOL\",\n      \"amount\": \"0.077345939\"\n    }\n  ],\n  \"inactive\": [\n    {\n      \"chainDescriptor\": \"ETH\",\n      \"amount\": \"0\"\n    },\n    {\n      \"chainDescriptor\": \"SOL\",\n      \"amount\": \"0\"\n    }\n  ],\n  \"rewardsAmount\": [\n    {\n      \"chainDescriptor\": \"ETH\",\n      \"amount\": \"0.036604667\"\n    },\n    {\n      \"chainDescriptor\": \"SOL\",\n      \"amount\": \"0.001345939\"\n    }\n  ],\n  \"totalStaked\": [\n    {\n      \"chainDescriptor\": \"ETH\",\n      \"amount\": \"64.036604667\"\n    },\n    {\n      \"chainDescriptor\": \"SOL\",\n      \"amount\": \"0.077345939\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb2355e2-1b6a-4dc0-804f-de50d58831b7",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "positions",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4605b143-7bd2-434b-9e6c-71d27ce8833c",
+          "name": "Get staking summary details by vault",
+          "request": {
+            "name": "Get staking summary details by vault",
+            "description": {
+              "content": "Return a summary for each vault, categorized by their status (active, inactive), the total amounts staked and total rewards per-chain.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "positions",
+                "summary",
+                "vaults"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ea34bcdf-36a3-4015-9b36-6cb7147b6ed6",
+              "name": "A summary for each vault were returned successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "positions",
+                    "summary",
+                    "vaults"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"0\": {\n    \"active\": [\n      {\n        \"chainDescriptor\": \"SOL\",\n        \"amount\": \"0.015202376\"\n      }\n    ],\n    \"inactive\": [\n      {\n        \"chainDescriptor\": \"SOL\",\n        \"amount\": \"0\"\n      }\n    ],\n    \"rewardsAmount\": [\n      {\n        \"chainDescriptor\": \"SOL\",\n        \"amount\": \"0.000202376\"\n      }\n    ],\n    \"totalStaked\": [\n      {\n        \"chainDescriptor\": \"SOL\",\n        \"amount\": \"0.015202376\"\n      }\n    ]\n  },\n  \"1\": {\n    \"active\": [\n      {\n        \"chainDescriptor\": \"ETH\",\n        \"amount\": \"64.036604667\"\n      },\n      {\n        \"chainDescriptor\": \"SOL\",\n        \"amount\": \"0.011191566\"\n      }\n    ],\n    \"inactive\": [\n      {\n        \"chainDescriptor\": \"ETH\",\n        \"amount\": \"0\"\n      },\n      {\n        \"chainDescriptor\": \"SOL\",\n        \"amount\": \"0\"\n      }\n    ],\n    \"rewardsAmount\": [\n      {\n        \"chainDescriptor\": \"ETH\",\n        \"amount\": \"0.036604667\"\n      },\n      {\n        \"chainDescriptor\": \"SOL\",\n        \"amount\": \"0.000191566\"\n      }\n    ],\n    \"totalStaked\": [\n      {\n        \"chainDescriptor\": \"ETH\",\n        \"amount\": \"64.036604667\"\n      },\n      {\n        \"chainDescriptor\": \"SOL\",\n        \"amount\": \"0.011191566\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "471859c1-18c9-4476-8da7-0c51ca3554e3",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "positions",
+                    "summary",
+                    "vaults"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "55d7bcf7-ed90-496e-83fa-aec0f7df01c5",
+          "name": "Get staking position details",
+          "request": {
+            "name": "Get staking position details",
+            "description": {
+              "content": "Return detailed information on a staking position, including the staked amount, rewards, status and more.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "positions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the staking position"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0a1f1036-5d77-42fb-9b38-2e670db79acb",
+              "name": "Position data was returned successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "positions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the staking position"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"b70701f4-d7b1-4795-a8ee-b09cdb5b850a\",\n  \"vaultAccountId\": \"2\",\n  \"validatorName\": \"FwR3P......tT59f\",\n  \"providerName\": \"Kiln\",\n  \"chainDescriptor\": \"SOL\",\n  \"amount\": \"0.05\",\n  \"rewardsAmount\": \"0.000856038\",\n  \"dateCreated\": \"2023-07-13T15:55:34.256Z\",\n  \"dateUpdated\": \"2023-07-13T15:55:34.256Z\",\n  \"status\": \"active\",\n  \"relatedTransactions\": [\n    {\n      \"txId\": \"b70601f4-d7b1-4795-a8ee-b09cdb4r850d\",\n      \"completed\": true\n    },\n    {\n      \"txId\": \"c80601f4-d7b1-4795-a8ee-b09cdb5b450c\",\n      \"completed\": false\n    }\n  ],\n  \"validatorAddress\": \"FwR3PbjS5iyqzLiLugrBqKSa5EKZ4vK9SKs7eQXtT59f\",\n  \"providerId\": \"kiln\",\n  \"availableActions\": [\n    \"unstake\"\n  ],\n  \"inProgress\": true,\n  \"blockchainPositionInfo\": {\n    \"stakeAccountAddress\": \"3Ru67FyzMTcdENmmRL4Eve4dtPd6AdpuypR21q5EQCdq\",\n    \"stakeAccountDerivationChangeValue\": 7\n  },\n  \"inProgressTxId\": \"c80601f4-d7b1-4795-a8ee-b09cdb5b450c\",\n  \"relatedRequests\": [\n    {\n      \"status\": \"deactivating\",\n      \"inProgress\": false,\n      \"amount\": \"0.05\",\n      \"txId\": \"c80601f4-d7b1-4795-a8ee-b09cdb5b450c\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "444ff84e-0754-422c-9185-f93d1e34083b",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "positions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the staking position"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "879938af-b5e0-4c41-9fdb-9897e3dae787",
+          "name": "List staking providers details",
+          "request": {
+            "name": "List staking providers details",
+            "description": {
+              "content": "Return information on all the available staking providers.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "providers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e460d0a5-aa2b-4b14-be3f-48a255022bb2",
+              "name": "An array of supported providers was returned successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "providers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"kiln\",\n    \"providerName\": \"Kiln\",\n    \"validators\": [\n      {\n        \"chainDescriptor\": \"ETH\",\n        \"feePercent\": 5\n      },\n      {\n        \"chainDescriptor\": \"SOL\",\n        \"feePercent\": 7\n      }\n    ],\n    \"isTermsOfServiceApproved\": true,\n    \"isLiquidStaking\": true,\n    \"iconUrl\": \"https://static.fireblocks.io/staking/validators/kiln_console.png\",\n    \"termsOfServiceUrl\": \"https://www.kiln.fi/terms-and-conditions-for-fireblocks-customers\",\n    \"isPrivate\": true\n  },\n  {\n    \"id\": \"kiln\",\n    \"providerName\": \"Kiln\",\n    \"validators\": [\n      {\n        \"chainDescriptor\": \"ETH\",\n        \"feePercent\": 5\n      },\n      {\n        \"chainDescriptor\": \"SOL\",\n        \"feePercent\": 7\n      }\n    ],\n    \"isTermsOfServiceApproved\": true,\n    \"isLiquidStaking\": true,\n    \"iconUrl\": \"https://static.fireblocks.io/staking/validators/kiln_console.png\",\n    \"termsOfServiceUrl\": \"https://www.kiln.fi/terms-and-conditions-for-fireblocks-customers\",\n    \"isPrivate\": true\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c968d871-e22e-4b00-854d-a12250d6529d",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "providers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "269977bd-d45c-4672-a1c8-67e8d2b3742e",
+          "name": "Approve staking terms of service",
+          "request": {
+            "name": "Approve staking terms of service",
+            "description": {
+              "content": "Approve the terms of service of the staking provider.\nThis must be called before performing a staking action for the first time with this provider.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "staking",
+                "providers",
+                ":providerId",
+                "approveTermsOfService"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "providerId",
+                  "description": "(Required) The unique identifier of the staking provider"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4a38f587-529e-4af5-9ad6-2078723fdca4",
+              "name": "The terms of service have been successfully approved and is associated with 201 status code.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "providers",
+                    ":providerId",
+                    "approveTermsOfService"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "providerId",
+                      "description": "(Required) The unique identifier of the staking provider"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6695276f-ca7e-4743-b357-a4cf905ed08d",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "staking",
+                    "providers",
+                    ":providerId",
+                    "approveTermsOfService"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "providerId",
+                      "description": "(Required) The unique identifier of the staking provider"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireblocks.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "772b6040-46b8-40cd-b332-ad96e13c595d",
+    "name": "Fireblocks Staking API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+      "type": "text/plain"
+    }
+  }
+}

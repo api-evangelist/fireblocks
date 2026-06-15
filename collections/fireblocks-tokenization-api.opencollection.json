@@ -1,0 +1,302 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Tokenization API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tokenization",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all linked tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/tokens",
+            "params": [
+              {
+                "name": "pageCursor",
+                "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==",
+                "type": "query",
+                "description": "Page cursor to get the next page"
+              },
+              {
+                "name": "pageSize",
+                "value": "10",
+                "type": "query",
+                "description": "Number of items per page, requesting more then max will return max items"
+              },
+              {
+                "name": "status",
+                "value": "COMPLETED",
+                "type": "query",
+                "description": "A comma separated list of statuses to filter. Default is \"COMPLETED\""
+              }
+            ]
+          },
+          "docs": "Return all linked tokens (paginated).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Issue a new token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tokenization/tokens",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Facilitates the creation of a new token, supporting both EVM-based and Stellar/Ripple platforms. For EVM, it deploys the corresponding contract template to the blockchain and links the token to the workspace. For Stellar/Ripple, it links a newly created token directly to the workspace without deploying a contract. Returns the token link with status \"PENDING\" until the token is deployed or \"SUCCESS\" if no deployment is needed.\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and"
+        },
+        {
+          "info": {
+            "name": "Link a contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tokenization/tokens/link",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Link a contract.\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, and Signer."
+        },
+        {
+          "info": {
+            "name": "Get collections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/collections",
+            "params": [
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Page cursor to get the next page, for example - \"MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==\""
+              },
+              {
+                "name": "pageSize",
+                "value": "10",
+                "type": "query",
+                "description": "Number of items per page (max 100), requesting more then 100 will return 100 items"
+              },
+              {
+                "name": "status",
+                "value": "COMPLETED",
+                "type": "query",
+                "description": "A comma separated list of statuses to filter. Default is \"COMPLETED\""
+              }
+            ]
+          },
+          "docs": "Get collections (paginated).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Create a new collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tokenization/collections",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new collection and link it as a token.\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor."
+        },
+        {
+          "info": {
+            "name": "Get a collection by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/collections/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb",
+                "type": "path",
+                "description": "The token link id"
+              }
+            ]
+          },
+          "docs": "Get a collection by id.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Delete a collection link",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/tokenization/collections/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb",
+                "type": "path",
+                "description": "The token link id"
+              }
+            ]
+          },
+          "docs": "Delete a collection link.\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor."
+        },
+        {
+          "info": {
+            "name": "Get collection token details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/collections/:id/tokens/:tokenId",
+            "params": [
+              {
+                "name": "id",
+                "value": "fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb",
+                "type": "path",
+                "description": "The collection link id"
+              },
+              {
+                "name": "tokenId",
+                "value": "1",
+                "type": "path",
+                "description": "The tokenId as it appears on the blockchain"
+              }
+            ]
+          },
+          "docs": "Get collection token details by id.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Mint tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tokenization/collections/:id/tokens/mint",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb",
+                "type": "path",
+                "description": "The token link id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Mint tokens and upload metadata. This endpoint only works for NFTs using the ERC721f and ERC1155f standards.\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Editor."
+        },
+        {
+          "info": {
+            "name": "Burn tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tokenization/collections/:id/tokens/burn",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb",
+                "type": "path",
+                "description": "The collection link id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Burn tokens in a collection.\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor."
+        },
+        {
+          "info": {
+            "name": "Return a linked token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/tokens/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb",
+                "type": "path",
+                "description": "The token link id"
+              }
+            ]
+          },
+          "docs": "Return a linked token, with its status and metadata.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Unlink a token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/tokenization/tokens/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb",
+                "type": "path",
+                "description": "The token link id"
+              }
+            ]
+          },
+          "docs": "Unlink a token. The token will be unlinked from the workspace. The token will not be deleted on chain nor the refId, only the link to the workspace will be removed.\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

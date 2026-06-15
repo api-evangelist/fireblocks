@@ -1,0 +1,432 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks NFTs API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "NFTs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all owned tokens (paginated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/nfts/ownership/tokens",
+            "params": [
+              {
+                "name": "blockchainDescriptor",
+                "value": "",
+                "type": "query",
+                "description": "Blockchain descriptor filter"
+              },
+              {
+                "name": "vaultAccountIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of Vault Account IDs. Up to 100 are allowed in a single request.  This field will be ignored when walletType=END_USER_WALLET or ncwId is provided."
+              },
+              {
+                "name": "ncwId",
+                "value": "",
+                "type": "query",
+                "description": "Non-Custodial Wallet ID"
+              },
+              {
+                "name": "ncwAccountIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of Non-Custodial account IDs. Up to 100 are allowed in a single request. This field will be ignored when walletType=VAULT_ACCOUNT or ncwId is not provided."
+              },
+              {
+                "name": "walletType",
+                "value": "",
+                "type": "query",
+                "description": "Wallet type, it can be `VAULT_ACCOUNT` or `END_USER_WALLET`"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of NFT IDs. Up to 100 are allowed in a single request."
+              },
+              {
+                "name": "collectionIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of collection IDs. Up to 100 are allowed in a single request."
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Page cursor to fetch"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (max 100)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort by param, it can be one param or a list of params separated by comma"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Order direction, it can be `ASC` for ascending or `DESC` for descending"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Token ownership status"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search owned tokens and their collections. Possible criteria for search:  token name and id within the contract/collection, collection name, blockchain descriptor and name."
+              },
+              {
+                "name": "spam",
+                "value": "",
+                "type": "query",
+                "description": "Token ownership spam status."
+              }
+            ]
+          },
+          "docs": "Returns all tokens and their data in your workspace.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Refresh vault account tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/nfts/ownership/tokens",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "blockchainDescriptor",
+                "value": "",
+                "type": "query",
+                "description": "Blockchain descriptor filter"
+              },
+              {
+                "name": "vaultAccountId",
+                "value": "",
+                "type": "query",
+                "description": "Vault account filter"
+              }
+            ]
+          },
+          "docs": "Updates all tokens and balances per blockchain and vault account.\nLearn more about Fireblocks NFT management in the following [guide](https://developers.fireblocks.com/reference/deploy-an-nft-collection).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "List all distinct owned tokens (paginated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/nfts/ownership/assets",
+            "params": [
+              {
+                "name": "ncwId",
+                "value": "",
+                "type": "query",
+                "description": "Non-Custodial Wallet ID"
+              },
+              {
+                "name": "walletType",
+                "value": "",
+                "type": "query",
+                "description": "Wallet type, it can be `VAULT_ACCOUNT` or `END_USER_WALLET`"
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Page cursor to fetch"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (max 100)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort by param, it can be one param or a list of params separated by comma"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Order direction, it can be `ASC` for ascending or `DESC` for descending"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Token ownership status"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search owned tokens by token name"
+              },
+              {
+                "name": "spam",
+                "value": "",
+                "type": "query",
+                "description": "Token ownership spam status."
+              }
+            ]
+          },
+          "docs": "Returns all owned distinct tokens (for your workspace) and their data in your workspace.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "List owned collections (paginated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/nfts/ownership/collections",
+            "params": [
+              {
+                "name": "ncwId",
+                "value": "",
+                "type": "query",
+                "description": "Tenant's Non-Custodial Wallet ID"
+              },
+              {
+                "name": "walletType",
+                "value": "",
+                "type": "query",
+                "description": "Wallet type, it can be `VAULT_ACCOUNT` or `END_USER_WALLET`"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search owned collections. Possible criteria for search: collection name, collection contract address."
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Page cursor to fetch"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (max 100)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort by param, it can be one param or a list of params separated by comma"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Order direction, it can be `ASC` for ascending or `DESC` for descending"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Token ownership status"
+              }
+            ]
+          },
+          "docs": "Returns all collections in your workspace.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "List token data by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/nfts/tokens/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "NFT ID"
+              }
+            ]
+          },
+          "docs": "Returns the requested token data.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Refresh token metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/nfts/tokens/:id",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "NFT ID"
+              }
+            ]
+          },
+          "docs": "Updates the latest token metadata.\nLearn more about Fireblocks NFT management in the following [guide](https://developers.fireblocks.com/reference/deploy-an-nft-collection).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "List tokens by IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/nfts/tokens",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of NFT IDs. Up to 100 are allowed in a single request."
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Page cursor to fetch"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (max 100)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort by param, it can be one param or a list of params separated by comma"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Order direction, it can be `ASC` for ascending or `DESC` for descending"
+              }
+            ]
+          },
+          "docs": "Returns the requested tokens data.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Update token ownership status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/nfts/ownership/tokens/:id/status",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "NFT ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates token status for a workspace, in all workspace vaults.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Update tokens ownership status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/nfts/ownership/tokens/status",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates tokens status for a workspace, in all vault accounts.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Update tokens ownership spam property",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/nfts/ownership/tokens/spam",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates tokens spam property for a workspace's token ownerships, in all vault accounts.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

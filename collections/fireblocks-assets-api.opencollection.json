@@ -1,0 +1,320 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Blockchains and Assets API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Blockchains & Assets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List assets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/assets",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "blockchainId",
+                "value": "0f672204-a28b-464a-b318-a387abd3d3c7",
+                "type": "query",
+                "description": "Blockchain id of the assets"
+              },
+              {
+                "name": "assetClass",
+                "value": "",
+                "type": "query",
+                "description": "Assets class"
+              },
+              {
+                "name": "symbol",
+                "value": "ETH",
+                "type": "query",
+                "description": "Assets onchain symbol"
+              },
+              {
+                "name": "scope",
+                "value": "",
+                "type": "query",
+                "description": "Scope of the assets"
+              },
+              {
+                "name": "deprecated",
+                "value": "false",
+                "type": "query",
+                "description": "Are assets deprecated"
+              },
+              {
+                "name": "ids",
+                "value": "3ed32525-70df-45c8-bae3-e69ab56dc095,3a3b5f06-61e7-44f0-9962-4425b55795ff,SHANI5_B75VRLGX_MUPA",
+                "type": "query",
+                "description": "A list of asset IDs (max 100)"
+              },
+              {
+                "name": "pageCursor",
+                "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==",
+                "type": "query",
+                "description": "Next page cursor to fetch"
+              },
+              {
+                "name": "pageSize",
+                "value": "500",
+                "type": "query",
+                "description": "Items per page"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of all assets supported by Fireblocks in your workspace.\n\n**Note:** We will continue to support and display the legacy ID (API ID). Since not all Fireblocks services fully support the new Assets UUID, please use only the legacy ID until further notice.\n"
+        },
+        {
+          "info": {
+            "name": "Register an asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/assets",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Registers a new asset to a workspace and retrieves the newly created asset's details. Currently supported chains are: \n  - EVM-based chains\n  - Algorand\n  - NEAR\n  - Solana\n  - Stellar\n  - Sui\n  - TRON\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin, NCW Admin, Editor, Signer.        \n"
+        },
+        {
+          "info": {
+            "name": "Get an asset by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/assets/:id",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "ETH",
+                "type": "path",
+                "description": "The ID or legacyId of the asset"
+              }
+            ]
+          },
+          "docs": "Returns an asset by ID or legacyID.</br>\n\n\n**Note**:\n- We will continue displaying and supporting the legacy ID (API ID). \nSince not all Fireblocks services fully support the new Assets UUID, please use only the legacy ID until further notice.\n"
+        },
+        {
+          "info": {
+            "name": "Set asset price",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/assets/prices/:id",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "ETH",
+                "type": "path",
+                "description": "The ID of the asset"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set asset price for the given asset id. Returns the asset price response.\n"
+        },
+        {
+          "info": {
+            "name": "List blockchains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/blockchains",
+            "params": [
+              {
+                "name": "protocol",
+                "value": "SOL",
+                "type": "query",
+                "description": "Blockchain protocol"
+              },
+              {
+                "name": "deprecated",
+                "value": "false",
+                "type": "query",
+                "description": "Is blockchain deprecated"
+              },
+              {
+                "name": "test",
+                "value": "false",
+                "type": "query",
+                "description": "Is test blockchain"
+              },
+              {
+                "name": "ids",
+                "value": "3ed32525-70df-45c8-bae3-e69ab56dc095,3a3b5f06-61e7-44f0-9962-4425b55795ff,MANTRA",
+                "type": "query",
+                "description": "A list of blockchain IDs (max 100)"
+              },
+              {
+                "name": "pageCursor",
+                "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==",
+                "type": "query",
+                "description": "Page cursor to fetch"
+              },
+              {
+                "name": "pageSize",
+                "value": "500",
+                "type": "query",
+                "description": "Items per page (max 500)"
+              }
+            ]
+          },
+          "docs": "Returns all blockchains supported by Fireblocks.</br>\n"
+        },
+        {
+          "info": {
+            "name": "Get a Blockchain by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/blockchains/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "ETH",
+                "type": "path",
+                "description": "The ID or legacyId of the blockchain"
+              }
+            ]
+          },
+          "docs": "Returns a blockchain by ID or legacyID.\n"
+        },
+        {
+          "info": {
+            "name": "Validate destination address",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/transactions/validate_address/:assetId/:address",
+            "params": [
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The asset of the address"
+              },
+              {
+                "name": "address",
+                "value": "",
+                "type": "path",
+                "description": "The address to validate"
+              }
+            ]
+          },
+          "docs": "Checks if an address is valid and active (for XRP, DOT, XLM, and EOS).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Estimate the required fee for an asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/estimate_network_fee",
+            "params": [
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "query",
+                "description": "The asset for which to estimate the fee"
+              }
+            ]
+          },
+          "docs": "Gets the estimated required fee for an asset.\nFireblocks fetches, calculates and caches the result every 30 seconds.\nCustomers should query this API while taking the caching interval into consideration.\nNotes:\n- The `networkFee` parameter is the `gasPrice` with a given delta added, multiplied by the gasLimit plus the delta. - The estimation provided depends on the asset type.\n    - For UTXO-based assets, the response contains the `feePerByte` parameter\n    - For ETH-based and all EVM based asset"
+        },
+        {
+          "info": {
+            "name": "List assets (Legacy)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/supported_assets"
+          },
+          "docs": "**This legacy endpoint has not been deprecated but it should not be used in your operations. Instead, use the new [List assets](https://developers.fireblocks.com/reference/listassets) endpoint for better performance and to retrieve more detailed asset information.**\n\nRetrieves all assets supported by Fireblocks in your workspace.\n\n**Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Blockchains & assets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update the user’s metadata for an asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/assets/:id",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "ETH",
+                "type": "path",
+                "description": "The ID or legacyId of the asset"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the user’s metadata for an asset.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin, NCW Admin, Signer, Editor."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

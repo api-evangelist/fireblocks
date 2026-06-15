@@ -1,0 +1,942 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Workspace Management API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workspace Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Freeze",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/workspace/freeze",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Freezes a Workspace so that ALL operations by ANY user are blocked.\nYou should only perform this action when the workspace faces imminent risk, such as when you have a security breach.\nTo unfreeze a workspace, the workspace Owner must submit a request to Fireblocks Support.\n**NOTE:** \n- This operation can only be performed by the workspace Admins - Your workspace continues to receive incoming transfers during this time.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "List user groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/management/user_groups"
+          },
+          "docs": "Get all user groups in your workspace\n\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Create user group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/management/user_groups",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new user group. Users with the Viewer role cannot be added to groups.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get user group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/management/user_groups/:groupId",
+            "params": [
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user group"
+              }
+            ]
+          },
+          "docs": "Get a user group by ID\n\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Update user group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/management/user_groups/:groupId",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user group"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a user group by ID\n- Please note that this endpoint is available only for API keys with Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Delete user group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/management/user_groups/:groupId",
+            "params": [
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user group"
+              }
+            ]
+          },
+          "docs": "Delete a user group by ID.</br>\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "List users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/users"
+          },
+          "docs": "DEPRECATED - please use `GET /management/users` instead\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get audit logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/audits",
+            "params": [
+              {
+                "name": "timePeriod",
+                "value": "",
+                "type": "query",
+                "description": "The last time period to fetch audit logs"
+              }
+            ]
+          },
+          "docs": "Deprecated. Please use the `GET /management/audit_logs` endpoint instead.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get audit logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/management/audit_logs",
+            "params": [
+              {
+                "name": "timePeriod",
+                "value": "",
+                "type": "query",
+                "description": "The last time period to fetch audit logs"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The next id to start fetch audit logs from"
+              }
+            ]
+          },
+          "docs": "Get Audit logs for the last Day/Week.\n\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Update admin quorum threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/admin_quorum",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update admin quorum threshold.\n\n\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Returns current OTA status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/management/ota"
+          },
+          "docs": "Returns current One Time Address status.\nLearn more about [One Time Addresses](https://support.fireblocks.io/hc/en-us/articles/4409104568338-One-Time-Address-OTA-feature)\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Enable or disable transactions to OTA",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/management/ota",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enable or disable transactions to One Time Addresses (Non Whitelisted addresses).\nLearn more about [One Time Addresses](https://support.fireblocks.io/hc/en-us/articles/4409104568338-One-Time-Address-OTA-feature)\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Returns current workspace status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/management/workspace_status"
+          },
+          "docs": "Returns current workspace status (Beta).\n**Note**:\n- This endpoint is now in Beta, disabled for general availability at this time.\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get console users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/management/users"
+          },
+          "docs": "Get console users for your workspace.\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Create console user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/management/users",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create console users in your workspace\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\nLearn more about Fireblocks Users management in the following [guide](https://developers.fireblocks.com/docs/manage-users).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get API Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/management/api_users"
+          },
+          "docs": "List all API keys in your workspace.\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Create API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/management/api_users",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new API key in your workspace.\nLearn more about Fireblocks API Keys management in the following [guide](https://developers.fireblocks.com/docs/manage-api-keys).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Resets device",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/management/users/:id/reset_device",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the console user"
+              }
+            ]
+          },
+          "docs": "Resets mobile device for given console user, that user will need to do mobile onboarding again.\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get whitelisted ip addresses for an API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/management/api_users/:userId/whitelist_ip_addresses",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the api user"
+              }
+            ]
+          },
+          "docs": "Get a list of the whitelisted IP addresses for a specific API Key\n- Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Key Link",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get list of signing keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/key_link/signing_keys",
+            "params": [
+              {
+                "name": "pageCursor",
+                "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==",
+                "type": "query",
+                "description": "Cursor to the next page"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Amount of results to return in the next page"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Field(s) to use for sorting"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Is the order ascending or descending"
+              },
+              {
+                "name": "vaultAccountId",
+                "value": "4",
+                "type": "query",
+                "description": "Return keys assigned to a specific vault"
+              },
+              {
+                "name": "agentUserId",
+                "value": "12fed207-5bdf-4a0c-ab12-fcd2627f75d1",
+                "type": "query",
+                "description": "Return keys associated with a specific agent user"
+              },
+              {
+                "name": "algorithm",
+                "value": "ECDSA_SECP256K1",
+                "type": "query",
+                "description": "Return only keys with a specific algorithm"
+              },
+              {
+                "name": "enabled",
+                "value": "",
+                "type": "query",
+                "description": "Return keys that have been proof of ownership"
+              },
+              {
+                "name": "available",
+                "value": "",
+                "type": "query",
+                "description": "Return keys that are proof of ownership but not assigned. Available filter can be used only when vaultAccountId and enabled filters are not set"
+              }
+            ]
+          },
+          "docs": "Returns the list of signing keys in the workspace\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Add a new signing key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/key_link/signing_keys",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a new signing key to the workspace. The added key will be linked to the specific Fireblocks agent user ID. The same user will receive the proof of ownership message to be signed, and upon successful proof, the key will become enabled.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get a signing key by `keyId`",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/key_link/signing_keys/:keyId",
+            "params": [
+              {
+                "name": "keyId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the signing key provided by Fireblocks"
+              }
+            ]
+          },
+          "docs": "Returns a signing key if it exists, identified by the specified Fireblocks provided `keyId`.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Modify the signing keyId",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/key_link/signing_keys/:keyId",
+            "params": [
+              {
+                "name": "keyId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the signing key provided by Fireblocks"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows assigning the signing key to a vault account, if it hasn't been assigned to any other vault accounts yet.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Set agent user id",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/key_link/signing_keys/:keyId/agent_user_id",
+            "params": [
+              {
+                "name": "keyId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the signing key provided by Fireblocks"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Can modify existing signing key id if the key is not enabled. The change done in background and will be visible once applied. If key is already enabled (after proof of ownership) the user cannot be changed.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get list of registered validation keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/key_link/validation_keys",
+            "params": [
+              {
+                "name": "pageCursor",
+                "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==",
+                "type": "query",
+                "description": "Cursor to the next page"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Amount of results to return in the next page"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Field(s) to use for sorting"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Is the order ascending or descending"
+              }
+            ]
+          },
+          "docs": "Returns the list of validation keys in the workspace\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Add a new validation key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/key_link/validation_keys",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a new validation key used to validate signing keys. The new validation key will undergo an approval process by the workspace quorum.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get a validation key by `keyId`",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/key_link/validation_keys/:keyId",
+            "params": [
+              {
+                "name": "keyId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns a validation key if it exists, identified by the specified `keyId`.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Disables a validation key",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/key_link/validation_keys/:keyId",
+            "params": [
+              {
+                "name": "keyId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the validation key provided by Fireblocks"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows disabling validation key even if it has not expired yet. It is not allowed to enable the validation key back. Another key has to be used for future validations.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Keys (Beta)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get list of mpc keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/keys/mpc/list"
+          },
+          "docs": "Returns a list of MPC signing keys of the workspace. For each key, the list of players associated with it is attached.\n**Note:** \nThis endpoint is currently in beta and might be subject to changes."
+        },
+        {
+          "info": {
+            "name": "Get list of mpc keys by `userId`",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/keys/mpc/list/:userId",
+            "params": [
+              {
+                "name": "userId",
+                "value": "46a92767-5f93-4a46-9eed-f012196bb4fc",
+                "type": "path",
+                "description": "The id for the user"
+              }
+            ]
+          },
+          "docs": "Returns a list of MPC signing keys of a specific user. For each key, the list of players associated with it is attached.\n**Note:**\nThis endpoint is currently in beta and might be subject to changes."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cosigners (Beta)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all cosigners",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/cosigners",
+            "params": [
+              {
+                "name": "order",
+                "value": "ASC",
+                "type": "query",
+                "description": "ASC / DESC ordering (default DESC)"
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor of the required page"
+              },
+              {
+                "name": "pageSize",
+                "value": "10",
+                "type": "query",
+                "description": "Maximum number of items in the page"
+              }
+            ]
+          },
+          "docs": "Get all workspace cosigners (paginated).\n**Note:** These endpoints are currently in beta and might be subject to changes.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Add cosigner",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/cosigners",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a new cosigner. The cosigner will be pending pairing until the API key is manually paired\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get cosigner",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/cosigners/:cosignerId",
+            "params": [
+              {
+                "name": "cosignerId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the cosigner"
+              }
+            ]
+          },
+          "docs": "Get a cosigner by ID.\n**Note:** These endpoints are currently in beta and might be subject to changes.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Rename cosigner",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/cosigners/:cosignerId",
+            "params": [
+              {
+                "name": "cosignerId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the cosigner"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rename a cosigner by ID.\n**Note:** These endpoints are currently in beta and might be subject to changes.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get all API keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/cosigners/:cosignerId/api_keys",
+            "params": [
+              {
+                "name": "cosignerId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the cosigner"
+              },
+              {
+                "name": "order",
+                "value": "ASC",
+                "type": "query",
+                "description": "ASC / DESC ordering (default DESC)"
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor of the required page"
+              },
+              {
+                "name": "pageSize",
+                "value": "10",
+                "type": "query",
+                "description": "Maximum number of items in the page"
+              }
+            ]
+          },
+          "docs": "Get all cosigner paired API keys (paginated).\n**Note:** These endpoints are currently in beta and might be subject to changes.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/cosigners/:cosignerId/api_keys/:apiKeyId",
+            "params": [
+              {
+                "name": "cosignerId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the cosigner"
+              },
+              {
+                "name": "apiKeyId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the API key"
+              }
+            ]
+          },
+          "docs": "Get an API key by ID.\n**Note:** These endpoints are currently in beta and might be subject to changes.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Pair API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/cosigners/:cosignerId/api_keys/:apiKeyId",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cosignerId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the cosigner"
+              },
+              {
+                "name": "apiKeyId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the API key"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Pair an API key to a cosigner\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Update API key callback handler",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/cosigners/:cosignerId/api_keys/:apiKeyId",
+            "params": [
+              {
+                "name": "cosignerId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the cosigner"
+              },
+              {
+                "name": "apiKeyId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the API key"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the callback handler of an API key\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Unpair API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/cosigners/:cosignerId/api_keys/:apiKeyId",
+            "params": [
+              {
+                "name": "cosignerId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the cosigner"
+              },
+              {
+                "name": "apiKeyId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the API key"
+              }
+            ]
+          },
+          "docs": "Unpair an API key from a cosigner\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get request status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/cosigners/:cosignerId/api_keys/:apiKeyId/:requestId",
+            "params": [
+              {
+                "name": "cosignerId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the cosigner"
+              },
+              {
+                "name": "apiKeyId",
+                "value": "44fcead0-7053-4831-a53a-df7fb90d440f",
+                "type": "path",
+                "description": "The unique identifier of the API key"
+              },
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the status of an asynchronous request\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

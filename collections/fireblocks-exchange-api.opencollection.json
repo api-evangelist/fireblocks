@@ -1,0 +1,596 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Exchange and Fiat Accounts API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Exchange Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List exchange accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/exchange_accounts"
+          },
+          "docs": "DEPRECATED - Please use the `/exchange_accounts/paged` endpoint.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Add an Exchange Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/exchange_accounts",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add an exchange account to exchanges. \n\nNote: This endpoint currently only supports the following exchanges `INDEPENDENT_RESERVE`,`BIT`, `BITHUMB`, `BITSO`, `CRYPTOCOM`, `BYBIT_V2`, `WHITEBIT`, `HITBTC`, `GEMINI`, `HUOBI`, `GATEIO`, `COINHAKO`, `BULLISH`, `BITGET`, and `LUNO`\n\nTo add an exchange account, please use the following [guide](https://developers.fireblocks.com/docs/add-an-exchange-account).\n"
+        },
+        {
+          "info": {
+            "name": "List connected exchange accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/exchange_accounts/paged",
+            "params": [
+              {
+                "name": "before",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "number of exchanges per page"
+              }
+            ]
+          },
+          "docs": "Returns a list of the connected exchange accounts in your workspace.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get a specific exchange account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/exchange_accounts/:exchangeAccountId",
+            "params": [
+              {
+                "name": "exchangeAccountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the exchange account to return"
+              }
+            ]
+          },
+          "docs": "Returns an exchange account by ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Internal transfer for exchange accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/exchange_accounts/:exchangeAccountId/internal_transfer",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "exchangeAccountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the exchange account to return"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Transfers funds between trading accounts under the same exchange account.\nLearn more about Fireblocks Exchange Connectivity in the following [guide](https://developers.fireblocks.com/docs/connect-to-exchanges-and-fiat-providers).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Convert exchange account funds",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/exchange_accounts/:exchangeAccountId/convert",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "exchangeAccountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the exchange account. Please make sure the exchange supports conversions. To find the ID of your exchange account, use GET/exchange_accounts."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Convert exchange account funds from the source asset to the destination asset. Coinbase (USD to USDC, USDC to USD) and Bitso (MXN to USD) are supported conversions.\nLearn more about Fireblocks Exchange Connectivity in the following [guide](https://developers.fireblocks.com/docs/connect-to-exchanges-and-fiat-providers).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get an asset for an exchange account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/exchange_accounts/:exchangeAccountId/:assetId",
+            "params": [
+              {
+                "name": "exchangeAccountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the exchange account to return"
+              },
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset to return"
+              }
+            ]
+          },
+          "docs": "Returns an asset for an exchange account.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get public key to encrypt exchange credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/exchange_accounts/credentials_public_key"
+          },
+          "docs": "Return public key"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Fiat Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List fiat accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/fiat_accounts"
+          },
+          "docs": "Returns all fiat accounts.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Find a specific fiat account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/fiat_accounts/:accountId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the fiat account to return"
+              }
+            ]
+          },
+          "docs": "Returns a fiat account by ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Redeem funds to DDA",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/fiat_accounts/:accountId/redeem_to_linked_dda",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the fiat account to use"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Redeems funds to the linked DDA.\nLearn more about Fireblocks FIAT Connectivity in the following [guide](https://developers.fireblocks.com/docs/connect-to-exchanges-and-fiat-providers).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Deposit funds from DDA",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/fiat_accounts/:accountId/deposit_from_linked_dda",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the fiat account to use"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deposits funds from the linked DDA.\nLearn more about Fireblocks FIAT Connectivity in the following [guide](https://developers.fireblocks.com/docs/connect-to-exchanges-and-fiat-providers).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Connected Accounts (Beta)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get connected accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/connected_accounts",
+            "params": [
+              {
+                "name": "mainAccounts",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include only main accounts in the response."
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Page size for pagination."
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Page cursor for pagination."
+              }
+            ]
+          },
+          "docs": "Returns all connected accounts.\n\n**Note:** This endpoint is currently in beta and might be subject to changes.\n"
+        },
+        {
+          "info": {
+            "name": "Get connected account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/connected_accounts/:accountId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the account to fetch."
+              }
+            ]
+          },
+          "docs": "Retrieve detailed information about a specific connected account by ID.\n\n**Note:** This endpoint is currently in beta and might be subject to changes.\n"
+        },
+        {
+          "info": {
+            "name": "Get balances for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/connected_accounts/:accountId/balances",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the account to fetch balances for."
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Page size for pagination."
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Page cursor for pagination."
+              }
+            ]
+          },
+          "docs": "Retrieve current asset balances for a specific connected account as a flat list (one row per `assetId`, `balanceType`).\n\n**Note:** This endpoint is currently in beta and might be subject to changes.\n"
+        },
+        {
+          "info": {
+            "name": "Get exchange rates for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/connected_accounts/:accountId/rates",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the account to fetch rates for."
+              },
+              {
+                "name": "baseAssetId",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the asset to fetch rates for."
+              },
+              {
+                "name": "quoteAssetId",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the asset to get the rates nominally."
+              }
+            ]
+          },
+          "docs": "Retrieve current exchange rates for converting between specific assets in a connected account.\n\n**Note:** This endpoint is currently in beta and might be subject to changes.\n"
+        },
+        {
+          "info": {
+            "name": "Get supported trading pairs for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/connected_accounts/:accountId/manifest/capabilities/trading/pairs",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the account to fetch supported pairs for."
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Page size for pagination."
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Page cursor for pagination."
+              }
+            ]
+          },
+          "docs": "Retrieve all asset trading pairs supported by a specific connected account, including the pair type (`quote`, `market`, `onOffRamp`).\n\n**Note:** This endpoint is currently in beta and might be subject to changes.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Trading (Beta)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get providers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/trading/providers",
+            "params": [
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Page size for pagination."
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Page cursor for pagination."
+              }
+            ]
+          },
+          "docs": "Retrieve a list of all available external providers supporting trading activities through the platform.\n\n**Note:** These endpoints are currently in beta and might be subject to changes. If you want to participate and learn more about the Fireblocks Trading, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n\n**Endpoint Permission:** Owner, Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.\n"
+        },
+        {
+          "info": {
+            "name": "Create a quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/trading/quotes",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a time-limited quote for asset conversion, providing exchange rate and amount calculations.\n\n**Note:** These endpoints are currently in beta and might be subject to changes. If you want to participate and learn more about the Fireblocks Trading, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin, Signer, Editor.\n"
+        },
+        {
+          "info": {
+            "name": "Get orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/trading/orders",
+            "params": [
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "pageSize for pagination."
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "ASC / DESC ordering (default DESC)"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by accountId."
+              },
+              {
+                "name": "providerId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by providerId."
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter by order status."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "assetConversionType",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a paginated list of orders with optional filtering by account, provider, status, and time range.\n\n**Note:** These endpoints are currently in beta and might be subject to changes. If you want to participate and learn more about the Fireblocks Trading, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.\n"
+        },
+        {
+          "info": {
+            "name": "Create an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/trading/orders",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an order to buy or sell an asset. If no source is given, an external source will be use.\n\n**Note:** These endpoints are currently in beta and might be subject to changes. If you want to participate and learn more about the Fireblocks Trading, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin, Signer, Editor.\n"
+        },
+        {
+          "info": {
+            "name": "Get order details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/trading/orders/:orderId",
+            "params": [
+              {
+                "name": "orderId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the order to fetch."
+              }
+            ]
+          },
+          "docs": "Retrieve detailed information about a specific order by its ID.\n\n**Note:** These endpoints are currently in beta and might be subject to changes. If you want to participate and learn more about the Fireblocks Trading, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

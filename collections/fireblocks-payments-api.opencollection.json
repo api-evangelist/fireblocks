@@ -1,0 +1,740 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Payments API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments - Payout",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a payout instruction set",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/payments/payout",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>\n</br>These endpoints are currently in beta and might be subject to changes.</br>\n</br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager or email CSM@fireblocks.com. </br>\n</br> <b u>Create a payout instruction set.</b> <"
+        },
+        {
+          "info": {
+            "name": "Execute a payout instruction set",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/payments/payout/:payoutId/actions/execute",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "payoutId",
+                "value": "1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7",
+                "type": "path",
+                "description": "the payout id received from the creation of the payout instruction set"
+              }
+            ]
+          },
+          "docs": "**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>\n</br>These endpoints are currently in beta and might be subject to changes.</br>\n</br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager or email CSM@fireblocks.com. </br>\n</br><b u>Execute a payout instruction set.</b> <"
+        },
+        {
+          "info": {
+            "name": "Get the status of a payout instruction set",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/payments/payout/:payoutId",
+            "params": [
+              {
+                "name": "payoutId",
+                "value": "1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7",
+                "type": "path",
+                "description": "the payout id received from the creation of the payout instruction set"
+              }
+            ]
+          },
+          "docs": "**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>\n</br>These endpoints are currently in beta and might be subject to changes.</br>\n</br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager or email CSM@fireblocks.com. </br>\n</br>Endpoint Permission: Admin, Non-Signing Admi"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Payments - Flows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create payment flow configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_config",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a new configuration ID to be used for initiating executions in subsequent phases. This configuration should include the operations you intend to incorporate into the workflow, such as TRANSFER, CONVERT, and DISBURSE, in addition to your pre-screening preferences, which are disabled by default.\nLearn more about Fireblocks Payments - Flows in the following [guide](https://developers.fireblocks.com/docs/payment-flows-copy).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Retrieve workflow configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_config/:configId",
+            "params": [
+              {
+                "name": "configId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a previously created workflow configuration using the specified \"configId\".\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Delete workflow configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_config/:configId",
+            "params": [
+              {
+                "name": "configId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a configuration using the specified \"configId\".\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Create workflow execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_execution",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validate the \"workflow-config\" previously created by utilizing the unique \"configId\". This step requires the mandatory field amount, and allows for modifications to other fields defined via the \"workflow-config\" endpoint, including pre-screening preferences. A response containing the \"workflowExecutionId\" and detailing the validation status will be provided. Execution is ready when the \"workflow-execution\" status is READY_FOR_LAUNCH, at which point it can be initiated with \"POST /workflow-execut"
+        },
+        {
+          "info": {
+            "name": "Get workflow execution details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_execution/:workflowExecutionId",
+            "params": [
+              {
+                "name": "workflowExecutionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a previously initiated workflow execution by specifying the \"workflowExecutionId\"\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Execute the payments workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_execution/:workflowExecutionId/actions/execute",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workflowExecutionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Launch the execution of a pre-configured workflow, identified by \"workflowExecutionId\", once it reaches the READY_FOR_LAUNCH state. The workflow undergoes several phases during execution - EXECUTION_IN_PROGRESS - Marks the start of the workflow execution. EXECUTION_COMPLETED or EXECUTION_FAILED - Indicates the execution has reached a final state.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Smart Transfers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Find Ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/smart-transfers",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search string - counterparty name or asset or ticketId. Optional"
+              },
+              {
+                "name": "statuses",
+                "value": "DRAFT,OPEN",
+                "type": "query",
+                "description": "Ticket statuses for Smart Transfer tickets. Optional"
+              },
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "query",
+                "description": "NetworkId that is used in the ticket\t. Optional"
+              },
+              {
+                "name": "createdByMe",
+                "value": "",
+                "type": "query",
+                "description": "Filter created tickets by created by self or by others. Optional"
+              },
+              {
+                "name": "expiresAfter",
+                "value": "",
+                "type": "query",
+                "description": "Lower bound of search range. Optional"
+              },
+              {
+                "name": "expiresBefore",
+                "value": "",
+                "type": "query",
+                "description": "Upper bound of search range. Optional"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of transfer. ASYNC executes transfers as they are funded, ATOMIC executes all terms (legs) as one atomic transfer"
+              },
+              {
+                "name": "externalRefId",
+                "value": "",
+                "type": "query",
+                "description": "External ref. ID that workspace can use to identify ticket outside of Fireblocks system."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "ID of the record after which to fetch $limit records"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to fetch. By default, it is 100"
+              }
+            ]
+          },
+          "docs": "Finds Smart Transfer tickets that match the submitted criteria.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor,\n  Viewer."
+        },
+        {
+          "info": {
+            "name": "Create Ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/smart-transfers",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new Smart Transfer ticket. Learn more about Fireblocks Smart Transfers [here](https://developers.fireblocks.com/docs/execute-smart-transfers).\n\n**Note:** The `DVP` value is in Early Access and should only be used if Fireblocks has enabled it in your workspace. Contact your Customer Success Manager for more information.\n\n**Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor.\n"
+        },
+        {
+          "info": {
+            "name": "Search Ticket by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Find Smart Transfer ticket by id.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Set expiration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/expires-in",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set expiration date on Smart Transfer ticket.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Add external ref. ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/external-id",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set external id Smart Transfer ticket.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Submit ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/submit",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit Smart Transfer ticket - change status into ready for approval if auto approval is not turned on, or OPEN if auto approval is on.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Fund ticket manually",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/fulfill",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Manually fulfill ticket, in case when all terms (legs) are funded manually.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Fund dvp ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/smart_transfers/:ticketId/dvp/fund",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or fulfill DvP ticket order"
+        },
+        {
+          "info": {
+            "name": "Cancel Ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/cancel",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cancel Smart Transfer ticket.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Create leg (term)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/terms",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates new smart transfer ticket term (when the ticket status is DRAFT).\nLearn more about Fireblocks Smart Transfers in the following [guide](https://developers.fireblocks.com/docs/execute-smart-transfers).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Get Smart Transfer ticket term",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/terms/:termId",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "termId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Find a specific term of a specific Smart Transfer ticket.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Update ticket leg (term)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/terms/:termId",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "termId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update ticket term (when ticket status is DRAFT).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Delete ticket leg (term)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/terms/:termId",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "termId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete ticket term when ticket is in DRAFT status.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Define funding source",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/terms/:termId/fund",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "termId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set funding source for ticket term (in case of ASYNC tickets, this will execute transfer immediately).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Set funding source and approval",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/smart_transfers/:ticketId/terms/:termId/dvp/approve",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "termId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set funding source for ticket term and creating approving transaction for contract to transfer asset"
+        },
+        {
+          "info": {
+            "name": "Manually add term transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/:ticketId/terms/:termId/manually-fund",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "termId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Manually set ticket term transaction.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Get user group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/settings/user-groups"
+          },
+          "docs": "Get Smart Transfer user groups.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Set user group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/smart-transfers/settings/user-groups",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set Smart Transfers user group to receive email notifications for Smart Transfers.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Get smart transfers statistic",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/smart_transfers/statistic"
+          },
+          "docs": "Get smart transfer statistic"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

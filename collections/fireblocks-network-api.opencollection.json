@@ -1,0 +1,437 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Network and Off-Exchange API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Fireblocks Network",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List network connections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/network_connections"
+          },
+          "docs": "Returns all network connections.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail "
+        },
+        {
+          "info": {
+            "name": "Creates a new network connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/network_connections",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates a new network connection.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fa"
+        },
+        {
+          "info": {
+            "name": "Update network connection routing policy.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/network_connections/:connectionId/set_routing_policy",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the network connection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing network connection's routing policy.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming"
+        },
+        {
+          "info": {
+            "name": "Retrieve third-party network routing validation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/network_connections/:connectionId/is_third_party_routing/:assetType",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the network connection"
+              },
+              {
+                "name": "assetType",
+                "value": "",
+                "type": "path",
+                "description": "The destination asset type"
+              }
+            ]
+          },
+          "docs": "The Fireblocks Network allows for flexibility around incoming deposits. A receiver can receive network deposits to locations other than Fireblocks. This endpoint validates whether future transactions are routed to the displayed recipient or to a 3rd party.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get a network connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/network_connections/:connectionId",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the connection"
+              }
+            ]
+          },
+          "docs": "Gets a network connection by ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail "
+        },
+        {
+          "info": {
+            "name": "Deletes a network connection by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/network_connections/:connectionId",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the network connection to delete"
+              }
+            ]
+          },
+          "docs": "Deletes an existing network connection specified by its connection ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the acc"
+        },
+        {
+          "info": {
+            "name": "Get all network IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/network_ids"
+          },
+          "docs": "Retrieves a list of all local and discoverable remote network IDs.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account"
+        },
+        {
+          "info": {
+            "name": "Creates a new Network ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/network_ids",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new Network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until y"
+        },
+        {
+          "info": {
+            "name": "Returns all enabled routing policy asset groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/network_ids/routing_policy_asset_groups"
+          },
+          "docs": "Retrieves a list of all enabled routing policy asset groups.\nYour routing policy defines how your transactions are routed.\nYou can use one or more enabled routing policy asset groups to describe connection or network id routing policy.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get both local IDs and discoverable remote IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/network_ids/search",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search string - displayName networkId. Optional"
+              },
+              {
+                "name": "excludeSelf",
+                "value": "",
+                "type": "query",
+                "description": "Exclude your networkIds. Optional, default false"
+              },
+              {
+                "name": "excludeConnected",
+                "value": "",
+                "type": "query",
+                "description": "Exclude connected networkIds. Optional, default false"
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "ID of the record after which to fetch $limit records"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to fetch. By default, it is 50"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all local and discoverable remote network IDs. Can be filtered.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you r"
+        },
+        {
+          "info": {
+            "name": "Returns specific network ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/network_ids/:networkId",
+            "params": [
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the network"
+              }
+            ]
+          },
+          "docs": "Retrieves a network by its ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail un"
+        },
+        {
+          "info": {
+            "name": "Deletes specific network ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/network_ids/:networkId",
+            "params": [
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the network"
+              }
+            ]
+          },
+          "docs": "Deletes a network by its ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail unti"
+        },
+        {
+          "info": {
+            "name": "Update network id routing policy.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/network_ids/:networkId/set_routing_policy",
+            "params": [
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the network"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the routing policy of a specified network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming tr"
+        },
+        {
+          "info": {
+            "name": "Update network ID's discoverability.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/network_ids/:networkId/set_discoverability",
+            "params": [
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the network"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update whether or not the network ID is discoverable by others.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, i"
+        },
+        {
+          "info": {
+            "name": "Update network ID's name.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/network_ids/:networkId/set_name",
+            "params": [
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the network"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates name of a specified network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions wil"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Off Exchange",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add Collateral",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/off_exchange/add",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add collateral and create deposit request.\nLearn more about Fireblocks Off Exchange in the following [guide](https://developers.fireblocks.com/docs/off-exchange).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Remove Collateral",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/off_exchange/remove",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove collateral and create withdraw request.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Create Settlement for a Trader",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/off_exchange/settlements/trader",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create settlement for a trader.\nLearn more about Fireblocks Off Exchange in the following [guide](https://developers.fireblocks.com/docs/off-exchange).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Get Settlements Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/off_exchange/settlements/transactions",
+            "params": [
+              {
+                "name": "mainExchangeAccountId",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get settlements transactions from exchange.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        },
+        {
+          "info": {
+            "name": "Find a specific collateral exchange account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/off_exchange/collateral_accounts/:mainExchangeAccountId",
+            "params": [
+              {
+                "name": "mainExchangeAccountId",
+                "value": "",
+                "type": "path",
+                "description": "The id of the main exchange account for which the requested collateral account is associated with"
+              }
+            ]
+          },
+          "docs": "Returns a collateral account by mainExchangeAccountId.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

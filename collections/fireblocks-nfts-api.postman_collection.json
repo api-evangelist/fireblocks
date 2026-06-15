@@ -1,0 +1,1607 @@
+{
+  "item": [
+    {
+      "id": "300150c4-c790-4cad-84fc-8f18559dfed9",
+      "name": "NFTs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dec9f01a-63e6-40db-a275-3fdddff435b2",
+          "name": "Refresh vault account tokens",
+          "request": {
+            "name": "Refresh vault account tokens",
+            "description": {
+              "content": "Updates all tokens and balances per blockchain and vault account.\nLearn more about Fireblocks NFT management in the following [guide](https://developers.fireblocks.com/reference/deploy-an-nft-collection).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nfts",
+                "ownership",
+                "tokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "blockchainDescriptor",
+                  "value": "<string>",
+                  "description": "(Required) Blockchain descriptor filter"
+                },
+                {
+                  "disabled": false,
+                  "key": "vaultAccountId",
+                  "value": "<string>",
+                  "description": "(Required) Vault account filter"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              }
+            ],
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6a064a88-5be4-43b2-80cd-4cd315c463cd",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "blockchainDescriptor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vaultAccountId",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "27b5429d-ab39-4441-8883-e61ed19d7bfd",
+          "name": "List all owned tokens (paginated)",
+          "request": {
+            "name": "List all owned tokens (paginated)",
+            "description": {
+              "content": "Returns all tokens and their data in your workspace.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nfts",
+                "ownership",
+                "tokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "blockchainDescriptor",
+                  "value": "<string>",
+                  "description": "Blockchain descriptor filter"
+                },
+                {
+                  "disabled": false,
+                  "key": "vaultAccountIds",
+                  "value": "<string>",
+                  "description": "A comma separated list of Vault Account IDs. Up to 100 are allowed in a single request.  This field will be ignored when walletType=END_USER_WALLET or ncwId is provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "ncwId",
+                  "value": "<string>",
+                  "description": "Non-Custodial Wallet ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "ncwAccountIds",
+                  "value": "<string>",
+                  "description": "A comma separated list of Non-Custodial account IDs. Up to 100 are allowed in a single request. This field will be ignored when walletType=VAULT_ACCOUNT or ncwId is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "walletType",
+                  "value": "VAULT_ACCOUNT",
+                  "description": "Wallet type, it can be `VAULT_ACCOUNT` or `END_USER_WALLET`"
+                },
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "A comma separated list of NFT IDs. Up to 100 are allowed in a single request."
+                },
+                {
+                  "disabled": false,
+                  "key": "collectionIds",
+                  "value": "<string>",
+                  "description": "A comma separated list of collection IDs. Up to 100 are allowed in a single request."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Page cursor to fetch"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<number>",
+                  "description": "Items per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort by param, it can be one param or a list of params separated by comma"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort by param, it can be one param or a list of params separated by comma"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "ASC",
+                  "description": "Order direction, it can be `ASC` for ascending or `DESC` for descending"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "LISTED",
+                  "description": "Token ownership status"
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search owned tokens and their collections. Possible criteria for search:  token name and id within the contract/collection, collection name, blockchain descriptor and name."
+                },
+                {
+                  "disabled": false,
+                  "key": "spam",
+                  "value": "<string>",
+                  "description": "Token ownership spam status."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ac2941b3-4ee6-40ae-bade-a764e3fe3099",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "blockchainDescriptor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vaultAccountIds",
+                      "value": "0"
+                    },
+                    {
+                      "key": "ncwId",
+                      "value": "523ea95a-93a7-43c8-8dbc-ed31f53e6539"
+                    },
+                    {
+                      "key": "ncwAccountIds",
+                      "value": "0,1,2"
+                    },
+                    {
+                      "key": "walletType",
+                      "value": "VAULT_ACCOUNT"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f, NFT-aaabdababb0ecb3495beb17d8540a513c966bbb"
+                    },
+                    {
+                      "key": "collectionIds",
+                      "value": "0x2953399124F0cBB46d2CbACD8A89cF0599974963, 0xababab9124F0cBB46d2CbACD8A89cF0599ababab"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "MjAyNC0wNS0yNiAxMDowNTowMy4zNjggKzAwOjAw:NjkxNDI3Mw=="
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "20"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "status",
+                      "value": "LISTED"
+                    },
+                    {
+                      "key": "search",
+                      "value": "MyNFTName"
+                    },
+                    {
+                      "key": "spam",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"paging\": {\n    \"next\": \"string\"\n  },\n  \"data\": [\n    {\n      \"id\": \"NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f\",\n      \"tokenId\": \"59254621688950848715672884047857802075662195255933291242201099097856995753985\",\n      \"standard\": \"ERC721\",\n      \"balance\": \"1\",\n      \"ownershipStartTime\": 1687865341,\n      \"ownershipLastUpdateTime\": 1687865341,\n      \"blockchainDescriptor\": \"ETH\",\n      \"status\": \"ARCHIVED\",\n      \"metadataURI\": \"https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952\",\n      \"cachedMetadataURI\": \"https://static.fireblocks.io/nft/cb6db032c00fcc483ae0dea333a7f6b2279/metadata.json\",\n      \"media\": [\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"AUDIO\"\n        },\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"UNKNOWN_TYPE\"\n        }\n      ],\n      \"spam\": {\n        \"result\": false,\n        \"source\": \"OWNER\"\n      },\n      \"collection\": {\n        \"id\": \"0x2953399124F0cBB46d2CbACD8A89cF0599974963\",\n        \"name\": \"OpenSea Collections\",\n        \"symbol\": \"OPENSTORE\"\n      },\n      \"vaultAccountId\": \"0\",\n      \"description\": \"MyNFT Description from the metada\",\n      \"name\": \"MyNFTName\",\n      \"ncwId\": \"523ea95a-93a7-43c8-8dbc-ed31f53e6539\",\n      \"ncwAccountId\": \"0\"\n    },\n    {\n      \"id\": \"NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f\",\n      \"tokenId\": \"59254621688950848715672884047857802075662195255933291242201099097856995753985\",\n      \"standard\": \"ERC721\",\n      \"balance\": \"1\",\n      \"ownershipStartTime\": 1687865341,\n      \"ownershipLastUpdateTime\": 1687865341,\n      \"blockchainDescriptor\": \"GUN_GUNZILLA_TEST\",\n      \"status\": \"ARCHIVED\",\n      \"metadataURI\": \"https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952\",\n      \"cachedMetadataURI\": \"https://static.fireblocks.io/nft/cb6db032c00fcc483ae0dea333a7f6b2279/metadata.json\",\n      \"media\": [\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"TEXT\"\n        },\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"SVG\"\n        }\n      ],\n      \"spam\": {\n        \"result\": false,\n        \"source\": \"OWNER\"\n      },\n      \"collection\": {\n        \"id\": \"0x2953399124F0cBB46d2CbACD8A89cF0599974963\",\n        \"name\": \"OpenSea Collections\",\n        \"symbol\": \"OPENSTORE\"\n      },\n      \"vaultAccountId\": \"0\",\n      \"description\": \"MyNFT Description from the metada\",\n      \"name\": \"MyNFTName\",\n      \"ncwId\": \"523ea95a-93a7-43c8-8dbc-ed31f53e6539\",\n      \"ncwAccountId\": \"0\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aa94a2d4-3e7c-40d1-a1d5-dc6f1eebf40a",
+          "name": "List all distinct owned tokens (paginated)",
+          "request": {
+            "name": "List all distinct owned tokens (paginated)",
+            "description": {
+              "content": "Returns all owned distinct tokens (for your workspace) and their data in your workspace.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nfts",
+                "ownership",
+                "assets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ncwId",
+                  "value": "<string>",
+                  "description": "Non-Custodial Wallet ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "walletType",
+                  "value": "VAULT_ACCOUNT",
+                  "description": "Wallet type, it can be `VAULT_ACCOUNT` or `END_USER_WALLET`"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Page cursor to fetch"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<number>",
+                  "description": "Items per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort by param, it can be one param or a list of params separated by comma"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort by param, it can be one param or a list of params separated by comma"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "ASC",
+                  "description": "Order direction, it can be `ASC` for ascending or `DESC` for descending"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "LISTED",
+                  "description": "Token ownership status"
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search owned tokens by token name"
+                },
+                {
+                  "disabled": false,
+                  "key": "spam",
+                  "value": "<string>",
+                  "description": "Token ownership spam status."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c67cb8e0-430a-4eae-8427-189187660639",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "assets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ncwId",
+                      "value": "523ea95a-93a7-43c8-8dbc-ed31f53e6539"
+                    },
+                    {
+                      "key": "walletType",
+                      "value": "VAULT_ACCOUNT"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "MTcyNzg3Nw=="
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "status",
+                      "value": "LISTED"
+                    },
+                    {
+                      "key": "search",
+                      "value": "MyTokenName"
+                    },
+                    {
+                      "key": "spam",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"paging\": {\n    \"next\": \"string\"\n  },\n  \"data\": [\n    {\n      \"id\": \"NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f\",\n      \"tokenId\": \"592546216889508487156728840478578020756621952559332912422010991022550422\",\n      \"standard\": \"ERC1155\",\n      \"blockchainDescriptor\": \"BASECHAIN_ETH_TEST3\",\n      \"metadataURI\": \"https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952559332912422010991022550422\",\n      \"cachedMetadataURI\": \"https://static.fireblocks.io/nft/ad1bd7bf6b0ecb3495beb17d8540a513c96/metadata.json\",\n      \"media\": [\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"AUDIO\"\n        },\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"TEXT\"\n        }\n      ],\n      \"spam\": {\n        \"result\": true\n      },\n      \"collection\": {\n        \"id\": \"0x2953399124F0cBB46d2CbACD8A89cF0599974963\",\n        \"name\": \"OpenSea Collections\",\n        \"symbol\": \"OPENSTORE\"\n      },\n      \"description\": \"This is MyNFT's description fetched from the metadata\",\n      \"name\": \"MyNFTName\"\n    },\n    {\n      \"id\": \"NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f\",\n      \"tokenId\": \"592546216889508487156728840478578020756621952559332912422010991022550422\",\n      \"standard\": \"ERC1155\",\n      \"blockchainDescriptor\": \"ETH_TEST3\",\n      \"metadataURI\": \"https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952559332912422010991022550422\",\n      \"cachedMetadataURI\": \"https://static.fireblocks.io/nft/ad1bd7bf6b0ecb3495beb17d8540a513c96/metadata.json\",\n      \"media\": [\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"AUDIO\"\n        },\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"GIF\"\n        }\n      ],\n      \"spam\": {\n        \"result\": true\n      },\n      \"collection\": {\n        \"id\": \"0x2953399124F0cBB46d2CbACD8A89cF0599974963\",\n        \"name\": \"OpenSea Collections\",\n        \"symbol\": \"OPENSTORE\"\n      },\n      \"description\": \"This is MyNFT's description fetched from the metadata\",\n      \"name\": \"MyNFTName\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4b84b15c-12b4-47fa-bae1-f944e8d26dc0",
+          "name": "List owned collections (paginated)",
+          "request": {
+            "name": "List owned collections (paginated)",
+            "description": {
+              "content": "Returns all collections in your workspace.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nfts",
+                "ownership",
+                "collections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ncwId",
+                  "value": "<string>",
+                  "description": "Tenant's Non-Custodial Wallet ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "walletType",
+                  "value": "VAULT_ACCOUNT",
+                  "description": "Wallet type, it can be `VAULT_ACCOUNT` or `END_USER_WALLET`"
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search owned collections. Possible criteria for search: collection name, collection contract address."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Page cursor to fetch"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<number>",
+                  "description": "Items per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort by param, it can be one param or a list of params separated by comma"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort by param, it can be one param or a list of params separated by comma"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "ASC",
+                  "description": "Order direction, it can be `ASC` for ascending or `DESC` for descending"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "LISTED",
+                  "description": "Token ownership status"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f1b677f0-e889-41d9-ab1b-edf07f1631d0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ncwId",
+                      "value": "523ea95a-93a7-43c8-8dbc-ed31f53e6539"
+                    },
+                    {
+                      "key": "walletType",
+                      "value": "VAULT_ACCOUNT"
+                    },
+                    {
+                      "key": "search",
+                      "value": "MyTokenName"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "MTcyNzg3Nw=="
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "status",
+                      "value": "LISTED"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"paging\": {\n    \"next\": \"string\"\n  },\n  \"data\": [\n    {\n      \"id\": \"0b7baa6a62b00c565fd027e91927d610872e0bd5\",\n      \"blockchainDescriptor\": \"SONEIUM_MINATO_TEST\",\n      \"name\": \"OpenSea Collections\",\n      \"symbol\": \"OPENSTORE\",\n      \"standard\": \"ERC1155\",\n      \"contractAddress\": \"0x2953399124F0cBB46d2CbACD8A89cF0599974963\"\n    },\n    {\n      \"id\": \"0b7baa6a62b00c565fd027e91927d610872e0bd5\",\n      \"blockchainDescriptor\": \"ETH\",\n      \"name\": \"OpenSea Collections\",\n      \"symbol\": \"OPENSTORE\",\n      \"standard\": \"ERC1155\",\n      \"contractAddress\": \"0x2953399124F0cBB46d2CbACD8A89cF0599974963\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2f9cc2c4-7886-40bf-9727-29283612db1f",
+          "name": "Refresh token metadata",
+          "request": {
+            "name": "Refresh token metadata",
+            "description": {
+              "content": "Updates the latest token metadata.\nLearn more about Fireblocks NFT management in the following [guide](https://developers.fireblocks.com/reference/deploy-an-nft-collection).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nfts",
+                "tokens",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) NFT ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              }
+            ],
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "433103bd-5cdb-4175-9b45-b999696eb01c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "tokens",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) NFT ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "92f78d9b-dcef-478d-84ac-b5fc0e6f8f57",
+          "name": "List token data by ID",
+          "request": {
+            "name": "List token data by ID",
+            "description": {
+              "content": "Returns the requested token data.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nfts",
+                "tokens",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) NFT ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f4b6ae5b-0c97-4483-9857-90a6d3c0d766",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "tokens",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) NFT ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f\",\n  \"tokenId\": \"592546216889508487156728840478578020756621952559332912422010991022550422\",\n  \"standard\": \"ERC1155\",\n  \"blockchainDescriptor\": \"POLYGON_TEST_MUMBAI\",\n  \"metadataURI\": \"https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952559332912422010991022550422\",\n  \"cachedMetadataURI\": \"https://static.fireblocks.io/nft/ad1bd7bf6b0ecb3495beb17d8540a513c96/metadata.json\",\n  \"media\": [\n    {\n      \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n      \"contentType\": \"AUDIO\"\n    },\n    {\n      \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n      \"contentType\": \"AUDIO\"\n    }\n  ],\n  \"spam\": {\n    \"result\": true\n  },\n  \"collection\": {\n    \"id\": \"0x2953399124F0cBB46d2CbACD8A89cF0599974963\",\n    \"name\": \"OpenSea Collections\",\n    \"symbol\": \"OPENSTORE\"\n  },\n  \"description\": \"This is MyNFT's description fetched from the metadata\",\n  \"name\": \"MyNFTName\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1880acbd-7fa2-4f74-9132-fe4d3807152e",
+          "name": "List tokens by IDs",
+          "request": {
+            "name": "List tokens by IDs",
+            "description": {
+              "content": "Returns the requested tokens data.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nfts",
+                "tokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "(Required) A comma separated list of NFT IDs. Up to 100 are allowed in a single request."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Page cursor to fetch"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<number>",
+                  "description": "Items per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort by param, it can be one param or a list of params separated by comma"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort by param, it can be one param or a list of params separated by comma"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "ASC",
+                  "description": "Order direction, it can be `ASC` for ascending or `DESC` for descending"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "03de0ed9-0f2d-4215-a9e7-2731cf05d657",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd, NFT-cbcbcbcbcbcbabcdefabcdefabcdefabcdefabab"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "MjAyNC0wNS0yNiAxMDowNTowMy4zNjggKzAwOjAw:NjkxNDI3Mw=="
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "20"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"paging\": {\n    \"next\": \"string\"\n  },\n  \"data\": [\n    {\n      \"id\": \"NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f\",\n      \"tokenId\": \"592546216889508487156728840478578020756621952559332912422010991022550422\",\n      \"standard\": \"ERC1155\",\n      \"blockchainDescriptor\": \"ETH_SONEIUM\",\n      \"metadataURI\": \"https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952559332912422010991022550422\",\n      \"cachedMetadataURI\": \"https://static.fireblocks.io/nft/ad1bd7bf6b0ecb3495beb17d8540a513c96/metadata.json\",\n      \"media\": [\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"GIF\"\n        },\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"SVG\"\n        }\n      ],\n      \"spam\": {\n        \"result\": true\n      },\n      \"collection\": {\n        \"id\": \"0x2953399124F0cBB46d2CbACD8A89cF0599974963\",\n        \"name\": \"OpenSea Collections\",\n        \"symbol\": \"OPENSTORE\"\n      },\n      \"description\": \"This is MyNFT's description fetched from the metadata\",\n      \"name\": \"MyNFTName\"\n    },\n    {\n      \"id\": \"NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f\",\n      \"tokenId\": \"592546216889508487156728840478578020756621952559332912422010991022550422\",\n      \"standard\": \"ERC1155\",\n      \"blockchainDescriptor\": \"SONEIUM_MINATO_TEST\",\n      \"metadataURI\": \"https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952559332912422010991022550422\",\n      \"cachedMetadataURI\": \"https://static.fireblocks.io/nft/ad1bd7bf6b0ecb3495beb17d8540a513c96/metadata.json\",\n      \"media\": [\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"IMAGE\"\n        },\n        {\n          \"url\": \"https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0\",\n          \"contentType\": \"THREE_D\"\n        }\n      ],\n      \"spam\": {\n        \"result\": true\n      },\n      \"collection\": {\n        \"id\": \"0x2953399124F0cBB46d2CbACD8A89cF0599974963\",\n        \"name\": \"OpenSea Collections\",\n        \"symbol\": \"OPENSTORE\"\n      },\n      \"description\": \"This is MyNFT's description fetched from the metadata\",\n      \"name\": \"MyNFTName\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c6fce3bd-0b23-4efe-9fd3-c404654023cb",
+          "name": "Update token ownership status",
+          "request": {
+            "name": "Update token ownership status",
+            "description": {
+              "content": "Updates token status for a workspace, in all workspace vaults.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nfts",
+                "ownership",
+                "tokens",
+                ":id",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) NFT ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b351b019-c631-4a5c-8693-625d3b903e1d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "tokens",
+                    ":id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) NFT ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5a0ef2bc-8d5b-4cc5-82af-c13b67157195",
+          "name": "Update tokens ownership status",
+          "request": {
+            "name": "Update tokens ownership status",
+            "description": {
+              "content": "Updates tokens status for a workspace, in all vault accounts.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nfts",
+                "ownership",
+                "tokens",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"assetId\": \"<string>\",\n    \"status\": \"<string>\"\n  },\n  {\n    \"assetId\": \"<string>\",\n    \"status\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3b85fcbc-8896-4986-a58a-59671197b827",
+              "name": "All token statuses have been updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "tokens",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"status\": \"ARCHIVED\"\n  },\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"status\": \"ARCHIVED\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bc58c864-8f16-41a9-9fa1-d6d417373084",
+              "name": "Invalid data sent",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "tokens",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"status\": \"ARCHIVED\"\n  },\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"status\": \"ARCHIVED\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5e3ea572-bd44-43e1-8fa5-c08d165cd254",
+              "name": "Ownership for token ID is not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "tokens",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"status\": \"ARCHIVED\"\n  },\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"status\": \"ARCHIVED\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a7e3eeba-b4c4-4194-b2c6-b8c442fa03e5",
+          "name": "Update tokens ownership spam property",
+          "request": {
+            "name": "Update tokens ownership spam property",
+            "description": {
+              "content": "Updates tokens spam property for a workspace's token ownerships, in all vault accounts.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nfts",
+                "ownership",
+                "tokens",
+                "spam"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"assetId\": \"<string>\",\n    \"spam\": \"<boolean>\"\n  },\n  {\n    \"assetId\": \"<string>\",\n    \"spam\": \"<boolean>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4a654ba3-d329-4d84-a89e-5b18e77834c3",
+              "name": "All token spam properties have been updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "tokens",
+                    "spam"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"spam\": true\n  },\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"spam\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "658eb2d6-0768-4cb7-8024-fb18bdc90274",
+              "name": "Invalid data sent",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "tokens",
+                    "spam"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"spam\": true\n  },\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"spam\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "31c92721-2a6a-4f38-94e7-071538d7d77f",
+              "name": "Ownership for token ID is not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nfts",
+                    "ownership",
+                    "tokens",
+                    "spam"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"spam\": true\n  },\n  {\n    \"assetId\": \"NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd\",\n    \"spam\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireblocks.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0d4038f4-928e-4306-baeb-d1610a172435",
+    "name": "Fireblocks NFTs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+      "type": "text/plain"
+    }
+  }
+}

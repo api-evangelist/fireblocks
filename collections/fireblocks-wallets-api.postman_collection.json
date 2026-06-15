@@ -1,0 +1,3934 @@
+{
+  "item": [
+    {
+      "id": "8e271495-cb96-4aba-86d7-fb64092beae2",
+      "name": "Whitelisted Internal Wallets",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "49a1276e-91fb-4202-bf91-928f4b28f64a",
+          "name": "List internal wallets",
+          "request": {
+            "name": "List internal wallets",
+            "description": {
+              "content": "Gets a list of internal wallets.\n**Note**: \n- BTC-based assets belonging to whitelisted addresses cannot be retrieved between 00:00 UTC and 00:01 UTC daily due to third-party provider, Blockchain, being unavailable for this 60 second period.  Please wait until the next minute to retrieve BTC-based assets.\n- The list of assets returned will NOT include the balances anymore.\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n- You can see the balance of the Internal Wallet via Fireblocks - You cannot initiate transactions from Internal Wallets through Fireblocks\nLearn more about Whitelisted Internal Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "internal_wallets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c744c117-bb37-4690-a04f-b16f029478f1",
+              "name": "A list of internal wallets",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"assets\": [\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"REJECTED\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      },\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"CANCELLED\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      }\n    ],\n    \"customerRefId\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"assets\": [\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"WAITING_FOR_APPROVAL\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      },\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"REJECTED\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      }\n    ],\n    \"customerRefId\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9da87835-6f53-4ec1-9a29-39dd0b002a52",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4897a980-ca52-49a6-8eba-3b35562376e0",
+          "name": "Create an internal wallet",
+          "request": {
+            "name": "Create an internal wallet",
+            "description": {
+              "content": "Creates a new internal wallet with the requested name.\nLearn more about Whitelisted Internal Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "internal_wallets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"customerRefId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7b15ade5-7ac9-4914-ae44-d0ad82f149b6",
+              "name": "A new wallet object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"customerRefId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"assets\": [\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"WAITING_FOR_APPROVAL\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"FAILED\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    }\n  ],\n  \"customerRefId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4d4fbf41-c299-4262-b3d7-4fb48d2f013b",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"customerRefId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7506237c-530f-4563-8a77-a619d8fb1fe7",
+          "name": "Get assets for internal wallet",
+          "request": {
+            "name": "Get assets for internal wallet",
+            "description": {
+              "content": "**This endpoint will be deprecated on December 31, 2025. Currently, the endpoint will only return a wallet's addresses and not any balances.**\n\nRetrieves information about all the assets in an internal wallet, which is a wallet owned by you outside of your Fireblocks workspace. Please note that you cannot initiate transactions through Fireblocks using an internal wallet.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "internal_wallets",
+                ":walletId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the wallet to return"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6d9bd72c-6cae-4e0a-aa84-482fb8f2a8b3",
+              "name": "A Wallet object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"assets\": [\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"WAITING_FOR_APPROVAL\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"FAILED\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    }\n  ],\n  \"customerRefId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f7ad858-d2e7-481b-b900-a0c1f576ca85",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "54c41c59-762d-4583-8a14-92f079b717bb",
+          "name": "Delete an internal wallet",
+          "request": {
+            "name": "Delete an internal wallet",
+            "description": {
+              "content": "Deletes an internal wallet by ID.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "internal_wallets",
+                ":walletId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the wallet to delete"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "aec94b22-7745-4d3a-9364-5a3ebd294dca",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet to delete"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ec4d2117-e4de-4592-a545-7982c9e3125b",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2f44fc99-04ab-4338-8034-8e66c1b77dbd",
+          "name": "List assets in an internal wallet (Paginated)",
+          "request": {
+            "name": "List assets in an internal wallet (Paginated)",
+            "description": {
+              "content": "Returns a paginated response of assets in an internal wallet.\n\nThis is a new paginated endpoint that gets all the assets from the wallet container with balances. </br>This endpoint returns a limited amount of results with a quick response time.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\nLearn more about Whitelisted Internal Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n\nEndpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "internal_wallets",
+                ":walletId",
+                "assets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the internal wallet to return assets for"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "66cf046b-bbd8-4e43-8530-9adaabd8d079",
+              "name": "A paginated response of assets for the internal wallet",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId",
+                    "assets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the internal wallet to return assets for"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"assets\": [\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"CANCELLED\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      },\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"FAILED\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      }\n    ],\n    \"customerRefId\": \"string\"\n  },\n  \"total\": 2457.2212069529296,\n  \"next\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2462726-0eb2-4036-a453-7f66f191bd70",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId",
+                    "assets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the internal wallet to return assets for"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "757fdc39-7c1c-401f-b099-25fd436a9bb3",
+          "name": "Set an AML/KYT customer reference ID for internal wallet",
+          "request": {
+            "name": "Set an AML/KYT customer reference ID for internal wallet",
+            "description": {
+              "content": "Sets an AML/KYT customer reference ID for the specific internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n  Learn more about Whitelisted Internal Addresses\n[here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "internal_wallets",
+                ":walletId",
+                "set_customer_ref_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The wallet ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerRefId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "966f96e7-d195-4c43-8a64-997580b121a1",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId",
+                    "set_customer_ref_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The wallet ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerRefId\": \"some-customer-reference\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "407f8b1f-928e-4487-bc38-acad36487e1e",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId",
+                    "set_customer_ref_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The wallet ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerRefId\": \"some-customer-reference\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "59045dad-1a6c-4771-acfc-7998543298a7",
+          "name": "Get an asset from an internal wallet",
+          "request": {
+            "name": "Get an asset from an internal wallet",
+            "description": {
+              "content": "Returns information for an asset in an internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "internal_wallets",
+                ":walletId",
+                ":assetId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the wallet"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetId",
+                  "description": "(Required) The ID of the asset to return"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a2727fdd-22d7-40ca-bd37-12e11bd94084",
+              "name": "A Wallet Asset object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"balance\": \"string\",\n  \"lockedAmount\": \"string\",\n  \"status\": \"APPROVED\",\n  \"address\": \"string\",\n  \"tag\": \"string\",\n  \"activationTime\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d049c90-d504-4ea5-a8dd-8db48daafc2f",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c9ab77e0-ca5e-4377-b49b-676b861546bb",
+          "name": "Add an asset to an internal wallet",
+          "request": {
+            "name": "Add an asset to an internal wallet",
+            "description": {
+              "content": "Adds an asset to an existing internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n  Learn more about Whitelisted Internal Addresses\n[here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "internal_wallets",
+                ":walletId",
+                ":assetId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the wallet"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetId",
+                  "description": "(Required) The ID of the asset to add"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": \"<string>\",\n  \"tag\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5b2163cf-cdc5-4fb0-90a8-4b1bc22c3efd",
+              "name": "A Wallet Asset object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to add"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"tag\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"balance\": \"string\",\n  \"lockedAmount\": \"string\",\n  \"status\": \"APPROVED\",\n  \"address\": \"string\",\n  \"tag\": \"string\",\n  \"activationTime\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d91dd19-d0a8-4361-8549-7f4789e92c0c",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to add"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"tag\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9ffaf533-d574-4e58-9d76-ae305122dbdd",
+          "name": "Delete a whitelisted address",
+          "request": {
+            "name": "Delete a whitelisted address",
+            "description": {
+              "content": "Deletes a whitelisted address (for an asset) from an internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "internal_wallets",
+                ":walletId",
+                ":assetId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the wallet"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetId",
+                  "description": "(Required) The ID of the asset to delete"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5b290285-ee21-44ab-92de-4ba794a2a140",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to delete"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "378e1466-eac5-46a8-ab91-deb51a1a9ec1",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "internal_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "ec4aea5e-635c-436a-9a64-b61abc455d69",
+      "name": "Whitelisted External Wallets",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "aa641b85-2c6f-49e0-9e6b-35473c98c695",
+          "name": "List external wallets",
+          "request": {
+            "name": "List external wallets",
+            "description": {
+              "content": "Gets a list of external wallets under the workspace.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external_wallets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b5185aa3-680c-403f-a933-5b33a73de030",
+              "name": "A list of external wallets",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"assets\": [\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"REJECTED\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      },\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"CANCELLED\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      }\n    ],\n    \"customerRefId\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"assets\": [\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"WAITING_FOR_APPROVAL\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      },\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"REJECTED\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      }\n    ],\n    \"customerRefId\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e8868a4-3533-4669-b195-cf570b081c24",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9239ca1c-67de-4978-bcd0-a1e7512ba72f",
+          "name": "Create an external wallet",
+          "request": {
+            "name": "Create an external wallet",
+            "description": {
+              "content": "Creates a new external wallet with the requested name.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\nLearn more about Whitelisted External Wallet Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#external-wallets).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external_wallets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"customerRefId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c5288b47-78c0-43ac-bb20-808d7fc237dd",
+              "name": "A Wallet object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"customerRefId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"assets\": [\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"WAITING_FOR_APPROVAL\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"FAILED\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    }\n  ],\n  \"customerRefId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9c745907-7c78-4ebb-8509-4a09ad6814b8",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"customerRefId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "08093ef0-a52b-4b50-a014-aa6a9669d09d",
+          "name": "Find an external wallet",
+          "request": {
+            "name": "Find an external wallet",
+            "description": {
+              "content": "Returns an external wallet by ID.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external_wallets",
+                ":walletId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the wallet to return"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a3f89451-d057-48b2-be29-37d7b66c8f45",
+              "name": "A Wallet object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"assets\": [\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"WAITING_FOR_APPROVAL\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"FAILED\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    }\n  ],\n  \"customerRefId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0b607d6-2718-41d6-9449-4c319c905b6b",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "42f25bf6-ac4f-4445-bd30-7fa4a3c9fdf5",
+          "name": "Delete an external wallet",
+          "request": {
+            "name": "Delete an external wallet",
+            "description": {
+              "content": "Deletes an external wallet by ID.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external_wallets",
+                ":walletId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the wallet to delete"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "12b16677-f06a-4670-bb03-eb6bb0b8e2bd",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet to delete"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3c536eb7-7fe9-440b-88bf-031d54402dc3",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cb25709c-7e45-4de1-b554-054740843904",
+          "name": "Set an AML customer reference ID for an external wallet",
+          "request": {
+            "name": "Set an AML customer reference ID for an external wallet",
+            "description": {
+              "content": "Sets an AML/KYT customer reference ID for the specific external wallet.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\nLearn more about Whitelisted External Wallet Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#external-wallets).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external_wallets",
+                ":walletId",
+                "set_customer_ref_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The wallet ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerRefId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1c5a2b64-1222-4042-b967-a66970cda28e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId",
+                    "set_customer_ref_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The wallet ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerRefId\": \"some-customer-reference\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "09921190-287e-4f20-9f51-696fb1467271",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId",
+                    "set_customer_ref_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The wallet ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerRefId\": \"some-customer-reference\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e61cabf8-1821-4109-8f82-4e731ceb1df6",
+          "name": "Get an asset from an external wallet",
+          "request": {
+            "name": "Get an asset from an external wallet",
+            "description": {
+              "content": "Returns an external wallet by wallet ID and asset ID.\n\nExternal Wallet is a whitelisted address of a wallet that belongs to your users/counterparties.\n\n- You cannot see the balance of the external wallet.\n- You cannot initiate transactions from an external wallet as the source via Fireblocks.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor,\n  Viewer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external_wallets",
+                ":walletId",
+                ":assetId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the wallet"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetId",
+                  "description": "(Required) The ID of the asset to return"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "67c574c5-a598-41a1-9601-f8102ce60826",
+              "name": "A Wallet Asset object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"FAILED\",\n  \"address\": \"string\",\n  \"balance\": \"string\",\n  \"lockedAmount\": \"string\",\n  \"tag\": \"string\",\n  \"activationTime\": \"string\",\n  \"additionalInfo\": [\n    {\n      \"accountHolderGivenName\": \"string\",\n      \"accountHolderSurname\": \"string\",\n      \"accountHolderCity\": \"string\",\n      \"accountHolderCountry\": \"string\",\n      \"accountHolderAddress1\": \"string\",\n      \"accountHolderAddress2\": \"string\",\n      \"accountHolderDistrict\": \"string\",\n      \"accountHolderPostalCode\": \"string\",\n      \"abaRoutingNumber\": \"string\",\n      \"abaAccountNumber\": \"string\",\n      \"abaCountry\": \"string\",\n      \"iban\": \"string\",\n      \"ibanCity\": \"string\",\n      \"ibanCountry\": \"string\",\n      \"speiClabe\": \"string\",\n      \"speiName\": \"string\"\n    },\n    {\n      \"accountHolderGivenName\": \"string\",\n      \"accountHolderSurname\": \"string\",\n      \"accountHolderCity\": \"string\",\n      \"accountHolderCountry\": \"string\",\n      \"accountHolderAddress1\": \"string\",\n      \"accountHolderAddress2\": \"string\",\n      \"accountHolderDistrict\": \"string\",\n      \"accountHolderPostalCode\": \"string\",\n      \"abaRoutingNumber\": \"string\",\n      \"abaAccountNumber\": \"string\",\n      \"abaCountry\": \"string\",\n      \"iban\": \"string\",\n      \"ibanCity\": \"string\",\n      \"ibanCountry\": \"string\",\n      \"speiClabe\": \"string\",\n      \"speiName\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3dbb5c35-56bd-43cf-852f-d67874d3c8d3",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "73c39aac-c179-47b9-a507-e3f3ee50dda9",
+          "name": "Add an asset to an external wallet.",
+          "request": {
+            "name": "Add an asset to an external wallet.",
+            "description": {
+              "content": "Adds an asset to an existing external wallet.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external_wallets",
+                ":walletId",
+                ":assetId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the wallet"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetId",
+                  "description": "(Required) The ID of the asset to add"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": \"<string>\",\n  \"tag\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4f63bc15-66e1-4bb5-95ff-11c09b11fd54",
+              "name": "A Wallet Asset object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to add"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa\",\n  \"tag\": \"12345\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"FAILED\",\n  \"address\": \"string\",\n  \"balance\": \"string\",\n  \"lockedAmount\": \"string\",\n  \"tag\": \"string\",\n  \"activationTime\": \"string\",\n  \"additionalInfo\": [\n    {\n      \"accountHolderGivenName\": \"string\",\n      \"accountHolderSurname\": \"string\",\n      \"accountHolderCity\": \"string\",\n      \"accountHolderCountry\": \"string\",\n      \"accountHolderAddress1\": \"string\",\n      \"accountHolderAddress2\": \"string\",\n      \"accountHolderDistrict\": \"string\",\n      \"accountHolderPostalCode\": \"string\",\n      \"abaRoutingNumber\": \"string\",\n      \"abaAccountNumber\": \"string\",\n      \"abaCountry\": \"string\",\n      \"iban\": \"string\",\n      \"ibanCity\": \"string\",\n      \"ibanCountry\": \"string\",\n      \"speiClabe\": \"string\",\n      \"speiName\": \"string\"\n    },\n    {\n      \"accountHolderGivenName\": \"string\",\n      \"accountHolderSurname\": \"string\",\n      \"accountHolderCity\": \"string\",\n      \"accountHolderCountry\": \"string\",\n      \"accountHolderAddress1\": \"string\",\n      \"accountHolderAddress2\": \"string\",\n      \"accountHolderDistrict\": \"string\",\n      \"accountHolderPostalCode\": \"string\",\n      \"abaRoutingNumber\": \"string\",\n      \"abaAccountNumber\": \"string\",\n      \"abaCountry\": \"string\",\n      \"iban\": \"string\",\n      \"ibanCity\": \"string\",\n      \"ibanCountry\": \"string\",\n      \"speiClabe\": \"string\",\n      \"speiName\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e62c7102-2197-4f62-b33e-6979d8902559",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to add"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa\",\n  \"tag\": \"12345\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ec90f7c3-7a5f-48ec-b34c-acd9b95b3ee5",
+          "name": "Delete an asset from an external wallet",
+          "request": {
+            "name": "Delete an asset from an external wallet",
+            "description": {
+              "content": "Deletes an external wallet asset by ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external_wallets",
+                ":walletId",
+                ":assetId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletId",
+                  "description": "(Required) The ID of the wallet"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetId",
+                  "description": "(Required) The ID of the asset to delete"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9658d32e-15fd-4b72-b3a9-7e3bb377cbac",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to delete"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "36c274b4-81bb-45d0-a7c2-25f2dde2ab33",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external_wallets",
+                    ":walletId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletId",
+                      "description": "(Required) The ID of the wallet"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "069308cf-30f2-4052-b9a9-11427325a6d7",
+      "name": "Whitelisted Contracts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4f827f23-29bf-45fd-919d-bf0e6fdcdeb8",
+          "name": "List Whitelisted Contracts",
+          "request": {
+            "name": "List Whitelisted Contracts",
+            "description": {
+              "content": "Gets a list of whitelisted contracts.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "contracts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cd0c4a8e-710b-44ea-b821-fb21e520b3f4",
+              "name": "A list of whitelisted contracts",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"assets\": [\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"REJECTED\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      },\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"WAITING_FOR_APPROVAL\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      }\n    ],\n    \"customerRefId\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"assets\": [\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"APPROVED\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      },\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\",\n        \"lockedAmount\": \"string\",\n        \"status\": \"WAITING_FOR_APPROVAL\",\n        \"address\": \"string\",\n        \"tag\": \"string\",\n        \"activationTime\": \"string\"\n      }\n    ],\n    \"customerRefId\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4eabd324-edf1-412d-a9f7-db4479b5f18e",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6c5943ce-d488-4240-82c6-874ddb028da7",
+          "name": "Create a Whitelisted Contract",
+          "request": {
+            "name": "Create a Whitelisted Contract",
+            "description": {
+              "content": "Creates a new whitelisted contract.\n\nLearn more about Whitelisted Smart Contracts [here](https://developers.fireblocks.com/docs/whitelist-addresses#contracts).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "contracts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0422ac7a-5865-4fe7-86f6-948ce352e89b",
+              "name": "A Wallet object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"assets\": [\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"WAITING_FOR_APPROVAL\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"FAILED\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    }\n  ],\n  \"customerRefId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "42072fe2-190b-44db-86b2-bb1ba0e602ee",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "28dbef10-6125-473e-81ba-c9fc1c7be0ee",
+          "name": "Find a Specific Whitelisted Contract",
+          "request": {
+            "name": "Find a Specific Whitelisted Contract",
+            "description": {
+              "content": "Returns a whitelisted contract by Fireblocks Contract ID.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "contracts",
+                ":contractId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contractId",
+                  "description": "(Required) The ID of the contract to return"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2e2d4780-f02b-4845-bb3a-5c5c4777d8df",
+              "name": "A Wallet object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts",
+                    ":contractId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contractId",
+                      "description": "(Required) The ID of the contract to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"assets\": [\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"WAITING_FOR_APPROVAL\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\",\n      \"lockedAmount\": \"string\",\n      \"status\": \"FAILED\",\n      \"address\": \"string\",\n      \"tag\": \"string\",\n      \"activationTime\": \"string\"\n    }\n  ],\n  \"customerRefId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c7d06cf-e07c-4390-8ac4-8db349a4edb9",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts",
+                    ":contractId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contractId",
+                      "description": "(Required) The ID of the contract to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "769db2d7-743c-460f-8d4d-04b86cce9f06",
+          "name": "Delete a Whitelisted Contract",
+          "request": {
+            "name": "Delete a Whitelisted Contract",
+            "description": {
+              "content": "Deletes a whitelisted contract by Fireblocks Contract ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "contracts",
+                ":contractId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contractId",
+                  "description": "(Required) The ID of the contract to delete"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fad9df86-a3ba-4752-8d70-839a3832eb71",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts",
+                    ":contractId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contractId",
+                      "description": "(Required) The ID of the contract to delete"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "58042a08-2728-47ac-9b3e-8507c5e33e2d",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts",
+                    ":contractId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contractId",
+                      "description": "(Required) The ID of the contract to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "253a6aed-7c45-41cd-9958-924567f352c6",
+          "name": "Find a whitelisted contract's asset",
+          "request": {
+            "name": "Find a whitelisted contract's asset",
+            "description": {
+              "content": "Returns a whitelisted contract's asset by ID.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "contracts",
+                ":contractId",
+                ":assetId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contractId",
+                  "description": "(Required) The ID of the contract"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetId",
+                  "description": "(Required) The ID of the asset to return"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0f4210f8-ffc9-47da-94cb-8aa18e2a839a",
+              "name": "A Wallet Asset object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts",
+                    ":contractId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contractId",
+                      "description": "(Required) The ID of the contract"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"APPROVED\",\n  \"address\": \"string\",\n  \"balance\": \"string\",\n  \"lockedAmount\": \"string\",\n  \"tag\": \"string\",\n  \"activationTime\": \"string\",\n  \"additionalInfo\": [\n    {\n      \"accountHolderGivenName\": \"string\",\n      \"accountHolderSurname\": \"string\",\n      \"accountHolderCity\": \"string\",\n      \"accountHolderCountry\": \"string\",\n      \"accountHolderAddress1\": \"string\",\n      \"accountHolderAddress2\": \"string\",\n      \"accountHolderDistrict\": \"string\",\n      \"accountHolderPostalCode\": \"string\",\n      \"abaRoutingNumber\": \"string\",\n      \"abaAccountNumber\": \"string\",\n      \"abaCountry\": \"string\",\n      \"iban\": \"string\",\n      \"ibanCity\": \"string\",\n      \"ibanCountry\": \"string\",\n      \"speiClabe\": \"string\",\n      \"speiName\": \"string\"\n    },\n    {\n      \"accountHolderGivenName\": \"string\",\n      \"accountHolderSurname\": \"string\",\n      \"accountHolderCity\": \"string\",\n      \"accountHolderCountry\": \"string\",\n      \"accountHolderAddress1\": \"string\",\n      \"accountHolderAddress2\": \"string\",\n      \"accountHolderDistrict\": \"string\",\n      \"accountHolderPostalCode\": \"string\",\n      \"abaRoutingNumber\": \"string\",\n      \"abaAccountNumber\": \"string\",\n      \"abaCountry\": \"string\",\n      \"iban\": \"string\",\n      \"ibanCity\": \"string\",\n      \"ibanCountry\": \"string\",\n      \"speiClabe\": \"string\",\n      \"speiName\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2842b2a1-9c7d-4d88-9b04-f5675f9dfed0",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts",
+                    ":contractId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contractId",
+                      "description": "(Required) The ID of the contract"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to return"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bc29e2d4-c4c9-4281-84d4-3b76eb478e93",
+          "name": "Add an Asset to a Whitelisted Contract",
+          "request": {
+            "name": "Add an Asset to a Whitelisted Contract",
+            "description": {
+              "content": "Adds an asset to an existing whitelisted contract.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "contracts",
+                ":contractId",
+                ":assetId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contractId",
+                  "description": "(Required) The ID of the contract"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetId",
+                  "description": "(Required) The ID of the asset to add"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": \"<string>\",\n  \"tag\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7f465de5-475b-4651-9529-c508e901cf8b",
+              "name": "A Wallet Asset object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts",
+                    ":contractId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contractId",
+                      "description": "(Required) The ID of the contract"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to add"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"tag\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"FAILED\",\n  \"address\": \"string\",\n  \"balance\": \"string\",\n  \"lockedAmount\": \"string\",\n  \"tag\": \"string\",\n  \"activationTime\": \"string\",\n  \"additionalInfo\": [\n    {\n      \"accountHolderGivenName\": \"string\",\n      \"accountHolderSurname\": \"string\",\n      \"accountHolderCity\": \"string\",\n      \"accountHolderCountry\": \"string\",\n      \"accountHolderAddress1\": \"string\",\n      \"accountHolderAddress2\": \"string\",\n      \"accountHolderDistrict\": \"string\",\n      \"accountHolderPostalCode\": \"string\",\n      \"abaRoutingNumber\": \"string\",\n      \"abaAccountNumber\": \"string\",\n      \"abaCountry\": \"string\",\n      \"iban\": \"string\",\n      \"ibanCity\": \"string\",\n      \"ibanCountry\": \"string\",\n      \"speiClabe\": \"string\",\n      \"speiName\": \"string\"\n    },\n    {\n      \"accountHolderGivenName\": \"string\",\n      \"accountHolderSurname\": \"string\",\n      \"accountHolderCity\": \"string\",\n      \"accountHolderCountry\": \"string\",\n      \"accountHolderAddress1\": \"string\",\n      \"accountHolderAddress2\": \"string\",\n      \"accountHolderDistrict\": \"string\",\n      \"accountHolderPostalCode\": \"string\",\n      \"abaRoutingNumber\": \"string\",\n      \"abaAccountNumber\": \"string\",\n      \"abaCountry\": \"string\",\n      \"iban\": \"string\",\n      \"ibanCity\": \"string\",\n      \"ibanCountry\": \"string\",\n      \"speiClabe\": \"string\",\n      \"speiName\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ecdf9c81-5cca-4511-943c-817e88a91c9d",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts",
+                    ":contractId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contractId",
+                      "description": "(Required) The ID of the contract"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to add"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"tag\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8be280e8-2669-4496-9559-7df9680fe583",
+          "name": "Delete a Whitelisted Contract's Asset",
+          "request": {
+            "name": "Delete a Whitelisted Contract's Asset",
+            "description": {
+              "content": "Deletes a whitelisted contract's asset by Fireblocks Contract ID and Asset ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "contracts",
+                ":contractId",
+                ":assetId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contractId",
+                  "description": "(Required) The ID of the contract"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetId",
+                  "description": "(Required) The ID of the asset to delete"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "addf02a6-78bc-4fbf-9edc-fc2e35935c00",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts",
+                    ":contractId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contractId",
+                      "description": "(Required) The ID of the contract"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to delete"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e81e4860-4ecf-4a0d-b6f2-1cc94b7fbdf6",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "contracts",
+                    ":contractId",
+                    ":assetId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contractId",
+                      "description": "(Required) The ID of the contract"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetId",
+                      "description": "(Required) The ID of the asset to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireblocks.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "62a5051b-3a90-40a2-a6e3-b74b95d9f0d5",
+    "name": "Fireblocks Whitelisted Wallets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+      "type": "text/plain"
+    }
+  }
+}

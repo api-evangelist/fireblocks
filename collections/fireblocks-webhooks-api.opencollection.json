@@ -1,0 +1,439 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Webhooks API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Resend failed webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/webhooks/resend",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "**Deprecation notice:** Webhooks v1 will be deprecated in March 2026. Please use the Developer Center in the Fireblocks Console to upgrade to Webhooks v2, which offers improved reliability, performance, and observability.\n\nResends all failed webhook notifications.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.\n"
+        },
+        {
+          "info": {
+            "name": "Resend webhooks for a transaction by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/webhooks/resend/:txId",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "txId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the transaction for webhooks"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Deprecation notice:** Webhooks v1 will be deprecated in March 2026. Please use the Developer Center in the Fireblocks Console to upgrade to Webhooks v2, which offers improved reliability, performance, and observability.\n\nResends webhook notifications for a transaction by its unique identifier.\n\n**Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks V2",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/webhooks",
+            "params": [
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "ASC / DESC ordering (default DESC)"
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor of the required page"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items on the page"
+              }
+            ]
+          },
+          "docs": "Get all webhooks (paginated).\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+        },
+        {
+          "info": {
+            "name": "Create a new webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/webhooks",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new webhook, which will be triggered on the specified events\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+        },
+        {
+          "info": {
+            "name": "Get webhook by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/webhooks/:webhookId",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the webhook"
+              }
+            ]
+          },
+          "docs": "Retrieve a webhook by its ID.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+        },
+        {
+          "info": {
+            "name": "Update webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/webhooks/:webhookId",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the webhook"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a webhook by its ID.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/webhooks/:webhookId",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the webhook"
+              }
+            ]
+          },
+          "docs": "Delete a webhook by its ID.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+        },
+        {
+          "info": {
+            "name": "Get all notifications by webhook ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/webhooks/:webhookId/notifications",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "ASC / DESC ordering (default DESC)"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort by field (id, createdAt, updatedAt, status, eventType, resourceId)"
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor of the required page"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items on the page"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "Start time in milliseconds since epoch to filter by notifications created after this time (default 31 days ago)"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "End time in milliseconds since epoch to filter by notifications created before this time (default current time)"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "List of notification statuses to filter by"
+              },
+              {
+                "name": "events",
+                "value": "",
+                "type": "query",
+                "description": "List of webhook event types to filter by"
+              },
+              {
+                "name": "resourceId",
+                "value": "",
+                "type": "query",
+                "description": "Resource ID to filter by"
+              }
+            ]
+          },
+          "docs": "Get all notifications by webhook ID (paginated).\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+        },
+        {
+          "info": {
+            "name": "Resend notification by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/webhooks/:webhookId/notifications/:notificationId/resend",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the webhook"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the notification"
+              }
+            ]
+          },
+          "docs": "Resend a notification by its ID.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin, Signer, Editor.\n"
+        },
+        {
+          "info": {
+            "name": "Resend notifications by resource ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/webhooks/:webhookId/notifications/resend_by_resource",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the webhook"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resend notifications by their resource ID.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin, Signer, Editor.\n"
+        },
+        {
+          "info": {
+            "name": "Get notification by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/webhooks/:webhookId/notifications/:notificationId",
+            "params": [
+              {
+                "name": "includeData",
+                "value": "",
+                "type": "query",
+                "description": "Include the data of the notification"
+              },
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the webhook to fetch"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the notification to fetch"
+              }
+            ]
+          },
+          "docs": "Get a notification by its notification ID.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+        },
+        {
+          "info": {
+            "name": "Get notification attempts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/webhooks/:webhookId/notifications/:notificationId/attempts",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the webhook to fetch"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the notification to fetch"
+              },
+              {
+                "name": "pageCursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor of the required page"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items in the page"
+              }
+            ]
+          },
+          "docs": "Get notification attempts by notification ID."
+        },
+        {
+          "info": {
+            "name": "Resend failed notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/webhooks/:webhookId/notifications/resend_failed",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the webhook"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resend all failed notifications for a webhook in the last 24 hours.\n\n**Endpoint Permission:** Owner, Admin, Non-Signing Admin, Signer, Editor.\n"
+        },
+        {
+          "info": {
+            "name": "Get resend job status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/webhooks/:webhookId/notifications/resend_failed/jobs/:jobId",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the webhook"
+              },
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the resend job"
+              }
+            ]
+          },
+          "docs": "Get the status of a resend job."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
