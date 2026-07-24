@@ -1,0 +1,348 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Tags API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Tags
+paths:
+  /tags:
+    post:
+      summary: Create a tag
+      description: 'Create a new tag.
+
+
+        **Endpoint Permissions:**
+
+        - For protected tags: Owner, Admin, Non-Signing Admin.
+
+        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.
+
+        '
+      tags:
+      - Tags
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTagRequest'
+      responses:
+        '200':
+          description: A tag object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+      operationId: createTag
+    get:
+      summary: Get list of tags
+      description: Retrieve a paged list of all tags according to filters.
+      tags:
+      - Tags
+      x-rate-limit-category: query
+      parameters:
+      - in: query
+        name: pageCursor
+        description: Page cursor to get the next page.
+        example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: pageSize
+        required: false
+        description: Maximum number of items in the page
+        schema:
+          type: number
+          minimum: 1
+          maximum: 100
+          default: 100
+      - in: query
+        name: label
+        required: false
+        description: Label prefix to filter by.
+        example: VIP
+        schema:
+          type: string
+      - in: query
+        name: tagIds
+        required: false
+        description: List of tag IDs to filter by.
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 100
+      - in: query
+        name: includePendingApprovalsInfo
+        required: false
+        description: Include pending approval information for each tag
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: A TagsPagedResponse object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsPagedResponse'
+      operationId: getTags
+  /tags/{tagId}:
+    get:
+      summary: Get a tag
+      description: Retrieve an existing tag by ID.
+      tags:
+      - Tags
+      x-rate-limit-category: read
+      parameters:
+      - in: path
+        name: tagId
+        required: true
+        description: The ID of the tag to retrieve
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: A tag object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+      operationId: getTag
+    patch:
+      summary: Update a tag
+      description: 'Update an existing specified tag.
+
+
+        **Endpoint Permissions:**
+
+        - For protected tags: Owner, Admin, Non-Signing Admin.
+
+        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.
+
+        '
+      tags:
+      - Tags
+      x-rate-limit-category: write
+      parameters:
+      - in: path
+        name: tagId
+        required: true
+        description: The ID of the tag to update
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTagRequest'
+      responses:
+        '200':
+          description: A tag object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+      operationId: updateTag
+    delete:
+      summary: Delete a tag
+      description: 'Delete the specified tag.
+
+
+        **Endpoint Permissions:**
+
+        - For protected tags: Owner, Admin, Non-Signing Admin.
+
+        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.
+
+        '
+      tags:
+      - Tags
+      x-rate-limit-category: write
+      parameters:
+      - in: path
+        name: tagId
+        required: true
+        description: The ID of the tag to retrieve
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Tag was deleted successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      operationId: deleteTag
+components:
+  schemas:
+    Tag:
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the tag
+          type: string
+          format: uuid
+          example: df4c0987-30da-4976-8dcf-bc2dd41ae331
+        label:
+          type: string
+          description: The tag label
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          example: Tag for VIP customers
+        color:
+          type: string
+          description: The tag color in hex format
+          example: '#FF5733'
+        isProtected:
+          type: boolean
+          description: Indication of whether the tag is a protected tag
+          default: false
+        updatedAt:
+          type: number
+          description: The date and time the tag was last updated
+          example: 1717084800000
+        pendingApprovalRequest:
+          $ref: '#/components/schemas/ApprovalRequest'
+      required:
+      - id
+      - label
+      - isProtected
+      - updatedAt
+    ApprovalRequest:
+      type: object
+      description: Approval request details
+      properties:
+        id:
+          type: string
+          format: numeric
+          description: The approval request identifier
+          example: '12345'
+        type:
+          type: string
+          description: The approval request type
+          enum:
+          - TAG_UPDATE
+          - TAG_DELETE
+          - TAG_ATTACH_DETACH
+        state:
+          type: string
+          description: The approval request state
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          - FAILED
+          - CANCELLED
+          - EXPIRED
+      required:
+      - id
+      - type
+      - state
+    TagsPagedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        next:
+          type: string
+          description: Cursor to the next page
+          example: MjAyNS0wNy0wOSAxMDo1MzoxMy40NTI=:NA==
+          nullable: true
+      required:
+      - data
+      - next
+    UpdateTagRequest:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The tag label
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          example: Tag for VIP customers
+    CreateTagRequest:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The tag label
+          minLength: 2
+          maxLength: 30
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          maxLength: 250
+          example: Tag for VIP customers
+        color:
+          type: string
+          description: The tag color in hex format
+          example: '#FF5733'
+        isProtected:
+          type: boolean
+          description: Indication of whether the tag is protected
+          default: false
+      required:
+      - label
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

@@ -1,0 +1,599 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Whitelisted Internal Wallets API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Whitelisted Internal Wallets
+paths:
+  /internal_wallets:
+    get:
+      summary: List internal wallets
+      tags:
+      - Whitelisted Internal Wallets
+      description: "Gets a list of internal wallets.\n**Note**: \n- BTC-based assets belonging to whitelisted addresses cannot be retrieved between 00:00 UTC and 00:01 UTC daily due to third-party provider, Blockchain, being unavailable for this 60 second period.  Please wait until the next minute to retrieve BTC-based assets.\n- The list of assets returned will NOT include the balances anymore.\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n- You can see the balance of the Internal Wallet via Fireblocks - You cannot initiate transactions from Internal Wallets through Fireblocks\nLearn more about Whitelisted Internal Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.\n"
+      responses:
+        '200':
+          description: A list of internal wallets
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetInternalWalletsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getInternalWallets
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetInternalWalletsResponse>> = fireblocks.internalWallets.getInternalWallets();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<UnmanagedWallet>>> response = fireblocks.internalWallets().getInternalWallets();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.internal_wallets.get_internal_wallets();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetInternalWalletsResponse>> = fireblocks.internalWallets.getInternalWallets();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<UnmanagedWallet>>> response = fireblocks.internalWallets().getInternalWallets();
+      - lang: Python
+        source: response = fireblocks.internal_wallets.get_internal_wallets();
+    post:
+      summary: Create an internal wallet
+      tags:
+      - Whitelisted Internal Wallets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const internalWallet = await fireblocks.createInternalWallet(name, customerRefId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UnmanagedWallet>> = fireblocks.internalWallets.createInternalWallet(internalWalletsApiCreateInternalWalletRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UnmanagedWallet>> response = fireblocks.internalWallets().createInternalWallet(createWalletRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.internal_wallets.create_internal_wallet(create_wallet_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      description: 'Creates a new internal wallet with the requested name.
+
+        Learn more about Whitelisted Internal Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: A new wallet object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnmanagedWallet'
+        default:
+          $ref: '#/components/responses/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWalletRequest'
+      operationId: createInternalWallet
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UnmanagedWallet>> = fireblocks.internalWallets.createInternalWallet(internalWalletsApiCreateInternalWalletRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UnmanagedWallet>> response = fireblocks.internalWallets().createInternalWallet(createWalletRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.internal_wallets.create_internal_wallet(create_wallet_request, idempotency_key);
+  /internal_wallets/{walletId}:
+    get:
+      summary: Get assets for internal wallet
+      tags:
+      - Whitelisted Internal Wallets
+      x-readme:
+        code-samples:
+        - language: python
+          code: internalWallet = fireblocks.get_internal_wallet(walletId)
+          name: Fireblocks SDK Python example
+        - language: javascript
+          code: const result = await fireblocks.getInternalWallet(walletId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UnmanagedWallet>> = fireblocks.whitelistedInternalWallets.getInternalWallet(whitelistedInternalWalletsApiGetInternalWalletRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UnmanagedWallet>> response = fireblocks.whitelistedInternalWallets().getInternalWallet(walletId);
+          name: Fireblocks SDK Java example
+      description: '**This endpoint will be deprecated on December 31, 2025. Currently, the endpoint will only return a wallet''s addresses and not any balances.**
+
+
+        Retrieves information about all the assets in an internal wallet, which is a wallet owned by you outside of your Fireblocks workspace. Please note that you cannot initiate transactions through Fireblocks using an internal wallet.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - in: path
+        name: walletId
+        required: true
+        description: The ID of the wallet to return
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A Wallet object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnmanagedWallet'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getInternalWallet
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UnmanagedWallet>> = fireblocks.internalWallets.getInternalWallet(internalWalletsApiGetInternalWalletRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UnmanagedWallet>> response = fireblocks.internalWallets().getInternalWallet(walletId);
+      - lang: Python
+        source: response = fireblocks.internal_wallets.get_internal_wallet(wallet_id);
+    delete:
+      summary: Delete an internal wallet
+      tags:
+      - Whitelisted Internal Wallets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const result = await fireblocks.deleteInternalWallet(walletId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.internalWallets.deleteInternalWallet(internalWalletsApiDeleteInternalWalletRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.internalWallets().deleteInternalWallet(walletId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.internal_wallets.delete_internal_wallet(wallet_id);
+          name: Fireblocks SDK Python example
+      description: "Deletes an internal wallet by ID.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+      parameters:
+      - in: path
+        name: walletId
+        required: true
+        description: The ID of the wallet to delete
+        schema:
+          type: string
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: deleteInternalWallet
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.internalWallets.deleteInternalWallet(internalWalletsApiDeleteInternalWalletRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.internalWallets().deleteInternalWallet(walletId);
+      - lang: Python
+        source: response = fireblocks.internal_wallets.delete_internal_wallet(wallet_id);
+  /internal_wallets/{walletId}/assets:
+    get:
+      summary: List assets in an internal wallet (Paginated)
+      description: "Returns a paginated response of assets in an internal wallet.\n\nThis is a new paginated endpoint that gets all the assets from the wallet container with balances. </br>This endpoint returns a limited amount of results with a quick response time.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\nLearn more about Whitelisted Internal Addresses [here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n\nEndpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+      tags:
+      - Whitelisted Internal Wallets
+      x-readme:
+        code-samples:
+        - language: python
+          code: internalWalletAssets = fireblocks.get_internal_wallet_assets(walletId, pageSize, pageCursor)
+          name: Fireblocks SDK Python example (Legacy)
+        - language: javascript
+          code: const internalWalletAssets = fireblocks.getInternalWalletAssets(walletId, pageSize, pageCursor);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PaginatedAssetsResponse>> = fireblocks.internalWallets.getInternalWalletAssetsPaginated(internalWalletsApiGetInternalWalletAssetsPaginatedRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PaginatedAssetsResponse>> response = fireblocks.internalWallets().getInternalWalletAssetsPaginated(walletId, pageSize, pageCursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.internal_wallets.get_internal_wallet_assets_paginated(wallet_id, page_size, page_cursor);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: walletId
+        required: true
+        description: The ID of the internal wallet to return assets for
+        schema:
+          type: string
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          description: Number of assets to return per page
+          minimum: 1
+          maximum: 200
+          default: 50
+          type: number
+        example: 10
+      - in: query
+        name: pageCursor
+        required: false
+        schema:
+          type: string
+          description: Cursor for pagination
+      responses:
+        '200':
+          description: A paginated response of assets for the internal wallet
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAssetsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getInternalWalletAssetsPaginated
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PaginatedAssetsResponse>> = fireblocks.internalWallets.getInternalWalletAssetsPaginated(internalWalletsApiGetInternalWalletAssetsPaginatedRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PaginatedAssetsResponse>> response = fireblocks.internalWallets().getInternalWalletAssetsPaginated(walletId, pageSize, pageCursor);
+      - lang: Python
+        source: response = fireblocks.internal_wallets.get_internal_wallet_assets_paginated(wallet_id, page_size, page_cursor);
+  /internal_wallets/{walletId}/set_customer_ref_id:
+    post:
+      summary: Set an AML/KYT customer reference ID for internal wallet
+      tags:
+      - Whitelisted Internal Wallets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const result = await fireblocks.setCustomerRefIdForInternalWallet(walletId, customerRefId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.internalWallets.setCustomerRefIdForInternalWallet(internalWalletsApiSetCustomerRefIdForInternalWalletRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.internalWallets().setCustomerRefIdForInternalWallet(setCustomerRefIdRequest, walletId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.internal_wallets.set_customer_ref_id_for_internal_wallet(set_customer_ref_id_request, wallet_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      description: "Sets an AML/KYT customer reference ID for the specific internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n  Learn more about Whitelisted Internal Addresses\n[here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+      parameters:
+      - in: path
+        name: walletId
+        required: true
+        description: The wallet ID
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetCustomerRefIdRequest'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setCustomerRefIdForInternalWallet
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.internalWallets.setCustomerRefIdForInternalWallet(internalWalletsApiSetCustomerRefIdForInternalWalletRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.internalWallets().setCustomerRefIdForInternalWallet(setCustomerRefIdRequest, walletId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.internal_wallets.set_customer_ref_id_for_internal_wallet(set_customer_ref_id_request, wallet_id, idempotency_key);
+  /internal_wallets/{walletId}/{assetId}:
+    get:
+      summary: Get an asset from an internal wallet
+      tags:
+      - Whitelisted Internal Wallets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const internalWalletAsset = fireblocks.getInternalWalletAsset(walletId, assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WalletAsset>> = fireblocks.internalWallets.getInternalWalletAsset(internalWalletsApiGetInternalWalletAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<WalletAsset>> response = fireblocks.internalWallets().getInternalWalletAsset(walletId, assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.internal_wallets.get_internal_wallet_asset(wallet_id, asset_id);
+          name: Fireblocks SDK Python example
+      description: "Returns information for an asset in an internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+      parameters:
+      - in: path
+        name: walletId
+        required: true
+        description: The ID of the wallet
+        schema:
+          type: string
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset to return
+        schema:
+          type: string
+          x-fb-entity: asset
+      responses:
+        '200':
+          description: A Wallet Asset object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletAsset'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getInternalWalletAsset
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WalletAsset>> = fireblocks.internalWallets.getInternalWalletAsset(internalWalletsApiGetInternalWalletAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<WalletAsset>> response = fireblocks.internalWallets().getInternalWalletAsset(walletId, assetId);
+      - lang: Python
+        source: response = fireblocks.internal_wallets.get_internal_wallet_asset(wallet_id, asset_id);
+    post:
+      summary: Add an asset to an internal wallet
+      tags:
+      - Whitelisted Internal Wallets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const internalWalletAsset = await fireblocks.createInternalWalletAsset(walletContainerId, assetId, address, tag);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WalletAsset>> = fireblocks.internalWallets.createInternalWalletAsset(internalWalletsApiCreateInternalWalletAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<WalletAsset>> response = fireblocks.internalWallets().createInternalWalletAsset(walletId, assetId, createInternalWalletAssetRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.internal_wallets.create_internal_wallet_asset(wallet_id, asset_id, create_internal_wallet_asset_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      description: "Adds an asset to an existing internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n  Learn more about Whitelisted Internal Addresses\n[here](https://developers.fireblocks.com/docs/whitelist-addresses#internal-wallets)\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+      parameters:
+      - in: path
+        name: walletId
+        required: true
+        description: The ID of the wallet
+        schema:
+          type: string
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset to add
+        schema:
+          type: string
+          x-fb-entity: asset
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: A Wallet Asset object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletAsset'
+        default:
+          $ref: '#/components/responses/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInternalWalletAssetRequest'
+      operationId: createInternalWalletAsset
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WalletAsset>> = fireblocks.internalWallets.createInternalWalletAsset(internalWalletsApiCreateInternalWalletAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<WalletAsset>> response = fireblocks.internalWallets().createInternalWalletAsset(walletId, assetId, createInternalWalletAssetRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.internal_wallets.create_internal_wallet_asset(wallet_id, asset_id, create_internal_wallet_asset_request, idempotency_key);
+    delete:
+      summary: Delete a whitelisted address
+      tags:
+      - Whitelisted Internal Wallets
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const result = await fireblocks.deleteInternalWalletAsset(walletId, assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.internalWallets.deleteInternalWalletAsset(internalWalletsApiDeleteInternalWalletAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.internalWallets().deleteInternalWalletAsset(walletId, assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.internal_wallets.delete_internal_wallet_asset(wallet_id, asset_id);
+          name: Fireblocks SDK Python example
+      description: "Deletes a whitelisted address (for an asset) from an internal wallet.\n\nInternal Wallets are whitelisted wallets that belong to you outside of Fireblocks.\n\n  - You can see the balance of the Internal Wallet via Fireblocks\n  - You cannot initiate transactions from Internal Wallets through Fireblocks\n\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+      parameters:
+      - in: path
+        name: walletId
+        required: true
+        description: The ID of the wallet
+        schema:
+          type: string
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset to delete
+        schema:
+          type: string
+          x-fb-entity: asset
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: deleteInternalWalletAsset
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.internalWallets.deleteInternalWalletAsset(internalWalletsApiDeleteInternalWalletAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.internalWallets().deleteInternalWalletAsset(walletId, assetId);
+      - lang: Python
+        source: response = fireblocks.internal_wallets.delete_internal_wallet_asset(wallet_id, asset_id);
+components:
+  schemas:
+    CreateWalletRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: the wallet's display name
+        customerRefId:
+          description: Optional - Sets a customer reference ID
+          type: string
+    WalletAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        status:
+          $ref: '#/components/schemas/ConfigChangeRequestStatus'
+        address:
+          type: string
+        tag:
+          type: string
+        activationTime:
+          type: string
+    GetInternalWalletsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UnmanagedWallet'
+    UnmanagedWallet:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        customerRefId:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletAsset'
+      required:
+      - id
+      - name
+      - assets
+    CreateInternalWalletAssetRequest:
+      type: object
+      properties:
+        address:
+          type: string
+          description: The wallet's address or, for EOS wallets, the account name
+        tag:
+          type: string
+          description: for XRP wallets, the destination tag; for EOS, the memo; for the fiat providers (BLINC by BCB Group), the Bank Transfer Description
+      required:
+      - address
+    SetCustomerRefIdRequest:
+      type: object
+      properties:
+        customerRefId:
+          description: Customer reference ID
+          type: string
+          example: some-customer-reference
+    PaginatedAssetsResponse:
+      type: object
+      properties:
+        total:
+          type: number
+          description: Total number of assets in the internal wallet
+        data:
+          $ref: '#/components/schemas/UnmanagedWallet'
+        next:
+          type: string
+          description: Cursor for the next page of results
+      required:
+      - data
+    ConfigChangeRequestStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - APPROVED
+      - CANCELLED
+      - REJECTED
+      - FAILED
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

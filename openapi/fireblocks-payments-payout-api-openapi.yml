@@ -1,0 +1,607 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Payments - Payout API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Payments - Payout
+paths:
+  /payments/payout:
+    post:
+      tags:
+      - Payments - Payout
+      description: '**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>
+
+        </br>These endpoints are currently in beta and might be subject to changes.</br>
+
+        </br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager or email CSM@fireblocks.com. </br>
+
+        </br> <b u>Create a payout instruction set.</b> </u></br>
+
+        A payout instruction set is a set of instructions for distributing payments from a single payment account to a list of payee accounts. </br>
+
+        The instruction set defines: </br>
+
+        <ul>
+
+        <li>the payment account and its account type (vault, exchange, or fiat). </li>
+
+        <li>the account type (vault account, exchange account, whitelisted address, network connection, fiat account, or merchant account), the amount, and the asset of payment for each payee account.</li>
+
+        </ul>
+
+        Learn more about Fireblocks Payments - Payouts in the following [guide](https://developers.fireblocks.com/docs/create-payouts).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      summary: Create a payout instruction set
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePayoutRequest'
+            example:
+              paymentAccount:
+                id: EX_SUB1
+                type: EXCHANGE_ACCOUNT
+              instructionSet:
+              - payeeAccount:
+                  id: bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3
+                  type: EXTERNAL_WALLET
+                amount:
+                  amount: '43'
+                  assetId: USDC
+              - payeeAccount:
+                  id: 3adc1f92-e791-44a8-9aee-7f31c2108b78
+                  type: NETWORK_CONNECTION
+                amount:
+                  amount: '4423'
+                  assetId: USDC
+      responses:
+        '200':
+          description: The payout instruction set creation succeeded and returns the generated instruction set with a unique payout IDThe payout ID will be used for executing the payout and checking the payout status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutResponse'
+              example:
+                payoutId: 1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7
+                paymentAccount:
+                  id: EX_SUB2
+                  type: EXCHANGE_ACCOUNT
+                createdAt: 1645365800
+                state: REQUESTED
+                status: REGISTERED
+                initMethod: API
+                instructionSet:
+                - id: 6ea4a016-536b-49af-b1a0-40b343ccf879
+                  name: payee-wallet-name
+                  payeeAccount:
+                    id: bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3
+                    type: EXTERNAL_WALLET
+                  amount:
+                    amount: '43'
+                    assetId: USDC
+                  state: NOT_STARTED
+                  transactions: []
+                - id: e783a79b-6acc-4d18-885d-ed533cad8eeb
+                  name: payee-by-network
+                  payeeAccount:
+                    id: 3adc1f92-e791-44a8-9aee-7f31c2108b78
+                    type: NETWORK_CONNECTION
+                  amount:
+                    amount: '4423.23'
+                    assetId: USDC
+                  state: NOT_STARTED
+                  transactions: []
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: createPayout
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PayoutResponse>> = fireblocks.paymentsPayout.createPayout(paymentsPayoutApiCreatePayoutRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PayoutResponse>> response = fireblocks.paymentsPayout().createPayout(createPayoutRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.payments_payout.create_payout(create_payout_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PayoutResponse>> = fireblocks.paymentsPayout.createPayout(paymentsPayoutApiCreatePayoutRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PayoutResponse>> response = fireblocks.paymentsPayout().createPayout(createPayoutRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.payments_payout.create_payout(create_payout_request, idempotency_key);
+  /payments/payout/{payoutId}/actions/execute:
+    post:
+      tags:
+      - Payments - Payout
+      summary: Execute a payout instruction set
+      description: '**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>
+
+        </br>These endpoints are currently in beta and might be subject to changes.</br>
+
+        </br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager or email CSM@fireblocks.com. </br>
+
+        </br><b u>Execute a payout instruction set.</b> </u> </br>
+
+        </br>The instruction set will be verified and executed.</br>
+
+        <b><u>Source locking</br></b> </u>
+
+        If you are executing a payout instruction set from a payment account with an already active payout the active payout will complete before the new payout instruction set can be executed. </br>
+
+        You cannot execute the same payout instruction set more than once.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      parameters:
+      - name: payoutId
+        description: the payout id received from the creation of the payout instruction set
+        in: path
+        schema:
+          type: string
+        required: true
+        example: 1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Executed the payout instruction set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DispatchPayoutResponse'
+              example:
+                payoutId: 1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: executePayoutAction
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DispatchPayoutResponse>> = fireblocks.paymentsPayout.executePayoutAction(paymentsPayoutApiExecutePayoutActionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DispatchPayoutResponse>> response = fireblocks.paymentsPayout().executePayoutAction(payoutId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.payments_payout.execute_payout_action(payout_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DispatchPayoutResponse>> = fireblocks.paymentsPayout.executePayoutAction(paymentsPayoutApiExecutePayoutActionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DispatchPayoutResponse>> response = fireblocks.paymentsPayout().executePayoutAction(payoutId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.payments_payout.execute_payout_action(payout_id, idempotency_key);
+  /payments/payout/{payoutId}:
+    get:
+      tags:
+      - Payments - Payout
+      summary: Get the status of a payout instruction set
+      description: '**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>
+
+        </br>These endpoints are currently in beta and might be subject to changes.</br>
+
+        </br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager or email CSM@fireblocks.com. </br>
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      parameters:
+      - name: payoutId
+        description: the payout id received from the creation of the payout instruction set
+        in: path
+        schema:
+          type: string
+        required: true
+        example: 1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7
+      responses:
+        '200':
+          description: Returns the current status of the payout instruction set, including the status of each payout instruction and the transactions created in the process.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutResponse'
+              example:
+                payoutId: 1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7
+                paymentAccount:
+                  id: EX_SUB3
+                  type: EXCHANGE_ACCOUNT
+                createdAt: 1645365800
+                state: FINALIZED
+                status: DONE
+                initMethod: API
+                instructionSet:
+                - id: 6ea4a016-536b-49af-b1a0-40b343ccf879
+                  name: payee-wallet-name
+                  payeeAccount:
+                    id: bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3
+                    type: EXTERNAL_WALLET
+                  amount:
+                    amount: '4312'
+                    assetId: USDC
+                  state: COMPLETED
+                  transactions:
+                  - id: 35a4b10c-1f83-4f0b-ba2a-da0e73be2d6e
+                    state: COMPLETED
+                    timestamp: 1645367429
+                - id: e783a79b-6acc-4d18-885d-ed533cad8eeb
+                  name: payee-by-network
+                  payeeAccount:
+                    id: 3adc1f92-e791-44a8-9aee-7f31c2108b78
+                    type: NETWORK_CONNECTION
+                  amount:
+                    amount: '4423.23'
+                    assetId: USDC
+                  state: COMPLETED
+                  transactions:
+                  - id: 4505e7d9-bfc7-41bc-9750-54311fcbbf26
+                    state: COMPLETED
+                    timestamp: 1645367449
+                reportUrl: https://some-url.com/reports/cc5777c1-75a9-4337-aebd-f1f5a40a9391
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: No payout with the given payout ID exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: getPayout
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PayoutResponse>> = fireblocks.paymentsPayout.getPayout(paymentsPayoutApiGetPayoutRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PayoutResponse>> response = fireblocks.paymentsPayout().getPayout(payoutId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.payments_payout.get_payout(payout_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PayoutResponse>> = fireblocks.paymentsPayout.getPayout(paymentsPayoutApiGetPayoutRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PayoutResponse>> response = fireblocks.paymentsPayout().getPayout(payoutId);
+      - lang: Python
+        source: response = fireblocks.payments_payout.get_payout(payout_id);
+components:
+  schemas:
+    PayeeAccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/PayeeAccountType'
+    PaymentAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/PaymentAccountType'
+      required:
+      - id
+      - type
+    PayoutStatus:
+      type: string
+      enum:
+      - REGISTERED
+      - VERIFYING
+      - IN_PROGRESS
+      - DONE
+      - INSUFFICIENT_BALANCE
+      - FAILED
+      description: "- REQUESTED\tpayout requested with all its details\n- VERIFIED\tpayout instruction set details were verified\n- PROCESSING\tpayout instruction set executed and is processing\n- FINALIZED\tpayout done (all payout instructions completed successfully)\n- INSUFFICIENT_BALANCE\tinsufficient balance in the payment account (can be a temporary state)\n- FAILED\tone or more of the payout instructions failed\n"
+    PayeeAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/PayeeAccountType'
+      required:
+      - id
+      - type
+    PaymentAccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/PaymentAccountType'
+    PayoutResponse:
+      type: object
+      properties:
+        payoutId:
+          type: string
+        paymentAccount:
+          $ref: '#/components/schemas/PaymentAccountResponse'
+        createdAt:
+          type: number
+        state:
+          $ref: '#/components/schemas/PayoutState'
+        status:
+          $ref: '#/components/schemas/PayoutStatus'
+        reasonOfFailure:
+          type: string
+          description: "<ul> \n<li> INSUFFICIENT_BALANCE</li>\n<li> SOURCE_TRANSLATION</li>\n<li> SOURCE_NOT_UNIQUE</li>\n<li> SOURCE_NOT_FOUND</li>\n<li> SOURCE_TYPE_NOT_SUPPORTED</li>\n<li> EMPTY_SOURCE</li>\n<li> DESTINATION_TRANSLATION</li>\n<li> DESTINATION_NOT_UNIQUE</li>\n<li> DESTINATION_NOT_FOUND</li>\n<li> EMPTY_DESTINATION</li>\n<li> PARSING </li>\n<li> UNKNOWN</li>\n<li> FIREBLOCKS_CLIENT</li>\n<li> TRANSACTION_SUBMISSION</li>\n</ul>\n"
+        initMethod:
+          $ref: '#/components/schemas/PayoutInitMethod'
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayoutInstructionResponse'
+        reportUrl:
+          type: string
+      required:
+      - payoutId
+      - createdAt
+      - state
+      - status
+      - paymentAccount
+      - instructionSet
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - INTERNAL
+              - AUTHENTICATION
+              - AUTHORIZATION
+              - VALIDATION
+              - NOT_FOUND
+              - UNPROCESSABLE_ENTITY
+              - FORBIDDEN
+            message:
+              type: string
+          required:
+          - type
+          - message
+      required:
+      - error
+    CreatePayoutRequest:
+      type: object
+      properties:
+        paymentAccount:
+          $ref: '#/components/schemas/PaymentAccount'
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayoutInstruction'
+      required:
+      - paymentAccount
+      - instructionSet
+    PayeeAccountType:
+      type: string
+      enum:
+      - VAULT_ACCOUNT
+      - EXCHANGE_ACCOUNT
+      - INTERNAL_WALLET
+      - EXTERNAL_WALLET
+      - NETWORK_CONNECTION
+      - FIAT_ACCOUNT
+      description: "- VAULT_ACCOUNT  \ta native Fireblocks vault account\n- EXCHANGE_ACCOUNT \ta third-party exchange account\n- INTERNAL_WALLET \ta whitelisted address marked as internal to the workspace/organization\n- EXTERNAL_WALLET\ta whitelisted address marked as external\n- NETWORK_CONNECTION\ta member of the Fireblocks network\n- FIAT_ACCOUNT\ta third-party account of a fiat bank (Signature, BCB, etc)\n"
+    PayoutInstruction:
+      type: object
+      properties:
+        id:
+          type: string
+        payeeAccount:
+          $ref: '#/components/schemas/PayeeAccount'
+        amount:
+          $ref: '#/components/schemas/InstructionAmount'
+      required:
+      - amount
+      - payeeAccount
+    InstructionAmount:
+      type: object
+      properties:
+        amount:
+          description: The amount as string
+          type: string
+          example: '20'
+        assetId:
+          description: Unique asset identifier
+          type: string
+          example: ETH
+      required:
+      - amount
+      - assetId
+    PayoutInstructionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        payeeAccount:
+          $ref: '#/components/schemas/PayeeAccountResponse'
+        amount:
+          $ref: '#/components/schemas/InstructionAmount'
+        state:
+          $ref: '#/components/schemas/PayoutInstructionState'
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+      required:
+      - amount
+      - payeeAccount
+      - state
+      - transactions
+    DispatchPayoutResponse:
+      type: object
+      properties:
+        payoutId:
+          type: string
+      required:
+      - payoutId
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        state:
+          type: string
+          enum:
+          - SUBMITTED
+          - QUEUED
+          - PENDING_AUTHORIZATION
+          - PENDING_SIGNATURE
+          - BROADCASTING
+          - PENDING_3RD_PARTY_MANUAL_APPROVAL
+          - PENDING_3RD_PARTY
+          - PENDING
+          - CONFIRMING
+          - CONFIRMED
+          - COMPLETED
+          - PARTIALLY_COMPLETED
+          - PENDING_AML_SCREENING
+          - CANCELLING
+          - CANCELLED
+          - REJECTED
+          - BLOCKED
+          - FAILED
+          - TIMEOUT
+        timestamp:
+          type: number
+          format: date-time
+        instructionId:
+          type: string
+      required:
+      - id
+      - state
+    PaymentAccountType:
+      type: string
+      enum:
+      - VAULT_ACCOUNT
+      - EXCHANGE_ACCOUNT
+      - FIAT_ACCOUNT
+    PayoutInitMethod:
+      type: string
+      enum:
+      - FILE
+      - API
+    PayoutState:
+      type: string
+      enum:
+      - CREATED
+      - FILE_FOUND
+      - REQUESTED
+      - TRANSLATED
+      - PROCESSING
+      - SUBMITTED
+      - FINALIZED
+      - INSUFFICIENT_BALANCE
+      - FAILED
+      description: '- CREATED - payout instruction set created with all its details
+
+        - FILE_FOUND - new file found in the FTP
+
+        - REQUESTED - payout requested with all its details
+
+        - TRANSLATED - payout instruction account IDs identified and translated
+
+        - PROCESSING - payout instruction set executed and is processing
+
+        - SUBMITTED - transactions submitted for payout instructions
+
+        - FINALIZED - payout finished processing, all transactions processed successfully
+
+        - INSUFFICIENT_BALANCE - insufficient balance in the payment account (can be a temporary state)
+
+        - FAILED - one or more of the payout instructions failed
+
+        '
+    PayoutInstructionState:
+      type: string
+      enum:
+      - NOT_STARTED
+      - TRANSACTION_SENT
+      - COMPLETED
+      - FAILED
+      - TRANSLATION_ERROR
+      - SKIPPED
+      description: "- NOT_STARTED\t- waiting to start\n- TRANSACTION_SENT - an underlying transaction was sent\n- COMPLETED\t- completed successfully\n- FAILED - failed\n- TRANSLATION_ERROR -lookup of the destination failed (due to changes in the underlying whitelisted external wallet or similar)\n- SKIPPED- no transaction(s) created for this instruction\n"
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

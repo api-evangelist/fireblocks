@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Keys (Beta) API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Keys (Beta)
+paths:
+  /keys/mpc/list:
+    get:
+      operationId: getMpcKeysList
+      summary: Get list of mpc keys
+      description: "Returns a list of MPC signing keys of the workspace. For each key, the list of players associated with it is attached.\n**Note:** \nThis endpoint is currently in beta and might be subject to changes."
+      parameters: []
+      responses:
+        '200':
+          description: List of mpc keys
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMpcKeysResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Keys (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetMpcKeysResponse>> = fireblocks.keysBeta.getMpcKeysList();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetMpcKeysResponse>> response = fireblocks.keysBeta().getMpcKeysList();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.keys_beta.get_mpc_keys_list();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetMpcKeysResponse>> = fireblocks.keysBeta.getMpcKeysList();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetMpcKeysResponse>> response = fireblocks.keysBeta().getMpcKeysList();
+      - lang: Python
+        source: response = fireblocks.keys_beta.get_mpc_keys_list();
+  /keys/mpc/list/{userId}:
+    get:
+      operationId: getMpcKeysListByUser
+      summary: Get list of mpc keys by `userId`
+      description: 'Returns a list of MPC signing keys of a specific user. For each key, the list of players associated with it is attached.
+
+        **Note:**
+
+        This endpoint is currently in beta and might be subject to changes.'
+      parameters:
+      - name: userId
+        required: true
+        in: path
+        description: The id for the user
+        example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of mpc keys
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMpcKeysResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Keys (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetMpcKeysResponse>> = fireblocks.keysBeta.getMpcKeysListByUser(keysBetaApiGetMpcKeysListByUserRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetMpcKeysResponse>> response = fireblocks.keysBeta().getMpcKeysListByUser(userId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.keys_beta.get_mpc_keys_list_by_user(user_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetMpcKeysResponse>> = fireblocks.keysBeta.getMpcKeysListByUser(keysBetaApiGetMpcKeysListByUserRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetMpcKeysResponse>> response = fireblocks.keysBeta().getMpcKeysListByUser(userId);
+      - lang: Python
+        source: response = fireblocks.keys_beta.get_mpc_keys_list_by_user(user_id);
+components:
+  schemas:
+    Players:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the player
+          example: 47d3383e-37a3-43d5-90a4-de0ca8c5e258
+          maxLength: 36
+          minLength: 36
+        type:
+          enum:
+          - MOBILE
+          - CLOUD
+          type: string
+          description: Type of the player
+          example: MOBILE
+      required:
+      - id
+      - type
+    MpcKey:
+      type: object
+      properties:
+        keyId:
+          type: string
+          example: 743f82cf-b526-4148-afb1-cd71f1dfee10
+          maxLength: 36
+          minLength: 36
+        userId:
+          type: string
+          example: da084d02-d446-413e-b4ce-1e3256517dfd
+          description: The user id that owns the key
+          maxLength: 36
+          minLength: 36
+        algorithm:
+          type: number
+          example: 201
+          description: The algorithm of the key
+        players:
+          description: The players that are associated with the key
+          type: array
+          items:
+            $ref: '#/components/schemas/Players'
+        lastPreprocessedIndex:
+          type: number
+          minimum: 0
+          example: '6'
+          description: The last index used on this key
+      required:
+      - keyId
+      - userId
+      - algorithm
+      - players
+    GetMpcKeysResponse:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          example: bdb57751-921d-45d5-99fd-344cffb364f6
+          description: The workspace id of the keys
+          maxLength: 36
+          minLength: 36
+        keys:
+          description: The keys that are associated with the workspace
+          type: array
+          items:
+            $ref: '#/components/schemas/MpcKey'
+      required:
+      - tenantId
+      - keys
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

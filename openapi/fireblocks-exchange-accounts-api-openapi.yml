@@ -1,0 +1,668 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Exchange Accounts API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Exchange Accounts
+paths:
+  /exchange_accounts:
+    get:
+      x-internal: true
+      deprecated: true
+      summary: List exchange accounts
+      description: 'DEPRECATED - Please use the `/exchange_accounts/paged` endpoint.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Exchange Accounts
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const exchangeAccounts = await fireblocks.getExchangeAccounts();
+          name: Fireblocks SDK Javascript example
+      responses:
+        '200':
+          description: An ExchangeAccount object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetExchangeAccountsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getExchangeAccounts
+      x-codeSamples:
+      - lang: python
+        label: Python
+        source: exchangeAccounts = fireblocks.get_exchange_accounts()
+      - lang: javascript
+        label: Javascript
+        source: const exchangeAccounts = await fireblocks.getExchangeAccounts();
+    post:
+      summary: Add an Exchange Account
+      operationId: addExchangeAccount
+      description: "Add an exchange account to exchanges. \n\nNote: This endpoint currently only supports the following exchanges `INDEPENDENT_RESERVE`,`BIT`, `BITHUMB`, `BITSO`, `CRYPTOCOM`, `BYBIT_V2`, `WHITEBIT`, `HITBTC`, `GEMINI`, `HUOBI`, `GATEIO`, `COINHAKO`, `BULLISH`, `BITGET`, and `LUNO`\n\nTo add an exchange account, please use the following [guide](https://developers.fireblocks.com/docs/add-an-exchange-account).\n"
+      tags:
+      - Exchange Accounts
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AddExchangeAccountResponse>> = fireblocks.exchangeAccounts.addExchangeAccount(exchangeAccountsApiAddExchangeAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AddExchangeAccountResponse>> response = fireblocks.exchangeAccounts().addExchangeAccount(addExchangeAccountRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.exchange_accounts.add_exchange_account(add_exchange_account_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddExchangeAccountRequest'
+      responses:
+        '201':
+          description: An Exchange Account identifier object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddExchangeAccountResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AddExchangeAccountResponse>> = fireblocks.exchangeAccounts.addExchangeAccount(exchangeAccountsApiAddExchangeAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AddExchangeAccountResponse>> response = fireblocks.exchangeAccounts().addExchangeAccount(addExchangeAccountRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.exchange_accounts.add_exchange_account(add_exchange_account_request, idempotency_key);
+  /exchange_accounts/paged:
+    get:
+      operationId: getPagedExchangeAccounts
+      summary: List connected exchange accounts
+      description: 'Returns a list of the connected exchange accounts in your workspace.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Exchange Accounts
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const exchangeAccounts = await fireblocks.getExchangeAccountsPaged();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetPagedExchangeAccountsResponse>> = fireblocks.exchangeAccounts.getPagedExchangeAccounts(exchangeAccountsApiGetPagedExchangeAccountsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<ExchangeAccountsPaged>>> response = fireblocks.exchangeAccounts().getPagedExchangeAccounts(limit, before, after);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.exchange_accounts.get_paged_exchange_accounts(limit, before, after);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: query
+        name: before
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: after
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: limit
+        description: number of exchanges per page
+        required: true
+        schema:
+          type: number
+          minimum: 1
+          maximum: 5
+          default: 3
+      responses:
+        '200':
+          description: An ExchangeAccount object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPagedExchangeAccountsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetPagedExchangeAccountsResponse>> = fireblocks.exchangeAccounts.getPagedExchangeAccounts(exchangeAccountsApiGetPagedExchangeAccountsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<ExchangeAccountsPaged>>> response = fireblocks.exchangeAccounts().getPagedExchangeAccounts(limit, before, after);
+      - lang: Python
+        source: response = fireblocks.exchange_accounts.get_paged_exchange_accounts(limit, before, after);
+  /exchange_accounts/{exchangeAccountId}:
+    get:
+      summary: Get a specific exchange account
+      description: 'Returns an exchange account by ID.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Exchange Accounts
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const exchnageAccount = await fireblocks.get_exchange_account(exchangeAccountId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ExchangeAccount>> = fireblocks.exchangeAccounts.getExchangeAccount(exchangeAccountsApiGetExchangeAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ExchangeAccount>> response = fireblocks.exchangeAccounts().getExchangeAccount(exchangeAccountId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.exchange_accounts.get_exchange_account(exchange_account_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: exchangeAccountId
+        required: true
+        description: The ID of the exchange account to return
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An ExchangeAccount object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeAccount'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getExchangeAccount
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ExchangeAccount>> = fireblocks.exchangeAccounts.getExchangeAccount(exchangeAccountsApiGetExchangeAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ExchangeAccount>> response = fireblocks.exchangeAccounts().getExchangeAccount(exchangeAccountId);
+      - lang: Python
+        source: response = fireblocks.exchange_accounts.get_exchange_account(exchange_account_id);
+  /exchange_accounts/{exchangeAccountId}/internal_transfer:
+    post:
+      summary: Internal transfer for exchange accounts
+      description: 'Transfers funds between trading accounts under the same exchange account.
+
+        Learn more about Fireblocks Exchange Connectivity in the following [guide](https://developers.fireblocks.com/docs/connect-to-exchanges-and-fiat-providers).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Exchange Accounts
+      parameters:
+      - in: path
+        name: exchangeAccountId
+        required: true
+        description: The ID of the exchange account to return
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '201':
+          description: Transfer succeeded
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalTransferResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInternalTransferRequest'
+      operationId: internalTransfer
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<InternalTransferResponse>> = fireblocks.exchangeAccounts.internalTransfer(exchangeAccountsApiInternalTransferRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<InternalTransferResponse>> response = fireblocks.exchangeAccounts().internalTransfer(exchangeAccountId, createInternalTransferRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.exchange_accounts.internal_transfer(exchange_account_id, create_internal_transfer_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<InternalTransferResponse>> = fireblocks.exchangeAccounts.internalTransfer(exchangeAccountsApiInternalTransferRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<InternalTransferResponse>> response = fireblocks.exchangeAccounts().internalTransfer(exchangeAccountId, createInternalTransferRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.exchange_accounts.internal_transfer(exchange_account_id, create_internal_transfer_request, idempotency_key);
+  /exchange_accounts/{exchangeAccountId}/convert:
+    post:
+      summary: Convert exchange account funds
+      description: 'Convert exchange account funds from the source asset to the destination asset. Coinbase (USD to USDC, USDC to USD) and Bitso (MXN to USD) are supported conversions.
+
+        Learn more about Fireblocks Exchange Connectivity in the following [guide](https://developers.fireblocks.com/docs/connect-to-exchanges-and-fiat-providers).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Exchange Accounts
+      parameters:
+      - in: path
+        name: exchangeAccountId
+        required: true
+        description: The ID of the exchange account. Please make sure the exchange supports conversions. To find the ID of your exchange account, use GET/exchange_accounts.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Conversion successful
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertAssetsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConvertAssetsRequest'
+      operationId: convertAssets
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ConvertAssetsResponse>> = fireblocks.exchangeAccounts.convertAssets(exchangeAccountsApiConvertAssetsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ConvertAssetsResponse>> response = fireblocks.exchangeAccounts().convertAssets(exchangeAccountId, convertAssetsRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.exchange_accounts.convert_assets(exchange_account_id, convert_assets_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ConvertAssetsResponse>> = fireblocks.exchangeAccounts.convertAssets(exchangeAccountsApiConvertAssetsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ConvertAssetsResponse>> response = fireblocks.exchangeAccounts().convertAssets(exchangeAccountId, convertAssetsRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.exchange_accounts.convert_assets(exchange_account_id, convert_assets_request, idempotency_key);
+  /exchange_accounts/{exchangeAccountId}/{assetId}:
+    get:
+      summary: Get an asset for an exchange account
+      description: 'Returns an asset for an exchange account.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Exchange Accounts
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const exchangeAsset = await fireblocks.getExchangeAsset(exchangeAccountId, assetId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ExchangeAsset>> = fireblocks.exchangeAccounts.getExchangeAccountAsset(exchangeAccountsApiGetExchangeAccountAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ExchangeAsset>> response = fireblocks.exchangeAccounts().getExchangeAccountAsset(exchangeAccountId, assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.exchange_accounts.get_exchange_account_asset(exchange_account_id, asset_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: exchangeAccountId
+        required: true
+        description: The ID of the exchange account to return
+        schema:
+          type: string
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset to return
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An ExchangeAccountAsset object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeAsset'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getExchangeAccountAsset
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ExchangeAsset>> = fireblocks.exchangeAccounts.getExchangeAccountAsset(exchangeAccountsApiGetExchangeAccountAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ExchangeAsset>> response = fireblocks.exchangeAccounts().getExchangeAccountAsset(exchangeAccountId, assetId);
+      - lang: Python
+        source: response = fireblocks.exchange_accounts.get_exchange_account_asset(exchange_account_id, asset_id);
+  /exchange_accounts/credentials_public_key:
+    get:
+      x-internal: true
+      summary: Get public key to encrypt exchange credentials
+      description: Return public key
+      tags:
+      - Exchange Accounts
+      responses:
+        '200':
+          description: public key as string
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetExchangeAccountsCredentialsPublicKeyResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getExchangeAccountsCredentialsPublicKey
+components:
+  schemas:
+    ExchangeAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/ExchangeType'
+        name:
+          type: string
+          description: Display name of the exchange account
+        status:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeAsset'
+        success:
+          type: boolean
+          description: Did succeed in retrieve balance data
+        tradingAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeTradingAccount'
+        isSubaccount:
+          description: True if the account is a subaccount in an exchange
+          type: boolean
+        mainAccountId:
+          description: if the account is a sub-account, the ID of the main account
+          type: string
+    AddExchangeAccountRequest:
+      type: object
+      properties:
+        exchangeType:
+          $ref: '#/components/schemas/ExchangeType'
+        name:
+          description: Display name of the exchange account
+          type: string
+        creds:
+          description: Encrypted credentials
+          type: string
+        key:
+          description: Api key of the exchange
+          type: string
+        mainAccountId:
+          description: Optional - main account id of the exchange
+          type: string
+      required:
+      - exchangeType
+      - name
+    GetPagedExchangeAccountsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/ExchangeAccountsPaged'
+    ExchangeTradingAccount:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeAsset'
+    GetExchangeAccountsCredentialsPublicKeyResponse:
+      type: object
+      properties:
+        publicKey:
+          type: string
+          description: Public key string
+        tenantId:
+          type: string
+          description: Tenant identifier
+      required:
+      - publicKey
+      - tenantId
+    ExchangeType:
+      description: Exchange account's type
+      type: string
+      enum:
+      - INDEPENDENT_RESERVE
+      - ENCLAVE_MARKETS
+      - BIT
+      - COINFLEX
+      - KUCOIN
+      - PXS
+      - LIQUID
+      - BITHUMB
+      - BITFINEX
+      - BITSO
+      - BITSTAMP
+      - KRAKEN
+      - KRAKENINTL
+      - BINANCE
+      - BINANCEUS
+      - CRYPTOCOM
+      - BYBIT_V2
+      - COINBASEPRO
+      - COINBASEPRIME
+      - COINBASEINTERNATIONAL
+      - WHITEBIT
+      - COINBASEEXCHANGE
+      - KORBIT
+      - HITBTC
+      - GEMINI
+      - CIRCLE
+      - BITMEX
+      - HUOBI
+      - DERIBIT
+      - OKCOIN_V5
+      - OKEX
+      - COINMETRO
+      - GATEIO
+      - SCRYPT
+      - COINHAKO
+      - LIGHTBIT
+      - BULLISH
+      - CANVAS_CONNECT
+      - BITGET
+      - LUNO
+      - BIT_GENERA
+      - TRANSFERO
+    CreateInternalTransferRequest:
+      type: object
+      properties:
+        asset:
+          type: string
+        amount:
+          type: string
+        sourceType:
+          $ref: '#/components/schemas/TradingAccountType'
+        destType:
+          $ref: '#/components/schemas/TradingAccountType'
+      required:
+      - asset
+      - amount
+      - sourceType
+      - destType
+    InternalTransferResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the transfer was successful
+        id:
+          type: string
+          nullable: true
+          description: The transaction ID of the internal transfer
+          example: 993c89c5-6405-47e5-9407-1a77f0de801f
+      required:
+      - success
+    ExchangeAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        total:
+          type: string
+        available:
+          type: string
+        credit:
+          type: string
+    ConvertAssetsRequest:
+      type: object
+      properties:
+        srcAsset:
+          type: string
+          description: Name of the source asset (must be in a currency that is supported for conversions in the selected exchange type that corresponds to your exchange ID)
+        destAsset:
+          type: string
+          description: Name of the destination asset (must be in a currency that is supported for conversions in the selected exchange type that corresponds to your exchange ID)
+        amount:
+          type: number
+          description: The amount to transfer (in the currency of the source asset)
+      required:
+      - srcAsset
+      - destAsset
+      - amount
+    ExchangeAccountsPaged:
+      type: object
+      properties:
+        ExchangeAccount:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeAccount'
+        paging:
+          type: object
+          properties:
+            after:
+              type: string
+              description: Query value to the after page
+            before:
+              type: string
+              description: Query value to the before page
+        prevUrl:
+          type: string
+        nextUrl:
+          type: string
+    GetExchangeAccountsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/ExchangeAccount'
+    AddExchangeAccountResponse:
+      type: object
+      properties:
+        id:
+          description: Exchange account's identifier
+          type: string
+        name:
+          description: Display name of the exchange account
+          type: string
+        exchangeType:
+          $ref: '#/components/schemas/ExchangeType'
+    ConvertAssetsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the conversion was successful
+      required:
+      - success
+    TradingAccountType:
+      type: string
+      enum:
+      - COIN_FUTURES
+      - COIN_MARGINED_SWAP
+      - EXCHANGE
+      - FUNDING
+      - FUNDABLE
+      - FUTURES
+      - FUTURES_CROSS
+      - MARGIN
+      - MARGIN_CROSS
+      - OPTIONS
+      - SPOT
+      - USDT_MARGINED_SWAP_CROSS
+      - USDT_FUTURES
+      - UNIFIED
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

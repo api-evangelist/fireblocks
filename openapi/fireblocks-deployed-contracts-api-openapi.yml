@@ -1,0 +1,552 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Deployed Contracts API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Deployed Contracts
+paths:
+  /tokenization/contracts:
+    get:
+      operationId: getDeployedContracts
+      summary: List deployed contracts data
+      description: 'Return a filtered lean representation of the deployed contracts data on all blockchains (paginated).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - name: pageCursor
+        required: false
+        in: query
+        description: Page cursor to get the next page
+        example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Number of items per page, requesting more then max will return max items
+        example: 10
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+      - name: contractAddress
+        required: false
+        in: query
+        description: The contract's onchain address
+        example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        schema:
+          type: string
+      - name: baseAssetId
+        description: The blockchain asset ID
+        example: ETH
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: contractTemplateId
+        required: false
+        description: The contract template identifier
+        example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        in: query
+        schema:
+          type: string
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const deployedContracts = await fireblocks.getContractsByFilter(templateId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DeployedContractsPaginatedResponse>> = fireblocks.deployedContracts.getDeployedContracts(deployedContractsApiGetDeployedContractsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DeployedContractsPaginatedResponse>> response = fireblocks.deployedContracts().getDeployedContracts(pageCursor, pageSize, contractAddress, baseAssetId, contractTemplateId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.deployed_contracts.get_deployed_contracts(page_cursor, page_size, contract_address, base_asset_id, contract_template_id);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Deployed contracts fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployedContractsPaginatedResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Deployed Contracts
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DeployedContractsPaginatedResponse>> = fireblocks.deployedContracts.getDeployedContracts(deployedContractsApiGetDeployedContractsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DeployedContractsPaginatedResponse>> response = fireblocks.deployedContracts().getDeployedContracts(pageCursor, pageSize, contractAddress, baseAssetId, contractTemplateId);
+      - lang: Python
+        source: response = fireblocks.deployed_contracts.get_deployed_contracts(page_cursor, page_size, contract_address, base_asset_id, contract_template_id);
+  /tokenization/contracts/{id}:
+    get:
+      operationId: getDeployedContractById
+      summary: Return deployed contract data by id
+      description: 'Return deployed contract data by id.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: The deployed contract data identifier
+        example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        schema:
+          type: string
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const deployedContracts = await fireblocks.getContractById(contractId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DeployedContractResponseDto>> = fireblocks.deployedContracts.getDeployedContractById(deployedContractsApiGetDeployedContractByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DeployedContractResponseDto>> response = fireblocks.deployedContracts().getDeployedContractById(id);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.deployed_contracts.get_deployed_contract_by_id(id);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployedContractResponseDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Deployed Contracts
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DeployedContractResponseDto>> = fireblocks.deployedContracts.getDeployedContractById(deployedContractsApiGetDeployedContractByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DeployedContractResponseDto>> response = fireblocks.deployedContracts().getDeployedContractById(id);
+      - lang: Python
+        source: response = fireblocks.deployed_contracts.get_deployed_contract_by_id(id);
+  /tokenization/contracts/{assetId}/{contractAddress}:
+    get:
+      operationId: getDeployedContractByAddress
+      summary: Return deployed contract data
+      description: 'Return deployed contract data by blockchain native asset id and contract address.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - name: contractAddress
+        required: true
+        in: path
+        description: The contract's onchain address
+        example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        schema:
+          type: string
+      - name: assetId
+        description: The blockchain base asset ID
+        example: ETH
+        required: true
+        in: path
+        schema:
+          type: string
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const deployedContract = await fireblocks.getContractByAddress(baseAssetId, contractAddress);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DeployedContractResponseDto>> = fireblocks.deployedContracts.getDeployedContractByAddress(deployedContractsApiGetDeployedContractByAddressRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DeployedContractResponseDto>> response = fireblocks.deployedContracts().getDeployedContractByAddress(contractAddress, assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.deployed_contracts.get_deployed_contract_by_address(contract_address, asset_id);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployedContractResponseDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Deployed Contracts
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DeployedContractResponseDto>> = fireblocks.deployedContracts.getDeployedContractByAddress(deployedContractsApiGetDeployedContractByAddressRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DeployedContractResponseDto>> response = fireblocks.deployedContracts().getDeployedContractByAddress(contractAddress, assetId);
+      - lang: Python
+        source: response = fireblocks.deployed_contracts.get_deployed_contract_by_address(contract_address, asset_id);
+  /tokenization/contracts/fetch_abi:
+    post:
+      operationId: fetchContractAbi
+      summary: Fetch the contract ABI
+      description: 'Fetch the ABI. If not found fetch the ABI from the block explorer.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FetchAbiRequestDto'
+      responses:
+        '200':
+          description: Contract ABI found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractWithAbiDto'
+        '404':
+          description: Contract ABI not found
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Deployed Contracts
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ContractWithAbiDto>> = fireblocks.deployedContracts.fetchContractAbi(deployedContractsApiFetchContractAbiRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ContractWithAbiDto>> response = fireblocks.deployedContracts().fetchContractAbi(fetchAbiRequestDto, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.deployed_contracts.fetch_contract_abi(fetch_abi_request_dto, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ContractWithAbiDto>> = fireblocks.deployedContracts.fetchContractAbi(deployedContractsApiFetchContractAbiRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ContractWithAbiDto>> response = fireblocks.deployedContracts().fetchContractAbi(fetchAbiRequestDto, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.deployed_contracts.fetch_contract_abi(fetch_abi_request_dto, idempotency_key);
+  /tokenization/contracts/abi:
+    post:
+      operationId: addContractABI
+      summary: Save contract ABI
+      description: 'Save contract ABI for the tenant.
+
+        </br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddAbiRequestDto'
+      responses:
+        '200':
+          description: Contract ABI created (or updated) for the tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractWithAbiDto'
+        '409':
+          description: Contract ABI already exists.
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Deployed Contracts
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ContractWithAbiDto>> = fireblocks.deployedContracts.addContractABI(deployedContractsApiAddContractABIRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ContractWithAbiDto>> response = fireblocks.deployedContracts().addContractABI(addAbiRequestDto, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.deployed_contracts.add_contract_a_b_i(add_abi_request_dto, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ContractWithAbiDto>> = fireblocks.deployedContracts.addContractABI(deployedContractsApiAddContractABIRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ContractWithAbiDto>> response = fireblocks.deployedContracts().addContractABI(addAbiRequestDto, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.deployed_contracts.add_contract_a_b_i(add_abi_request_dto, idempotency_key);
+components:
+  schemas:
+    DeployedContractsPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/LeanDeployedContractResponseDto'
+        next:
+          type: string
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+          nullable: true
+      required:
+      - data
+    DeployedContractResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The deployed contract data identifier
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        contractAddress:
+          type: string
+          description: The contract's onchain address
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        contractTemplateId:
+          type: string
+          description: The contract template identifier
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        vaultAccountId:
+          type: string
+          example: '0'
+          description: The vault account id this contract was deploy from
+        baseAssetId:
+          type: string
+          description: The blockchain's base assetId
+          example: ETH
+      required:
+      - id
+      - contractAddress
+      - contractTemplateId
+      - baseAssetId
+    AbiFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: mint
+          description: The name of the contract function as it appears in the ABI
+        stateMutability:
+          type: string
+          example: pure
+          enum:
+          - pure
+          - view
+          - nonpayable
+          - payable
+          description: The state mutability of the contract function as it appears in the ABI
+        type:
+          type: string
+          example: constructor
+          description: The type if the function
+          enum:
+          - function
+          - constructor
+        inputs:
+          description: The parameters that this function/constructor posses
+          items:
+            $ref: '#/components/schemas/Parameter'
+          type: array
+        outputs:
+          description: The parameters that this 'read' function returns
+          items:
+            $ref: '#/components/schemas/Parameter'
+          type: array
+        description:
+          type: string
+          description: The documentation of this function (if has any)
+      required:
+      - type
+      - inputs
+    FetchAbiRequestDto:
+      type: object
+      properties:
+        baseAssetId:
+          type: string
+          description: The blockchain base assetId
+          example: ETH
+        contractAddress:
+          type: string
+          description: The contract's onchain address
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+      required:
+      - baseAssetId
+      - contractAddress
+    ContractWithAbiDto:
+      type: object
+      properties:
+        contractAddress:
+          type: string
+          description: The address of the contract
+          example: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14'
+        baseAssetId:
+          type: string
+          description: The blockchain base assetId
+          example: ETH_TEST6
+        name:
+          type: string
+          description: The name of the contract
+          example: WETH9
+        abi:
+          description: The ABI of the contract
+          example:
+          - inputs:
+            - internalType: address
+              name: to
+              type: address
+            - internalType: uint256
+              name: amount
+              type: uint256
+            stateMutability: nonpayable
+            type: function
+            name: mint
+          type: array
+          items:
+            $ref: '#/components/schemas/AbiFunction'
+        isProxy:
+          type: boolean
+          description: Whether the contract is a proxy contract
+          example: true
+        implementation:
+          type: string
+          description: The implementation contract address
+          example: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14'
+        isPublic:
+          type: boolean
+          description: Whether the contract ABI is public
+          example: true
+      required:
+      - contractAddress
+      - baseAssetId
+      - name
+      - abi
+      - isPublic
+    Parameter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: _name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          description: In case it’s a struct, it will hold the struct data
+      required:
+      - name
+      - type
+    LeanDeployedContractResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The deployed contract data identifier
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        contractAddress:
+          type: string
+          description: The contract's onchain address
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        contractTemplateId:
+          type: string
+          description: The contract template identifier
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        blockchainId:
+          type: string
+          description: The blockchain's base assetId
+          example: ETH
+      required:
+      - id
+      - contractAddress
+      - contractTemplateId
+      - blockchainId
+    AddAbiRequestDto:
+      type: object
+      properties:
+        contractAddress:
+          type: string
+          description: The address of deployed contract
+          example: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14'
+        baseAssetId:
+          type: string
+          description: The blockchain base assetId
+          example: ETH
+        abi:
+          example:
+          - inputs:
+            - internalType: address
+              name: to
+              type: address
+            - internalType: uint256
+              name: amount
+              type: uint256
+            stateMutability: nonpayable
+            type: function
+            name: mint
+          description: The ABI of the contract
+          type: array
+          items:
+            $ref: '#/components/schemas/AbiFunction'
+        name:
+          type: string
+          description: The name of the contract
+          example: MyContract
+      required:
+      - contractAddress
+      - baseAssetId
+      - abi
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

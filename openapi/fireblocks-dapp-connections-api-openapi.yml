@@ -1,0 +1,563 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests dApp Connections API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: dApp Connections
+paths:
+  /connections:
+    get:
+      operationId: get
+      summary: List all open Web3 connections
+      description: 'List all open Web3 connections.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      parameters:
+      - name: order
+        required: false
+        in: query
+        description: List order (ascending or descending)
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          default: ASC
+      - name: filter
+        required: false
+        in: query
+        description: Parsed filter object
+        examples:
+          object:
+            summary: The filter object
+            description: ''
+            value:
+              id: string
+              userId: string
+              vaultAccountId: number
+              connectionMethod: string
+              feeLevel: string
+              appUrl: string
+              appName: string
+          stringified:
+            summary: The stringified parsed object
+            description: 'About stringified parsed objects:
+
+
+              * Each key-value pair is separated by ''='', and each pair is separated by '','' (you can use [`qs`](https://www.npmjs.com/package/qs) package for this)'
+            value: id=string,userId=string,vaultAccountId=number,connectionMethod=string,feeLevel=string,appUrl=string,appName=string
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Unique connection ID
+              example: 44075fd3-6fc5-4855-bd7b-510e35f9e671
+            userId:
+              type: string
+              description: User ID that established the connection
+              example: 5e7889fc-b5d6-5c6d-89cd-627ae94f1efd
+            vaultAccountId:
+              type: number
+              description: Unique vault account identifier that the connection was established with
+              example: 0
+            connectionMethod:
+              description: "The method that the connection was established with.\n\n- MOBILE: for connections that were established by scanning a WalletConnect QR code \n- DESKTOP: for connection that were established by WalletConnect desktop connections\n"
+              type: string
+              enum:
+              - MOBILE
+              - DESKTOP
+            feeLevel:
+              type: string
+              description: The fee level for the transactions over the connection
+              enum:
+              - MEDIUM
+              - HIGH
+            appUrl:
+              type: string
+              description: The dApp URL
+              example: https://app.uniswap.org
+            appName:
+              type: string
+              description: dApps name
+              example: Uniswap
+      - name: sort
+        required: false
+        in: query
+        description: Property to sort Web3 connections by.
+        schema:
+          type: string
+          enum:
+          - id
+          - userId
+          - vaultAccountId
+          - createdAt
+          - feeLevel
+          - appUrl
+          - appName
+          default: createdAt
+          example: userId=5e7889fc-b5d6-5c6d-89cd-627ae94f1efd,appName=Uniswap
+      - name: pageSize
+        required: false
+        in: query
+        description: Amount of results to return in the next page.
+        schema:
+          type: number
+          default: 10
+          maximum: 50
+          example: 20
+      - name: next
+        required: false
+        in: query
+        description: Cursor to the next page
+        schema:
+          type: string
+          example: MjAyNC0wNC0xMSAyMDozOToxOC40Nzc=:ODZhOGI2M2M3MjVkYTY1OWNmNDAyMzNiYjc0NTViMTJlMDhiNjZiZmM4MjU3NGNhN2I2OWYxZjQ2N2E2ZjI3OA==
+      responses:
+        '200':
+          description: ''
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConnectionsResponse'
+        '400':
+          description: Query parameters were invalid
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '500':
+          description: Something went wrong
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      tags:
+      - dApp Connections
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetConnectionsResponse>> = fireblocks.web3Connections.get(web3ConnectionsApiGetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetConnectionsResponse>> response = fireblocks.web3Connections().get(order, filter, sort, pageSize, next);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.web3_connections.get(order, filter, sort, page_size, next);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetConnectionsResponse>> = fireblocks.web3Connections.get(web3ConnectionsApiGetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetConnectionsResponse>> response = fireblocks.web3Connections().get(order, filter, sort, pageSize, next);
+      - lang: Python
+        source: response = fireblocks.web3_connections.get(order, filter, sort, page_size, next);
+  /connections/wc:
+    post:
+      operationId: create
+      summary: Create a new Web3 connection.
+      description: 'Initiate a new Web3 connection.
+
+
+        * Note: After this succeeds, make a request to `PUT /v1/connections/wc/{id}` (below) to approve or reject the new Web3 connection.
+
+        Learn more about Fireblocks Wallet Link in the following [guide](https://developers.fireblocks.com/docs/web3-wallet-link).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConnectionRequest'
+      responses:
+        '201':
+          description: dApp connection initiated successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateConnectionResponse'
+        '400':
+          description: Invalid data sent
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '500':
+          description: Something went wrong
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      tags:
+      - dApp Connections
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateConnectionResponse>> = fireblocks.web3Connections.create(web3ConnectionsApiCreateRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateConnectionResponse>> response = fireblocks.web3Connections().create(createConnectionRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.web3_connections.create(create_connection_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateConnectionResponse>> = fireblocks.web3Connections.create(web3ConnectionsApiCreateRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateConnectionResponse>> response = fireblocks.web3Connections().create(createConnectionRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.web3_connections.create(create_connection_request, idempotency_key);
+  /connections/wc/{id}:
+    put:
+      operationId: submit
+      summary: Respond to a pending connection
+      description: 'Submit a response to *approve* or *reject* an initiated Web3 connection.
+
+        * Note: This call is used to complete your `POST /v1/connections/wc/` request.
+
+        After this succeeds, your new Web3 connection is created and functioning.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      parameters:
+      - name: id
+        description: The ID of the initiated Web3 connection to approve.
+        required: true
+        in: path
+        schema:
+          type: string
+          example: 44075fd3-6fc5-4855-bd7b-510e35f9e671
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RespondToConnectionRequest'
+      responses:
+        '200':
+          description: Connection submitted successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '400':
+          description: Invalid data sent
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '404':
+          description: Connection not found
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '500':
+          description: Something went wrong
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      tags:
+      - dApp Connections
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.web3Connections.submit(web3ConnectionsApiSubmitRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.web3Connections().submit(respondToConnectionRequest, id, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.web3_connections.submit(respond_to_connection_request, id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.web3Connections.submit(web3ConnectionsApiSubmitRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.web3Connections().submit(respondToConnectionRequest, id, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.web3_connections.submit(respond_to_connection_request, id, idempotency_key);
+    delete:
+      operationId: remove
+      summary: Remove an existing Web3 connection
+      description: 'Remove an existing Web3 connection.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      parameters:
+      - name: id
+        description: The ID of the existing Web3 connection to remove.
+        required: true
+        in: path
+        schema:
+          type: string
+          example: 44075fd3-6fc5-4855-bd7b-510e35f9e671
+      responses:
+        '200':
+          description: Connection removed successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '404':
+          description: Connection not found
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '500':
+          description: Something went wrong
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+      tags:
+      - dApp Connections
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.web3Connections.remove(web3ConnectionsApiRemoveRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.web3Connections().remove(id);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.web3_connections.remove(id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.web3Connections.remove(web3ConnectionsApiRemoveRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.web3Connections().remove(id);
+      - lang: Python
+        source: response = fireblocks.web3_connections.remove(id);
+components:
+  schemas:
+    CreateVaultAccountConnectionRequest:
+      type: object
+      properties:
+        vaultAccountId:
+          type: number
+          description: The ID of the vault to connect to the dApp.
+          example: 1
+        feeLevel:
+          type: string
+          description: The default fee level. Valid values are `MEDIUM` and `HIGH`.
+          example: MEDIUM
+          enum:
+          - MEDIUM
+          - HIGH
+        uri:
+          type: string
+          description: The WalletConnect uri provided by the dapp.
+          example: '"wc:77752975-906f-48f5-b59f-047826ee947e@1?bridge=https%3A%2F%2F0.bridge.walletconnect.org&key=64be99adc6086b7a729b0ec8c7e1f174927ab92e84f5c6f9527050225344a637"'
+        chainIds:
+          description: The IDs of the blockchain networks used in the dApp connection.
+          example:
+          - ETH
+          type: array
+          items:
+            type: string
+      required:
+      - vaultAccountId
+      - feeLevel
+      - uri
+    SessionDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the connection
+          example: 4e9e7051-f3b2-48e9-8ee6-b12492552657
+        userId:
+          type: string
+          description: Id of the user that created the connection
+        sessionMetadata:
+          description: Metadata of the connection (provided by the dapp)
+          allOf:
+          - $ref: '#/components/schemas/SessionMetadata'
+        vaultAccountId:
+          type: number
+          description: The vault to connect
+          example: 1
+        feeLevel:
+          type: string
+          description: The default fee level
+          example: MEDIUM
+          enum:
+          - MEDIUM
+          - HIGH
+        chainIds:
+          description: The chains approved for the connection
+          example:
+          - ETH
+          - ETH_TEST
+          - SOL
+          type: array
+          items:
+            type: string
+        connectionType:
+          type: string
+          description: The connection's type
+          example: WalletConnect
+          enum:
+          - WalletConnect
+        connectionMethod:
+          type: string
+          description: The method through which the connection was established
+          example: API
+          enum:
+          - DESKTOP
+          - MOBILE
+          - API
+        creationDate:
+          format: date-time
+          type: string
+          description: Timestamp of the session's creation
+      required:
+      - id
+      - userId
+      - sessionMetadata
+      - vaultAccountId
+      - feeLevel
+      - chainIds
+      - connectionType
+      - connectionMethod
+      - creationDate
+    RespondToConnectionRequest:
+      type: object
+      properties:
+        approve:
+          type: boolean
+          description: Approval of the initiated dApp connection.
+          example: true
+      required:
+      - approve
+    SessionMetadata:
+      type: object
+      properties:
+        appUrl:
+          type: string
+          description: dApp URL
+          example: https://app.uniswap.org
+        appName:
+          type: string
+          description: dApp Name
+          example: Uniswap
+        appDescription:
+          type: string
+          description: dApp Description (provided by the dApp developers)
+          example: Uniswap Interface
+        appIcon:
+          type: string
+          description: dApp icon URL
+          example: https://static.fireblocks.io/wcs/dappIcon/f16fbab26bad5aa296073f682cf6ff32dfe262e333a1b32f6a481b100c8a144b
+      required:
+      - appUrl
+    GetConnectionsResponse:
+      type: object
+      properties:
+        data:
+          description: Array with the requested dApp connection's data
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionDTO'
+        paging:
+          $ref: '#/components/schemas/Paging'
+      required:
+      - data
+    CreateNcwConnectionRequest:
+      type: object
+      properties:
+        ncwId:
+          type: string
+          description: The ID of the Non-Custodial Wallet to connect to the dApp.
+          example: b8337f1d-bd61-4d6c-afc1-4c9d60aa2132
+        ncwAccountId:
+          type: number
+          description: The NCW account ID to connect to the dApp.
+          example: 1
+        feeLevel:
+          type: string
+          description: The default fee level. Valid values are `MEDIUM` and `HIGH`.
+          example: MEDIUM
+          enum:
+          - MEDIUM
+          - HIGH
+        uri:
+          type: string
+          description: The WalletConnect uri provided by the dapp.
+          example: '"wc:77752975-906f-48f5-b59f-047826ee947e@1?bridge=https%3A%2F%2F0.bridge.walletconnect.org&key=64be99adc6086b7a729b0ec8c7e1f174927ab92e84f5c6f9527050225344a637"'
+        chainIds:
+          description: The IDs of the blockchain networks used in the dApp connection.
+          example:
+          - ETH
+          type: array
+          items:
+            type: string
+      required:
+      - ncwId
+      - ncwAccountId
+      - feeLevel
+      - uri
+    CreateConnectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the Web3 connection initiated.
+          example: 4e9e7051-f3b2-48e9-8ee6-b12492552657
+        sessionMetadata:
+          description: Metadata of the Web3 connection (provided by the dApp).
+          allOf:
+          - $ref: '#/components/schemas/SessionMetadata'
+      required:
+      - id
+      - sessionMetadata
+    Paging:
+      type: object
+      properties:
+        next:
+          type: string
+          description: Cursor to the next page
+      required:
+      - next
+    CreateConnectionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateVaultAccountConnectionRequest'
+      - $ref: '#/components/schemas/CreateNcwConnectionRequest'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

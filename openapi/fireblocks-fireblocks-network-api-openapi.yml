@@ -1,0 +1,1010 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Fireblocks Network API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Fireblocks Network
+paths:
+  /network_connections:
+    get:
+      summary: List network connections
+      description: "Returns all network connections.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n    - **Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const networkConnections = await fireblocks.getNetworkConnections();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetNetworkConnectionsResponse>> = fireblocks.networkConnections.getNetworkConnections();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<NetworkConnectionResponse>>> response = fireblocks.networkConnections().getNetworkConnections();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.get_network_connections();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: A list of network connections
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNetworkConnectionsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getNetworkConnections
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetNetworkConnectionsResponse>> = fireblocks.networkConnections.getNetworkConnections();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<NetworkConnectionResponse>>> response = fireblocks.networkConnections().getNetworkConnections();
+      - lang: Python
+        source: response = fireblocks.network_connections.get_network_connections();
+    post:
+      summary: Creates a new network connection
+      description: "Initiates a new network connection.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\nLearn more about Fireblocks Network in the following [guide](https://developers.fireblocks.com/docs/connect-to-the-fireblocks-network).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkConnection'
+      responses:
+        '201':
+          description: A Network Connection object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkConnectionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: createNetworkConnection
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<NetworkConnectionResponse>> = fireblocks.networkConnections.createNetworkConnection(networkConnectionsApiCreateNetworkConnectionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<NetworkConnectionResponse>> response = fireblocks.networkConnections().createNetworkConnection(networkConnection, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.create_network_connection(network_connection, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<NetworkConnectionResponse>> = fireblocks.networkConnections.createNetworkConnection(networkConnectionsApiCreateNetworkConnectionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<NetworkConnectionResponse>> response = fireblocks.networkConnections().createNetworkConnection(networkConnection, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.network_connections.create_network_connection(network_connection, idempotency_key);
+  /network_connections/{connectionId}/set_routing_policy:
+    patch:
+      summary: Update network connection routing policy.
+      description: "Updates an existing network connection's routing policy.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: connectionId
+        required: true
+        description: The ID of the network connection
+        schema:
+          type: string
+          example: 9100f41b-f31a-4fd1-b9bf-bb4d2cd88e1f
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetRoutingPolicyRequest'
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetRoutingPolicyResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setRoutingPolicy
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SetRoutingPolicyResponse>> = fireblocks.networkConnections.setRoutingPolicy(networkConnectionsApiSetRoutingPolicyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SetRoutingPolicyResponse>> response = fireblocks.networkConnections().setRoutingPolicy(connectionId, setRoutingPolicyRequest);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.set_routing_policy(connection_id, set_routing_policy_request);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SetRoutingPolicyResponse>> = fireblocks.networkConnections.setRoutingPolicy(networkConnectionsApiSetRoutingPolicyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SetRoutingPolicyResponse>> response = fireblocks.networkConnections().setRoutingPolicy(connectionId, setRoutingPolicyRequest);
+      - lang: Python
+        source: response = fireblocks.network_connections.set_routing_policy(connection_id, set_routing_policy_request);
+  /network_connections/{connectionId}/is_third_party_routing/{assetType}:
+    get:
+      summary: Retrieve third-party network routing validation
+      description: 'The Fireblocks Network allows for flexibility around incoming deposits. A receiver can receive network deposits to locations other than Fireblocks. This endpoint validates whether future transactions are routed to the displayed recipient or to a 3rd party.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: connectionId
+        required: true
+        description: The ID of the network connection
+        schema:
+          type: string
+          example: 9100f41b-f31a-4fd1-b9bf-bb4d2cd88e1f
+      - in: path
+        name: assetType
+        required: true
+        description: The destination asset type
+        schema:
+          type: string
+          example: ETH
+      responses:
+        '200':
+          description: result for the validation
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThirdPartyRouting'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: checkThirdPartyRouting
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ThirdPartyRouting>> = fireblocks.networkConnections.checkThirdPartyRouting(networkConnectionsApiCheckThirdPartyRoutingRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ThirdPartyRouting>> response = fireblocks.networkConnections().checkThirdPartyRouting(connectionId, assetType);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.check_third_party_routing(connection_id, asset_type);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ThirdPartyRouting>> = fireblocks.networkConnections.checkThirdPartyRouting(networkConnectionsApiCheckThirdPartyRoutingRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ThirdPartyRouting>> response = fireblocks.networkConnections().checkThirdPartyRouting(connectionId, assetType);
+      - lang: Python
+        source: response = fireblocks.network_connections.check_third_party_routing(connection_id, asset_type);
+  /network_connections/{connectionId}:
+    get:
+      summary: Get a network connection
+      description: "Gets a network connection by ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const network_connection = await fireblocks.getNetworkConnection(connectionId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<NetworkConnectionResponse>> = fireblocks.networkConnections.getNetwork(networkConnectionsApiGetNetworkRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<NetworkConnectionResponse>> response = fireblocks.networkConnections().getNetwork(connectionId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.get_network(connection_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: connectionId
+        required: true
+        description: The ID of the connection
+        schema:
+          type: string
+          example: 9100f41b-f31a-4fd1-b9bf-bb4d2cd88e1f
+      responses:
+        '200':
+          description: A network connection
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkConnectionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getNetwork
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<NetworkConnectionResponse>> = fireblocks.networkConnections.getNetwork(networkConnectionsApiGetNetworkRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<NetworkConnectionResponse>> response = fireblocks.networkConnections().getNetwork(connectionId);
+      - lang: Python
+        source: response = fireblocks.network_connections.get_network(connection_id);
+    delete:
+      summary: Deletes a network connection by ID
+      description: "Deletes an existing network connection specified by its connection ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: connectionId
+        required: true
+        description: The ID of the network connection to delete
+        schema:
+          type: string
+          example: 9100f41b-f31a-4fd1-b9bf-bb4d2cd88e1f
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteNetworkConnectionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: deleteNetworkConnection
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DeleteNetworkConnectionResponse>> = fireblocks.networkConnections.deleteNetworkConnection(networkConnectionsApiDeleteNetworkConnectionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DeleteNetworkConnectionResponse>> response = fireblocks.networkConnections().deleteNetworkConnection(connectionId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.delete_network_connection(connection_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DeleteNetworkConnectionResponse>> = fireblocks.networkConnections.deleteNetworkConnection(networkConnectionsApiDeleteNetworkConnectionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DeleteNetworkConnectionResponse>> response = fireblocks.networkConnections().deleteNetworkConnection(connectionId);
+      - lang: Python
+        source: response = fireblocks.network_connections.delete_network_connection(connection_id);
+  /network_ids:
+    get:
+      summary: Get all network IDs
+      description: "Retrieves a list of all local and discoverable remote network IDs.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      responses:
+        '200':
+          description: A list of network IDs
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNetworkIdsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getNetworkIds
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetNetworkIdsResponse>> = fireblocks.networkConnections.getNetworkIds();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<Object>>> response = fireblocks.networkConnections().getNetworkIds();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.get_network_ids();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetNetworkIdsResponse>> = fireblocks.networkConnections.getNetworkIds();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<Object>>> response = fireblocks.networkConnections().getNetworkIds();
+      - lang: Python
+        source: response = fireblocks.network_connections.get_network_ids();
+    post:
+      summary: Creates a new Network ID
+      description: "Creates a new Network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNetworkIdRequest'
+      responses:
+        '201':
+          description: Returns the new network ID in your workspace
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: createNetworkId
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<NetworkIdResponse>> = fireblocks.networkConnections.createNetworkId(networkConnectionsApiCreateNetworkIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<NetworkIdResponse>> response = fireblocks.networkConnections().createNetworkId(createNetworkIdRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.create_network_id(create_network_id_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<NetworkIdResponse>> = fireblocks.networkConnections.createNetworkId(networkConnectionsApiCreateNetworkIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<NetworkIdResponse>> response = fireblocks.networkConnections().createNetworkId(createNetworkIdRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.network_connections.create_network_id(create_network_id_request, idempotency_key);
+  /network_ids/routing_policy_asset_groups:
+    get:
+      summary: Returns all enabled routing policy asset groups
+      description: 'Retrieves a list of all enabled routing policy asset groups.
+
+        Your routing policy defines how your transactions are routed.
+
+        You can use one or more enabled routing policy asset groups to describe connection or network id routing policy.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Fireblocks Network
+      responses:
+        '200':
+          description: A list of enabled routing policy asset groups
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRoutingPolicyAssetGroupsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getRoutingPolicyAssetGroups
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetRoutingPolicyAssetGroupsResponse>> = fireblocks.networkConnections.getRoutingPolicyAssetGroups();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<String>>> response = fireblocks.networkConnections().getRoutingPolicyAssetGroups();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.get_routing_policy_asset_groups();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetRoutingPolicyAssetGroupsResponse>> = fireblocks.networkConnections.getRoutingPolicyAssetGroups();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<String>>> response = fireblocks.networkConnections().getRoutingPolicyAssetGroups();
+      - lang: Python
+        source: response = fireblocks.network_connections.get_routing_policy_asset_groups();
+  /network_ids/search:
+    get:
+      summary: Get both local IDs and discoverable remote IDs
+      description: "Retrieves a list of all local and discoverable remote network IDs. Can be filtered.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n    - **Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n"
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: Search string - displayName networkId. Optional
+        schema:
+          minLength: 1
+          type: string
+      - name: excludeSelf
+        required: false
+        in: query
+        description: Exclude your networkIds. Optional, default false
+        schema:
+          type: boolean
+      - name: excludeConnected
+        required: false
+        in: query
+        description: Exclude connected networkIds. Optional, default false
+        schema:
+          type: boolean
+      - name: pageCursor
+        required: false
+        in: query
+        description: ID of the record after which to fetch $limit records
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Number of records to fetch. By default, it is 50
+        schema:
+          minimum: 1
+          maximum: 50
+          default: 50
+          type: number
+      tags:
+      - Fireblocks Network
+      responses:
+        '200':
+          description: A list of network IDs
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchNetworkIdsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: searchNetworkIds
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SearchNetworkIdsResponse>> = fireblocks.networkConnections.searchNetworkIds(networkConnectionsApiSearchNetworkIdsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SearchNetworkIdsResponse>> response = fireblocks.networkConnections().searchNetworkIds(search, excludeSelf, excludeConnected, pageCursor, pageSize);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.search_network_ids(search, exclude_self, exclude_connected, page_cursor, page_size);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SearchNetworkIdsResponse>> = fireblocks.networkConnections.searchNetworkIds(networkConnectionsApiSearchNetworkIdsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SearchNetworkIdsResponse>> response = fireblocks.networkConnections().searchNetworkIds(search, excludeSelf, excludeConnected, pageCursor, pageSize);
+      - lang: Python
+        source: response = fireblocks.network_connections.search_network_ids(search, exclude_self, exclude_connected, page_cursor, page_size);
+  /network_ids/{networkId}:
+    get:
+      summary: Returns specific network ID.
+      description: "Retrieves a network by its ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: networkId
+        required: true
+        description: The ID of the network
+        schema:
+          type: string
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getNetworkId
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<NetworkIdResponse>> = fireblocks.networkConnections.getNetworkId(networkConnectionsApiGetNetworkIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<NetworkIdResponse>> response = fireblocks.networkConnections().getNetworkId(networkId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.get_network_id(network_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<NetworkIdResponse>> = fireblocks.networkConnections.getNetworkId(networkConnectionsApiGetNetworkIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<NetworkIdResponse>> response = fireblocks.networkConnections().getNetworkId(networkId);
+      - lang: Python
+        source: response = fireblocks.network_connections.get_network_id(network_id);
+    delete:
+      summary: Deletes specific network ID.
+      description: "Deletes a network by its ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: networkId
+        required: true
+        description: The ID of the network
+        schema:
+          type: string
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+      responses:
+        '200':
+          description: Network ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteNetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: deleteNetworkId
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DeleteNetworkIdResponse>> = fireblocks.networkConnections.deleteNetworkId(networkConnectionsApiDeleteNetworkIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DeleteNetworkIdResponse>> response = fireblocks.networkConnections().deleteNetworkId(networkId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.delete_network_id(network_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DeleteNetworkIdResponse>> = fireblocks.networkConnections.deleteNetworkId(networkConnectionsApiDeleteNetworkIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DeleteNetworkIdResponse>> response = fireblocks.networkConnections().deleteNetworkId(networkId);
+      - lang: Python
+        source: response = fireblocks.network_connections.delete_network_id(network_id);
+  /network_ids/{networkId}/set_routing_policy:
+    patch:
+      summary: Update network id routing policy.
+      description: "Updates the routing policy of a specified network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: networkId
+        required: true
+        description: The ID of the network
+        schema:
+          type: string
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetNetworkIdRoutingPolicyRequest'
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetNetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setNetworkIdRoutingPolicy
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdRoutingPolicy(networkConnectionsApiSetNetworkIdRoutingPolicyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdRoutingPolicy(networkId, setNetworkIdRoutingPolicyRequest);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.set_network_id_routing_policy(network_id, set_network_id_routing_policy_request);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdRoutingPolicy(networkConnectionsApiSetNetworkIdRoutingPolicyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdRoutingPolicy(networkId, setNetworkIdRoutingPolicyRequest);
+      - lang: Python
+        source: response = fireblocks.network_connections.set_network_id_routing_policy(network_id, set_network_id_routing_policy_request);
+  /network_ids/{networkId}/set_discoverability:
+    patch:
+      summary: Update network ID's discoverability.
+      description: "Update whether or not the network ID is discoverable by others.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: networkId
+        required: true
+        description: The ID of the network
+        schema:
+          type: string
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetNetworkIdDiscoverabilityRequest'
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetNetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setNetworkIdDiscoverability
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdDiscoverability(networkConnectionsApiSetNetworkIdDiscoverabilityRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdDiscoverability(setNetworkIdDiscoverabilityRequest, networkId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.set_network_id_discoverability(set_network_id_discoverability_request, network_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdDiscoverability(networkConnectionsApiSetNetworkIdDiscoverabilityRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdDiscoverability(setNetworkIdDiscoverabilityRequest, networkId);
+      - lang: Python
+        source: response = fireblocks.network_connections.set_network_id_discoverability(set_network_id_discoverability_request, network_id);
+  /network_ids/{networkId}/set_name:
+    patch:
+      summary: Update network ID's name.
+      description: "Updates name of a specified network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: networkId
+        required: true
+        description: The ID of the network
+        schema:
+          type: string
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetNetworkIdNameRequest'
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetNetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setNetworkIdName
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdName(networkConnectionsApiSetNetworkIdNameRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdName(setNetworkIdNameRequest, networkId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.set_network_id_name(set_network_id_name_request, network_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdName(networkConnectionsApiSetNetworkIdNameRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdName(setNetworkIdNameRequest, networkId);
+      - lang: Python
+        source: response = fireblocks.network_connections.set_network_id_name(set_network_id_name_request, network_id);
+components:
+  schemas:
+    NetworkConnectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        localChannel:
+          allOf:
+          - $ref: '#/components/schemas/NetworkChannel'
+          deprecated: true
+          description: Deprecated - Replaced by `localNetworkId`
+        remoteChannel:
+          allOf:
+          - $ref: '#/components/schemas/NetworkChannel'
+          deprecated: true
+          description: Deprecated - Replaced by `remoteNetworkId`
+        status:
+          $ref: '#/components/schemas/NetworkConnectionStatus'
+        localNetworkId:
+          $ref: '#/components/schemas/NetworkId'
+        remoteNetworkId:
+          $ref: '#/components/schemas/NetworkId'
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
+      required:
+      - id
+      - localNetworkId
+      - remoteNetworkId
+      - routingPolicy
+      - status
+    CreateNetworkIdRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Network ID Name
+          example: My Network ID name
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkIdRoutingPolicy'
+      required:
+      - name
+    DeleteNetworkIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    SetNetworkIdRoutingPolicyRequest:
+      type: object
+      properties:
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkIdRoutingPolicy'
+      required:
+      - routingPolicy
+    DefaultNetworkRoutingDest:
+      type: object
+      properties:
+        scheme:
+          type: string
+          description: The network routing logic.
+          enum:
+          - DEFAULT
+      required:
+      - scheme
+    ThirdPartyRouting:
+      type: object
+      properties:
+        isThirdPartyRouting:
+          type: boolean
+        description:
+          type: string
+    NetworkIdRoutingPolicy:
+      type: object
+      additionalProperties:
+        oneOf:
+        - $ref: '#/components/schemas/CustomRoutingDest'
+        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
+    GetNetworkConnectionsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/NetworkConnectionResponse'
+    SetNetworkIdDiscoverabilityRequest:
+      type: object
+      properties:
+        isDiscoverable:
+          type: boolean
+      required:
+      - isDiscoverable
+    NetworkChannel:
+      deprecated: true
+      description: Deprecated in the only used reference - NetworkConnectionResponse
+      type: object
+      properties:
+        networkId:
+          type: string
+        name:
+          type: string
+    NetworkConnectionStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - WAITING_FOR_PEER_APPROVAL
+      - APPROVED
+      - CANCELLED
+      - FAILED
+      - REJECTED
+      - REJECTED_BY_PEER
+      - REMOVED
+      - REMOVED_BY_PEER
+    SetNetworkIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    SetNetworkIdNameRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Network ID name
+          example: My Network ID name
+      required:
+      - name
+    SetRoutingPolicyRequest:
+      type: object
+      properties:
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
+      required:
+      - routingPolicy
+    DeleteNetworkConnectionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    NetworkConnection:
+      type: object
+      properties:
+        localNetworkId:
+          type: string
+          description: The network ID of the profile trying to create the connection.
+          example: 494ae5f7-7807-4bc5-863b-2963aa94398f
+        remoteNetworkId:
+          type: string
+          description: The network ID the profile is attempting to connect to.
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
+      required:
+      - localNetworkId
+      - remoteNetworkId
+    GetRoutingPolicyAssetGroupsResponse:
+      type: array
+      items:
+        type: string
+    NetworkConnectionRoutingPolicy:
+      type: object
+      additionalProperties:
+        oneOf:
+        - $ref: '#/components/schemas/CustomRoutingDest'
+        - $ref: '#/components/schemas/DefaultNetworkRoutingDest'
+        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
+    NetworkIdResponse:
+      allOf:
+      - $ref: '#/components/schemas/NetworkId'
+      - type: object
+        properties:
+          routingPolicy:
+            $ref: '#/components/schemas/NetworkIdRoutingPolicy'
+          isDiscoverable:
+            type: boolean
+            description: The specific network is discoverable.
+    SearchNetworkIdsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkIdResponse'
+        next:
+          type: string
+    CustomRoutingDest:
+      type: object
+      properties:
+        scheme:
+          description: The network routing logic.
+          type: string
+          enum:
+          - CUSTOM
+        dstType:
+          type: string
+          description: The account the funds are being sent to.
+          enum:
+          - FIAT_ACCOUNT
+          - VAULT
+          - EXCHANGE
+        dstId:
+          type: string
+          description: The ID of the account the funds are being sent to.
+          example: 29a425f4-f621-4c01-a888-27adec7d1dfa
+      required:
+      - scheme
+      - dstType
+      - dstId
+    NetworkId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Network Connection ID
+          example: 494ae5f7-7807-4bc5-863b-2963aa94398f
+        name:
+          type: string
+          description: Network Connection Name
+          example: My Network Connection Name
+      required:
+      - id
+      - name
+    GetNetworkIdsResponse:
+      type: array
+      items:
+        allOf:
+        - $ref: '#/components/schemas/NetworkIdResponse'
+    SetRoutingPolicyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    NoneNetworkRoutingDest:
+      type: object
+      properties:
+        scheme:
+          type: string
+          description: No network routing logic.
+          enum:
+          - NONE
+      required:
+      - scheme
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

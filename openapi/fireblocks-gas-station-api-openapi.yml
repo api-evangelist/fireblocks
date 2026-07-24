@@ -1,8 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Fireblocks Gas Station API
-  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
-    platform to build your business on the blockchain.
+  title: Fireblocks Blockchains and Assets Approval Requests Gas Station API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
     - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
@@ -19,6 +18,8 @@ servers:
 - url: https://sandbox-api.fireblocks.io/v1
   description: Fireblocks Sandbox Environment Base URL
 security: []
+tags:
+- name: Gas Station
 paths:
   /gas_station:
     get:
@@ -132,8 +133,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<EditGasStationConfigurationResponse>> = fireblocks.gasStations.updateGasStationConfiguration(gasStationsApiUpdateGasStationConfigurationRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfiguration(gasStationConfiguration,
-            idempotencyKey);
+          code: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfiguration(gasStationConfiguration, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.gas_stations.update_gas_station_configuration(gas_station_configuration, idempotency_key);
@@ -163,8 +163,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<EditGasStationConfigurationResponse>> = fireblocks.gasStations.updateGasStationConfiguration(gasStationsApiUpdateGasStationConfigurationRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfiguration(gasStationConfiguration,
-          idempotencyKey);
+        source: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfiguration(gasStationConfiguration, idempotencyKey);
       - lang: Python
         source: response = fireblocks.gas_stations.update_gas_station_configuration(gas_station_configuration, idempotency_key);
   /gas_station/configuration/{assetId}:
@@ -212,24 +211,27 @@ paths:
           code: 'const response: Promise<FireblocksResponse<EditGasStationConfigurationResponse>> = fireblocks.gasStations.updateGasStationConfigurationByAssetId(gasStationsApiUpdateGasStationConfigurationByAssetIdRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfigurationByAssetId(gasStationConfiguration,
-            assetId, idempotencyKey);
+          code: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfigurationByAssetId(gasStationConfiguration, assetId, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.gas_stations.update_gas_station_configuration_by_asset_id(gas_station_configuration,
-            asset_id, idempotency_key);
+          code: response = fireblocks.gas_stations.update_gas_station_configuration_by_asset_id(gas_station_configuration, asset_id, idempotency_key);
           name: Fireblocks SDK Python example
       x-codeSamples:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<EditGasStationConfigurationResponse>> = fireblocks.gasStations.updateGasStationConfigurationByAssetId(gasStationsApiUpdateGasStationConfigurationByAssetIdRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfigurationByAssetId(gasStationConfiguration,
-          assetId, idempotencyKey);
+        source: CompletableFuture<ApiResponse<EditGasStationConfigurationResponse>> response = fireblocks.gasStations().updateGasStationConfigurationByAssetId(gasStationConfiguration, assetId, idempotencyKey);
       - lang: Python
-        source: response = fireblocks.gas_stations.update_gas_station_configuration_by_asset_id(gas_station_configuration,
-          asset_id, idempotency_key);
+        source: response = fireblocks.gas_stations.update_gas_station_configuration_by_asset_id(gas_station_configuration, asset_id, idempotency_key);
 components:
   schemas:
+    GasStationPropertiesResponse:
+      type: object
+      properties:
+        balance:
+          type: object
+        configuration:
+          $ref: '#/components/schemas/GasStationConfigurationResponse'
     EditGasStationConfigurationResponse:
       type: object
       properties:
@@ -242,8 +244,7 @@ components:
       type: object
       properties:
         gasThreshold:
-          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the
-            gasThreshold value
+          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the gasThreshold value
           type: string
           default: '0.005'
           example: '0.005'
@@ -262,8 +263,7 @@ components:
       type: object
       properties:
         gasThreshold:
-          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the
-            gasThreshold value
+          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the gasThreshold value
           type: string
           default: '0.005'
           example: '0.005'
@@ -278,41 +278,6 @@ components:
           example: '20'
           default: null
           type: string
-    GasStationPropertiesResponse:
-      type: object
-      properties:
-        balance:
-          type: object
-        configuration:
-          $ref: '#/components/schemas/GasStationConfigurationResponse'
-  securitySchemes:
-    bearerTokenAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: X-API-Key
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
-        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
-    X-End-User-Wallet-Id:
-      name: X-End-User-Wallet-Id
-      in: header
-      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
-      required: false
-      schema:
-        type: string
-        format: uuid
-        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
   responses:
     Error:
       description: Error Response
@@ -323,3 +288,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

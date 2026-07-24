@@ -1,0 +1,810 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Key Link API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Key Link
+paths:
+  /key_link/signing_keys:
+    post:
+      operationId: createSigningKey
+      summary: Add a new signing key
+      description: 'Adds a new signing key to the workspace. The added key will be linked to the specific Fireblocks agent user ID. The same user will receive the proof of ownership message to be signed, and upon successful proof, the key will become enabled.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSigningKeyDto'
+      responses:
+        '201':
+          description: Newly created signing key
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SigningKeyDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.createSigningKey(keyLinkBetaApiCreateSigningKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().createSigningKey(createSigningKeyDto, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.create_signing_key(create_signing_key_dto, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.createSigningKey(keyLinkBetaApiCreateSigningKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().createSigningKey(createSigningKeyDto, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.create_signing_key(create_signing_key_dto, idempotency_key);
+    get:
+      operationId: getSigningKeysList
+      summary: Get list of signing keys
+      description: 'Returns the list of signing keys in the workspace
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: pageCursor
+        required: false
+        in: query
+        description: Cursor to the next page
+        example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Amount of results to return in the next page
+        schema:
+          minimum: 1
+          maximum: 50
+          default: 10
+          type: number
+      - name: sortBy
+        required: false
+        in: query
+        description: Field(s) to use for sorting
+        schema:
+          default: createdAt
+          enum:
+          - createdAt
+          type: string
+      - name: order
+        required: false
+        in: query
+        description: Is the order ascending or descending
+        schema:
+          default: ASC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: vaultAccountId
+        required: false
+        in: query
+        description: Return keys assigned to a specific vault
+        example: 4
+        schema:
+          type: number
+      - name: agentUserId
+        required: false
+        in: query
+        description: Return keys associated with a specific agent user
+        example: 12fed207-5bdf-4a0c-ab12-fcd2627f75d1
+        schema:
+          type: string
+      - name: algorithm
+        required: false
+        in: query
+        description: Return only keys with a specific algorithm
+        example: ECDSA_SECP256K1
+        schema:
+          enum:
+          - ECDSA_SECP256K1
+          - EDDSA_ED25519
+          type: string
+      - name: enabled
+        required: false
+        in: query
+        description: Return keys that have been proof of ownership
+        schema:
+          type: boolean
+      - name: available
+        required: false
+        in: query
+        description: Return keys that are proof of ownership but not assigned. Available filter can be used only when vaultAccountId and enabled filters are not set
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: List of signing keys and a data that allows requesting the next page if applicable
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSigningKeyResponseDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetSigningKeyResponseDto>> = fireblocks.keyLinkBeta.getSigningKeysList(keyLinkBetaApiGetSigningKeysListRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetSigningKeyResponseDto>> response = fireblocks.keyLinkBeta().getSigningKeysList(pageCursor, pageSize, sortBy, order, vaultAccountId, agentUserId, algorithm, enabled, available);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.get_signing_keys_list(page_cursor, page_size, sort_by, order, vault_account_id, agent_user_id, algorithm, enabled, available);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetSigningKeyResponseDto>> = fireblocks.keyLinkBeta.getSigningKeysList(keyLinkBetaApiGetSigningKeysListRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetSigningKeyResponseDto>> response = fireblocks.keyLinkBeta().getSigningKeysList(pageCursor, pageSize, sortBy, order, vaultAccountId, agentUserId, algorithm, enabled, available);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.get_signing_keys_list(page_cursor, page_size, sort_by, order, vault_account_id, agent_user_id, algorithm, enabled, available);
+  /key_link/signing_keys/{keyId}:
+    get:
+      operationId: getSigningKey
+      summary: Get a signing key by `keyId`
+      description: 'Returns a signing key if it exists, identified by the specified Fireblocks provided `keyId`.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: keyId
+        required: true
+        in: path
+        description: The unique identifier for the signing key provided by Fireblocks
+        schema:
+          type: string
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+      responses:
+        '200':
+          description: Requested signing key data
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SigningKeyDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.getSigningKey(keyLinkBetaApiGetSigningKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().getSigningKey(keyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.get_signing_key(key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.getSigningKey(keyLinkBetaApiGetSigningKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().getSigningKey(keyId);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.get_signing_key(key_id);
+    patch:
+      operationId: updateSigningKey
+      summary: Modify the signing keyId
+      description: 'Allows assigning the signing key to a vault account, if it hasn''t been assigned to any other vault accounts yet.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: keyId
+        required: true
+        in: path
+        description: The unique identifier for the signing key provided by Fireblocks
+        schema:
+          type: string
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModifySigningKeyDto'
+      responses:
+        '200':
+          description: Modified signing key data
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SigningKeyDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.updateSigningKey(keyLinkBetaApiUpdateSigningKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().updateSigningKey(modifySigningKeyDto, keyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.update_signing_key(modify_signing_key_dto, key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SigningKeyDto>> = fireblocks.keyLinkBeta.updateSigningKey(keyLinkBetaApiUpdateSigningKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SigningKeyDto>> response = fireblocks.keyLinkBeta().updateSigningKey(modifySigningKeyDto, keyId);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.update_signing_key(modify_signing_key_dto, key_id);
+  /key_link/signing_keys/{keyId}/agent_user_id:
+    patch:
+      operationId: setAgentId
+      summary: Set agent user id
+      description: 'Can modify existing signing key id if the key is not enabled. The change done in background and will be visible once applied. If key is already enabled (after proof of ownership) the user cannot be changed.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: keyId
+        required: true
+        in: path
+        description: The unique identifier for the signing key provided by Fireblocks
+        schema:
+          type: string
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModifySigningKeyAgentIdDto'
+      responses:
+        '204':
+          description: Agent user id modification process has started in background.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.keyLinkBeta.setAgentId(keyLinkBetaApiSetAgentIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.keyLinkBeta().setAgentId(modifySigningKeyAgentIdDto, keyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.set_agent_id(modify_signing_key_agent_id_dto, key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.keyLinkBeta.setAgentId(keyLinkBetaApiSetAgentIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.keyLinkBeta().setAgentId(modifySigningKeyAgentIdDto, keyId);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.set_agent_id(modify_signing_key_agent_id_dto, key_id);
+  /key_link/validation_keys:
+    post:
+      operationId: createValidationKey
+      summary: Add a new validation key
+      description: 'Adds a new validation key used to validate signing keys. The new validation key will undergo an approval process by the workspace quorum.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateValidationKeyDto'
+      responses:
+        '201':
+          description: The validation key that was added and is pending approval.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateValidationKeyResponseDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateValidationKeyResponseDto>> = fireblocks.keyLinkBeta.createValidationKey(keyLinkBetaApiCreateValidationKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateValidationKeyResponseDto>> response = fireblocks.keyLinkBeta().createValidationKey(createValidationKeyDto, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.create_validation_key(create_validation_key_dto, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateValidationKeyResponseDto>> = fireblocks.keyLinkBeta.createValidationKey(keyLinkBetaApiCreateValidationKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateValidationKeyResponseDto>> response = fireblocks.keyLinkBeta().createValidationKey(createValidationKeyDto, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.create_validation_key(create_validation_key_dto, idempotency_key);
+    get:
+      operationId: getValidationKeysList
+      summary: Get list of registered validation keys
+      description: 'Returns the list of validation keys in the workspace
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: pageCursor
+        required: false
+        in: query
+        description: Cursor to the next page
+        example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Amount of results to return in the next page
+        schema:
+          minimum: 1
+          maximum: 50
+          default: 10
+          type: number
+      - name: sortBy
+        required: false
+        in: query
+        description: Field(s) to use for sorting
+        schema:
+          default: createdAt
+          enum:
+          - createdAt
+          type: string
+      - name: order
+        required: false
+        in: query
+        description: Is the order ascending or descending
+        schema:
+          default: ASC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      responses:
+        '200':
+          description: Validation keys list along with data required to request the next page if applicable
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValidationKeyResponseDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetValidationKeyResponseDto>> = fireblocks.keyLinkBeta.getValidationKeysList(keyLinkBetaApiGetValidationKeysListRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetValidationKeyResponseDto>> response = fireblocks.keyLinkBeta().getValidationKeysList(pageCursor, pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.get_validation_keys_list(page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetValidationKeyResponseDto>> = fireblocks.keyLinkBeta.getValidationKeysList(keyLinkBetaApiGetValidationKeysListRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetValidationKeyResponseDto>> response = fireblocks.keyLinkBeta().getValidationKeysList(pageCursor, pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.get_validation_keys_list(page_cursor, page_size, sort_by, order);
+  /key_link/validation_keys/{keyId}:
+    get:
+      operationId: getValidationKey
+      summary: Get a validation key by `keyId`
+      description: 'Returns a validation key if it exists, identified by the specified `keyId`.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: keyId
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The requested validation key data
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationKeyDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ValidationKeyDto>> = fireblocks.keyLinkBeta.getValidationKey(keyLinkBetaApiGetValidationKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ValidationKeyDto>> response = fireblocks.keyLinkBeta().getValidationKey(keyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.get_validation_key(key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ValidationKeyDto>> = fireblocks.keyLinkBeta.getValidationKey(keyLinkBetaApiGetValidationKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ValidationKeyDto>> response = fireblocks.keyLinkBeta().getValidationKey(keyId);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.get_validation_key(key_id);
+    patch:
+      operationId: disableValidationKey
+      summary: Disables a validation key
+      description: 'Allows disabling validation key even if it has not expired yet. It is not allowed to enable the validation key back. Another key has to be used for future validations.
+
+        Please note that this endpoint is available only for Key Link enabled workspaces.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: keyId
+        required: true
+        in: path
+        description: The unique identifier for the validation key provided by Fireblocks
+        schema:
+          type: string
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModifyValidationKeyDto'
+      responses:
+        '200':
+          description: Modified validation key data
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationKeyDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Key Link
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ValidationKeyDto>> = fireblocks.keyLinkBeta.disableValidationKey(keyLinkBetaApiDisableValidationKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ValidationKeyDto>> response = fireblocks.keyLinkBeta().disableValidationKey(modifyValidationKeyDto, keyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.key_link_beta.disable_validation_key(modify_validation_key_dto, key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ValidationKeyDto>> = fireblocks.keyLinkBeta.disableValidationKey(keyLinkBetaApiDisableValidationKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ValidationKeyDto>> response = fireblocks.keyLinkBeta().disableValidationKey(modifyValidationKeyDto, keyId);
+      - lang: Python
+        source: response = fireblocks.key_link_beta.disable_validation_key(modify_validation_key_dto, key_id);
+components:
+  schemas:
+    GetSigningKeyResponseDto:
+      type: object
+      properties:
+        data:
+          description: Response object for getting external signing keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/SigningKeyDto'
+        next:
+          type: string
+          description: The ID of the next page
+      required:
+      - data
+    GetValidationKeyResponseDto:
+      type: object
+      properties:
+        data:
+          description: Response object for getting external validation keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationKeyDto'
+        next:
+          type: string
+          description: The ID of the next page
+      required:
+      - data
+    ModifyValidationKeyDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          example: false
+          description: Disable validation key
+      required:
+      - enabled
+    CreateValidationKeyResponseDto:
+      type: object
+      properties:
+        validationKey:
+          description: Created validation key
+          allOf:
+          - $ref: '#/components/schemas/ValidationKeyDto'
+        admins:
+          description: Admins who have to approve the validation key addition
+          type: array
+          items:
+            type: string
+        approvalThreshold:
+          type: number
+          minimum: 0
+          example: 0
+          description: Minimal number of approvers required. 0 for all
+        requestId:
+          type: number
+          example: 1234
+          description: Approval request id. Can be cancelled
+      required:
+      - validationKey
+      - admins
+      - approvalThreshold
+      - requestId
+    CreateSigningKeyDto:
+      type: object
+      properties:
+        signingDeviceKeyId:
+          type: string
+          example: MyKey1
+          maxLength: 256
+          description: The ID, name or label of the key specified on the customer's signing device.
+        signedCertPem:
+          type: string
+          example: '-----BEGIN CERTIFICATE ... END CERTIFICATE-----'
+          description: The signed certificate that includes the public key PEM of the signing key, signed by a validation key.
+        agentUserId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: d18847b5-1df6-4c46-8f99-5cce47284529
+          description: Id of user to which this key belongs
+        proofOfOwnership:
+          type: object
+          description: An object containing proof of ownership for the signing key.
+          properties:
+            message:
+              description: The message to be signed by the key as proof of ownership. 64 to 1024 bytes in hexadecimal format.
+              type: string
+              minLength: 64
+              maxLength: 2048
+            signature:
+              description: The signature of the message. 64 bytes in hexadecimal format.
+              type: string
+              minLength: 64
+              maxLength: 128
+          required:
+          - message
+          - signature
+      required:
+      - signingDeviceKeyId
+      - signedCertPem
+      - agentUserId
+    SigningKeyDto:
+      type: object
+      properties:
+        keyId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+          description: External signing key id set by Fireblocks.
+        signingDeviceKeyId:
+          type: string
+          maxLength: 256
+          example: MyKey1
+          description: The ID, name or label of the key specified on the customer's signing device.
+        publicKeyPem:
+          type: string
+          example: '-----BEGIN PUBLIC KEY ... END PUBLIC KEY-----'
+          description: PEM encoded public key
+        algorithm:
+          type: string
+          example: ECDSA_SECP256K1
+          description: 'Algorithm and curve used for the signature. Can be: ECDSA_SECP256K1 or EDDSA_ED25519'
+        enabled:
+          type: boolean
+          example: true
+          description: True if the signing key is enabled
+        vaultAccountId:
+          type: number
+          nullable: true
+          example: 10
+          description: Id of the vault account which this key is linked to
+        agentUserId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: d18847b5-1df6-4c46-8f99-5cce47284529
+          description: Id of user that represent agent servers that can sign with the key
+        createdAt:
+          type: number
+          example: 124757537
+          description: Creation date (timestamp) in milliseconds.
+      required:
+      - keyId
+      - signingDeviceKeyId
+      - publicKeyPem
+      - algorithm
+      - enabled
+      - vaultAccountId
+      - agentUserId
+      - createdAt
+    ModifySigningKeyAgentIdDto:
+      type: object
+      properties:
+        agentUserId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: d18847b5-1df6-4c46-8f99-5cce47284529
+          description: Id of user that represent agent servers which signs with the key
+      required:
+      - agentUserId
+    CreateValidationKeyDto:
+      type: object
+      properties:
+        publicKeyPem:
+          type: string
+          example: '-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----'
+          description: The PEM encoded public key of the validation key being added
+        daysTillExpired:
+          type: number
+          minimum: 1
+          example: 365
+          description: The number of days from the date the validation key was added until it expires
+      required:
+      - publicKeyPem
+      - daysTillExpired
+    ValidationKeyDto:
+      type: object
+      properties:
+        keyId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+          description: External validation key id set by Fireblocks.
+        publicKeyPem:
+          type: string
+          example: '-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----'
+          description: PEM encoded public key used for the validation.
+        daysTillExpired:
+          type: number
+          minimum: 1
+          example: 365
+        enabled:
+          type: boolean
+          example: false
+          description: True if the validation key is enabled.
+        createdAt:
+          type: number
+          example: 12345633
+          description: Creation date (timestamp) in milliseconds.
+      required:
+      - keyId
+      - publicKeyPem
+      - daysTillExpired
+      - enabled
+      - createdAt
+    ModifySigningKeyDto:
+      type: object
+      properties:
+        vaultAccountId:
+          type: number
+          minimum: 1
+          example: 123
+      required:
+      - vaultAccountId
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

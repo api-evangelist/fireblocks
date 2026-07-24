@@ -1,0 +1,516 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Whitelisted Contracts API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Whitelisted Contracts
+paths:
+  /contracts:
+    get:
+      summary: List Whitelisted Contracts
+      description: 'Gets a list of whitelisted contracts.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - Whitelisted Contracts
+      responses:
+        '200':
+          description: A list of whitelisted contracts
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContractsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getContracts
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetContractsResponse>> = fireblocks.contracts.getContracts();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<UnmanagedWallet>>> response = fireblocks.contracts().getContracts();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.contracts.get_contracts();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetContractsResponse>> = fireblocks.contracts.getContracts();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<UnmanagedWallet>>> response = fireblocks.contracts().getContracts();
+      - lang: Python
+        source: response = fireblocks.contracts.get_contracts();
+    post:
+      summary: Create a Whitelisted Contract
+      description: 'Creates a new whitelisted contract.
+
+
+        Learn more about Whitelisted Smart Contracts [here](https://developers.fireblocks.com/docs/whitelist-addresses#contracts).
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Whitelisted Contracts
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: A Wallet object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnmanagedWallet'
+        default:
+          $ref: '#/components/responses/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContractRequest'
+      operationId: createContract
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UnmanagedWallet>> = fireblocks.contracts.createContract(contractsApiCreateContractRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UnmanagedWallet>> response = fireblocks.contracts().createContract(createContractRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.contracts.create_contract(create_contract_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UnmanagedWallet>> = fireblocks.contracts.createContract(contractsApiCreateContractRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UnmanagedWallet>> response = fireblocks.contracts().createContract(createContractRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.contracts.create_contract(create_contract_request, idempotency_key);
+  /contracts/{contractId}:
+    get:
+      summary: Find a Specific Whitelisted Contract
+      description: 'Returns a whitelisted contract by Fireblocks Contract ID.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Whitelisted Contracts
+      parameters:
+      - in: path
+        name: contractId
+        required: true
+        description: The ID of the contract to return
+        schema:
+          type: string
+          example: 908a8cd0-d41b-4a11-b90c-3493a1060929
+      responses:
+        '200':
+          description: A Wallet object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnmanagedWallet'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getContract
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UnmanagedWallet>> = fireblocks.contracts.getContract(contractsApiGetContractRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UnmanagedWallet>> response = fireblocks.contracts().getContract(contractId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.contracts.get_contract(contract_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UnmanagedWallet>> = fireblocks.contracts.getContract(contractsApiGetContractRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UnmanagedWallet>> response = fireblocks.contracts().getContract(contractId);
+      - lang: Python
+        source: response = fireblocks.contracts.get_contract(contract_id);
+    delete:
+      summary: Delete a Whitelisted Contract
+      description: 'Deletes a whitelisted contract by Fireblocks Contract ID.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Whitelisted Contracts
+      parameters:
+      - in: path
+        name: contractId
+        required: true
+        description: The ID of the contract to delete
+        schema:
+          type: string
+          example: 908a8cd0-d41b-4a11-b90c-3493a1060929
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: deleteContract
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.contracts.deleteContract(contractsApiDeleteContractRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.contracts().deleteContract(contractId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.contracts.delete_contract(contract_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.contracts.deleteContract(contractsApiDeleteContractRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.contracts().deleteContract(contractId);
+      - lang: Python
+        source: response = fireblocks.contracts.delete_contract(contract_id);
+  /contracts/{contractId}/{assetId}:
+    get:
+      summary: Find a whitelisted contract's asset
+      description: 'Returns a whitelisted contract''s asset by ID.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Whitelisted Contracts
+      parameters:
+      - in: path
+        name: contractId
+        required: true
+        description: The ID of the contract
+        schema:
+          type: string
+          example: 908a8cd0-d41b-4a11-b90c-3493a1060929
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset to return
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: ETH
+      responses:
+        '200':
+          description: A Wallet Asset object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalWalletAsset'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getContractAsset
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ExternalWalletAsset>> = fireblocks.contracts.getContractAsset(contractsApiGetContractAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ExternalWalletAsset>> response = fireblocks.contracts().getContractAsset(contractId, assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.contracts.get_contract_asset(contract_id, asset_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ExternalWalletAsset>> = fireblocks.contracts.getContractAsset(contractsApiGetContractAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ExternalWalletAsset>> response = fireblocks.contracts().getContractAsset(contractId, assetId);
+      - lang: Python
+        source: response = fireblocks.contracts.get_contract_asset(contract_id, asset_id);
+    post:
+      summary: Add an Asset to a Whitelisted Contract
+      description: 'Adds an asset to an existing whitelisted contract.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Whitelisted Contracts
+      parameters:
+      - in: path
+        name: contractId
+        required: true
+        description: The ID of the contract
+        schema:
+          type: string
+          example: 908a8cd0-d41b-4a11-b90c-3493a1060929
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset to add
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: ETH
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: A Wallet Asset object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalWalletAsset'
+        default:
+          $ref: '#/components/responses/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddContractAssetRequest'
+      operationId: addContractAsset
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ExternalWalletAsset>> = fireblocks.contracts.addContractAsset(contractsApiAddContractAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ExternalWalletAsset>> response = fireblocks.contracts().addContractAsset(contractId, assetId, addContractAssetRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.contracts.add_contract_asset(contract_id, asset_id, add_contract_asset_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ExternalWalletAsset>> = fireblocks.contracts.addContractAsset(contractsApiAddContractAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ExternalWalletAsset>> response = fireblocks.contracts().addContractAsset(contractId, assetId, addContractAssetRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.contracts.add_contract_asset(contract_id, asset_id, add_contract_asset_request, idempotency_key);
+    delete:
+      summary: Delete a Whitelisted Contract's Asset
+      description: 'Deletes a whitelisted contract''s asset by Fireblocks Contract ID and Asset ID.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Whitelisted Contracts
+      parameters:
+      - in: path
+        name: contractId
+        required: true
+        description: The ID of the contract
+        schema:
+          type: string
+          example: 908a8cd0-d41b-4a11-b90c-3493a1060929
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset to delete
+        schema:
+          type: string
+          x-fb-entity: asset
+          example: ETH
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: deleteContractAsset
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.contracts.deleteContractAsset(contractsApiDeleteContractAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.contracts().deleteContractAsset(contractId, assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.contracts.delete_contract_asset(contract_id, asset_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.contracts.deleteContractAsset(contractsApiDeleteContractAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.contracts().deleteContractAsset(contractId, assetId);
+      - lang: Python
+        source: response = fireblocks.contracts.delete_contract_asset(contract_id, asset_id);
+components:
+  schemas:
+    GetContractsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UnmanagedWallet'
+    ExternalWalletAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ConfigChangeRequestStatus'
+        address:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        tag:
+          type: string
+        activationTime:
+          type: string
+        additionalInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletAssetAdditionalInfo'
+    WalletAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        status:
+          $ref: '#/components/schemas/ConfigChangeRequestStatus'
+        address:
+          type: string
+        tag:
+          type: string
+        activationTime:
+          type: string
+    CreateContractRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: the contract's display name
+    UnmanagedWallet:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        customerRefId:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletAsset'
+      required:
+      - id
+      - name
+      - assets
+    AddContractAssetRequest:
+      type: object
+      properties:
+        address:
+          type: string
+          description: The contract's address (or xpub) of the wallet
+        tag:
+          type: string
+          description: The destination tag, for XRP wallets
+      required:
+      - address
+    ConfigChangeRequestStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - APPROVED
+      - CANCELLED
+      - REJECTED
+      - FAILED
+    WalletAssetAdditionalInfo:
+      type: object
+      properties:
+        accountHolderGivenName:
+          type: string
+        accountHolderSurname:
+          type: string
+        accountHolderCity:
+          type: string
+        accountHolderCountry:
+          type: string
+        accountHolderAddress1:
+          type: string
+        accountHolderAddress2:
+          type: string
+        accountHolderDistrict:
+          type: string
+        accountHolderPostalCode:
+          type: string
+        abaRoutingNumber:
+          type: string
+        abaAccountNumber:
+          type: string
+        abaCountry:
+          type: string
+        iban:
+          type: string
+        ibanCity:
+          type: string
+        ibanCountry:
+          type: string
+        speiClabe:
+          type: string
+        speiName:
+          type: string
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

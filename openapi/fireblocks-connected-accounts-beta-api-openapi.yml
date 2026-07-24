@@ -1,0 +1,528 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Connected Accounts (Beta) API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Connected Accounts (Beta)
+paths:
+  /connected_accounts:
+    get:
+      summary: Get connected accounts
+      description: 'Returns all connected accounts.
+
+
+        **Note:** This endpoint is currently in beta and might be subject to changes.
+
+        '
+      tags:
+      - Connected Accounts (Beta)
+      x-rate-limit-category: query
+      parameters:
+      - name: mainAccounts
+        in: query
+        required: false
+        description: Whether to include only main accounts in the response.
+        schema:
+          type: boolean
+          default: false
+      - name: pageSize
+        in: query
+        required: false
+        description: Page size for pagination.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      - name: pageCursor
+        in: query
+        required: false
+        description: Page cursor for pagination.
+        schema:
+          type: string
+      operationId: getConnectedAccounts
+      responses:
+        200:
+          description: Get accounts response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+  /connected_accounts/{accountId}:
+    get:
+      tags:
+      - Connected Accounts (Beta)
+      x-rate-limit-category: read
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The ID of the account to fetch.
+        schema:
+          type: string
+          minLength: 1
+      summary: Get connected account
+      description: 'Retrieve detailed information about a specific connected account by ID.
+
+
+        **Note:** This endpoint is currently in beta and might be subject to changes.
+
+        '
+      operationId: getConnectedAccount
+      responses:
+        200:
+          description: Account response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedSingleAccountResponse'
+        default:
+          $ref: '#/components/responses/Error'
+  /connected_accounts/{accountId}/balances:
+    get:
+      summary: Get balances for an account
+      description: 'Retrieve current asset balances for a specific connected account as a flat list (one row per `assetId`, `balanceType`).
+
+
+        **Note:** This endpoint is currently in beta and might be subject to changes.
+
+        '
+      tags:
+      - Connected Accounts (Beta)
+      x-rate-limit-category: query
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The ID of the account to fetch balances for.
+        schema:
+          type: string
+          minLength: 1
+      - name: pageSize
+        in: query
+        required: false
+        description: Page size for pagination.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: pageCursor
+        in: query
+        required: false
+        description: Page cursor for pagination.
+        schema:
+          type: string
+      operationId: getConnectedAccountBalances
+      responses:
+        200:
+          description: Account balances response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountBalancesResponse'
+        default:
+          $ref: '#/components/responses/Error'
+  /connected_accounts/{accountId}/rates:
+    get:
+      summary: Get exchange rates for an account
+      description: 'Retrieve current exchange rates for converting between specific assets in a connected account.
+
+
+        **Note:** This endpoint is currently in beta and might be subject to changes.
+
+        '
+      tags:
+      - Connected Accounts (Beta)
+      x-rate-limit-category: read
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The ID of the account to fetch rates for.
+        schema:
+          type: string
+          minLength: 1
+      - name: baseAssetId
+        in: query
+        required: true
+        description: The ID of the asset to fetch rates for.
+        schema:
+          type: string
+          minLength: 1
+      - name: quoteAssetId
+        in: query
+        required: true
+        description: The ID of the asset to get the rates nominally.
+        schema:
+          type: string
+          minLength: 1
+      operationId: getConnectedAccountRates
+      responses:
+        200:
+          description: Rates response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountRateResponse'
+        default:
+          $ref: '#/components/responses/Error'
+  /connected_accounts/{accountId}/manifest/capabilities/trading/pairs:
+    get:
+      summary: Get supported trading pairs for an account
+      description: 'Retrieve all asset trading pairs supported by a specific connected account, including the pair type (`quote`, `market`, `onOffRamp`).
+
+
+        **Note:** This endpoint is currently in beta and might be subject to changes.
+
+        '
+      tags:
+      - Connected Accounts (Beta)
+      x-rate-limit-category: query
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The ID of the account to fetch supported pairs for.
+        schema:
+          type: string
+          minLength: 1
+      - name: pageSize
+        in: query
+        required: false
+        description: Page size for pagination.
+        schema:
+          type: integer
+          default: 100
+          minimum: 1
+          maximum: 100
+      - name: pageCursor
+        in: query
+        required: false
+        description: Page cursor for pagination.
+        schema:
+          type: string
+      operationId: getConnectedAccountTradingPairs
+      responses:
+        200:
+          description: Supported pairs response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountTradingPairsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+components:
+  schemas:
+    ConnectedAccountAssetType:
+      type: string
+      enum:
+      - DIGITAL
+      - FIAT
+    ConnectedAccountRateResponse:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: The ID of the account that generated the quote.
+          example: ea6c3cb7-355a-4ee3-82ff-267c69970210
+        baseAssetId:
+          type: string
+          description: The source asset identifier
+          example: BTC
+        quoteAssetId:
+          type: string
+          description: The target asset identifier
+          example: USD
+        rate:
+          type: string
+          description: The exchange rate value
+          example: '1.2345'
+      required:
+      - accountId
+      - baseAssetId
+      - quoteAssetId
+      - rate
+    ConnectedAccountManifest:
+      type: object
+      properties:
+        assetTypes:
+          type: array
+          description: Asset types supported by the connected account.
+          items:
+            $ref: '#/components/schemas/ConnectedAccountAssetType'
+          example: []
+        capabilities:
+          type: array
+          description: "Features supported for the connected account. Logic:\n  - If account capabilities include ramp -> TRADING\n  - If account capabilities include transfers -> DEPOSITS\n  - If account capabilities include transfersBlockchain / transfersFiat / transfersPeerAccounts / transfersInternal -> WITHDRAWALS\n"
+          items:
+            $ref: '#/components/schemas/ConnectedAccountCapability'
+          example:
+          - WITHDRAWALS
+      required:
+      - assetTypes
+      - capabilities
+    ConnectedAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the connected account.
+          example: acc-123456
+        name:
+          type: string
+          description: Human-readable name of the connected account.
+          example: Main Venue Account
+        providerId:
+          type: string
+          description: The ID of the venue the account belongs to.
+          example: BRIDGE
+        status:
+          $ref: '#/components/schemas/ConnectedAccountApprovalStatus'
+        manifest:
+          $ref: '#/components/schemas/ConnectedAccountManifest'
+        parentId:
+          type: string
+          description: The ID of the parent main account, if this is a sub account.
+          example: acc-parent-001
+      required:
+      - id
+      - name
+      - providerId
+      - status
+      - manifest
+    ConnectedAccountBalancesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Flat balance row for a single asset within an account and wallet type. One row per (assetId, balanceType).
+          items:
+            $ref: '#/components/schemas/ConnectedAccountBalances'
+          example:
+          - assetId: BTC
+            availableAmount: '100.00'
+            totalAmount: '120.00'
+            balanceType: FUNDING
+            balanceName: Trader1 Wallet
+        total:
+          type: integer
+          description: Total number of balance rows by query.
+          example: 2
+        next:
+          type: string
+          description: A cursor for the next page of results, if available.
+          example: eyJwYWdlIjoyfQ==
+      required:
+      - data
+    ConnectedAccountsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: List of connected accounts matching the query.
+          items:
+            $ref: '#/components/schemas/ConnectedAccount'
+          example:
+          - id: acc-123456
+            name: Main Venue Account
+            providerId: BRIDGE
+            status: APPROVED
+            manifest:
+              assetTypes: []
+              capabilities:
+              - DEPOSITS
+              - WITHDRAWALS
+          - id: acc-654321
+            name: Secondary Account
+            providerId: BRIDGE
+            status: WAITING_FOR_APPROVAL
+            manifest:
+              assetTypes: []
+              capabilities:
+              - WITHDRAWALS
+        total:
+          type: integer
+          description: Total number of accounts by query.
+          example: 2
+        next:
+          type: string
+          description: A cursor for the next page of results, if available.
+          example: eyJwYWdlIjoyfQ==
+      required:
+      - data
+    ConnectedAccountTradingPair:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the trading pair.
+          example: ea6c3cb7-355a-4ee3-82ff-267c69970210
+        baseAssetId:
+          type: string
+          description: The Symbol of the base asset.
+          example: BTC
+        quoteAssetId:
+          type: string
+          description: The symbol of the quote asset.
+          example: USD
+        supportedTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedAccountTradingPairSupportedType'
+      required:
+      - id
+      - baseAssetId
+      - quoteAssetId
+      - supportedTypes
+    ConnectedAccountCapability:
+      type: string
+      enum:
+      - WITHDRAWALS
+      - DEPOSITS
+      - TRADING
+    ConnectedAccountTradingPairSupportedType:
+      type: string
+      enum:
+      - QUOTE
+      - MARKET
+      - LIMIT
+    ConnectedAccountBalances:
+      type: object
+      properties:
+        assetId:
+          type: string
+          description: Asset identifier (e.g., BTC, ETH, USDC).
+          example: BTC
+        availableAmount:
+          type: string
+          description: Amount available for use.
+          example: '100.00'
+        totalAmount:
+          type: string
+          description: Total amount including locked/held balances.
+          example: '120.00'
+        lockedAmount:
+          type: string
+          description: Amount currently locked/held.
+          example: '20.00'
+        creditAmount:
+          type: string
+          description: Credit line amount, if applicable (0 when not used).
+          example: '0'
+        balanceType:
+          type: string
+          description: Wallet type/category (e.g., SPOT, MARGIN, FUNDING).
+          example: FUNDING
+        balanceName:
+          type: string
+          description: Display name for the balance type (at the provider)
+          example: Trader1 Wallet
+      required:
+      - assetId
+      - availableAmount
+      - totalAmount
+      - balanceType
+    ConnectedSingleAccount:
+      type: object
+      properties:
+        subAccountsIds:
+          type: array
+          description: IDs of sub-accounts associated with this connected account.
+          items:
+            type: string
+          example:
+          - acc-sub-001
+          - acc-sub-002
+    ConnectedSingleAccountResponse:
+      allOf:
+      - $ref: '#/components/schemas/ConnectedAccount'
+      - $ref: '#/components/schemas/ConnectedSingleAccount'
+    ConnectedAccountApprovalStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - APPROVED
+      - REJECTED
+      - CANCELLED
+      - FAILED
+    ConnectedAccountTradingPairsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedAccountTradingPair'
+          example:
+          - id: ea6c3cb7-355a-4ee3-82ff-267c69970210
+            baseAssetId: BTC
+            quoteAssetId: USD
+            supportedTypes:
+            - MARKET
+          - id: ea6c3cb7-355a-4ee3-82ff-267c69970211
+            baseAssetId: ETH
+            quoteAssetId: USDC
+            supportedTypes:
+            - QUOTE
+            - MARKET
+        total:
+          type: integer
+          description: Total number of asset pairs matching the query.
+          example: 2
+        next:
+          type: string
+          description: A cursor for the next page of results, if available.
+          nullable: true
+          example: null
+      required:
+      - data
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

@@ -1,0 +1,851 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Cosigners (Beta) API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Cosigners (Beta)
+paths:
+  /cosigners:
+    get:
+      operationId: getCosigners
+      summary: Get all cosigners
+      description: 'Get all workspace cosigners (paginated).
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: order
+        required: false
+        in: query
+        description: ASC / DESC ordering (default DESC)
+        example: ASC
+        schema:
+          default: DESC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: pageCursor
+        required: false
+        in: query
+        description: Cursor of the required page
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Maximum number of items in the page
+        example: 10
+        schema:
+          minimum: 1
+          maximum: 100
+          default: 10
+          type: number
+      responses:
+        '200':
+          description: A paginated response containing Cosigner objects
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CosignersPaginatedResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CosignersPaginatedResponse>> = fireblocks.cosignersBeta.getCosigners(cosignersBetaApiGetCosignersRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CosignersPaginatedResponse>> response = fireblocks.cosignersBeta().getCosigners(order, pageCursor, pageSize);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.get_cosigners(order, page_cursor, page_size);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CosignersPaginatedResponse>> = fireblocks.cosignersBeta.getCosigners(cosignersBetaApiGetCosignersRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CosignersPaginatedResponse>> response = fireblocks.cosignersBeta().getCosigners(order, pageCursor, pageSize);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.get_cosigners(order, page_cursor, page_size);
+    post:
+      operationId: addCosigner
+      summary: Add cosigner
+      description: 'Add a new cosigner. The cosigner will be pending pairing until the API key is manually paired
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCosignerRequest'
+      responses:
+        '201':
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          description: Pending cosigner added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddCosignerResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AddCosignerResponse>> = fireblocks.cosignersBeta.addCosigner(cosignersBetaApiAddCosignerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AddCosignerResponse>> response = fireblocks.cosignersBeta().addCosigner(addCosignerRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.add_cosigner(add_cosigner_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AddCosignerResponse>> = fireblocks.cosignersBeta.addCosigner(cosignersBetaApiAddCosignerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AddCosignerResponse>> response = fireblocks.cosignersBeta().addCosigner(addCosignerRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.add_cosigner(add_cosigner_request, idempotency_key);
+  /cosigners/{cosignerId}:
+    get:
+      operationId: getCosigner
+      summary: Get cosigner
+      description: 'Get a cosigner by ID.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: A cosigner object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cosigner'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<Cosigner>> = fireblocks.cosignersBeta.getCosigner(cosignersBetaApiGetCosignerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Cosigner>> response = fireblocks.cosignersBeta().getCosigner(cosignerId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.get_cosigner(cosigner_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<Cosigner>> = fireblocks.cosignersBeta.getCosigner(cosignersBetaApiGetCosignerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Cosigner>> response = fireblocks.cosignersBeta().getCosigner(cosignerId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.get_cosigner(cosigner_id);
+    patch:
+      operationId: renameCosigner
+      summary: Rename cosigner
+      description: 'Rename a cosigner by ID.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RenameCosigner'
+      responses:
+        '200':
+          description: A cosigner object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cosigner'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<Cosigner>> = fireblocks.cosignersBeta.renameCosigner(cosignersBetaApiRenameCosignerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Cosigner>> response = fireblocks.cosignersBeta().renameCosigner(renameCosigner, cosignerId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.rename_cosigner(rename_cosigner, cosigner_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<Cosigner>> = fireblocks.cosignersBeta.renameCosigner(cosignersBetaApiRenameCosignerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Cosigner>> response = fireblocks.cosignersBeta().renameCosigner(renameCosigner, cosignerId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.rename_cosigner(rename_cosigner, cosigner_id);
+  /cosigners/{cosignerId}/api_keys:
+    get:
+      operationId: getApiKeys
+      summary: Get all API keys
+      description: 'Get all cosigner paired API keys (paginated).
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: order
+        required: false
+        in: query
+        description: ASC / DESC ordering (default DESC)
+        example: ASC
+        schema:
+          default: DESC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: pageCursor
+        required: false
+        in: query
+        description: Cursor of the required page
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Maximum number of items in the page
+        example: 10
+        schema:
+          minimum: 1
+          maximum: 100
+          default: 10
+          type: number
+      responses:
+        '200':
+          description: A paginated response containing ApiKey objects
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysPaginatedResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ApiKeysPaginatedResponse>> = fireblocks.cosignersBeta.getApiKeys(cosignersBetaApiGetApiKeysRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ApiKeysPaginatedResponse>> response = fireblocks.cosignersBeta().getApiKeys(cosignerId, order, pageCursor, pageSize);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.get_api_keys(cosigner_id, order, page_cursor, page_size);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ApiKeysPaginatedResponse>> = fireblocks.cosignersBeta.getApiKeys(cosignersBetaApiGetApiKeysRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ApiKeysPaginatedResponse>> response = fireblocks.cosignersBeta().getApiKeys(cosignerId, order, pageCursor, pageSize);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.get_api_keys(cosigner_id, order, page_cursor, page_size);
+  /cosigners/{cosignerId}/api_keys/{apiKeyId}:
+    get:
+      operationId: getApiKey
+      summary: Get API key
+      description: 'Get an API key by ID.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: apiKeyId
+        required: true
+        in: path
+        description: The unique identifier of the API key
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An ApiKey object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ApiKey>> = fireblocks.cosignersBeta.getApiKey(cosignersBetaApiGetApiKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ApiKey>> response = fireblocks.cosignersBeta().getApiKey(cosignerId, apiKeyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.get_api_key(cosigner_id, api_key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ApiKey>> = fireblocks.cosignersBeta.getApiKey(cosignersBetaApiGetApiKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ApiKey>> response = fireblocks.cosignersBeta().getApiKey(cosignerId, apiKeyId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.get_api_key(cosigner_id, api_key_id);
+    put:
+      operationId: pairApiKey
+      summary: Pair API key
+      description: 'Pair an API key to a cosigner
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: apiKeyId
+        required: true
+        in: path
+        description: The unique identifier of the API key
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PairApiKeyRequest'
+      responses:
+        '202':
+          description: The API key object to be paired
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PairApiKeyResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PairApiKeyResponse>> = fireblocks.cosignersBeta.pairApiKey(cosignersBetaApiPairApiKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PairApiKeyResponse>> response = fireblocks.cosignersBeta().pairApiKey(pairApiKeyRequest, cosignerId, apiKeyId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.pair_api_key(pair_api_key_request, cosigner_id, api_key_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PairApiKeyResponse>> = fireblocks.cosignersBeta.pairApiKey(cosignersBetaApiPairApiKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PairApiKeyResponse>> response = fireblocks.cosignersBeta().pairApiKey(pairApiKeyRequest, cosignerId, apiKeyId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.pair_api_key(pair_api_key_request, cosigner_id, api_key_id, idempotency_key);
+    delete:
+      operationId: unpairApiKey
+      summary: Unpair API key
+      description: 'Unpair an API key from a cosigner
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: apiKeyId
+        required: true
+        in: path
+        description: The unique identifier of the API key
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          type: string
+      responses:
+        '202':
+          description: The API key object to be unpaired
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ApiKey>> = fireblocks.cosignersBeta.unpairApiKey(cosignersBetaApiUnpairApiKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ApiKey>> response = fireblocks.cosignersBeta().unpairApiKey(cosignerId, apiKeyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.unpair_api_key(cosigner_id, api_key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ApiKey>> = fireblocks.cosignersBeta.unpairApiKey(cosignersBetaApiUnpairApiKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ApiKey>> response = fireblocks.cosignersBeta().unpairApiKey(cosignerId, apiKeyId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.unpair_api_key(cosigner_id, api_key_id);
+    patch:
+      operationId: updateCallbackHandler
+      summary: Update API key callback handler
+      description: 'Update the callback handler of an API key
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: apiKeyId
+        required: true
+        in: path
+        description: The unique identifier of the API key
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCallbackHandlerRequest'
+      responses:
+        '202':
+          description: The API key object with the new callback handler
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateCallbackHandlerResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UpdateCallbackHandlerResponse>> = fireblocks.cosignersBeta.updateCallbackHandler(cosignersBetaApiUpdateCallbackHandlerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UpdateCallbackHandlerResponse>> response = fireblocks.cosignersBeta().updateCallbackHandler(updateCallbackHandlerRequest, cosignerId, apiKeyId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.update_callback_handler(update_callback_handler_request, cosigner_id, api_key_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UpdateCallbackHandlerResponse>> = fireblocks.cosignersBeta.updateCallbackHandler(cosignersBetaApiUpdateCallbackHandlerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UpdateCallbackHandlerResponse>> response = fireblocks.cosignersBeta().updateCallbackHandler(updateCallbackHandlerRequest, cosignerId, apiKeyId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.update_callback_handler(update_callback_handler_request, cosigner_id, api_key_id);
+  /cosigners/{cosignerId}/api_keys/{apiKeyId}/{requestId}:
+    get:
+      operationId: getRequestStatus
+      summary: Get request status
+      description: 'Get the status of an asynchronous request
+
+        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+      parameters:
+      - name: cosignerId
+        required: true
+        in: path
+        description: The unique identifier of the cosigner
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          format: uuid
+          type: string
+      - name: apiKeyId
+        required: true
+        in: path
+        description: The unique identifier of the API key
+        example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        schema:
+          type: string
+      - name: requestId
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The status of the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Cosigners (Beta)
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<Status>> = fireblocks.cosignersBeta.getRequestStatus(cosignersBetaApiGetRequestStatusRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Status>> response = fireblocks.cosignersBeta().getRequestStatus(cosignerId, apiKeyId, requestId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.cosigners_beta.get_request_status(cosigner_id, api_key_id, request_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<Status>> = fireblocks.cosignersBeta.getRequestStatus(cosignersBetaApiGetRequestStatusRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Status>> response = fireblocks.cosignersBeta().getRequestStatus(cosignerId, apiKeyId, requestId);
+      - lang: Python
+        source: response = fireblocks.cosigners_beta.get_request_status(cosigner_id, api_key_id, request_id);
+components:
+  schemas:
+    UpdateCallbackHandlerRequest:
+      type: object
+      properties:
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+    PairApiKeyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the API key
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+      required:
+      - id
+    ApiKeysPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/ApiKey'
+        next:
+          type: string
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+          nullable: true
+      required:
+      - data
+    Cosigner:
+      type: object
+      properties:
+        archived:
+          type: boolean
+          description: Whether the cosigner is archived
+          example: false
+        id:
+          type: string
+          description: The unique identifier of the cosigner
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        name:
+          type: string
+          description: The name of the cosigner
+          example: My Cosigner 1
+          nullable: true
+      required:
+      - archived
+      - id
+    CosignersPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/Cosigner'
+        next:
+          type: string
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+          nullable: true
+      required:
+      - data
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the API key
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        lastSeen:
+          format: date-time
+          type: string
+          description: The date the API key was last seen
+          example: '2021-07-01T00:00:00.000Z'
+      required:
+      - id
+      - lastSeen
+    AddCosignerRequest:
+      type: object
+      properties:
+        apiKeyId:
+          type: string
+          description: The id of the API key to be paired with the cosigner
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+        name:
+          type: string
+          description: The name of the cosigner
+          example: My Cosigner 1
+          minLength: 1
+        existingCosigner:
+          type: boolean
+          description: Whether the cosigner already exists in another workspace
+          default: false
+          example: false
+      required:
+      - apiKeyId
+      - name
+    PairApiKeyRequest:
+      type: object
+      properties:
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+    UpdateCallbackHandlerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the API key
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+      required:
+      - id
+    CallbackHandlerRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The callback handler's URL
+          example: https://example.com/callback-handler
+        publicKey:
+          type: string
+          description: The callback handler's public key
+          example: '-----BEGIN PUBLIC KEY-----
+
+            ... truncated ...-----END PUBLIC KEY-----'
+        cert:
+          type: string
+          description: The callback handler's certificate
+          example: '-----BEGIN CERTIFICATE-----
+
+            ... truncated ...
+
+            -----END CERTIFICATE-----'
+      required:
+      - url
+    RenameCosigner:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The new name of the cosigner
+          example: My Cosigner 1
+          nullable: true
+    AddCosignerResponse:
+      type: object
+      properties:
+        apiKeyId:
+          type: string
+          description: The id of the API key to be paired with the cosigner
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+        name:
+          type: string
+          description: The name of the cosigner
+          example: My Cosigner 1
+          minLength: 1
+        existingCosigner:
+          type: boolean
+          description: Whether the cosigner already exists in another workspace
+          default: false
+          example: false
+        pendingCosignerId:
+          type: string
+          description: The unique identifier of a pending cosigner
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+      required:
+      - apiKeyId
+      - name
+      - pendingCosignerId
+    Status:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of the command
+          enum:
+          - WAITING_FOR_APPROVAL
+          - APPROVED
+          - CANCELLED
+          - REJECTED
+          - COMPLETED
+          example: COMPLETED
+        type:
+          type: string
+          description: The type of the command
+          enum:
+          - PAIR_API_KEY
+          - UPDATE_CALLBACK_HANDLER
+          - UNPAIR_API_KEY
+          example: PAIR_API_KEY
+      required:
+      - status
+      - type
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

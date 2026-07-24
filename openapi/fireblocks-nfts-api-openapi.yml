@@ -1,8 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Fireblocks NFTs API
-  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
-    platform to build your business on the blockchain.
+  title: Fireblocks Blockchains and Assets Approval Requests NFTs API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
     - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
@@ -19,6 +18,8 @@ servers:
 - url: https://sandbox-api.fireblocks.io/v1
   description: Fireblocks Sandbox Environment Base URL
 security: []
+tags:
+- name: NFTs
 paths:
   /nfts/ownership/tokens:
     put:
@@ -36,8 +37,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateOwnershipTokens(nFTsApiUpdateOwnershipTokensRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateOwnershipTokens(blockchainDescriptor,
-            vaultAccountId, idempotencyKey);
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateOwnershipTokens(blockchainDescriptor, vaultAccountId, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.n_f_ts.update_ownership_tokens(blockchain_descriptor, vault_account_id, idempotency_key);
@@ -86,8 +86,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateOwnershipTokens(nFTsApiUpdateOwnershipTokensRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateOwnershipTokens(blockchainDescriptor,
-          vaultAccountId, idempotencyKey);
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateOwnershipTokens(blockchainDescriptor, vaultAccountId, idempotencyKey);
       - lang: Python
         source: response = fireblocks.n_f_ts.update_ownership_tokens(blockchain_descriptor, vault_account_id, idempotency_key);
     get:
@@ -128,8 +127,7 @@ paths:
       - name: vaultAccountIds
         required: false
         in: query
-        description: A comma separated list of Vault Account IDs. Up to 100 are allowed in a single request.  This field will
-          be ignored when walletType=END_USER_WALLET or ncwId is provided.
+        description: A comma separated list of Vault Account IDs. Up to 100 are allowed in a single request.  This field will be ignored when walletType=END_USER_WALLET or ncwId is provided.
         schema:
           type: string
           example: '0'
@@ -143,8 +141,7 @@ paths:
       - name: ncwAccountIds
         required: false
         in: query
-        description: A comma separated list of Non-Custodial account IDs. Up to 100 are allowed in a single request. This
-          field will be ignored when walletType=VAULT_ACCOUNT or ncwId is not provided.
+        description: A comma separated list of Non-Custodial account IDs. Up to 100 are allowed in a single request. This field will be ignored when walletType=VAULT_ACCOUNT or ncwId is not provided.
         schema:
           type: string
           example: 0,1,2
@@ -224,8 +221,7 @@ paths:
       - name: search
         required: false
         in: query
-        description: 'Search owned tokens and their collections. Possible criteria for search:  token name and id within the
-          contract/collection, collection name, blockchain descriptor and name.'
+        description: 'Search owned tokens and their collections. Possible criteria for search:  token name and id within the contract/collection, collection name, blockchain descriptor and name.'
         schema:
           maximum: 100
           type: string
@@ -258,24 +254,18 @@ paths:
           code: 'const response: Promise<FireblocksResponse<GetOwnershipTokensResponse>> = fireblocks.nFTs.getOwnershipTokens(nFTsApiGetOwnershipTokensRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<GetOwnershipTokensResponse>> response = fireblocks.nFTs().getOwnershipTokens(blockchainDescriptor,
-            vaultAccountIds, ncwId, ncwAccountIds, walletType, ids, collectionIds, pageCursor, pageSize, sort, order, status,
-            search, spam);
+          code: CompletableFuture<ApiResponse<GetOwnershipTokensResponse>> response = fireblocks.nFTs().getOwnershipTokens(blockchainDescriptor, vaultAccountIds, ncwId, ncwAccountIds, walletType, ids, collectionIds, pageCursor, pageSize, sort, order, status, search, spam);
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.n_f_ts.get_ownership_tokens(blockchain_descriptor, vault_account_ids, ncw_id, ncw_account_ids,
-            wallet_type, ids, collection_ids, page_cursor, page_size, sort, order, status, search, spam);
+          code: response = fireblocks.n_f_ts.get_ownership_tokens(blockchain_descriptor, vault_account_ids, ncw_id, ncw_account_ids, wallet_type, ids, collection_ids, page_cursor, page_size, sort, order, status, search, spam);
           name: Fireblocks SDK Python example
       x-codeSamples:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<GetOwnershipTokensResponse>> = fireblocks.nFTs.getOwnershipTokens(nFTsApiGetOwnershipTokensRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<GetOwnershipTokensResponse>> response = fireblocks.nFTs().getOwnershipTokens(blockchainDescriptor,
-          vaultAccountIds, ncwId, ncwAccountIds, walletType, ids, collectionIds, pageCursor, pageSize, sort, order, status,
-          search, spam);
+        source: CompletableFuture<ApiResponse<GetOwnershipTokensResponse>> response = fireblocks.nFTs().getOwnershipTokens(blockchainDescriptor, vaultAccountIds, ncwId, ncwAccountIds, walletType, ids, collectionIds, pageCursor, pageSize, sort, order, status, search, spam);
       - lang: Python
-        source: response = fireblocks.n_f_ts.get_ownership_tokens(blockchain_descriptor, vault_account_ids, ncw_id, ncw_account_ids,
-          wallet_type, ids, collection_ids, page_cursor, page_size, sort, order, status, search, spam);
+        source: response = fireblocks.n_f_ts.get_ownership_tokens(blockchain_descriptor, vault_account_ids, ncw_id, ncw_account_ids, wallet_type, ids, collection_ids, page_cursor, page_size, sort, order, status, search, spam);
   /nfts/ownership/assets:
     get:
       operationId: listOwnedTokens
@@ -289,12 +279,10 @@ paths:
           code: 'const response: Promise<FireblocksResponse<ListOwnedTokensResponse>> = fireblocks.nFTs.listOwnedTokens(nFTsApiListOwnedTokensRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<ListOwnedTokensResponse>> response = fireblocks.nFTs().listOwnedTokens(ncwId,
-            walletType, pageCursor, pageSize, sort, order, status, search, spam);
+          code: CompletableFuture<ApiResponse<ListOwnedTokensResponse>> response = fireblocks.nFTs().listOwnedTokens(ncwId, walletType, pageCursor, pageSize, sort, order, status, search, spam);
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.n_f_ts.list_owned_tokens(ncw_id, wallet_type, page_cursor, page_size, sort, order, status,
-            search, spam);
+          code: response = fireblocks.n_f_ts.list_owned_tokens(ncw_id, wallet_type, page_cursor, page_size, sort, order, status, search, spam);
           name: Fireblocks SDK Python example
       parameters:
       - name: ncwId
@@ -393,11 +381,9 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<ListOwnedTokensResponse>> = fireblocks.nFTs.listOwnedTokens(nFTsApiListOwnedTokensRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<ListOwnedTokensResponse>> response = fireblocks.nFTs().listOwnedTokens(ncwId,
-          walletType, pageCursor, pageSize, sort, order, status, search, spam);
+        source: CompletableFuture<ApiResponse<ListOwnedTokensResponse>> response = fireblocks.nFTs().listOwnedTokens(ncwId, walletType, pageCursor, pageSize, sort, order, status, search, spam);
       - lang: Python
-        source: response = fireblocks.n_f_ts.list_owned_tokens(ncw_id, wallet_type, page_cursor, page_size, sort, order, status,
-          search, spam);
+        source: response = fireblocks.n_f_ts.list_owned_tokens(ncw_id, wallet_type, page_cursor, page_size, sort, order, status, search, spam);
   /nfts/ownership/collections:
     get:
       operationId: listOwnedCollections
@@ -411,12 +397,10 @@ paths:
           code: 'const response: Promise<FireblocksResponse<ListOwnedCollectionsResponse>> = fireblocks.nFTs.listOwnedCollections(nFTsApiListOwnedCollectionsRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<ListOwnedCollectionsResponse>> response = fireblocks.nFTs().listOwnedCollections(ncwId,
-            walletType, search, pageCursor, pageSize, sort, order, status);
+          code: CompletableFuture<ApiResponse<ListOwnedCollectionsResponse>> response = fireblocks.nFTs().listOwnedCollections(ncwId, walletType, search, pageCursor, pageSize, sort, order, status);
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.n_f_ts.list_owned_collections(ncw_id, wallet_type, search, page_cursor, page_size, sort,
-            order, status);
+          code: response = fireblocks.n_f_ts.list_owned_collections(ncw_id, wallet_type, search, page_cursor, page_size, sort, order, status);
           name: Fireblocks SDK Python example
       parameters:
       - name: ncwId
@@ -506,11 +490,9 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<ListOwnedCollectionsResponse>> = fireblocks.nFTs.listOwnedCollections(nFTsApiListOwnedCollectionsRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<ListOwnedCollectionsResponse>> response = fireblocks.nFTs().listOwnedCollections(ncwId,
-          walletType, search, pageCursor, pageSize, sort, order, status);
+        source: CompletableFuture<ApiResponse<ListOwnedCollectionsResponse>> response = fireblocks.nFTs().listOwnedCollections(ncwId, walletType, search, pageCursor, pageSize, sort, order, status);
       - lang: Python
-        source: response = fireblocks.n_f_ts.list_owned_collections(ncw_id, wallet_type, search, page_cursor, page_size, sort,
-          order, status);
+        source: response = fireblocks.n_f_ts.list_owned_collections(ncw_id, wallet_type, search, page_cursor, page_size, sort, order, status);
   /nfts/tokens/{id}:
     put:
       operationId: refreshNFTMetadata
@@ -613,8 +595,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<GetNFTsResponse>> = fireblocks.nFTs.getNFTs(nFTsApiGetNFTsRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<GetNFTsResponse>> response = fireblocks.nFTs().getNFTs(ids, pageCursor, pageSize,
-            sort, order);
+          code: CompletableFuture<ApiResponse<GetNFTsResponse>> response = fireblocks.nFTs().getNFTs(ids, pageCursor, pageSize, sort, order);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.n_f_ts.get_n_f_ts(ids, page_cursor, page_size, sort, order);
@@ -681,8 +662,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<GetNFTsResponse>> = fireblocks.nFTs.getNFTs(nFTsApiGetNFTsRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<GetNFTsResponse>> response = fireblocks.nFTs().getNFTs(ids, pageCursor, pageSize,
-          sort, order);
+        source: CompletableFuture<ApiResponse<GetNFTsResponse>> response = fireblocks.nFTs().getNFTs(ids, pageCursor, pageSize, sort, order);
       - lang: Python
         source: response = fireblocks.n_f_ts.get_n_f_ts(ids, page_cursor, page_size, sort, order);
   /nfts/ownership/tokens/{id}/status:
@@ -699,8 +679,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokenOwnershipStatus(nFTsApiUpdateTokenOwnershipStatusRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokenOwnershipStatus(updateTokenOwnershipStatusDto,
-            id, idempotencyKey);
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokenOwnershipStatus(updateTokenOwnershipStatusDto, id, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.n_f_ts.update_token_ownership_status(update_token_ownership_status_dto, id, idempotency_key);
@@ -732,8 +711,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokenOwnershipStatus(nFTsApiUpdateTokenOwnershipStatusRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokenOwnershipStatus(updateTokenOwnershipStatusDto,
-          id, idempotencyKey);
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokenOwnershipStatus(updateTokenOwnershipStatusDto, id, idempotencyKey);
       - lang: Python
         source: response = fireblocks.n_f_ts.update_token_ownership_status(update_token_ownership_status_dto, id, idempotency_key);
   /nfts/ownership/tokens/status:
@@ -750,8 +728,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokensOwnershipStatus(nFTsApiUpdateTokensOwnershipStatusRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipStatus(tokenOwnershipStatusUpdatePayload,
-            idempotencyKey);
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipStatus(tokenOwnershipStatusUpdatePayload, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.n_f_ts.update_tokens_ownership_status(token_ownership_status_update_payload, idempotency_key);
@@ -786,8 +763,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokensOwnershipStatus(nFTsApiUpdateTokensOwnershipStatusRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipStatus(tokenOwnershipStatusUpdatePayload,
-          idempotencyKey);
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipStatus(tokenOwnershipStatusUpdatePayload, idempotencyKey);
       - lang: Python
         source: response = fireblocks.n_f_ts.update_tokens_ownership_status(token_ownership_status_update_payload, idempotency_key);
   /nfts/ownership/tokens/spam:
@@ -804,8 +780,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokensOwnershipSpam(nFTsApiUpdateTokensOwnershipSpamRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipSpam(tokenOwnershipSpamUpdatePayload,
-            idempotencyKey);
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipSpam(tokenOwnershipSpamUpdatePayload, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.n_f_ts.update_tokens_ownership_spam(token_ownership_spam_update_payload, idempotency_key);
@@ -840,8 +815,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.nFTs.updateTokensOwnershipSpam(nFTsApiUpdateTokensOwnershipSpamRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipSpam(tokenOwnershipSpamUpdatePayload,
-          idempotencyKey);
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.nFTs().updateTokensOwnershipSpam(tokenOwnershipSpamUpdatePayload, idempotencyKey);
       - lang: Python
         source: response = fireblocks.n_f_ts.update_tokens_ownership_spam(token_ownership_spam_update_payload, idempotency_key);
 components:
@@ -896,6 +870,99 @@ components:
       required:
       - id
       - blockchainDescriptor
+    TokenResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The Fireblocks NFT asset id
+          example: NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f
+        tokenId:
+          type: string
+          description: Token id within the contract/collection
+          example: '592546216889508487156728840478578020756621952559332912422010991022550422'
+        standard:
+          type: string
+          description: ERC721 / ERC1155
+          example: ERC1155
+        metadataURI:
+          type: string
+          description: URL of the original token JSON metadata
+          example: https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952559332912422010991022550422
+        cachedMetadataURI:
+          type: string
+          description: URL of the cached token JSON metadata
+          example: https://static.fireblocks.io/nft/ad1bd7bf6b0ecb3495beb17d8540a513c96/metadata.json
+        media:
+          description: Media items extracted from metadata JSON
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaEntityResponse'
+        spam:
+          description: Token spam status
+          allOf:
+          - $ref: '#/components/schemas/SpamTokenResponse'
+        collection:
+          description: Parent collection information
+          allOf:
+          - $ref: '#/components/schemas/TokenCollectionResponse'
+        blockchainDescriptor:
+          type: string
+          enum:
+          - ETH
+          - ETH_TEST3
+          - ETH_TEST5
+          - ETH_TEST6
+          - POLYGON
+          - POLYGON_TEST_MUMBAI
+          - AMOY_POLYGON_TEST
+          - XTZ
+          - XTZ_TEST
+          - BASECHAIN_ETH
+          - BASECHAIN_ETH_TEST3
+          - BASECHAIN_ETH_TEST5
+          - ETHERLINK
+          - ETHERLINK_TEST
+          - MANTLE
+          - MANTLE_TEST
+          - GUN_GUNZILLA_TEST
+          - ETH_SONEIUM
+          - SONEIUM_MINATO_TEST
+          - IOTX_IOTEX
+        description:
+          description: Token's metadata description
+          type: string
+          example: This is MyNFT's description fetched from the metadata
+        name:
+          type: string
+          description: Token's metadata name
+          example: MyNFTName
+      required:
+      - id
+      - tokenId
+      - standard
+      - blockchainDescriptor
+    UpdateTokensOwnershipSpamRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/TokenOwnershipSpamUpdatePayload'
+    TokenCollectionResponse:
+      type: object
+      properties:
+        id:
+          description: Collection's ID
+          type: string
+          example: '0x2953399124F0cBB46d2CbACD8A89cF0599974963'
+        name:
+          description: Collection's Name
+          type: string
+          example: OpenSea Collections
+        symbol:
+          description: Collection's Symbol
+          type: string
+          example: OPENSTORE
+      required:
+      - id
     GetNFTsResponse:
       type: object
       properties:
@@ -914,55 +981,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TokenOwnershipResponse'
-    ListOwnedCollectionsResponse:
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/CollectionOwnershipResponse'
-    ListOwnedTokensResponse:
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TokenResponse'
-    MediaEntityResponse:
-      type: object
-      properties:
-        url:
-          type: string
-          description: Cached accessible URL
-          example: https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0
-        contentType:
-          type: string
-          enum:
-          - IMAGE
-          - VIDEO
-          - ANIMATION
-          - THREE_D
-          - TEXT
-          - GIF
-          - UNKNOWN_TYPE
-          - SVG
-          - AUDIO
-          description: Media type
-      required:
-      - url
-      - contentType
-    Paging:
-      type: object
-      properties:
-        next:
-          type: string
-          description: Cursor to the next page
-      required:
-      - next
     SpamOwnershipResponse:
       type: object
       properties:
@@ -978,6 +996,39 @@ components:
       required:
       - result
       - source
+    UpdateTokenOwnershipStatusDto:
+      type: object
+      properties:
+        status:
+          description: Token's status in Fireblocks
+          type: string
+          enum:
+          - LISTED
+          - ARCHIVED
+      required:
+      - status
+    ListOwnedCollectionsResponse:
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionOwnershipResponse'
+    UpdateTokensOwnershipStatusRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/TokenOwnershipStatusUpdatePayload'
+    ListOwnedTokensResponse:
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenResponse'
     SpamTokenResponse:
       type: object
       properties:
@@ -987,23 +1038,6 @@ components:
           example: true
       required:
       - result
-    TokenCollectionResponse:
-      type: object
-      properties:
-        id:
-          description: Collection's ID
-          type: string
-          example: '0x2953399124F0cBB46d2CbACD8A89cF0599974963'
-        name:
-          description: Collection's Name
-          type: string
-          example: OpenSea Collections
-        symbol:
-          description: Collection's Symbol
-          type: string
-          example: OPENSTORE
-      required:
-      - id
     TokenOwnershipResponse:
       type: object
       properties:
@@ -1111,21 +1145,29 @@ components:
       - ownershipLastUpdateTime
       - blockchainDescriptor
       - status
-    TokenOwnershipSpamUpdatePayload:
+    MediaEntityResponse:
       type: object
       properties:
-        assetId:
+        url:
           type: string
-          description: Token's asset id
-          example: NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd
-          x-fb-entity: asset
-        spam:
-          type: boolean
-          description: Token's ownership new spam value
-          example: true
+          description: Cached accessible URL
+          example: https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0
+        contentType:
+          type: string
+          enum:
+          - IMAGE
+          - VIDEO
+          - ANIMATION
+          - THREE_D
+          - TEXT
+          - GIF
+          - UNKNOWN_TYPE
+          - SVG
+          - AUDIO
+          description: Media type
       required:
-      - assetId
-      - spam
+      - url
+      - contentType
     TokenOwnershipStatusUpdatePayload:
       type: object
       properties:
@@ -1144,97 +1186,38 @@ components:
       required:
       - assetId
       - status
-    TokenResponse:
+    Paging:
       type: object
       properties:
-        id:
+        next:
           type: string
-          description: The Fireblocks NFT asset id
-          example: NFT-ad1bd7bf6b0ecb3495beb17d8540a513c9664e0f
-        tokenId:
+          description: Cursor to the next page
+      required:
+      - next
+    TokenOwnershipSpamUpdatePayload:
+      type: object
+      properties:
+        assetId:
           type: string
-          description: Token id within the contract/collection
-          example: '592546216889508487156728840478578020756621952559332912422010991022550422'
-        standard:
-          type: string
-          description: ERC721 / ERC1155
-          example: ERC1155
-        metadataURI:
-          type: string
-          description: URL of the original token JSON metadata
-          example: https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/592546216889508487156728840478578020756621952559332912422010991022550422
-        cachedMetadataURI:
-          type: string
-          description: URL of the cached token JSON metadata
-          example: https://static.fireblocks.io/nft/ad1bd7bf6b0ecb3495beb17d8540a513c96/metadata.json
-        media:
-          description: Media items extracted from metadata JSON
-          type: array
-          items:
-            $ref: '#/components/schemas/MediaEntityResponse'
+          description: Token's asset id
+          example: NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd
+          x-fb-entity: asset
         spam:
-          description: Token spam status
-          allOf:
-          - $ref: '#/components/schemas/SpamTokenResponse'
-        collection:
-          description: Parent collection information
-          allOf:
-          - $ref: '#/components/schemas/TokenCollectionResponse'
-        blockchainDescriptor:
-          type: string
-          enum:
-          - ETH
-          - ETH_TEST3
-          - ETH_TEST5
-          - ETH_TEST6
-          - POLYGON
-          - POLYGON_TEST_MUMBAI
-          - AMOY_POLYGON_TEST
-          - XTZ
-          - XTZ_TEST
-          - BASECHAIN_ETH
-          - BASECHAIN_ETH_TEST3
-          - BASECHAIN_ETH_TEST5
-          - ETHERLINK
-          - ETHERLINK_TEST
-          - MANTLE
-          - MANTLE_TEST
-          - GUN_GUNZILLA_TEST
-          - ETH_SONEIUM
-          - SONEIUM_MINATO_TEST
-          - IOTX_IOTEX
-        description:
-          description: Token's metadata description
-          type: string
-          example: This is MyNFT's description fetched from the metadata
-        name:
-          type: string
-          description: Token's metadata name
-          example: MyNFTName
+          type: boolean
+          description: Token's ownership new spam value
+          example: true
       required:
-      - id
-      - tokenId
-      - standard
-      - blockchainDescriptor
-    UpdateTokenOwnershipStatusDto:
-      type: object
-      properties:
-        status:
-          description: Token's status in Fireblocks
-          type: string
-          enum:
-          - LISTED
-          - ARCHIVED
-      required:
-      - status
-    UpdateTokensOwnershipSpamRequest:
-      type: array
-      items:
-        $ref: '#/components/schemas/TokenOwnershipSpamUpdatePayload'
-    UpdateTokensOwnershipStatusRequest:
-      type: array
-      items:
-        $ref: '#/components/schemas/TokenOwnershipStatusUpdatePayload'
+      - assetId
+      - spam
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http
@@ -1244,32 +1227,3 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
-        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
-    X-End-User-Wallet-Id:
-      name: X-End-User-Wallet-Id
-      in: header
-      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
-      required: false
-      schema:
-        type: string
-        format: uuid
-        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'

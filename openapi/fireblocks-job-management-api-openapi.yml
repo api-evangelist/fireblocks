@@ -1,0 +1,351 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Blockchains and Assets Approval Requests Job Management API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+tags:
+- name: Job Management
+paths:
+  /batch/jobs:
+    get:
+      operationId: getJobs
+      summary: Return a list of jobs belonging to tenant
+      description: Get an array of objects including all active, paused, canceled, and complete jobs in a workspace.
+      parameters:
+      - name: fromTime
+        description: Start of time range in ms since 1970
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: toTime
+        description: End of time range in ms since 1970
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: An array of jobs
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jobs'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Job Management
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<Jobs>> = fireblocks.jobManagement.getJobs(jobManagementApiGetJobsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<Job>>> response = fireblocks.jobManagement().getJobs(fromTime, toTime);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.job_management.get_jobs(from_time, to_time);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<Jobs>> = fireblocks.jobManagement.getJobs(jobManagementApiGetJobsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<Job>>> response = fireblocks.jobManagement().getJobs(fromTime, toTime);
+      - lang: Python
+        source: response = fireblocks.job_management.get_jobs(from_time, to_time);
+  /batch/{jobId}:
+    get:
+      operationId: getJob
+      summary: Get job details
+      description: Get an object describing the given job
+      parameters:
+      - in: path
+        required: true
+        name: jobId
+        description: The requested job id
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A JSON object that describes the job
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Job Management
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<Job>> = fireblocks.jobManagement.getJob(jobManagementApiGetJobRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Job>> response = fireblocks.jobManagement().getJob(jobId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.job_management.get_job(job_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<Job>> = fireblocks.jobManagement.getJob(jobManagementApiGetJobRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Job>> response = fireblocks.jobManagement().getJob(jobId);
+      - lang: Python
+        source: response = fireblocks.job_management.get_job(job_id);
+  /batch/{jobId}/pause:
+    post:
+      summary: Pause a job
+      description: Pause the given job, after the current task is done. A paused job can later be resumed by calling ‘continue’, or canceled.
+      operationId: pauseJob
+      parameters:
+      - in: path
+        required: true
+        name: jobId
+        description: The requested job id
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: paused successfully
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Job Management
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.jobManagement.pauseJob(jobManagementApiPauseJobRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.jobManagement().pauseJob(jobId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.job_management.pause_job(job_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.jobManagement.pauseJob(jobManagementApiPauseJobRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.jobManagement().pauseJob(jobId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.job_management.pause_job(job_id, idempotency_key);
+  /batch/{jobId}/continue:
+    post:
+      operationId: continueJob
+      summary: Continue a paused job
+      description: Continue the given paused job.
+      parameters:
+      - in: path
+        required: true
+        name: jobId
+        description: The requested job id
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: continued successfully
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Job Management
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.jobManagement.continueJob(jobManagementApiContinueJobRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.jobManagement().continueJob(jobId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.job_management.continue_job(job_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.jobManagement.continueJob(jobManagementApiContinueJobRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.jobManagement().continueJob(jobId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.job_management.continue_job(job_id, idempotency_key);
+  /batch/{jobId}/cancel:
+    post:
+      operationId: cancelJob
+      summary: Cancel a running job
+      description: Stop the given job immediately. If the job is in the ‘Active’ state, the job will be canceled after completing the current task. Vault accounts and Wallets that are already created will not be affected.
+      parameters:
+      - in: path
+        required: true
+        name: jobId
+        description: The requested job id
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: canceled successfully
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Job Management
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.jobManagement.cancelJob(jobManagementApiCancelJobRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.jobManagement().cancelJob(jobId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.job_management.cancel_job(job_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.jobManagement.cancelJob(jobManagementApiCancelJobRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.jobManagement().cancelJob(jobId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.job_management.cancel_job(job_id, idempotency_key);
+  /batch/{jobId}/tasks:
+    get:
+      operationId: getJobTasks
+      summary: Return a list of tasks for given job
+      description: Return a list of tasks for given job
+      parameters:
+      - in: path
+        required: true
+        name: jobId
+        description: The requested job id
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An array of tasks
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tasks'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Job Management
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<Tasks>> = fireblocks.jobManagement.getJobTasks(jobManagementApiGetJobTasksRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<Task>>> response = fireblocks.jobManagement().getJobTasks(jobId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.job_management.get_job_tasks(job_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<Tasks>> = fireblocks.jobManagement.getJobTasks(jobManagementApiGetJobTasksRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<Task>>> response = fireblocks.jobManagement().getJobTasks(jobId);
+      - lang: Python
+        source: response = fireblocks.job_management.get_job_tasks(job_id);
+components:
+  schemas:
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        type:
+          type: string
+        userId:
+          type: string
+        created:
+          type: number
+        updated:
+          type: number
+        state:
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        jobId:
+          type: string
+        type:
+          type: string
+        tenantId:
+          type: string
+        created:
+          type: number
+        updated:
+          type: number
+        state:
+          type: string
+    Jobs:
+      type: array
+      items:
+        $ref: '#/components/schemas/Job'
+    Tasks:
+      type: array
+      items:
+        $ref: '#/components/schemas/Task'
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

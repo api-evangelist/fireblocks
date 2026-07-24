@@ -1,8 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Fireblocks Tokenization API
-  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
-    platform to build your business on the blockchain.
+  title: Fireblocks Blockchains and Assets Approval Requests Tokenization API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
     - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
@@ -19,15 +18,14 @@ servers:
 - url: https://sandbox-api.fireblocks.io/v1
   description: Fireblocks Sandbox Environment Base URL
 security: []
+tags:
+- name: Tokenization
 paths:
   /tokenization/tokens:
     post:
       operationId: issueNewToken
       summary: Issue a new token
-      description: 'Facilitates the creation of a new token, supporting both EVM-based and Stellar/Ripple platforms. For EVM,
-        it deploys the corresponding contract template to the blockchain and links the token to the workspace. For Stellar/Ripple,
-        it links a newly created token directly to the workspace without deploying a contract. Returns the token link with
-        status "PENDING" until the token is deployed or "SUCCESS" if no deployment is needed.
+      description: 'Facilitates the creation of a new token, supporting both EVM-based and Stellar/Ripple platforms. For EVM, it deploys the corresponding contract template to the blockchain and links the token to the workspace. For Stellar/Ripple, it links a newly created token directly to the workspace without deploying a contract. Returns the token link with status "PENDING" until the token is deployed or "SUCCESS" if no deployment is needed.
 
         </br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor.'
       parameters:
@@ -47,8 +45,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<TokenLinkDto>> = fireblocks.tokenization.issueNewToken(tokenizationApiIssueNewTokenRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<TokenLinkDto>> response = fireblocks.tokenization().issueNewToken(createTokenRequestDto,
-            idempotencyKey);
+          code: CompletableFuture<ApiResponse<TokenLinkDto>> response = fireblocks.tokenization().issueNewToken(createTokenRequestDto, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.tokenization.issue_new_token(create_token_request_dto, idempotency_key);
@@ -72,8 +69,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<TokenLinkDto>> = fireblocks.tokenization.issueNewToken(tokenizationApiIssueNewTokenRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<TokenLinkDto>> response = fireblocks.tokenization().issueNewToken(createTokenRequestDto,
-          idempotencyKey);
+        source: CompletableFuture<ApiResponse<TokenLinkDto>> response = fireblocks.tokenization().issueNewToken(createTokenRequestDto, idempotencyKey);
       - lang: Python
         source: response = fireblocks.tokenization.issue_new_token(create_token_request_dto, idempotency_key);
     get:
@@ -115,8 +111,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<TokensPaginatedResponse>> = fireblocks.tokenization.getLinkedTokens(tokenizationApiGetLinkedTokensRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<TokensPaginatedResponse>> response = fireblocks.tokenization().getLinkedTokens(pageCursor,
-            pageSize, status);
+          code: CompletableFuture<ApiResponse<TokensPaginatedResponse>> response = fireblocks.tokenization().getLinkedTokens(pageCursor, pageSize, status);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.tokenization.get_linked_tokens(page_cursor, page_size, status);
@@ -136,8 +131,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<TokensPaginatedResponse>> = fireblocks.tokenization.getLinkedTokens(tokenizationApiGetLinkedTokensRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<TokensPaginatedResponse>> response = fireblocks.tokenization().getLinkedTokens(pageCursor,
-          pageSize, status);
+        source: CompletableFuture<ApiResponse<TokensPaginatedResponse>> response = fireblocks.tokenization().getLinkedTokens(pageCursor, pageSize, status);
       - lang: Python
         source: response = fireblocks.tokenization.get_linked_tokens(page_cursor, page_size, status);
   /tokenization/tokens/link:
@@ -186,8 +180,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<TokenLinkDto>> = fireblocks.tokenization.link(tokenizationApiLinkRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<TokenLinkDto>> response = fireblocks.tokenization().link(tokenLinkRequestDto,
-            idempotencyKey);
+          code: CompletableFuture<ApiResponse<TokenLinkDto>> response = fireblocks.tokenization().link(tokenLinkRequestDto, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.tokenization.link(token_link_request_dto, idempotency_key);
@@ -196,8 +189,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<TokenLinkDto>> = fireblocks.tokenization.link(tokenizationApiLinkRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<TokenLinkDto>> response = fireblocks.tokenization().link(tokenLinkRequestDto,
-          idempotencyKey);
+        source: CompletableFuture<ApiResponse<TokenLinkDto>> response = fireblocks.tokenization().link(tokenLinkRequestDto, idempotencyKey);
       - lang: Python
         source: response = fireblocks.tokenization.link(token_link_request_dto, idempotency_key);
   /tokenization/collections:
@@ -232,8 +224,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<CollectionLinkDto>> = fireblocks.tokenization.createNewCollection(tokenizationApiCreateNewCollectionRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<CollectionLinkDto>> response = fireblocks.tokenization().createNewCollection(collectionDeployRequestDto,
-            idempotencyKey);
+          code: CompletableFuture<ApiResponse<CollectionLinkDto>> response = fireblocks.tokenization().createNewCollection(collectionDeployRequestDto, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.tokenization.create_new_collection(collection_deploy_request_dto, idempotency_key);
@@ -242,8 +233,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<CollectionLinkDto>> = fireblocks.tokenization.createNewCollection(tokenizationApiCreateNewCollectionRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<CollectionLinkDto>> response = fireblocks.tokenization().createNewCollection(collectionDeployRequestDto,
-          idempotencyKey);
+        source: CompletableFuture<ApiResponse<CollectionLinkDto>> response = fireblocks.tokenization().createNewCollection(collectionDeployRequestDto, idempotencyKey);
       - lang: Python
         source: response = fireblocks.tokenization.create_new_collection(collection_deploy_request_dto, idempotency_key);
     get:
@@ -292,8 +282,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<GetLinkedCollectionsPaginatedResponse>> = fireblocks.tokenization.getLinkedCollections(tokenizationApiGetLinkedCollectionsRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<GetLinkedCollectionsPaginatedResponse>> response = fireblocks.tokenization().getLinkedCollections(pageCursor,
-            pageSize, status);
+          code: CompletableFuture<ApiResponse<GetLinkedCollectionsPaginatedResponse>> response = fireblocks.tokenization().getLinkedCollections(pageCursor, pageSize, status);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.tokenization.get_linked_collections(page_cursor, page_size, status);
@@ -302,8 +291,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<GetLinkedCollectionsPaginatedResponse>> = fireblocks.tokenization.getLinkedCollections(tokenizationApiGetLinkedCollectionsRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<GetLinkedCollectionsPaginatedResponse>> response = fireblocks.tokenization().getLinkedCollections(pageCursor,
-          pageSize, status);
+        source: CompletableFuture<ApiResponse<GetLinkedCollectionsPaginatedResponse>> response = fireblocks.tokenization().getLinkedCollections(pageCursor, pageSize, status);
       - lang: Python
         source: response = fireblocks.tokenization.get_linked_collections(page_cursor, page_size, status);
   /tokenization/collections/{id}:
@@ -430,8 +418,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<CollectionLinkDto>> = fireblocks.tokenization.fetchCollectionTokenDetails(tokenizationApiFetchCollectionTokenDetailsRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<CollectionLinkDto>> response = fireblocks.tokenization().fetchCollectionTokenDetails(id,
-            tokenId);
+          code: CompletableFuture<ApiResponse<CollectionLinkDto>> response = fireblocks.tokenization().fetchCollectionTokenDetails(id, tokenId);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.tokenization.fetch_collection_token_details(id, token_id);
@@ -440,8 +427,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<CollectionLinkDto>> = fireblocks.tokenization.fetchCollectionTokenDetails(tokenizationApiFetchCollectionTokenDetailsRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<CollectionLinkDto>> response = fireblocks.tokenization().fetchCollectionTokenDetails(id,
-          tokenId);
+        source: CompletableFuture<ApiResponse<CollectionLinkDto>> response = fireblocks.tokenization().fetchCollectionTokenDetails(id, tokenId);
       - lang: Python
         source: response = fireblocks.tokenization.fetch_collection_token_details(id, token_id);
   /tokenization/collections/{id}/tokens/mint:
@@ -483,8 +469,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<CollectionMintResponseDto>> = fireblocks.tokenization.mintCollectionToken(tokenizationApiMintCollectionTokenRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<CollectionMintResponseDto>> response = fireblocks.tokenization().mintCollectionToken(collectionMintRequestDto,
-            id, idempotencyKey);
+          code: CompletableFuture<ApiResponse<CollectionMintResponseDto>> response = fireblocks.tokenization().mintCollectionToken(collectionMintRequestDto, id, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.tokenization.mint_collection_token(collection_mint_request_dto, id, idempotency_key);
@@ -493,8 +478,7 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<CollectionMintResponseDto>> = fireblocks.tokenization.mintCollectionToken(tokenizationApiMintCollectionTokenRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<CollectionMintResponseDto>> response = fireblocks.tokenization().mintCollectionToken(collectionMintRequestDto,
-          id, idempotencyKey);
+        source: CompletableFuture<ApiResponse<CollectionMintResponseDto>> response = fireblocks.tokenization().mintCollectionToken(collectionMintRequestDto, id, idempotencyKey);
       - lang: Python
         source: response = fireblocks.tokenization.mint_collection_token(collection_mint_request_dto, id, idempotency_key);
   /tokenization/collections/{id}/tokens/burn:
@@ -536,8 +520,7 @@ paths:
           code: 'const response: Promise<FireblocksResponse<CollectionBurnResponseDto>> = fireblocks.tokenization.burnCollectionToken(tokenizationApiBurnCollectionTokenRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<CollectionBurnResponseDto>> response = fireblocks.tokenization().burnCollectionToken(collectionBurnRequestDto,
-            id, idempotencyKey);
+          code: CompletableFuture<ApiResponse<CollectionBurnResponseDto>> response = fireblocks.tokenization().burnCollectionToken(collectionBurnRequestDto, id, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
           code: response = fireblocks.tokenization.burn_collection_token(collection_burn_request_dto, id, idempotency_key);
@@ -546,16 +529,14 @@ paths:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<CollectionBurnResponseDto>> = fireblocks.tokenization.burnCollectionToken(tokenizationApiBurnCollectionTokenRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<CollectionBurnResponseDto>> response = fireblocks.tokenization().burnCollectionToken(collectionBurnRequestDto,
-          id, idempotencyKey);
+        source: CompletableFuture<ApiResponse<CollectionBurnResponseDto>> response = fireblocks.tokenization().burnCollectionToken(collectionBurnRequestDto, id, idempotencyKey);
       - lang: Python
         source: response = fireblocks.tokenization.burn_collection_token(collection_burn_request_dto, id, idempotency_key);
   /tokenization/tokens/{id}:
     delete:
       operationId: unlink
       summary: Unlink a token
-      description: 'Unlink a token. The token will be unlinked from the workspace. The token will not be deleted on chain
-        nor the refId, only the link to the workspace will be removed.
+      description: 'Unlink a token. The token will be unlinked from the workspace. The token will not be deleted on chain nor the refId, only the link to the workspace will be removed.
 
         </br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor.'
       parameters:
@@ -653,6 +634,214 @@ paths:
         source: response = fireblocks.tokenization.get_linked_token(id);
 components:
   schemas:
+    CollectionDeployRequestDto:
+      type: object
+      properties:
+        baseAssetId:
+          type: string
+          example: ETH
+          description: The blockchain base assetId
+        vaultAccountId:
+          type: string
+          example: '0'
+          description: The id of the vault account that initiated the request to issue the token
+        type:
+          allOf:
+          - $ref: '#/components/schemas/CollectionType'
+          example: NON_FUNGIBLE_TOKEN
+        name:
+          type: string
+          example: DigitalArtTokens
+          description: A string that represents the name of the collection
+        symbol:
+          type: string
+          example: DAT
+          description: A string that represents the symbol of the collection
+        adminAddress:
+          type: string
+          example: '0x5503766D27d1ED4525f5053222E18b29C38eDdB2'
+          description: The EVM address of the user that will be set as the admin user of the collection
+        displayName:
+          type: string
+          example: DigitalArtTokens
+          description: A string to display as a name of the collection
+      required:
+      - baseAssetId
+      - vaultAccountId
+      - type
+      - name
+      - symbol
+      - adminAddress
+    CollectionTokenMetadataDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Token's name
+          example: DigitalArtTokens
+        description:
+          type: string
+          description: Token's description
+          example: Digital representation of a piece of art
+        image:
+          type: string
+          description: Token's image URL
+          example: https://some_domain.com/image_filepath
+        animation_url:
+          type: string
+          description: Token's animation URL
+          example: https://some_domain.com/gif_filepath
+        external_url:
+          type: string
+          description: Token's external URL
+          example: https://some_domain.com/blob_filepath
+        attributes:
+          description: Token's metadata attributes
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionTokenMetadataAttributeDto'
+      required:
+      - name
+      - description
+    CollectionMintRequestDto:
+      type: object
+      properties:
+        vaultAccountId:
+          type: string
+          description: The id of the vault account that initiates the mint function.
+          example: '0'
+        to:
+          type: string
+          example: '0x5503766D27d1ED4525f5053222E18b29C38eDdB2'
+          description: 'The EVM address to mint to '
+        tokenId:
+          type: string
+          description: The token id, recommended to have numerical format and in sequential order
+          example: '1'
+        amount:
+          type: string
+          description: For ERC721, amount is optional or should always be 1 and for ERC1155, amount should be 1 or greater
+          example: '1'
+        metadataURI:
+          type: string
+          description: URL of metadata uploaded, skip uploading to IPFS if this field is provided with any value
+          example: ipfs://QmP4P6f7mDHzikhdwLBVSCxCPEgmjwcWSVBHbtSyfBYzBC
+        metadata:
+          description: Metadata to upload
+          example:
+            name: MYTOKEN
+            description: description of MYTOKEN
+          allOf:
+          - $ref: '#/components/schemas/CollectionTokenMetadataDto'
+      required:
+      - vaultAccountId
+      - to
+      - tokenId
+    CollectionLinkDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The collection id
+          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
+        status:
+          enum:
+          - PENDING
+          - COMPLETED
+          type: string
+          description: The collection status
+          example: COMPLETED
+        type:
+          allOf:
+          - $ref: '#/components/schemas/CollectionType'
+          example: NON_FUNGIBLE_TOKEN
+        displayName:
+          type: string
+          description: The display name of the collection. If was not provided, would be taken from the contract template
+          example: My Simple ERC721 Collection
+        collectionMetadata:
+          description: The collection's metadata
+          allOf:
+          - $ref: '#/components/schemas/CollectionMetadataDto'
+      required:
+      - id
+      - status
+      - type
+    CreateTokenRequestDto:
+      type: object
+      properties:
+        blockchainId:
+          type: string
+          example: B7QG017M
+          description: The id of the blockchain the request was initiated on
+        assetId:
+          type: string
+          example: ETH_TEST5
+          description: The base asset identifier of the blockchain you want to deploy to
+        vaultAccountId:
+          type: string
+          example: '0'
+          description: The id of the vault account that initiated the request to issue the token
+        createParams:
+          oneOf:
+          - $ref: '#/components/schemas/EVMTokenCreateParamsDto'
+          - $ref: '#/components/schemas/StellarRippleCreateParamsDto'
+          - $ref: '#/components/schemas/SolanaSimpleCreateParams'
+        displayName:
+          type: string
+        useGasless:
+          type: boolean
+          example: false
+          description: Indicates whether the token should be created in a gasless manner, utilizing the ERC-2771 standard. When set to true, the transaction will be relayed by a designated relayer. The workspace must be configured to use Fireblocks gasless relay.
+        fee:
+          type: string
+          description: Max fee amount for the write function transaction. interchangeable with the 'feeLevel' field
+          example: '2000'
+        feeLevel:
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          type: string
+          description: Fee level for the write function transaction. interchangeable with the 'fee' field
+          example: MEDIUM
+      required:
+      - vaultAccountId
+      - createParams
+    ParameterWithValue:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Some Name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The  internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+        value:
+          example: 'true'
+          description: The value of the parameter. can also be ParameterWithValue
+          type: string
+        functionValue:
+          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
+          allOf:
+          - $ref: '#/components/schemas/LeanAbiFunction'
+      required:
+      - name
+      - type
     AssetAlreadyExistHttpError:
       type: object
       properties:
@@ -668,6 +857,43 @@ components:
           type: string
           description: Short description of the HTTP error
           example: Conflict
+    CollectionBurnRequestDto:
+      type: object
+      properties:
+        vaultAccountId:
+          type: string
+          description: The id of the vault account that initiates the burn function
+          example: '0'
+        tokenId:
+          type: string
+          description: The token id
+          example: '1'
+        amount:
+          type: string
+          description: For ERC721, amount is optional or should always be 1 and for ERC1155, amount should be 1 or greater
+          example: '1'
+      required:
+      - vaultAccountId
+      - tokenId
+    CollectionType:
+      type: string
+      description: The type of collection
+      enum:
+      - NON_FUNGIBLE_TOKEN
+      - SEMI_FUNGIBLE_TOKEN
+    GetLinkedCollectionsPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/CollectionLinkDto'
+        next:
+          type: string
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+          nullable: true
     AssetMetadataDto:
       type: object
       properties:
@@ -721,382 +947,25 @@ components:
           example: 18
         vaultAccountId:
           type: string
-          description: The id of the vault account that initiated the request to issue the token. Will be empty if token was
-            issued outside of Fireblocks.
+          description: The id of the vault account that initiated the request to issue the token. Will be empty if token was issued outside of Fireblocks.
           example: '0'
       required:
       - assetId
-    CollectionBurnRequestDto:
-      type: object
-      properties:
-        vaultAccountId:
-          type: string
-          description: The id of the vault account that initiates the burn function
-          example: '0'
-        tokenId:
-          type: string
-          description: The token id
-          example: '1'
-        amount:
-          type: string
-          description: For ERC721, amount is optional or should always be 1 and for ERC1155, amount should be 1 or greater
-          example: '1'
-      required:
-      - vaultAccountId
-      - tokenId
-    CollectionBurnResponseDto:
-      type: object
-      properties:
-        txId:
-          type: string
-          description: Transaction Id for the burn operation
-          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
-      required:
-      - txId
-    CollectionDeployRequestDto:
-      type: object
-      properties:
-        baseAssetId:
-          type: string
-          example: ETH
-          description: The blockchain base assetId
-        vaultAccountId:
-          type: string
-          example: '0'
-          description: The id of the vault account that initiated the request to issue the token
-        type:
-          allOf:
-          - $ref: '#/components/schemas/CollectionType'
-          example: NON_FUNGIBLE_TOKEN
-        name:
-          type: string
-          example: DigitalArtTokens
-          description: A string that represents the name of the collection
-        symbol:
-          type: string
-          example: DAT
-          description: A string that represents the symbol of the collection
-        adminAddress:
-          type: string
-          example: '0x5503766D27d1ED4525f5053222E18b29C38eDdB2'
-          description: The EVM address of the user that will be set as the admin user of the collection
-        displayName:
-          type: string
-          example: DigitalArtTokens
-          description: A string to display as a name of the collection
-      required:
-      - baseAssetId
-      - vaultAccountId
-      - type
-      - name
-      - symbol
-      - adminAddress
-    CollectionLinkDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The collection id
-          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
-        status:
-          enum:
-          - PENDING
-          - COMPLETED
-          type: string
-          description: The collection status
-          example: COMPLETED
-        type:
-          allOf:
-          - $ref: '#/components/schemas/CollectionType'
-          example: NON_FUNGIBLE_TOKEN
-        displayName:
-          type: string
-          description: The display name of the collection. If was not provided, would be taken from the contract template
-          example: My Simple ERC721 Collection
-        collectionMetadata:
-          description: The collection's metadata
-          allOf:
-          - $ref: '#/components/schemas/CollectionMetadataDto'
-      required:
-      - id
-      - status
-      - type
-    CollectionMetadataDto:
-      type: object
-      properties:
-        fbCollectionId:
-          type: string
-          description: Fireblocks collection id
-          example: 911fe739f0d4d123c98fd366c3bed35c6e30c00e
-        name:
-          type: string
-          description: Collection name
-          example: Rarible
-        symbol:
-          type: string
-          description: Collection symbol
-          example: RARI
-        standard:
-          type: string
-          description: Collection contract standard
-          example: ERC721
-        blockchainDescriptor:
-          type: string
-          description: Collection's blockchain
-          example: ETH_TEST5
-        contractAddress:
-          type: string
-          description: Collection contract address
-          example: '0x1723017329a804564bC8d215496C89eaBf1F3211'
-      required:
-      - fbCollectionId
-      - blockchainDescriptor
-    CollectionMintRequestDto:
-      type: object
-      properties:
-        vaultAccountId:
-          type: string
-          description: The id of the vault account that initiates the mint function.
-          example: '0'
-        to:
-          type: string
-          example: '0x5503766D27d1ED4525f5053222E18b29C38eDdB2'
-          description: 'The EVM address to mint to '
-        tokenId:
-          type: string
-          description: The token id, recommended to have numerical format and in sequential order
-          example: '1'
-        amount:
-          type: string
-          description: For ERC721, amount is optional or should always be 1 and for ERC1155, amount should be 1 or greater
-          example: '1'
-        metadataURI:
-          type: string
-          description: URL of metadata uploaded, skip uploading to IPFS if this field is provided with any value
-          example: ipfs://QmP4P6f7mDHzikhdwLBVSCxCPEgmjwcWSVBHbtSyfBYzBC
-        metadata:
-          description: Metadata to upload
-          example:
-            name: MYTOKEN
-            description: description of MYTOKEN
-          allOf:
-          - $ref: '#/components/schemas/CollectionTokenMetadataDto'
-      required:
-      - vaultAccountId
-      - to
-      - tokenId
-    CollectionMintResponseDto:
-      type: object
-      properties:
-        txId:
-          type: string
-          description: Transaction Id for the mint operation
-          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
-      required:
-      - txId
-    CollectionTokenMetadataAttributeDto:
-      type: object
-      properties:
-        trait_type:
-          type: string
-          description: Name of the trait
-          example: project_start
-        value:
-          type: string
-          description: Value of the trait
-          example: 30102000
-        display_type:
-          type: string
-          description: A field indicating how you would like trait to be displayed
-          example: date
-      required:
-      - trait_type
-      - value
-    CollectionTokenMetadataDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Token's name
-          example: DigitalArtTokens
-        description:
-          type: string
-          description: Token's description
-          example: Digital representation of a piece of art
-        image:
-          type: string
-          description: Token's image URL
-          example: https://some_domain.com/image_filepath
-        animation_url:
-          type: string
-          description: Token's animation URL
-          example: https://some_domain.com/gif_filepath
-        external_url:
-          type: string
-          description: Token's external URL
-          example: https://some_domain.com/blob_filepath
-        attributes:
-          description: Token's metadata attributes
-          type: array
-          items:
-            $ref: '#/components/schemas/CollectionTokenMetadataAttributeDto'
-      required:
-      - name
-      - description
-    CollectionType:
-      type: string
-      description: The type of collection
-      enum:
-      - NON_FUNGIBLE_TOKEN
-      - SEMI_FUNGIBLE_TOKEN
-    ContractMetadataDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The deployed contract ID
-          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
-        baseAssetId:
-          type: string
-          description: The blockchain base asset ID
-          example: ETH
-        contractAddress:
-          type: string
-          description: The address of the token contract
-          example: '0x1234567890abcdef1234567890abcdef12345678'
-        contractTemplateId:
-          type: string
-          description: The contract template ID
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-        vaultAccountId:
-          type: string
-          description: The vault account ID that initiated the request to issue the token
-          example: '0'
-      required:
-      - id
-      - baseAssetId
-      - contractAddress
-      - contractTemplateId
-    CreateTokenRequestDto:
-      type: object
-      properties:
-        blockchainId:
-          type: string
-          example: B7QG017M
-          description: The id of the blockchain the request was initiated on
-        assetId:
-          type: string
-          example: ETH_TEST5
-          description: The base asset identifier of the blockchain you want to deploy to
-        vaultAccountId:
-          type: string
-          example: '0'
-          description: The id of the vault account that initiated the request to issue the token
-        createParams:
-          oneOf:
-          - $ref: '#/components/schemas/EVMTokenCreateParamsDto'
-          - $ref: '#/components/schemas/StellarRippleCreateParamsDto'
-          - $ref: '#/components/schemas/SolanaSimpleCreateParams'
-        displayName:
-          type: string
-        useGasless:
-          type: boolean
-          example: false
-          description: Indicates whether the token should be created in a gasless manner, utilizing the ERC-2771 standard.
-            When set to true, the transaction will be relayed by a designated relayer. The workspace must be configured to
-            use Fireblocks gasless relay.
-        fee:
-          type: string
-          description: Max fee amount for the write function transaction. interchangeable with the 'feeLevel' field
-          example: '2000'
-        feeLevel:
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          type: string
-          description: Fee level for the write function transaction. interchangeable with the 'fee' field
-          example: MEDIUM
-      required:
-      - vaultAccountId
-      - createParams
-    EVMTokenCreateParamsDto:
-      type: object
-      properties:
-        contractId:
-          type: string
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-          description: The id of the contract template that will be used to create the token
-        deployFunctionParams:
-          example:
-          - internalType: string
-            name: name
-            type: string
-            value: name
-          - internalType: string
-            name: symbol
-            type: string
-            value: symbol
-          - components:
-            - internalType: bool
-              name: _isMintable
-              type: bool
-            internalType: struct MyStruct
-            name: customConfigProps
-            type: tuple
-            value:
-            - internalType: bool
-              name: _isMintable
-              type: bool
-              value: false
-          description: The deploy function parameters and values of the contract template
-          type: array
-          items:
-            $ref: '#/components/schemas/ParameterWithValue'
-      required:
-      - contractId
-    GetLinkedCollectionsPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/CollectionLinkDto'
-        next:
-          type: string
-          description: The ID of the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-          nullable: true
-    LeanAbiFunction:
-      type: object
-      properties:
-        name:
-          type: string
-          example: initialize
-          description: The function name
-        inputs:
-          description: The function inputs
-          type: array
-          items:
-            $ref: '#/components/schemas/ParameterWithValue'
-      required:
-      - inputs
-    NotFoundException:
+    TokenLinkExistsHttpError:
       type: object
       properties:
         statusCode:
           type: integer
           format: int32
           description: HTTP status code
-          example: 404
+          example: 409
         message:
           type: string
           description: Error message
         error:
           type: string
           description: Short description of the HTTP error
-          example: Not Found
+          example: Conflict
     Parameter:
       type: object
       properties:
@@ -1118,82 +987,10 @@ components:
           description: The type of the parameter as it appears in the ABI
         components:
           type: array
-          description: "In case it\u2019s a struct, it will hold the struct data"
+          description: In case it’s a struct, it will hold the struct data
       required:
       - name
       - type
-    ParameterWithValue:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Some Name
-          description: The name of the parameter as it appears in the ABI
-        description:
-          type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
-          type: string
-          example: string
-          description: The  internal type of the parameter as it appears in the ABI
-        type:
-          type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
-          type: array
-          items:
-            $ref: '#/components/schemas/Parameter'
-        value:
-          example: 'true'
-          description: The value of the parameter. can also be ParameterWithValue
-          type: string
-        functionValue:
-          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
-          allOf:
-          - $ref: '#/components/schemas/LeanAbiFunction'
-      required:
-      - name
-      - type
-    SolanaSimpleCreateParams:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the token or asset being created.
-          example: SolanaToken
-        symbol:
-          type: string
-          description: The symbol for the token, typically an abbreviated representation.
-          example: SOL
-        decimals:
-          type: integer
-          description: The number of decimal places the token supports (e.g., 9 for typical Solana tokens).
-          example: 9
-      required:
-      - name
-      - symbol
-      - decimals
-    StellarRippleCreateParamsDto:
-      type: object
-      properties:
-        symbol:
-          type: string
-          example: MyUSDT
-          description: The symbol of the token
-        name:
-          type: string
-          example: My USD Tether
-          description: The name of the token
-        issuerAddress:
-          type: string
-          example: rnDV4JiwgRNhudPY2sm65AzECpRXaasL4r
-          description: The address of the issuer of this token. Will be part of the identifier of this token on chain.
-      required:
-      - symbol
-      - name
-      - issuerAddress
     TokenLinkDto:
       type: object
       properties:
@@ -1234,21 +1031,202 @@ components:
       required:
       - id
       - status
-    TokenLinkExistsHttpError:
+    EVMTokenCreateParamsDto:
+      type: object
+      properties:
+        contractId:
+          type: string
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+          description: The id of the contract template that will be used to create the token
+        deployFunctionParams:
+          example:
+          - internalType: string
+            name: name
+            type: string
+            value: name
+          - internalType: string
+            name: symbol
+            type: string
+            value: symbol
+          - components:
+            - internalType: bool
+              name: _isMintable
+              type: bool
+            internalType: struct MyStruct
+            name: customConfigProps
+            type: tuple
+            value:
+            - internalType: bool
+              name: _isMintable
+              type: bool
+              value: false
+          description: The deploy function parameters and values of the contract template
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
+      required:
+      - contractId
+    NotFoundException:
       type: object
       properties:
         statusCode:
           type: integer
           format: int32
           description: HTTP status code
-          example: 409
+          example: 404
         message:
           type: string
           description: Error message
         error:
           type: string
           description: Short description of the HTTP error
-          example: Conflict
+          example: Not Found
+    StellarRippleCreateParamsDto:
+      type: object
+      properties:
+        symbol:
+          type: string
+          example: MyUSDT
+          description: The symbol of the token
+        name:
+          type: string
+          example: My USD Tether
+          description: The name of the token
+        issuerAddress:
+          type: string
+          example: rnDV4JiwgRNhudPY2sm65AzECpRXaasL4r
+          description: The address of the issuer of this token. Will be part of the identifier of this token on chain.
+      required:
+      - symbol
+      - name
+      - issuerAddress
+    ContractMetadataDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The deployed contract ID
+          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
+        baseAssetId:
+          type: string
+          description: The blockchain base asset ID
+          example: ETH
+        contractAddress:
+          type: string
+          description: The address of the token contract
+          example: '0x1234567890abcdef1234567890abcdef12345678'
+        contractTemplateId:
+          type: string
+          description: The contract template ID
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        vaultAccountId:
+          type: string
+          description: The vault account ID that initiated the request to issue the token
+          example: '0'
+      required:
+      - id
+      - baseAssetId
+      - contractAddress
+      - contractTemplateId
+    CollectionTokenMetadataAttributeDto:
+      type: object
+      properties:
+        trait_type:
+          type: string
+          description: Name of the trait
+          example: project_start
+        value:
+          type: string
+          description: Value of the trait
+          example: 30102000
+        display_type:
+          type: string
+          description: A field indicating how you would like trait to be displayed
+          example: date
+      required:
+      - trait_type
+      - value
+    CollectionMintResponseDto:
+      type: object
+      properties:
+        txId:
+          type: string
+          description: Transaction Id for the mint operation
+          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
+      required:
+      - txId
+    SolanaSimpleCreateParams:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the token or asset being created.
+          example: SolanaToken
+        symbol:
+          type: string
+          description: The symbol for the token, typically an abbreviated representation.
+          example: SOL
+        decimals:
+          type: integer
+          description: The number of decimal places the token supports (e.g., 9 for typical Solana tokens).
+          example: 9
+      required:
+      - name
+      - symbol
+      - decimals
+    CollectionMetadataDto:
+      type: object
+      properties:
+        fbCollectionId:
+          type: string
+          description: Fireblocks collection id
+          example: 911fe739f0d4d123c98fd366c3bed35c6e30c00e
+        name:
+          type: string
+          description: Collection name
+          example: Rarible
+        symbol:
+          type: string
+          description: Collection symbol
+          example: RARI
+        standard:
+          type: string
+          description: Collection contract standard
+          example: ERC721
+        blockchainDescriptor:
+          type: string
+          description: Collection's blockchain
+          example: ETH_TEST5
+        contractAddress:
+          type: string
+          description: Collection contract address
+          example: '0x1723017329a804564bC8d215496C89eaBf1F3211'
+      required:
+      - fbCollectionId
+      - blockchainDescriptor
+    LeanAbiFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: initialize
+          description: The function name
+        inputs:
+          description: The function inputs
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
+      required:
+      - inputs
+    CollectionBurnResponseDto:
+      type: object
+      properties:
+        txId:
+          type: string
+          description: Transaction Id for the burn operation
+          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
+      required:
+      - txId
     TokenLinkRequestDto:
       type: object
       properties:
@@ -1262,8 +1240,7 @@ components:
           description: The type of token being linked
         refId:
           type: string
-          description: "The Fireblocks' token link reference id. For example, 'BQ5R_BDESC_ABC' if it's a fungible \n\t\t\t\
-            \t\tasset"
+          description: "The Fireblocks' token link reference id. For example, 'BQ5R_BDESC_ABC' if it's a fungible \n\t\t\t\t\tasset"
           example: USDC_ETH_TEST5_1XF5
         displayName:
           type: string
@@ -1294,34 +1271,6 @@ components:
           nullable: true
       required:
       - data
-  securitySchemes:
-    bearerTokenAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: X-API-Key
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
-        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
-    X-End-User-Wallet-Id:
-      name: X-End-User-Wallet-Id
-      in: header
-      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
-      required: false
-      schema:
-        type: string
-        format: uuid
-        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
   responses:
     Error:
       description: Error Response
@@ -1332,3 +1281,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
