@@ -1,0 +1,707 @@
+{
+  "info": {
+    "_postman_id": "dd40703d-07ec-4dd7-8080-9234405609a6",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Policy Editor V2 (Beta) API",
+    "description": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:40:15.000Z",
+    "updatedAt": "2026-07-28T01:40:15.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-dd40703d-07ec-4dd7-8080-9234405609a6"
+  },
+  "item": [
+    {
+      "name": "policy",
+      "item": [
+        {
+          "name": "active_policy",
+          "item": [
+            {
+              "name": "Get the active policy and its validation by policy type",
+              "id": "5537dd55-919a-4619-9d71-4f5bb3f382bb",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/policy/active_policy?policyType=AML_CHAINALYSIS_V2_SCREENING",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "policy",
+                    "active_policy"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT).",
+                      "key": "policyType",
+                      "value": "AML_CHAINALYSIS_V2_SCREENING"
+                    }
+                  ]
+                },
+                "description": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nReturns the active policy and its validation for a specific policy type.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+              },
+              "response": [
+                {
+                  "id": "39bd8498-07a7-4d7f-8a98-cb02078a2544",
+                  "name": "A policy object with validation",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/policy/active_policy?policyType=AML_CHAINALYSIS_V2_SCREENING",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "policy",
+                        "active_policy"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT).",
+                          "key": "policyType",
+                          "value": "AML_CHAINALYSIS_V2_SCREENING"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"policy\": {\n    \"rules\": [\n      {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"DEPLOYMENT\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"EXCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"UNKNOWN\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"NETWORK_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"ONE_TIME_ADDRESS\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"CONNECTED_ACCOUNT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"FIAT_ACCOUNT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"verdict\": {\n          \"action\": \"BLOCK\",\n          \"approvers\": {\n            \"canInitiatorApprove\": \"<boolean>\",\n            \"operator\": \"OR\",\n            \"allowOperatorAsAuthorizer\": \"<boolean>\",\n            \"approvalGroups\": [\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              },\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              }\n            ]\n          },\n          \"designatedSigners\": {\n            \"type\": \"SINGLE\",\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"groups\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        \"subType\": \"UPGRADE\",\n        \"destination\": {\n          \"type\": \"END_USER_WALLET\",\n          \"operator\": \"EXCLUDES\",\n          \"addressType\": \"ALL\",\n          \"subType\": [\n            {\n              \"type\": \"END_USER_WALLET\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"INTERNAL\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"CONNECTED_ACCOUNT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"UNKNOWN\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"EXCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"EXTERNAL\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"DAPP_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"UNMANAGED\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"DAPP_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"SOURCE\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"<string>\",\n            \"max\": \"<string>\"\n          },\n          \"timePeriod\": {\n            \"seconds\": \"<string>\",\n            \"initiator\": \"ACROSS_ALL_MATCHES\",\n            \"source\": \"ACROSS_ALL_MATCHES\",\n            \"destination\": \"PER_SINGLE_MATCH\"\n          },\n          \"currency\": \"NATIVE\"\n        },\n        \"amount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"externalDescriptor\": \"<string>\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": \"<boolean>\",\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"INBOUND\",\n          \"provider\": \"ELLIPTIC_HOLISTIC\",\n          \"riskRating\": \"MEDIUM\",\n          \"riskScore\": \"<string>\",\n          \"exposureType\": \"INDIRECT\",\n          \"category\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"name\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"categoryId\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"status\": \"FAILED\",\n          \"sourceAddress\": \"<string>\",\n          \"destAddress\": \"<string>\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"EXCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"EXCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"baseAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ],\n          \"partial\": \"<boolean>\"\n        },\n        \"index\": \"<number>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"TRANSFER\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"MULTIPLE_VENUES\",\n          \"operator\": \"EXCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"INTERNAL\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"OEC_PARTNER\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"NETWORK_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"ANY\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"verdict\": {\n          \"action\": \"FREEZE\",\n          \"approvers\": {\n            \"canInitiatorApprove\": \"<boolean>\",\n            \"operator\": \"OR\",\n            \"allowOperatorAsAuthorizer\": \"<boolean>\",\n            \"approvalGroups\": [\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              },\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              }\n            ]\n          },\n          \"designatedSigners\": {\n            \"type\": \"MULTIPLE\",\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"groups\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        \"subType\": \"TR_NOTABENE_SCREENING\",\n        \"destination\": {\n          \"type\": \"END_USER_WALLET\",\n          \"operator\": \"INCLUDES\",\n          \"addressType\": \"OEC_PARTNER\",\n          \"subType\": [\n            {\n              \"type\": \"OEC_PARTNER\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"SRC_DST_NA\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"CONNECTED_ACCOUNT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"FIAT_ACCOUNT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"OEC_PARTNER\",\n          \"operator\": \"EXCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"CONNECTED_ACCOUNT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"ANY\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"ONE_TIME_ADDRESS\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"VAULT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"SOURCE\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"<string>\",\n            \"max\": \"<string>\"\n          },\n          \"timePeriod\": {\n            \"seconds\": \"<string>\",\n            \"initiator\": \"ACROSS_ALL_MATCHES\",\n            \"source\": \"PER_SINGLE_MATCH\",\n            \"destination\": \"PER_SINGLE_MATCH\"\n          },\n          \"currency\": \"EUR\"\n        },\n        \"amount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"externalDescriptor\": \"<string>\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": \"<boolean>\",\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"INBOUND\",\n          \"provider\": \"ELLIPTIC_HOLISTIC\",\n          \"riskRating\": \"ANY\",\n          \"riskScore\": \"<string>\",\n          \"exposureType\": \"INDIRECT\",\n          \"category\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"name\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"categoryId\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"status\": \"CANCELED\",\n          \"sourceAddress\": \"<string>\",\n          \"destAddress\": \"<string>\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"EXCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"baseAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ],\n          \"partial\": \"<boolean>\"\n        },\n        \"index\": \"<number>\"\n      }\n    ],\n    \"metadata\": {\n      \"policyType\": \"UPGRADE\",\n      \"editedBy\": \"<string>\",\n      \"editedAt\": \"<string>\",\n      \"publishedBy\": \"<string>\",\n      \"publishedAt\": \"<string>\"\n    }\n  },\n  \"validation\": {\n    \"status\": \"<string>\",\n    \"checkResult\": {\n      \"errors\": \"<number>\",\n      \"results\": [\n        {\n          \"index\": \"<number>\",\n          \"status\": \"failure\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"designatedSigners\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"authorizationGroups\"\n            }\n          ]\n        },\n        {\n          \"index\": \"<number>\",\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"operators\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"contractMethods\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:15.000Z",
+                  "updatedAt": "2026-07-28T01:40:15.000Z",
+                  "uid": "35240-39bd8498-07a7-4d7f-8a98-cb02078a2544"
+                },
+                {
+                  "id": "c683c8bb-e5b4-40af-98f8-89ca1df6b4c9",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/policy/active_policy?policyType=AML_CHAINALYSIS_V2_SCREENING",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "policy",
+                        "active_policy"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT).",
+                          "key": "policyType",
+                          "value": "AML_CHAINALYSIS_V2_SCREENING"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<number>\"\n}",
+                  "createdAt": "2026-07-28T01:40:15.000Z",
+                  "updatedAt": "2026-07-28T01:40:15.000Z",
+                  "uid": "35240-c683c8bb-e5b4-40af-98f8-89ca1df6b4c9"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:15.000Z",
+              "updatedAt": "2026-07-28T01:40:15.000Z",
+              "uid": "35240-5537dd55-919a-4619-9d71-4f5bb3f382bb"
+            }
+          ],
+          "id": "2bb1b795-9cf5-4026-9a9d-70e5064a9f2d",
+          "createdAt": "2026-07-28T01:40:15.000Z",
+          "updatedAt": "2026-07-28T01:40:15.000Z",
+          "uid": "35240-2bb1b795-9cf5-4026-9a9d-70e5064a9f2d"
+        },
+        {
+          "name": "draft",
+          "item": [
+            {
+              "name": "Get the active draft by policy type",
+              "id": "bf36241c-6b3a-409d-a508-2b43ddcb0fa0",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/policy/draft?policyType=AML_CHAINALYSIS_V2_SCREENING",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "policy",
+                    "draft"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT).",
+                      "key": "policyType",
+                      "value": "AML_CHAINALYSIS_V2_SCREENING"
+                    }
+                  ]
+                },
+                "description": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nReturns the active draft and its validation for a specific policy type.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+              },
+              "response": [
+                {
+                  "id": "969ef253-ad0c-4383-90b7-46022bb72795",
+                  "name": "A draft validation response object",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/policy/draft?policyType=AML_CHAINALYSIS_V2_SCREENING",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "policy",
+                        "draft"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT).",
+                          "key": "policyType",
+                          "value": "AML_CHAINALYSIS_V2_SCREENING"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"draftResponse\": {\n    \"draftId\": \"<string>\",\n    \"status\": \"<string>\",\n    \"rules\": [\n      {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"CONTRACT_CALL\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"END_USER_WALLET\",\n          \"operator\": \"EXCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"INTERNAL\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"INTERNAL\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"VAULT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"NETWORK_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"verdict\": {\n          \"action\": \"CANCEL\",\n          \"approvers\": {\n            \"canInitiatorApprove\": \"<boolean>\",\n            \"operator\": \"OR\",\n            \"allowOperatorAsAuthorizer\": \"<boolean>\",\n            \"approvalGroups\": [\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              },\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              }\n            ]\n          },\n          \"designatedSigners\": {\n            \"type\": \"SINGLE\",\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"groups\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        \"subType\": \"BURN\",\n        \"destination\": {\n          \"type\": \"CONNECTED_ACCOUNT\",\n          \"operator\": \"EXCLUDES\",\n          \"addressType\": \"OEC_PARTNER\",\n          \"subType\": [\n            {\n              \"type\": \"ONE_TIME_ADDRESS\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"GLOBAL_WHITELIST\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"MULTIPLE_VENUES\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"DAPP_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"DAPP_CONNECTION\",\n          \"operator\": \"EXCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"CONTRACT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"OEC_PARTNER\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"CONNECTED_ACCOUNT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"GLOBAL_WHITELIST\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"<string>\",\n            \"max\": \"<string>\"\n          },\n          \"timePeriod\": {\n            \"seconds\": \"<string>\",\n            \"initiator\": \"PER_SINGLE_MATCH\",\n            \"source\": \"PER_SINGLE_MATCH\",\n            \"destination\": \"ACROSS_ALL_MATCHES\"\n          },\n          \"currency\": \"NATIVE\"\n        },\n        \"amount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"externalDescriptor\": \"<string>\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": \"<boolean>\",\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"*\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"INBOUND\",\n          \"provider\": \"CHAINALYSIS_V2\",\n          \"riskRating\": \"HIGH\",\n          \"riskScore\": \"<string>\",\n          \"exposureType\": \"DIRECT\",\n          \"category\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"name\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"categoryId\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"status\": \"PENDING\",\n          \"sourceAddress\": \"<string>\",\n          \"destAddress\": \"<string>\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"EXCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"baseAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ],\n          \"partial\": \"<boolean>\"\n        },\n        \"index\": \"<number>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"TR_NOTABENE_SCREENING\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"EXCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"MULTIPLE_VENUES\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"FIAT_ACCOUNT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"UNMANAGED\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"CONTRACT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"ONE_TIME_ADDRESS\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"verdict\": {\n          \"action\": \"FREEZE\",\n          \"approvers\": {\n            \"canInitiatorApprove\": \"<boolean>\",\n            \"operator\": \"OR\",\n            \"allowOperatorAsAuthorizer\": \"<boolean>\",\n            \"approvalGroups\": [\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              },\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              }\n            ]\n          },\n          \"designatedSigners\": {\n            \"type\": \"INITIATOR\",\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"groups\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        \"subType\": \"BURN\",\n        \"destination\": {\n          \"type\": \"INTERNAL\",\n          \"operator\": \"EXCLUDES\",\n          \"addressType\": \"ALL\",\n          \"subType\": [\n            {\n              \"type\": \"END_USER_WALLET\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"*\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"NETWORK_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"NETWORK_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"NETWORK_CONNECTION\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"ANY\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"CONTRACT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"EXCHANGE\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"DAPP_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"<string>\",\n            \"max\": \"<string>\"\n          },\n          \"timePeriod\": {\n            \"seconds\": \"<string>\",\n            \"initiator\": \"PER_SINGLE_MATCH\",\n            \"source\": \"PER_SINGLE_MATCH\",\n            \"destination\": \"PER_SINGLE_MATCH\"\n          },\n          \"currency\": \"NATIVE\"\n        },\n        \"amount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"externalDescriptor\": \"<string>\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": \"<boolean>\",\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"ANY\",\n          \"provider\": \"ELLIPTIC_HOLISTIC\",\n          \"riskRating\": \"SEVERE\",\n          \"riskScore\": \"<string>\",\n          \"exposureType\": \"ANY\",\n          \"category\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"name\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"categoryId\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"status\": \"FAILED\",\n          \"sourceAddress\": \"<string>\",\n          \"destAddress\": \"<string>\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"EXCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"baseAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ],\n          \"partial\": \"<boolean>\"\n        },\n        \"index\": \"<number>\"\n      }\n    ],\n    \"metadata\": {\n      \"policyType\": \"TR_NOTABENE_SCREENING\",\n      \"editedBy\": \"<string>\",\n      \"editedAt\": \"<string>\",\n      \"publishedBy\": \"<string>\",\n      \"publishedAt\": \"<string>\"\n    }\n  },\n  \"validation\": {\n    \"status\": \"<string>\",\n    \"checkResult\": {\n      \"errors\": \"<number>\",\n      \"results\": [\n        {\n          \"index\": \"<number>\",\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"amountAggregation\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"contractMethods\"\n            }\n          ]\n        },\n        {\n          \"index\": \"<number>\",\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"contractMethods\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"operators\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:15.000Z",
+                  "updatedAt": "2026-07-28T01:40:15.000Z",
+                  "uid": "35240-969ef253-ad0c-4383-90b7-46022bb72795"
+                },
+                {
+                  "id": "de5b2db1-301e-4274-bcb9-c13dceea9407",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/policy/draft?policyType=AML_CHAINALYSIS_V2_SCREENING",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "policy",
+                        "draft"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT).",
+                          "key": "policyType",
+                          "value": "AML_CHAINALYSIS_V2_SCREENING"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<number>\"\n}",
+                  "createdAt": "2026-07-28T01:40:15.000Z",
+                  "updatedAt": "2026-07-28T01:40:15.000Z",
+                  "uid": "35240-de5b2db1-301e-4274-bcb9-c13dceea9407"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:15.000Z",
+              "updatedAt": "2026-07-28T01:40:15.000Z",
+              "uid": "35240-bf36241c-6b3a-409d-a508-2b43ddcb0fa0"
+            },
+            {
+              "name": "Update the draft with a new set of rules by policy types",
+              "id": "e032592c-6d31-4239-b0f6-f730e2f973f5",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policyTypes\": [\n    \"ORDER\",\n    \"AML_CHAINALYSIS_V2_POST_SCREENING\"\n  ],\n  \"rules\": [\n    {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"TR_NOTABENE_SCREENING\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"DAPP_CONNECTION\",\n        \"operator\": \"EXCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"FIAT_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"EXCHANGE\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"END_USER_WALLET\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": \"<boolean>\",\n          \"operator\": \"OR\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"approvalGroups\": [\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"INITIATOR\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"groups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      },\n      \"subType\": \"AML_ELLIPTIC_HOLISTIC_SCREENING\",\n      \"destination\": {\n        \"type\": \"END_USER_WALLET\",\n        \"operator\": \"EXCLUDES\",\n        \"addressType\": \"OEC_PARTNER\",\n        \"subType\": [\n          {\n            \"type\": \"UNKNOWN\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"END_USER_WALLET\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"CONTRACT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"NETWORK_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"account\": {\n        \"type\": \"DAPP_CONNECTION\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"ONE_TIME_ADDRESS\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"FIAT_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"MULTIPLE_VENUES\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"EXTERNAL\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"<string>\",\n          \"initiator\": \"ACROSS_ALL_MATCHES\",\n          \"source\": \"PER_SINGLE_MATCH\",\n          \"destination\": \"ACROSS_ALL_MATCHES\"\n        },\n        \"currency\": \"NATIVE\"\n      },\n      \"amount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"externalDescriptor\": \"<string>\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": \"<boolean>\",\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"INBOUND\",\n        \"provider\": \"ELLIPTIC\",\n        \"riskRating\": \"SEVERE\",\n        \"riskScore\": \"<string>\",\n        \"exposureType\": \"INDIRECT\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"COMPLETED\",\n        \"sourceAddress\": \"<string>\",\n        \"destAddress\": \"<string>\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"baseAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          \"<number>\",\n          \"<number>\"\n        ],\n        \"partial\": \"<boolean>\"\n      },\n      \"index\": \"<number>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"PROGRAM_CALL\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"*\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"FIAT_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"EXCHANGE\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": \"<boolean>\",\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"approvalGroups\": [\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"SINGLE\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"groups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      },\n      \"subType\": \"ORDER\",\n      \"destination\": {\n        \"type\": \"CONTRACT\",\n        \"operator\": \"INCLUDES\",\n        \"addressType\": \"*\",\n        \"subType\": [\n          {\n            \"type\": \"UNMANAGED\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"OEC_PARTNER\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"SRC_DST_NA\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"CONNECTED_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"account\": {\n        \"type\": \"OEC_PARTNER\",\n        \"operator\": \"EXCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"ONE_TIME_ADDRESS\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"CONNECTED_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"ONE_TIME_ADDRESS\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"END_USER_WALLET\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"<string>\",\n          \"initiator\": \"PER_SINGLE_MATCH\",\n          \"source\": \"ACROSS_ALL_MATCHES\",\n          \"destination\": \"PER_SINGLE_MATCH\"\n        },\n        \"currency\": \"EUR\"\n      },\n      \"amount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"externalDescriptor\": \"<string>\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": \"<boolean>\",\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"OUTBOUND\",\n        \"provider\": \"CHAINALYSIS\",\n        \"riskRating\": \"LOW\",\n        \"riskScore\": \"<string>\",\n        \"exposureType\": \"ANY\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"CANCELED\",\n        \"sourceAddress\": \"<string>\",\n        \"destAddress\": \"<string>\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"baseAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          \"<number>\",\n          \"<number>\"\n        ],\n        \"partial\": \"<boolean>\"\n      },\n      \"index\": \"<number>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/policy/draft",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "policy",
+                    "draft"
+                  ]
+                },
+                "description": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nUpdates the draft and returns its validation for specific policy types.  \n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n"
+              },
+              "response": [
+                {
+                  "id": "e5b55499-ab6b-4f13-84e9-d798fae2db5b",
+                  "name": "A draft validation response object",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"policyTypes\": [\n    \"ORDER\",\n    \"AML_CHAINALYSIS_V2_POST_SCREENING\"\n  ],\n  \"rules\": [\n    {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"TR_NOTABENE_SCREENING\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"DAPP_CONNECTION\",\n        \"operator\": \"EXCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"FIAT_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"EXCHANGE\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"END_USER_WALLET\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": \"<boolean>\",\n          \"operator\": \"OR\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"approvalGroups\": [\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"INITIATOR\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"groups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      },\n      \"subType\": \"AML_ELLIPTIC_HOLISTIC_SCREENING\",\n      \"destination\": {\n        \"type\": \"END_USER_WALLET\",\n        \"operator\": \"EXCLUDES\",\n        \"addressType\": \"OEC_PARTNER\",\n        \"subType\": [\n          {\n            \"type\": \"UNKNOWN\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"END_USER_WALLET\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"CONTRACT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"NETWORK_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"account\": {\n        \"type\": \"DAPP_CONNECTION\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"ONE_TIME_ADDRESS\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"FIAT_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"MULTIPLE_VENUES\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"EXTERNAL\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"<string>\",\n          \"initiator\": \"ACROSS_ALL_MATCHES\",\n          \"source\": \"PER_SINGLE_MATCH\",\n          \"destination\": \"ACROSS_ALL_MATCHES\"\n        },\n        \"currency\": \"NATIVE\"\n      },\n      \"amount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"externalDescriptor\": \"<string>\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": \"<boolean>\",\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"INBOUND\",\n        \"provider\": \"ELLIPTIC\",\n        \"riskRating\": \"SEVERE\",\n        \"riskScore\": \"<string>\",\n        \"exposureType\": \"INDIRECT\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"COMPLETED\",\n        \"sourceAddress\": \"<string>\",\n        \"destAddress\": \"<string>\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"baseAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          \"<number>\",\n          \"<number>\"\n        ],\n        \"partial\": \"<boolean>\"\n      },\n      \"index\": \"<number>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"PROGRAM_CALL\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"*\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"FIAT_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"EXCHANGE\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": \"<boolean>\",\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"approvalGroups\": [\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"SINGLE\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"groups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      },\n      \"subType\": \"ORDER\",\n      \"destination\": {\n        \"type\": \"CONTRACT\",\n        \"operator\": \"INCLUDES\",\n        \"addressType\": \"*\",\n        \"subType\": [\n          {\n            \"type\": \"UNMANAGED\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"OEC_PARTNER\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"SRC_DST_NA\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"CONNECTED_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"account\": {\n        \"type\": \"OEC_PARTNER\",\n        \"operator\": \"EXCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"ONE_TIME_ADDRESS\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"CONNECTED_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"ONE_TIME_ADDRESS\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"END_USER_WALLET\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"<string>\",\n          \"initiator\": \"PER_SINGLE_MATCH\",\n          \"source\": \"ACROSS_ALL_MATCHES\",\n          \"destination\": \"PER_SINGLE_MATCH\"\n        },\n        \"currency\": \"EUR\"\n      },\n      \"amount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"externalDescriptor\": \"<string>\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": \"<boolean>\",\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"OUTBOUND\",\n        \"provider\": \"CHAINALYSIS\",\n        \"riskRating\": \"LOW\",\n        \"riskScore\": \"<string>\",\n        \"exposureType\": \"ANY\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"CANCELED\",\n        \"sourceAddress\": \"<string>\",\n        \"destAddress\": \"<string>\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"baseAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          \"<number>\",\n          \"<number>\"\n        ],\n        \"partial\": \"<boolean>\"\n      },\n      \"index\": \"<number>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/policy/draft",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "policy",
+                        "draft"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"draftResponse\": {\n    \"draftId\": \"<string>\",\n    \"status\": \"<string>\",\n    \"rules\": [\n      {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"CONTRACT_CALL\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"END_USER_WALLET\",\n          \"operator\": \"EXCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"INTERNAL\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"INTERNAL\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"VAULT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"NETWORK_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"verdict\": {\n          \"action\": \"CANCEL\",\n          \"approvers\": {\n            \"canInitiatorApprove\": \"<boolean>\",\n            \"operator\": \"OR\",\n            \"allowOperatorAsAuthorizer\": \"<boolean>\",\n            \"approvalGroups\": [\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              },\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              }\n            ]\n          },\n          \"designatedSigners\": {\n            \"type\": \"SINGLE\",\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"groups\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        \"subType\": \"BURN\",\n        \"destination\": {\n          \"type\": \"CONNECTED_ACCOUNT\",\n          \"operator\": \"EXCLUDES\",\n          \"addressType\": \"OEC_PARTNER\",\n          \"subType\": [\n            {\n              \"type\": \"ONE_TIME_ADDRESS\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"GLOBAL_WHITELIST\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"MULTIPLE_VENUES\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"DAPP_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"DAPP_CONNECTION\",\n          \"operator\": \"EXCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"CONTRACT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"OEC_PARTNER\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"CONNECTED_ACCOUNT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"GLOBAL_WHITELIST\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"<string>\",\n            \"max\": \"<string>\"\n          },\n          \"timePeriod\": {\n            \"seconds\": \"<string>\",\n            \"initiator\": \"PER_SINGLE_MATCH\",\n            \"source\": \"PER_SINGLE_MATCH\",\n            \"destination\": \"ACROSS_ALL_MATCHES\"\n          },\n          \"currency\": \"NATIVE\"\n        },\n        \"amount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"externalDescriptor\": \"<string>\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": \"<boolean>\",\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"*\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"INBOUND\",\n          \"provider\": \"CHAINALYSIS_V2\",\n          \"riskRating\": \"HIGH\",\n          \"riskScore\": \"<string>\",\n          \"exposureType\": \"DIRECT\",\n          \"category\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"name\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"categoryId\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"status\": \"PENDING\",\n          \"sourceAddress\": \"<string>\",\n          \"destAddress\": \"<string>\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"EXCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"baseAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ],\n          \"partial\": \"<boolean>\"\n        },\n        \"index\": \"<number>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"TR_NOTABENE_SCREENING\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"EXCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"MULTIPLE_VENUES\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"FIAT_ACCOUNT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"UNMANAGED\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"CONTRACT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"ONE_TIME_ADDRESS\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"verdict\": {\n          \"action\": \"FREEZE\",\n          \"approvers\": {\n            \"canInitiatorApprove\": \"<boolean>\",\n            \"operator\": \"OR\",\n            \"allowOperatorAsAuthorizer\": \"<boolean>\",\n            \"approvalGroups\": [\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              },\n              {\n                \"threshold\": \"<number>\",\n                \"users\": [\n                  \"<string>\",\n                  \"<string>\"\n                ],\n                \"groups\": [\n                  \"<string>\",\n                  \"<string>\"\n                ]\n              }\n            ]\n          },\n          \"designatedSigners\": {\n            \"type\": \"INITIATOR\",\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"groups\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        \"subType\": \"BURN\",\n        \"destination\": {\n          \"type\": \"INTERNAL\",\n          \"operator\": \"EXCLUDES\",\n          \"addressType\": \"ALL\",\n          \"subType\": [\n            {\n              \"type\": \"END_USER_WALLET\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"*\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"NETWORK_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"NETWORK_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"NETWORK_CONNECTION\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"type\": \"ANY\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"CONTRACT\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"type\": \"EXCHANGE\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            },\n            {\n              \"type\": \"DAPP_CONNECTION\",\n              \"id\": \"<string>\",\n              \"subType\": \"<string>\",\n              \"address\": \"<string>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"<string>\",\n            \"max\": \"<string>\"\n          },\n          \"timePeriod\": {\n            \"seconds\": \"<string>\",\n            \"initiator\": \"PER_SINGLE_MATCH\",\n            \"source\": \"PER_SINGLE_MATCH\",\n            \"destination\": \"PER_SINGLE_MATCH\"\n          },\n          \"currency\": \"NATIVE\"\n        },\n        \"amount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"externalDescriptor\": \"<string>\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": \"<boolean>\",\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"ANY\",\n          \"provider\": \"ELLIPTIC_HOLISTIC\",\n          \"riskRating\": \"SEVERE\",\n          \"riskScore\": \"<string>\",\n          \"exposureType\": \"ANY\",\n          \"category\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"name\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"categoryId\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"status\": \"FAILED\",\n          \"sourceAddress\": \"<string>\",\n          \"destAddress\": \"<string>\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": \"<boolean>\",\n          \"assetTypes\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"operator\": \"EXCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"baseAmount\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ],\n          \"partial\": \"<boolean>\"\n        },\n        \"index\": \"<number>\"\n      }\n    ],\n    \"metadata\": {\n      \"policyType\": \"TR_NOTABENE_SCREENING\",\n      \"editedBy\": \"<string>\",\n      \"editedAt\": \"<string>\",\n      \"publishedBy\": \"<string>\",\n      \"publishedAt\": \"<string>\"\n    }\n  },\n  \"validation\": {\n    \"status\": \"<string>\",\n    \"checkResult\": {\n      \"errors\": \"<number>\",\n      \"results\": [\n        {\n          \"index\": \"<number>\",\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"amountAggregation\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"contractMethods\"\n            }\n          ]\n        },\n        {\n          \"index\": \"<number>\",\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"contractMethods\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"operators\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:15.000Z",
+                  "updatedAt": "2026-07-28T01:40:15.000Z",
+                  "uid": "35240-e5b55499-ab6b-4f13-84e9-d798fae2db5b"
+                },
+                {
+                  "id": "5fedf9ec-8285-4b5f-975e-9353571c7344",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"policyTypes\": [\n    \"ORDER\",\n    \"AML_CHAINALYSIS_V2_POST_SCREENING\"\n  ],\n  \"rules\": [\n    {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"TR_NOTABENE_SCREENING\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"DAPP_CONNECTION\",\n        \"operator\": \"EXCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"FIAT_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"EXCHANGE\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"END_USER_WALLET\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": \"<boolean>\",\n          \"operator\": \"OR\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"approvalGroups\": [\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"INITIATOR\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"groups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      },\n      \"subType\": \"AML_ELLIPTIC_HOLISTIC_SCREENING\",\n      \"destination\": {\n        \"type\": \"END_USER_WALLET\",\n        \"operator\": \"EXCLUDES\",\n        \"addressType\": \"OEC_PARTNER\",\n        \"subType\": [\n          {\n            \"type\": \"UNKNOWN\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"END_USER_WALLET\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"CONTRACT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"NETWORK_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"account\": {\n        \"type\": \"DAPP_CONNECTION\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"ONE_TIME_ADDRESS\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"FIAT_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"MULTIPLE_VENUES\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"EXTERNAL\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"<string>\",\n          \"initiator\": \"ACROSS_ALL_MATCHES\",\n          \"source\": \"PER_SINGLE_MATCH\",\n          \"destination\": \"ACROSS_ALL_MATCHES\"\n        },\n        \"currency\": \"NATIVE\"\n      },\n      \"amount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"externalDescriptor\": \"<string>\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": \"<boolean>\",\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"INBOUND\",\n        \"provider\": \"ELLIPTIC\",\n        \"riskRating\": \"SEVERE\",\n        \"riskScore\": \"<string>\",\n        \"exposureType\": \"INDIRECT\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"COMPLETED\",\n        \"sourceAddress\": \"<string>\",\n        \"destAddress\": \"<string>\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"baseAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          \"<number>\",\n          \"<number>\"\n        ],\n        \"partial\": \"<boolean>\"\n      },\n      \"index\": \"<number>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"PROGRAM_CALL\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"*\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"FIAT_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"EXCHANGE\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": \"<boolean>\",\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"approvalGroups\": [\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"SINGLE\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"groups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      },\n      \"subType\": \"ORDER\",\n      \"destination\": {\n        \"type\": \"CONTRACT\",\n        \"operator\": \"INCLUDES\",\n        \"addressType\": \"*\",\n        \"subType\": [\n          {\n            \"type\": \"UNMANAGED\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"OEC_PARTNER\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"SRC_DST_NA\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"CONNECTED_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"account\": {\n        \"type\": \"OEC_PARTNER\",\n        \"operator\": \"EXCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"ONE_TIME_ADDRESS\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"CONNECTED_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"ONE_TIME_ADDRESS\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"END_USER_WALLET\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"<string>\",\n          \"initiator\": \"PER_SINGLE_MATCH\",\n          \"source\": \"ACROSS_ALL_MATCHES\",\n          \"destination\": \"PER_SINGLE_MATCH\"\n        },\n        \"currency\": \"EUR\"\n      },\n      \"amount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"externalDescriptor\": \"<string>\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": \"<boolean>\",\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"OUTBOUND\",\n        \"provider\": \"CHAINALYSIS\",\n        \"riskRating\": \"LOW\",\n        \"riskScore\": \"<string>\",\n        \"exposureType\": \"ANY\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"CANCELED\",\n        \"sourceAddress\": \"<string>\",\n        \"destAddress\": \"<string>\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"baseAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          \"<number>\",\n          \"<number>\"\n        ],\n        \"partial\": \"<boolean>\"\n      },\n      \"index\": \"<number>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/policy/draft",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "policy",
+                        "draft"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<number>\"\n}",
+                  "createdAt": "2026-07-28T01:40:15.000Z",
+                  "updatedAt": "2026-07-28T01:40:15.000Z",
+                  "uid": "35240-5fedf9ec-8285-4b5f-975e-9353571c7344"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:15.000Z",
+              "updatedAt": "2026-07-28T01:40:15.000Z",
+              "uid": "35240-e032592c-6d31-4239-b0f6-f730e2f973f5"
+            },
+            {
+              "name": "Send publish request for a certain draft ID",
+              "id": "01e10b0e-e9b9-43a7-9805-57d2b371641e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policyTypes\": [\n    \"AML_CHAINALYSIS_V2_POST_SCREENING\",\n    \"BURN\"\n  ],\n  \"draftId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/policy/draft",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "policy",
+                    "draft"
+                  ]
+                },
+                "description": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nPublishes a draft policy by request, and returns the response.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.        \n"
+              },
+              "response": [
+                {
+                  "id": "3b2f7e28-2e09-4378-8406-472091cf4feb",
+                  "name": "A policy publish result object",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"policyTypes\": [\n    \"AML_CHAINALYSIS_V2_POST_SCREENING\",\n    \"BURN\"\n  ],\n  \"draftId\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/policy/draft",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "policy",
+                        "draft"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"AWAITING_QUORUM\",\n  \"rules\": [\n    {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"APPROVE\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"OEC_PARTNER\",\n        \"operator\": \"EXCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"CONNECTED_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"NETWORK_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"NETWORK_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"VAULT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"verdict\": {\n        \"action\": \"ALERT\",\n        \"approvers\": {\n          \"canInitiatorApprove\": \"<boolean>\",\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"approvalGroups\": [\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"MULTIPLE\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"groups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      },\n      \"subType\": \"DAPP_CONNECTION\",\n      \"destination\": {\n        \"type\": \"INTERNAL\",\n        \"operator\": \"EXCLUDES\",\n        \"addressType\": \"ONE_TIME\",\n        \"subType\": [\n          {\n            \"type\": \"EXCHANGE\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"EXTERNAL\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"ANY\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"CONTRACT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"account\": {\n        \"type\": \"INTERNAL\",\n        \"operator\": \"EXCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"GLOBAL_WHITELIST\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"GLOBAL_WHITELIST\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"CONNECTED_ACCOUNT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"<string>\",\n          \"initiator\": \"ACROSS_ALL_MATCHES\",\n          \"source\": \"ACROSS_ALL_MATCHES\",\n          \"destination\": \"ACROSS_ALL_MATCHES\"\n        },\n        \"currency\": \"USD\"\n      },\n      \"amount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"externalDescriptor\": \"<string>\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": \"<boolean>\",\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"*\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"OUTBOUND\",\n        \"provider\": \"ELLIPTIC_HOLISTIC\",\n        \"riskRating\": \"HIGH\",\n        \"riskScore\": \"<string>\",\n        \"exposureType\": \"ANY\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"BLOCKING_TIME_EXPIRED\",\n        \"sourceAddress\": \"<string>\",\n        \"destAddress\": \"<string>\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"baseAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          \"<number>\",\n          \"<number>\"\n        ],\n        \"partial\": \"<boolean>\"\n      },\n      \"index\": \"<number>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"TR_NOTABENE_SCREENING\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"CONNECTED_ACCOUNT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"ANY\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"MULTIPLE_VENUES\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"VAULT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"UNKNOWN\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"verdict\": {\n        \"action\": \"SCREEN\",\n        \"approvers\": {\n          \"canInitiatorApprove\": \"<boolean>\",\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"approvalGroups\": [\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            {\n              \"threshold\": \"<number>\",\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"groups\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"SINGLE\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"groups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      },\n      \"subType\": \"MINT\",\n      \"destination\": {\n        \"type\": \"*\",\n        \"operator\": \"EXCLUDES\",\n        \"addressType\": \"ALL\",\n        \"subType\": [\n          {\n            \"type\": \"END_USER_WALLET\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"ONE_TIME_ADDRESS\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"DAPP_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"VAULT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"account\": {\n        \"type\": \"FIAT_ACCOUNT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": \"NETWORK_CONNECTION\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"SRC_DST_NA\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": \"INTERNAL\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": \"CONTRACT\",\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"SOURCE\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"<string>\",\n          \"initiator\": \"ACROSS_ALL_MATCHES\",\n          \"source\": \"ACROSS_ALL_MATCHES\",\n          \"destination\": \"PER_SINGLE_MATCH\"\n        },\n        \"currency\": \"NATIVE\"\n      },\n      \"amount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"externalDescriptor\": \"<string>\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": \"<boolean>\",\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"*\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"INBOUND\",\n        \"provider\": \"CHAINALYSIS\",\n        \"riskRating\": \"SEVERE\",\n        \"riskScore\": \"<string>\",\n        \"exposureType\": \"INDIRECT\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"REJECTED\",\n        \"sourceAddress\": \"<string>\",\n        \"destAddress\": \"<string>\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"EXCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"baseAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          \"<number>\",\n          \"<number>\"\n        ],\n        \"partial\": \"<boolean>\"\n      },\n      \"index\": \"<number>\"\n    }\n  ],\n  \"checkResult\": {\n    \"errors\": \"<number>\",\n    \"results\": [\n      {\n        \"index\": \"<number>\",\n        \"status\": \"failure\",\n        \"errors\": [\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"src\"\n          },\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"amountAggregation\"\n          }\n        ]\n      },\n      {\n        \"index\": \"<number>\",\n        \"status\": \"failure\",\n        \"errors\": [\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"src\"\n          },\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"dst\"\n          }\n        ]\n      }\n    ]\n  },\n  \"metadata\": {\n    \"policyType\": \"CONTRACT_CALL\",\n    \"editedBy\": \"<string>\",\n    \"editedAt\": \"<string>\",\n    \"publishedBy\": \"<string>\",\n    \"publishedAt\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:15.000Z",
+                  "updatedAt": "2026-07-28T01:40:15.000Z",
+                  "uid": "35240-3b2f7e28-2e09-4378-8406-472091cf4feb"
+                },
+                {
+                  "id": "e3517a1a-581d-429a-963f-1dae610f2da4",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"policyTypes\": [\n    \"AML_CHAINALYSIS_V2_POST_SCREENING\",\n    \"BURN\"\n  ],\n  \"draftId\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/policy/draft",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "policy",
+                        "draft"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<number>\"\n}",
+                  "createdAt": "2026-07-28T01:40:15.000Z",
+                  "updatedAt": "2026-07-28T01:40:15.000Z",
+                  "uid": "35240-e3517a1a-581d-429a-963f-1dae610f2da4"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:15.000Z",
+              "updatedAt": "2026-07-28T01:40:15.000Z",
+              "uid": "35240-01e10b0e-e9b9-43a7-9805-57d2b371641e"
+            }
+          ],
+          "id": "2fa9fc2d-5ef3-4d65-92fc-f4ddea357d5b",
+          "createdAt": "2026-07-28T01:40:15.000Z",
+          "updatedAt": "2026-07-28T01:40:15.000Z",
+          "uid": "35240-2fa9fc2d-5ef3-4d65-92fc-f4ddea357d5b"
+        }
+      ],
+      "id": "c2a59ba3-99f7-4ee2-bbaa-fe57527a5a7a",
+      "createdAt": "2026-07-28T01:40:15.000Z",
+      "updatedAt": "2026-07-28T01:40:15.000Z",
+      "uid": "35240-c2a59ba3-99f7-4ee2-bbaa-fe57527a5a7a"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.fireblocks.io/v1"
+    }
+  ]
+}

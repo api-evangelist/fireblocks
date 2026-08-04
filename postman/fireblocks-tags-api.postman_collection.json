@@ -1,0 +1,589 @@
+{
+  "info": {
+    "_postman_id": "4546793c-de85-40e7-bc18-ed1f8696c33a",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Tags API",
+    "description": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:40:32.000Z",
+    "updatedAt": "2026-07-28T01:40:33.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-4546793c-de85-40e7-bc18-ed1f8696c33a"
+  },
+  "item": [
+    {
+      "name": "tags",
+      "item": [
+        {
+          "name": "{tagId}",
+          "item": [
+            {
+              "name": "Get a tag",
+              "id": "27ecad31-c565-41f4-acc5-22e1ca8b0238",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tags/:tagId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tags",
+                    ":tagId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "adf14587-6da0-4617-9008-b97d63d855bb",
+                      "key": "tagId",
+                      "value": "<uuid>",
+                      "description": "(Required) The ID of the tag to retrieve"
+                    }
+                  ]
+                },
+                "description": "Retrieve an existing tag by ID."
+              },
+              "response": [
+                {
+                  "id": "4136b388-35cb-4945-af0d-8f3c3e33146e",
+                  "name": "A tag object",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tags/:tagId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tags",
+                        ":tagId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "tagId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<uuid>\",\n  \"label\": \"<string>\",\n  \"isProtected\": false,\n  \"updatedAt\": \"<number>\",\n  \"description\": \"<string>\",\n  \"color\": \"<string>\",\n  \"pendingApprovalRequest\": {\n    \"id\": \"<string>\",\n    \"type\": \"TAG_UPDATE\",\n    \"state\": \"APPROVED\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:33.000Z",
+                  "updatedAt": "2026-07-28T01:40:33.000Z",
+                  "uid": "35240-4136b388-35cb-4945-af0d-8f3c3e33146e"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:33.000Z",
+              "updatedAt": "2026-07-28T01:40:33.000Z",
+              "uid": "35240-27ecad31-c565-41f4-acc5-22e1ca8b0238"
+            },
+            {
+              "name": "Update a tag",
+              "id": "ec489382-6909-489d-b2f4-2b5724fbb96a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tags/:tagId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tags",
+                    ":tagId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "01402fb4-fe59-4620-b1bc-66181e960ed3",
+                      "key": "tagId",
+                      "value": "<uuid>",
+                      "description": "(Required) The ID of the tag to update"
+                    }
+                  ]
+                },
+                "description": "Update an existing specified tag.\n\n**Endpoint Permissions:**\n- For protected tags: Owner, Admin, Non-Signing Admin.\n- For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.\n"
+              },
+              "response": [
+                {
+                  "id": "5b3e8b6f-2b5c-4f11-8fb8-cc1bed2a061b",
+                  "name": "A tag object",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"label\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tags/:tagId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tags",
+                        ":tagId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "tagId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<uuid>\",\n  \"label\": \"<string>\",\n  \"isProtected\": false,\n  \"updatedAt\": \"<number>\",\n  \"description\": \"<string>\",\n  \"color\": \"<string>\",\n  \"pendingApprovalRequest\": {\n    \"id\": \"<string>\",\n    \"type\": \"TAG_UPDATE\",\n    \"state\": \"APPROVED\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:33.000Z",
+                  "updatedAt": "2026-07-28T01:40:33.000Z",
+                  "uid": "35240-5b3e8b6f-2b5c-4f11-8fb8-cc1bed2a061b"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:33.000Z",
+              "updatedAt": "2026-07-28T01:40:33.000Z",
+              "uid": "35240-ec489382-6909-489d-b2f4-2b5724fbb96a"
+            },
+            {
+              "name": "Delete a tag",
+              "id": "4f083bb2-286b-456a-8d5b-441f6b9d4642",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/tags/:tagId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tags",
+                    ":tagId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "dfbd517d-1168-437c-8641-c5775c5035f9",
+                      "key": "tagId",
+                      "value": "<uuid>",
+                      "description": "(Required) The ID of the tag to retrieve"
+                    }
+                  ]
+                },
+                "description": "Delete the specified tag.\n\n**Endpoint Permissions:**\n- For protected tags: Owner, Admin, Non-Signing Admin.\n- For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.\n"
+              },
+              "response": [
+                {
+                  "id": "eaf849e0-ffac-4345-98ca-2a33b8d57f85",
+                  "name": "Tag was deleted successfully",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/tags/:tagId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tags",
+                        ":tagId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "tagId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:40:33.000Z",
+                  "updatedAt": "2026-07-28T01:40:33.000Z",
+                  "uid": "35240-eaf849e0-ffac-4345-98ca-2a33b8d57f85"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:33.000Z",
+              "updatedAt": "2026-07-28T01:40:33.000Z",
+              "uid": "35240-4f083bb2-286b-456a-8d5b-441f6b9d4642"
+            }
+          ],
+          "id": "494bfbe6-a61a-47cb-85f5-d754a1a229f3",
+          "createdAt": "2026-07-28T01:40:33.000Z",
+          "updatedAt": "2026-07-28T01:40:33.000Z",
+          "uid": "35240-494bfbe6-a61a-47cb-85f5-d754a1a229f3"
+        },
+        {
+          "name": "Create a tag",
+          "id": "1c9dab94-1fa9-4c2e-96a1-2b4051d5e4d3",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"<string>\",\n  \"description\": \"<string>\",\n  \"color\": \"<string>\",\n  \"isProtected\": false\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tags",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tags"
+              ]
+            },
+            "description": "Create a new tag.\n\n**Endpoint Permissions:**\n- For protected tags: Owner, Admin, Non-Signing Admin.\n- For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.\n"
+          },
+          "response": [
+            {
+              "id": "9f34f4aa-411c-44da-8a7b-29da1226faeb",
+              "name": "A tag object",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"<string>\",\n  \"description\": \"<string>\",\n  \"color\": \"<string>\",\n  \"isProtected\": false\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tags",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tags"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-ID",
+                  "value": ""
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<uuid>\",\n  \"label\": \"<string>\",\n  \"isProtected\": false,\n  \"updatedAt\": \"<number>\",\n  \"description\": \"<string>\",\n  \"color\": \"<string>\",\n  \"pendingApprovalRequest\": {\n    \"id\": \"<string>\",\n    \"type\": \"TAG_UPDATE\",\n    \"state\": \"APPROVED\"\n  }\n}",
+              "createdAt": "2026-07-28T01:40:33.000Z",
+              "updatedAt": "2026-07-28T01:40:33.000Z",
+              "uid": "35240-9f34f4aa-411c-44da-8a7b-29da1226faeb"
+            }
+          ],
+          "createdAt": "2026-07-28T01:40:33.000Z",
+          "updatedAt": "2026-07-28T01:40:33.000Z",
+          "uid": "35240-1c9dab94-1fa9-4c2e-96a1-2b4051d5e4d3"
+        },
+        {
+          "name": "Get list of tags",
+          "id": "6744cbdc-96b7-449b-bfce-8a8981ab1bd7",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tags?pageCursor=<string>&pageSize=100&label=<string>&tagIds=<uuid>&tagIds=<uuid>&includePendingApprovalsInfo=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tags"
+              ],
+              "query": [
+                {
+                  "description": "Page cursor to get the next page.",
+                  "key": "pageCursor",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Maximum number of items in the page",
+                  "key": "pageSize",
+                  "value": "100"
+                },
+                {
+                  "description": "Label prefix to filter by.",
+                  "key": "label",
+                  "value": "<string>"
+                },
+                {
+                  "description": "List of tag IDs to filter by.",
+                  "key": "tagIds",
+                  "value": "<uuid>"
+                },
+                {
+                  "description": "List of tag IDs to filter by.",
+                  "key": "tagIds",
+                  "value": "<uuid>"
+                },
+                {
+                  "description": "Include pending approval information for each tag",
+                  "key": "includePendingApprovalsInfo",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Retrieve a paged list of all tags according to filters."
+          },
+          "response": [
+            {
+              "id": "e9c527a7-1ec9-45a2-9f4a-d855b3cab6bd",
+              "name": "A TagsPagedResponse object",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tags?pageCursor=<string>&pageSize=100&label=<string>&tagIds=<uuid>&includePendingApprovalsInfo=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tags"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page cursor to get the next page.",
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of items in the page",
+                      "key": "pageSize",
+                      "value": "100"
+                    },
+                    {
+                      "description": "Label prefix to filter by.",
+                      "key": "label",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "List of tag IDs to filter by.",
+                      "key": "tagIds",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "description": "Include pending approval information for each tag",
+                      "key": "includePendingApprovalsInfo",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-ID",
+                  "value": ""
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"<uuid>\",\n      \"label\": \"<string>\",\n      \"isProtected\": false,\n      \"updatedAt\": \"<number>\",\n      \"description\": \"<string>\",\n      \"color\": \"<string>\",\n      \"pendingApprovalRequest\": {\n        \"id\": \"<string>\",\n        \"type\": \"TAG_UPDATE\",\n        \"state\": \"FAILED\"\n      }\n    },\n    {\n      \"id\": \"<uuid>\",\n      \"label\": \"<string>\",\n      \"isProtected\": false,\n      \"updatedAt\": \"<number>\",\n      \"description\": \"<string>\",\n      \"color\": \"<string>\",\n      \"pendingApprovalRequest\": {\n        \"id\": \"<string>\",\n        \"type\": \"TAG_ATTACH_DETACH\",\n        \"state\": \"EXPIRED\"\n      }\n    }\n  ],\n  \"next\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:40:33.000Z",
+              "updatedAt": "2026-07-28T01:40:33.000Z",
+              "uid": "35240-e9c527a7-1ec9-45a2-9f4a-d855b3cab6bd"
+            }
+          ],
+          "createdAt": "2026-07-28T01:40:33.000Z",
+          "updatedAt": "2026-07-28T01:40:33.000Z",
+          "uid": "35240-6744cbdc-96b7-449b-bfce-8a8981ab1bd7"
+        }
+      ],
+      "id": "578e648f-83ec-4210-a64e-ccc31b30ca84",
+      "createdAt": "2026-07-28T01:40:33.000Z",
+      "updatedAt": "2026-07-28T01:40:33.000Z",
+      "uid": "35240-578e648f-83ec-4210-a64e-ccc31b30ca84"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.fireblocks.io/v1"
+    }
+  ]
+}

@@ -1,0 +1,2530 @@
+openapi: 3.0.0
+info:
+  title: Fireblocks Network and Off-Exchange API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development
+    platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+
+    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
+
+    '
+  version: 1.8.0
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+security: []
+paths:
+  /network_connections:
+    get:
+      summary: List network connections
+      description: "Returns all network connections.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\n\
+        Your routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned\
+        \ below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming\
+        \ transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If\
+        \ you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the\
+        \ routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile\
+        \ Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto \u2192 **Custom**\n  - Network Profile FIAT\
+        \ \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n  - Network Connection FIAT \u2192 **Default**\n\
+        \n    - **Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n\n</br>Endpoint Permission:\
+        \ Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const networkConnections = await fireblocks.getNetworkConnections();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetNetworkConnectionsResponse>> = fireblocks.networkConnections.getNetworkConnections();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<NetworkConnectionResponse>>> response = fireblocks.networkConnections().getNetworkConnections();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.get_network_connections();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: A list of network connections
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNetworkConnectionsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getNetworkConnections
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetNetworkConnectionsResponse>> = fireblocks.networkConnections.getNetworkConnections();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<NetworkConnectionResponse>>> response = fireblocks.networkConnections().getNetworkConnections();
+      - lang: Python
+        source: response = fireblocks.network_connections.get_network_connections();
+    post:
+      summary: Creates a new network connection
+      description: "Initiates a new network connection.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\
+        \nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned\
+        \ below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming\
+        \ transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If\
+        \ you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the\
+        \ routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile\
+        \ Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto \u2192 **Custom**\n  - Network Profile FIAT\
+        \ \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n  - Network Connection FIAT \u2192 **Default**\n\
+        \nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n**Note**:\
+        \ By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\nLearn more about Fireblocks Network\
+        \ in the following [guide](https://developers.fireblocks.com/docs/connect-to-the-fireblocks-network).\n</br>Endpoint\
+        \ Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkConnection'
+      responses:
+        '201':
+          description: A Network Connection object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkConnectionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: createNetworkConnection
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<NetworkConnectionResponse>> = fireblocks.networkConnections.createNetworkConnection(networkConnectionsApiCreateNetworkConnectionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<NetworkConnectionResponse>> response = fireblocks.networkConnections().createNetworkConnection(networkConnection,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.create_network_connection(network_connection, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<NetworkConnectionResponse>> = fireblocks.networkConnections.createNetworkConnection(networkConnectionsApiCreateNetworkConnectionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<NetworkConnectionResponse>> response = fireblocks.networkConnections().createNetworkConnection(networkConnection,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.network_connections.create_network_connection(network_connection, idempotency_key);
+  /network_connections/{connectionId}/set_routing_policy:
+    patch:
+      summary: Update network connection routing policy.
+      description: "Updates an existing network connection's routing policy.\n\n**Note:** This API call is subject to Flexible\
+        \ Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different\
+        \ schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that\
+        \ asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account\
+        \ that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**;\
+        \ Use the routing specified by the network profile the connection is connected to. This scheme is also referred to\
+        \ as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto \u2192 **Custom**\n  - Network\
+        \ Profile FIAT \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n  - Network Connection FIAT \u2192\
+        \ **Default**\n\nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n\
+        **Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n\n</br>Endpoint Permission:\
+        \ Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: connectionId
+        required: true
+        description: The ID of the network connection
+        schema:
+          type: string
+          example: 9100f41b-f31a-4fd1-b9bf-bb4d2cd88e1f
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetRoutingPolicyRequest'
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetRoutingPolicyResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setRoutingPolicy
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SetRoutingPolicyResponse>> = fireblocks.networkConnections.setRoutingPolicy(networkConnectionsApiSetRoutingPolicyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SetRoutingPolicyResponse>> response = fireblocks.networkConnections().setRoutingPolicy(connectionId,
+            setRoutingPolicyRequest);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.set_routing_policy(connection_id, set_routing_policy_request);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SetRoutingPolicyResponse>> = fireblocks.networkConnections.setRoutingPolicy(networkConnectionsApiSetRoutingPolicyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SetRoutingPolicyResponse>> response = fireblocks.networkConnections().setRoutingPolicy(connectionId,
+          setRoutingPolicyRequest);
+      - lang: Python
+        source: response = fireblocks.network_connections.set_routing_policy(connection_id, set_routing_policy_request);
+  /network_connections/{connectionId}/is_third_party_routing/{assetType}:
+    get:
+      summary: Retrieve third-party network routing validation
+      description: 'The Fireblocks Network allows for flexibility around incoming deposits. A receiver can receive network
+        deposits to locations other than Fireblocks. This endpoint validates whether future transactions are routed to the
+        displayed recipient or to a 3rd party.
+
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: connectionId
+        required: true
+        description: The ID of the network connection
+        schema:
+          type: string
+          example: 9100f41b-f31a-4fd1-b9bf-bb4d2cd88e1f
+      - in: path
+        name: assetType
+        required: true
+        description: The destination asset type
+        schema:
+          type: string
+          example: ETH
+      responses:
+        '200':
+          description: result for the validation
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThirdPartyRouting'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: checkThirdPartyRouting
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ThirdPartyRouting>> = fireblocks.networkConnections.checkThirdPartyRouting(networkConnectionsApiCheckThirdPartyRoutingRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ThirdPartyRouting>> response = fireblocks.networkConnections().checkThirdPartyRouting(connectionId,
+            assetType);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.check_third_party_routing(connection_id, asset_type);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ThirdPartyRouting>> = fireblocks.networkConnections.checkThirdPartyRouting(networkConnectionsApiCheckThirdPartyRoutingRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ThirdPartyRouting>> response = fireblocks.networkConnections().checkThirdPartyRouting(connectionId,
+          assetType);
+      - lang: Python
+        source: response = fireblocks.network_connections.check_third_party_routing(connection_id, asset_type);
+  /network_connections/{connectionId}:
+    get:
+      summary: Get a network connection
+      description: "Gets a network connection by ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\n\
+        Your routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned\
+        \ below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming\
+        \ transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If\
+        \ you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the\
+        \ routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile\
+        \ Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto \u2192 **Custom**\n  - Network Profile FIAT\
+        \ \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n  - Network Connection FIAT \u2192 **Default**\n\
+        \n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission:\
+        \ Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const network_connection = await fireblocks.getNetworkConnection(connectionId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<NetworkConnectionResponse>> = fireblocks.networkConnections.getNetwork(networkConnectionsApiGetNetworkRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<NetworkConnectionResponse>> response = fireblocks.networkConnections().getNetwork(connectionId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.get_network(connection_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: connectionId
+        required: true
+        description: The ID of the connection
+        schema:
+          type: string
+          example: 9100f41b-f31a-4fd1-b9bf-bb4d2cd88e1f
+      responses:
+        '200':
+          description: A network connection
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkConnectionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getNetwork
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<NetworkConnectionResponse>> = fireblocks.networkConnections.getNetwork(networkConnectionsApiGetNetworkRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<NetworkConnectionResponse>> response = fireblocks.networkConnections().getNetwork(connectionId);
+      - lang: Python
+        source: response = fireblocks.network_connections.get_network(connection_id);
+    delete:
+      summary: Deletes a network connection by ID
+      description: "Deletes an existing network connection specified by its connection ID.\n\n**Note:** This API call is subject\
+        \ to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1\
+        \ of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no\
+        \ destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**;\
+        \ Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose\
+        \ another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to.\
+        \ This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto\
+        \ \u2192 **Custom**\n  - Network Profile FIAT \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n\
+        \  - Network Connection FIAT \u2192 **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`,\
+        \ `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: connectionId
+        required: true
+        description: The ID of the network connection to delete
+        schema:
+          type: string
+          example: 9100f41b-f31a-4fd1-b9bf-bb4d2cd88e1f
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteNetworkConnectionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: deleteNetworkConnection
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DeleteNetworkConnectionResponse>> = fireblocks.networkConnections.deleteNetworkConnection(networkConnectionsApiDeleteNetworkConnectionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DeleteNetworkConnectionResponse>> response = fireblocks.networkConnections().deleteNetworkConnection(connectionId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.delete_network_connection(connection_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DeleteNetworkConnectionResponse>> = fireblocks.networkConnections.deleteNetworkConnection(networkConnectionsApiDeleteNetworkConnectionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DeleteNetworkConnectionResponse>> response = fireblocks.networkConnections().deleteNetworkConnection(connectionId);
+      - lang: Python
+        source: response = fireblocks.network_connections.delete_network_connection(connection_id);
+  /network_ids:
+    get:
+      summary: Get all network IDs
+      description: "Retrieves a list of all local and discoverable remote network IDs.\n\n**Note:** This API call is subject\
+        \ to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1\
+        \ of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no\
+        \ destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**;\
+        \ Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose\
+        \ another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to.\
+        \ This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto\
+        \ \u2192 **Custom**\n  - Network Profile FIAT \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n\
+        \  - Network Connection FIAT \u2192 **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`,\
+        \ `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      responses:
+        '200':
+          description: A list of network IDs
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNetworkIdsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getNetworkIds
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetNetworkIdsResponse>> = fireblocks.networkConnections.getNetworkIds();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<Object>>> response = fireblocks.networkConnections().getNetworkIds();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.get_network_ids();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetNetworkIdsResponse>> = fireblocks.networkConnections.getNetworkIds();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<Object>>> response = fireblocks.networkConnections().getNetworkIds();
+      - lang: Python
+        source: response = fireblocks.network_connections.get_network_ids();
+    post:
+      summary: Creates a new Network ID
+      description: "Creates a new Network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing\
+        \ policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for\
+        \ each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions\
+        \ to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the\
+        \ account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified\
+        \ by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\n\
+        Default Workspace Presets:\n  - Network Profile Crypto \u2192 **Custom**\n  - Network Profile FIAT \u2192 **None**\n\
+        \  - Network Connection Crypto \u2192 **Default**\n  - Network Connection FIAT \u2192 **Default**\n\nSupported asset\
+        \ groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n**Note**: By default, Custom\
+        \ routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNetworkIdRequest'
+      responses:
+        '201':
+          description: Returns the new network ID in your workspace
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: createNetworkId
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<NetworkIdResponse>> = fireblocks.networkConnections.createNetworkId(networkConnectionsApiCreateNetworkIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<NetworkIdResponse>> response = fireblocks.networkConnections().createNetworkId(createNetworkIdRequest,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.create_network_id(create_network_id_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<NetworkIdResponse>> = fireblocks.networkConnections.createNetworkId(networkConnectionsApiCreateNetworkIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<NetworkIdResponse>> response = fireblocks.networkConnections().createNetworkId(createNetworkIdRequest,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.network_connections.create_network_id(create_network_id_request, idempotency_key);
+  /network_ids/routing_policy_asset_groups:
+    get:
+      summary: Returns all enabled routing policy asset groups
+      description: 'Retrieves a list of all enabled routing policy asset groups.
+
+        Your routing policy defines how your transactions are routed.
+
+        You can use one or more enabled routing policy asset groups to describe connection or network id routing policy.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Fireblocks Network
+      responses:
+        '200':
+          description: A list of enabled routing policy asset groups
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRoutingPolicyAssetGroupsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getRoutingPolicyAssetGroups
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetRoutingPolicyAssetGroupsResponse>> = fireblocks.networkConnections.getRoutingPolicyAssetGroups();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<String>>> response = fireblocks.networkConnections().getRoutingPolicyAssetGroups();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.get_routing_policy_asset_groups();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetRoutingPolicyAssetGroupsResponse>> = fireblocks.networkConnections.getRoutingPolicyAssetGroups();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<String>>> response = fireblocks.networkConnections().getRoutingPolicyAssetGroups();
+      - lang: Python
+        source: response = fireblocks.network_connections.get_routing_policy_asset_groups();
+  /network_ids/search:
+    get:
+      summary: Get both local IDs and discoverable remote IDs
+      description: "Retrieves a list of all local and discoverable remote network IDs. Can be filtered.\n\n**Note:** This\
+        \ API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\n\
+        You can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile\
+        \ routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n\
+        \  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until\
+        \ you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected\
+        \ to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto\
+        \ \u2192 **Custom**\n  - Network Profile FIAT \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n\
+        \  - Network Connection FIAT \u2192 **Default**\n\n    - **Note**: By default, Custom routing scheme uses (`dstId`\
+        \ = `0`, `dstType` = `VAULT`).\n"
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: Search string - displayName networkId. Optional
+        schema:
+          minLength: 1
+          type: string
+      - name: excludeSelf
+        required: false
+        in: query
+        description: Exclude your networkIds. Optional, default false
+        schema:
+          type: boolean
+      - name: excludeConnected
+        required: false
+        in: query
+        description: Exclude connected networkIds. Optional, default false
+        schema:
+          type: boolean
+      - name: pageCursor
+        required: false
+        in: query
+        description: ID of the record after which to fetch $limit records
+        schema:
+          type: string
+      - name: pageSize
+        required: false
+        in: query
+        description: Number of records to fetch. By default, it is 50
+        schema:
+          minimum: 1
+          maximum: 50
+          default: 50
+          type: number
+      tags:
+      - Fireblocks Network
+      responses:
+        '200':
+          description: A list of network IDs
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchNetworkIdsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: searchNetworkIds
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SearchNetworkIdsResponse>> = fireblocks.networkConnections.searchNetworkIds(networkConnectionsApiSearchNetworkIdsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SearchNetworkIdsResponse>> response = fireblocks.networkConnections().searchNetworkIds(search,
+            excludeSelf, excludeConnected, pageCursor, pageSize);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.search_network_ids(search, exclude_self, exclude_connected, page_cursor,
+            page_size);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SearchNetworkIdsResponse>> = fireblocks.networkConnections.searchNetworkIds(networkConnectionsApiSearchNetworkIdsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SearchNetworkIdsResponse>> response = fireblocks.networkConnections().searchNetworkIds(search,
+          excludeSelf, excludeConnected, pageCursor, pageSize);
+      - lang: Python
+        source: response = fireblocks.network_connections.search_network_ids(search, exclude_self, exclude_connected, page_cursor,
+          page_size);
+  /network_ids/{networkId}:
+    get:
+      summary: Returns specific network ID.
+      description: "Retrieves a network by its ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\n\
+        Your routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned\
+        \ below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming\
+        \ transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If\
+        \ you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the\
+        \ routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile\
+        \ Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto \u2192 **Custom**\n  - Network Profile FIAT\
+        \ \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n  - Network Connection FIAT \u2192 **Default**\n\
+        \n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission:\
+        \ Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: networkId
+        required: true
+        description: The ID of the network
+        schema:
+          type: string
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getNetworkId
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<NetworkIdResponse>> = fireblocks.networkConnections.getNetworkId(networkConnectionsApiGetNetworkIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<NetworkIdResponse>> response = fireblocks.networkConnections().getNetworkId(networkId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.get_network_id(network_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<NetworkIdResponse>> = fireblocks.networkConnections.getNetworkId(networkConnectionsApiGetNetworkIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<NetworkIdResponse>> response = fireblocks.networkConnections().getNetworkId(networkId);
+      - lang: Python
+        source: response = fireblocks.network_connections.get_network_id(network_id);
+    delete:
+      summary: Deletes specific network ID.
+      description: "Deletes a network by its ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour\
+        \ routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned\
+        \ below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming\
+        \ transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If\
+        \ you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the\
+        \ routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile\
+        \ Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto \u2192 **Custom**\n  - Network Profile FIAT\
+        \ \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n  - Network Connection FIAT \u2192 **Default**\n\
+        \n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission:\
+        \ Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: networkId
+        required: true
+        description: The ID of the network
+        schema:
+          type: string
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+      responses:
+        '200':
+          description: Network ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteNetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: deleteNetworkId
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DeleteNetworkIdResponse>> = fireblocks.networkConnections.deleteNetworkId(networkConnectionsApiDeleteNetworkIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DeleteNetworkIdResponse>> response = fireblocks.networkConnections().deleteNetworkId(networkId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.delete_network_id(network_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DeleteNetworkIdResponse>> = fireblocks.networkConnections.deleteNetworkId(networkConnectionsApiDeleteNetworkIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DeleteNetworkIdResponse>> response = fireblocks.networkConnections().deleteNetworkId(networkId);
+      - lang: Python
+        source: response = fireblocks.network_connections.delete_network_id(network_id);
+  /network_ids/{networkId}/set_routing_policy:
+    patch:
+      summary: Update network id routing policy.
+      description: "Updates the routing policy of a specified network ID.\n\n**Note:** This API call is subject to Flexible\
+        \ Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different\
+        \ schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that\
+        \ asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account\
+        \ that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**;\
+        \ Use the routing specified by the network profile the connection is connected to. This scheme is also referred to\
+        \ as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto \u2192 **Custom**\n  - Network\
+        \ Profile FIAT \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n  - Network Connection FIAT \u2192\
+        \ **Default**\n\nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n\
+        **Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission:\
+        \ Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: networkId
+        required: true
+        description: The ID of the network
+        schema:
+          type: string
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetNetworkIdRoutingPolicyRequest'
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetNetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setNetworkIdRoutingPolicy
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdRoutingPolicy(networkConnectionsApiSetNetworkIdRoutingPolicyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdRoutingPolicy(networkId,
+            setNetworkIdRoutingPolicyRequest);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.set_network_id_routing_policy(network_id, set_network_id_routing_policy_request);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdRoutingPolicy(networkConnectionsApiSetNetworkIdRoutingPolicyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdRoutingPolicy(networkId,
+          setNetworkIdRoutingPolicyRequest);
+      - lang: Python
+        source: response = fireblocks.network_connections.set_network_id_routing_policy(network_id, set_network_id_routing_policy_request);
+  /network_ids/{networkId}/set_discoverability:
+    patch:
+      summary: Update network ID's discoverability.
+      description: "Update whether or not the network ID is discoverable by others.\n\n**Note:** This API call is subject\
+        \ to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1\
+        \ of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no\
+        \ destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**;\
+        \ Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose\
+        \ another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to.\
+        \ This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto\
+        \ \u2192 **Custom**\n  - Network Profile FIAT \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n\
+        \  - Network Connection FIAT \u2192 **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`,\
+        \ `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: networkId
+        required: true
+        description: The ID of the network
+        schema:
+          type: string
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetNetworkIdDiscoverabilityRequest'
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetNetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setNetworkIdDiscoverability
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdDiscoverability(networkConnectionsApiSetNetworkIdDiscoverabilityRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdDiscoverability(setNetworkIdDiscoverabilityRequest,
+            networkId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.set_network_id_discoverability(set_network_id_discoverability_request,
+            network_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdDiscoverability(networkConnectionsApiSetNetworkIdDiscoverabilityRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdDiscoverability(setNetworkIdDiscoverabilityRequest,
+          networkId);
+      - lang: Python
+        source: response = fireblocks.network_connections.set_network_id_discoverability(set_network_id_discoverability_request,
+          network_id);
+  /network_ids/{networkId}/set_name:
+    patch:
+      summary: Update network ID's name.
+      description: "Updates name of a specified network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\
+        \nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned\
+        \ below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming\
+        \ transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If\
+        \ you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the\
+        \ routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile\
+        \ Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto \u2192 **Custom**\n  - Network Profile FIAT\
+        \ \u2192 **None**\n  - Network Connection Crypto \u2192 **Default**\n  - Network Connection FIAT \u2192 **Default**\n\
+        \n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission:\
+        \ Admin, Non-Signing Admin."
+      tags:
+      - Fireblocks Network
+      parameters:
+      - in: path
+        name: networkId
+        required: true
+        description: The ID of the network
+        schema:
+          type: string
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetNetworkIdNameRequest'
+      responses:
+        '200':
+          description: Network ID
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetNetworkIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setNetworkIdName
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdName(networkConnectionsApiSetNetworkIdNameRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdName(setNetworkIdNameRequest,
+            networkId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.network_connections.set_network_id_name(set_network_id_name_request, network_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SetNetworkIdResponse>> = fireblocks.networkConnections.setNetworkIdName(networkConnectionsApiSetNetworkIdNameRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SetNetworkIdResponse>> response = fireblocks.networkConnections().setNetworkIdName(setNetworkIdNameRequest,
+          networkId);
+      - lang: Python
+        source: response = fireblocks.network_connections.set_network_id_name(set_network_id_name_request, network_id);
+  /off_exchange/add:
+    post:
+      summary: Add Collateral
+      description: 'Add collateral and create deposit request.
+
+        Learn more about Fireblocks Off Exchange in the following [guide](https://developers.fireblocks.com/docs/off-exchange).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Off Exchange
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCollateralRequestBody'
+      responses:
+        '200':
+          description: A transaction object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTransactionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: addOffExchange
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateTransactionResponse>> = fireblocks.offExchanges.addOffExchange(offExchangesApiAddOffExchangeRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateTransactionResponse>> response = fireblocks.offExchanges().addOffExchange(addCollateralRequestBody,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.off_exchanges.add_off_exchange(add_collateral_request_body, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateTransactionResponse>> = fireblocks.offExchanges.addOffExchange(offExchangesApiAddOffExchangeRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateTransactionResponse>> response = fireblocks.offExchanges().addOffExchange(addCollateralRequestBody,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.off_exchanges.add_off_exchange(add_collateral_request_body, idempotency_key);
+  /off_exchange/remove:
+    post:
+      summary: Remove Collateral
+      description: 'Remove collateral and create withdraw request.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Off Exchange
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveCollateralRequestBody'
+      responses:
+        '200':
+          description: A transaction object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTransactionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: removeOffExchange
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateTransactionResponse>> = fireblocks.offExchanges.removeOffExchange(offExchangesApiRemoveOffExchangeRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateTransactionResponse>> response = fireblocks.offExchanges().removeOffExchange(removeCollateralRequestBody,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.off_exchanges.remove_off_exchange(remove_collateral_request_body, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateTransactionResponse>> = fireblocks.offExchanges.removeOffExchange(offExchangesApiRemoveOffExchangeRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateTransactionResponse>> response = fireblocks.offExchanges().removeOffExchange(removeCollateralRequestBody,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.off_exchanges.remove_off_exchange(remove_collateral_request_body, idempotency_key);
+  /off_exchange/settlements/trader:
+    post:
+      summary: Create Settlement for a Trader
+      description: 'Create settlement for a trader.
+
+        Learn more about Fireblocks Off Exchange in the following [guide](https://developers.fireblocks.com/docs/off-exchange).
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Off Exchange
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettlementRequestBody'
+      responses:
+        '201':
+          description: A settlement object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettlementResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: settleOffExchangeTrades
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SettlementResponse>> = fireblocks.offExchanges.settleOffExchangeTrades(offExchangesApiSettleOffExchangeTradesRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SettlementResponse>> response = fireblocks.offExchanges().settleOffExchangeTrades(settlementRequestBody,
+            idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.off_exchanges.settle_off_exchange_trades(settlement_request_body, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SettlementResponse>> = fireblocks.offExchanges.settleOffExchangeTrades(offExchangesApiSettleOffExchangeTradesRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SettlementResponse>> response = fireblocks.offExchanges().settleOffExchangeTrades(settlementRequestBody,
+          idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.off_exchanges.settle_off_exchange_trades(settlement_request_body, idempotency_key);
+  /off_exchange/settlements/transactions:
+    get:
+      summary: Get Settlements Transactions
+      description: 'Get settlements transactions from exchange.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Off Exchange
+      parameters:
+      - in: query
+        name: mainExchangeAccountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A settlement transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeSettlementTransactionsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getOffExchangeSettlementTransactions
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetSettlementResponse>> = fireblocks.offExchanges.getOffExchangeSettlementTransactions(offExchangesApiGetOffExchangeSettlementTransactionsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetSettlementResponse>> response = fireblocks.offExchanges().getOffExchangeSettlementTransactions(mainExchangeAccountId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.off_exchanges.get_off_exchange_settlement_transactions(main_exchange_account_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetSettlementResponse>> = fireblocks.offExchanges.getOffExchangeSettlementTransactions(offExchangesApiGetOffExchangeSettlementTransactionsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetSettlementResponse>> response = fireblocks.offExchanges().getOffExchangeSettlementTransactions(mainExchangeAccountId);
+      - lang: Python
+        source: response = fireblocks.off_exchanges.get_off_exchange_settlement_transactions(main_exchange_account_id);
+  /off_exchange/collateral_accounts/{mainExchangeAccountId}:
+    get:
+      summary: Find a specific collateral exchange account
+      description: 'Returns a collateral account by mainExchangeAccountId.
+
+        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+      tags:
+      - Off Exchange
+      parameters:
+      - in: path
+        name: mainExchangeAccountId
+        required: true
+        description: The id of the main exchange account for which the requested collateral account is associated with
+        schema:
+          type: string
+          example: c2896695-4263-40af-a15c-4348b294b5c4
+      responses:
+        '200':
+          description: An ExchangeAccount object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeAccount'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getOffExchangeCollateralAccounts
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ExchangeAccount>> = fireblocks.offExchanges.getOffExchangeCollateralAccounts(offExchangesApiGetOffExchangeCollateralAccountsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ExchangeAccount>> response = fireblocks.offExchanges().getOffExchangeCollateralAccounts(mainExchangeAccountId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.off_exchanges.get_off_exchange_collateral_accounts(main_exchange_account_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ExchangeAccount>> = fireblocks.offExchanges.getOffExchangeCollateralAccounts(offExchangesApiGetOffExchangeCollateralAccountsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ExchangeAccount>> response = fireblocks.offExchanges().getOffExchangeCollateralAccounts(mainExchangeAccountId);
+      - lang: Python
+        source: response = fireblocks.off_exchanges.get_off_exchange_collateral_accounts(main_exchange_account_id);
+components:
+  schemas:
+    AddCollateralRequestBody:
+      type: object
+      properties:
+        transactionRequest:
+          $ref: '#/components/schemas/TransactionRequest'
+        isSrcCollateral:
+          type: boolean
+          description: optional
+    CreateNetworkIdRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Network ID Name
+          example: My Network ID name
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkIdRoutingPolicy'
+      required:
+      - name
+    CreateTransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique Fireblocks identifier of the transaction
+        status:
+          type: string
+          description: The primary status of the transaction. For details, see [Primary transaction statuses.] (https://developers.fireblocks.com/reference/primary-transaction-statuses)
+        systemMessages:
+          $ref: '#/components/schemas/SystemMessageInfo'
+    CustomRoutingDest:
+      type: object
+      properties:
+        scheme:
+          description: The network routing logic.
+          type: string
+          enum:
+          - CUSTOM
+        dstType:
+          type: string
+          description: The account the funds are being sent to.
+          enum:
+          - FIAT_ACCOUNT
+          - VAULT
+          - EXCHANGE
+        dstId:
+          type: string
+          description: The ID of the account the funds are being sent to.
+          example: 29a425f4-f621-4c01-a888-27adec7d1dfa
+      required:
+      - scheme
+      - dstType
+      - dstId
+    DefaultNetworkRoutingDest:
+      type: object
+      properties:
+        scheme:
+          type: string
+          description: The network routing logic.
+          enum:
+          - DEFAULT
+      required:
+      - scheme
+    DeleteNetworkConnectionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    DeleteNetworkIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    DestinationTransferPeerPath:
+      type: object
+      description: The destination of the transaction.
+      properties:
+        type:
+          $ref: '#/components/schemas/TransferPeerPathType'
+        subType:
+          $ref: '#/components/schemas/TransferPeerPathSubType'
+        id:
+          type: string
+        name:
+          type: string
+        walletId:
+          type: string
+          format: uuid
+        oneTimeAddress:
+          $ref: '#/components/schemas/OneTimeAddress'
+        isCollateral:
+          type: boolean
+          description: Indicates whether the destination is a collateral account
+          example: true
+      required:
+      - type
+    ExchangeAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/ExchangeType'
+        name:
+          type: string
+          description: Display name of the exchange account
+        status:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeAsset'
+        success:
+          type: boolean
+          description: Did succeed in retrieve balance data
+        tradingAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeTradingAccount'
+        isSubaccount:
+          description: True if the account is a subaccount in an exchange
+          type: boolean
+        mainAccountId:
+          description: if the account is a sub-account, the ID of the main account
+          type: string
+    ExchangeAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        total:
+          type: string
+        available:
+          type: string
+        credit:
+          type: string
+    ExchangeSettlementTransactionsResponse:
+      type: object
+      properties:
+        toExchange:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToExchangeTransaction'
+        toCollateral:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToCollateralTransaction'
+    ExchangeTradingAccount:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeAsset'
+    ExchangeType:
+      description: Exchange account's type
+      type: string
+      enum:
+      - INDEPENDENT_RESERVE
+      - ENCLAVE_MARKETS
+      - BIT
+      - COINFLEX
+      - KUCOIN
+      - PXS
+      - LIQUID
+      - BITHUMB
+      - BITFINEX
+      - BITSO
+      - BITSTAMP
+      - KRAKEN
+      - KRAKENINTL
+      - BINANCE
+      - BINANCEUS
+      - CRYPTOCOM
+      - BYBIT_V2
+      - COINBASEPRO
+      - COINBASEPRIME
+      - COINBASEINTERNATIONAL
+      - WHITEBIT
+      - COINBASEEXCHANGE
+      - KORBIT
+      - HITBTC
+      - GEMINI
+      - CIRCLE
+      - BITMEX
+      - HUOBI
+      - DERIBIT
+      - OKCOIN_V5
+      - OKEX
+      - COINMETRO
+      - GATEIO
+      - SCRYPT
+      - COINHAKO
+      - LIGHTBIT
+      - BULLISH
+      - CANVAS_CONNECT
+      - BITGET
+      - LUNO
+      - BIT_GENERA
+      - TRANSFERO
+    ExtraParameters:
+      type: object
+      properties:
+        nodeControls:
+          $ref: '#/components/schemas/NodeControls'
+        rawMessageData:
+          type: object
+          properties:
+            messages:
+              type: array
+              items:
+                $ref: '#/components/schemas/UnsignedMessage'
+            algorithm:
+              type: string
+              enum:
+              - MPC_ECDSA_SECP256K1
+              - MPC_ECDSA_SECP256R1
+              - MPC_EDDSA_ED25519
+          description: Object containing messages for raw signing and the algorithm to be used.
+        contractCallData:
+          type: string
+          description: Hex encoded contract call data as a string.
+          example: '0xa9059cbb000000000000000000000000c7f14c1161a5427137b232c077ecdbd1f881c02900000000000000000000000000000000000000000000000000000000a05e0722'
+        programCallData:
+          type: string
+          description: BASE64 encoded Solana unsigned serialized transaction object.
+          example: '"AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAECnckDh7gOELSNx5pD92oS2ijhbUvjg0vuo/8tthsbvDi7gZJWA3XnqGrMfSlASBHSPx9i0WEmM065fw4GxrdeYpuUVNx1/Pp2gbwoJC0Pd60uzHOU3EJx13JWL6R34Jt4AQEAAA=="
+
+            '
+        inputsSelection:
+          type: object
+          properties:
+            inputsToSpend:
+              type: array
+              items:
+                $ref: '#/components/schemas/UnspentInput'
+              description: Inputs that should be used in the transaction.
+            inputsToExclude:
+              type: array
+              items:
+                $ref: '#/components/schemas/UnspentInput'
+              description: Inputs that shouldn't be used in the transaction.
+          description: For UTXO based blockchains, selections of inputs for the transaction.
+        allowBaseAssetAddress:
+          type: boolean
+          default: false
+          description: 'Transfers to unmanaged wallets only. When true, if the destination doesn''t have a whitelisted address
+            for the requested asset, we''ll use the destination''s whitelisted address of the base asset (e.g., use the ETH
+            address for an ERC-20). If the requested asset''s whitelisted address exists, it is used.
+
+
+            **Note:** This is a premium feature that should be enabled in your workspace. Please contact your Customer Success
+            Manager or Fireblocks Support for more information.
+
+            '
+      description: 'Additional protocol and operation-specific key-value parameters:
+
+        - For UTXO-based blockchain input selection, add the key `inputsSelection` with the value set to the [input selection
+        structure](https://developers.fireblocks.com/reference/transaction-objects#inputsselection). The inputs can be retrieved
+        from the [Retrieve Unspent Inputs endpoint](https://developers.fireblocks.com/reference/get_vault-accounts-vaultaccountid-assetid-unspent-inputs).
+
+        - For `RAW` operations, add the key `rawMessageData` with the value set to the [raw message data structure](https://developers.fireblocks.com/reference/raw-signing-objects#rawmessagedata).
+
+        - For `CONTRACT_CALL` operations, add the key `contractCallData` with the value set to the Ethereum smart contract
+        Application Binary Interface (ABI) payload. The Fireblocks [development libraries](https://developers.fireblocks.com/docs/ethereum-development#convenience-libraries)
+        are recommended for building contract call transactions.
+
+        - For exchange compliance (e.g., Binance) and Travel Rule purposes, include the key `piiData` containing a custom
+        JSON structure with Personally Identifiable Information (PII) relevant to the transaction. This data must be **fully
+        encrypted by the sender** before being submitted to the Fireblocks API. The recommended encryption method is hybrid
+        encryption using AES-256-GCM for the payload and RSA-OAEP for key exchange, with the recipient exchange''s public
+        key. Learn more [here](https://developers.fireblocks.com/docs/a-developers-guide-to-constructing-encrypted-pii-messages-for-binance-via-fireblocks).
+
+
+        **Note:** `rawMessageData`, `contractCallData`, and `inputsSelection` cannot be used together in the same call.
+
+        '
+    GetNetworkConnectionsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/NetworkConnectionResponse'
+    GetNetworkIdsResponse:
+      type: array
+      items:
+        allOf:
+        - $ref: '#/components/schemas/NetworkIdResponse'
+    GetRoutingPolicyAssetGroupsResponse:
+      type: array
+      items:
+        type: string
+    NetworkChannel:
+      deprecated: true
+      description: Deprecated in the only used reference - NetworkConnectionResponse
+      type: object
+      properties:
+        networkId:
+          type: string
+        name:
+          type: string
+    NetworkConnection:
+      type: object
+      properties:
+        localNetworkId:
+          type: string
+          description: The network ID of the profile trying to create the connection.
+          example: 494ae5f7-7807-4bc5-863b-2963aa94398f
+        remoteNetworkId:
+          type: string
+          description: The network ID the profile is attempting to connect to.
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
+      required:
+      - localNetworkId
+      - remoteNetworkId
+    NetworkConnectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        localChannel:
+          allOf:
+          - $ref: '#/components/schemas/NetworkChannel'
+          deprecated: true
+          description: Deprecated - Replaced by `localNetworkId`
+        remoteChannel:
+          allOf:
+          - $ref: '#/components/schemas/NetworkChannel'
+          deprecated: true
+          description: Deprecated - Replaced by `remoteNetworkId`
+        status:
+          $ref: '#/components/schemas/NetworkConnectionStatus'
+        localNetworkId:
+          $ref: '#/components/schemas/NetworkId'
+        remoteNetworkId:
+          $ref: '#/components/schemas/NetworkId'
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
+      required:
+      - id
+      - localNetworkId
+      - remoteNetworkId
+      - routingPolicy
+      - status
+    NetworkConnectionRoutingPolicy:
+      type: object
+      additionalProperties:
+        oneOf:
+        - $ref: '#/components/schemas/CustomRoutingDest'
+        - $ref: '#/components/schemas/DefaultNetworkRoutingDest'
+        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
+    NetworkConnectionStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - WAITING_FOR_PEER_APPROVAL
+      - APPROVED
+      - CANCELLED
+      - FAILED
+      - REJECTED
+      - REJECTED_BY_PEER
+      - REMOVED
+      - REMOVED_BY_PEER
+    NetworkId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Network Connection ID
+          example: 494ae5f7-7807-4bc5-863b-2963aa94398f
+        name:
+          type: string
+          description: Network Connection Name
+          example: My Network Connection Name
+      required:
+      - id
+      - name
+    NetworkIdResponse:
+      allOf:
+      - $ref: '#/components/schemas/NetworkId'
+      - type: object
+        properties:
+          routingPolicy:
+            $ref: '#/components/schemas/NetworkIdRoutingPolicy'
+          isDiscoverable:
+            type: boolean
+            description: The specific network is discoverable.
+    NetworkIdRoutingPolicy:
+      type: object
+      additionalProperties:
+        oneOf:
+        - $ref: '#/components/schemas/CustomRoutingDest'
+        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
+    NodeControls:
+      description: 'Configure special node requirements.
+
+        - For routing transactions to a custom node, set the `type` to `NODE_ROUTER` and the `tag` to the pre-configured tag
+        value.
+
+        - For MEV protection, set only the `type` property to `MEV` (`tag` is not required at this stage).
+
+
+        **Note:** This is a premium feature that should be enabled in your workspace. Please contact your Customer Success
+        Manager or Fireblocks Support for more information.
+
+        '
+      type: object
+      properties:
+        type:
+          description: '`NODE_ROUTER` - used for transaction routing to a custom node
+
+            `MEV` - used for transaction routing to a MEV protection provider
+
+            '
+          type: string
+          enum:
+          - MEV
+          - NODE_ROUTER
+        tag:
+          description: Should be used when type is `NODE_ROUTER` only
+          type: string
+          example: some_node_tag
+    NoneNetworkRoutingDest:
+      type: object
+      properties:
+        scheme:
+          type: string
+          description: No network routing logic.
+          enum:
+          - NONE
+      required:
+      - scheme
+    OneTimeAddress:
+      type: object
+      properties:
+        address:
+          type: string
+        tag:
+          type: string
+      required:
+      - address
+    PreHash:
+      type: object
+      description: "The prehash object for ECDSA RAW signing requests. \nThe prehash object contains the content to sign (the\
+        \ actual message in hex representation) and the hashing algorithm to use before signing.\n"
+      properties:
+        content:
+          type: string
+          description: The prehashed content to sign on in hex representation.
+          example: 48656c6c6f2046697265626c6f636b73210a
+        hashAlgorithm:
+          type: string
+          description: The hashing algorithm to use in order to hash the content before the signature process
+          enum:
+          - SHA256
+          - KECCAK256
+          - SHA3
+          - BLAKE2
+          - DOUBLE_SHA256
+      required:
+      - content
+      - hashAlgorithm
+    RemoveCollateralRequestBody:
+      type: object
+      properties:
+        transactionRequest:
+          $ref: '#/components/schemas/TransactionRequest'
+        isDstCollateral:
+          type: boolean
+          description: optional
+    SearchNetworkIdsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkIdResponse'
+        next:
+          type: string
+    SetNetworkIdDiscoverabilityRequest:
+      type: object
+      properties:
+        isDiscoverable:
+          type: boolean
+      required:
+      - isDiscoverable
+    SetNetworkIdNameRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Network ID name
+          example: My Network ID name
+      required:
+      - name
+    SetNetworkIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    SetNetworkIdRoutingPolicyRequest:
+      type: object
+      properties:
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkIdRoutingPolicy'
+      required:
+      - routingPolicy
+    SetRoutingPolicyRequest:
+      type: object
+      properties:
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
+      required:
+      - routingPolicy
+    SetRoutingPolicyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    SettlementRequestBody:
+      type: object
+      properties:
+        mainExchangeAccountId:
+          type: string
+    SettlementResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        initiator:
+          type: string
+        exchangeReply:
+          type: string
+        fireblocksInitiatedTransactions:
+          type: object
+        exchangeRequestedTransactions:
+          $ref: '#/components/schemas/ExchangeSettlementTransactionsResponse'
+    SourceTransferPeerPath:
+      type: object
+      description: The source of the transaction.
+      properties:
+        type:
+          $ref: '#/components/schemas/TransferPeerPathType'
+        subType:
+          $ref: '#/components/schemas/TransferPeerPathSubType'
+        id:
+          type: string
+        name:
+          type: string
+        walletId:
+          type: string
+          format: uuid
+        isCollateral:
+          type: boolean
+          description: Indicates whether the source is a collateral account
+          example: true
+      required:
+      - type
+    SystemMessageInfo:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - WARN
+          - BLOCK
+        message:
+          type: string
+          description: A response from Fireblocks that communicates a message about the health of the process being performed.
+            If this object is returned with data, you should expect potential delays or incomplete transaction statuses.
+          example: Slow transaction processing. Outgoing transactions might be stuck.
+    ThirdPartyRouting:
+      type: object
+      properties:
+        isThirdPartyRouting:
+          type: boolean
+        description:
+          type: string
+    ToCollateralTransaction:
+      type: object
+      properties:
+        asset:
+          type: string
+        amount:
+          type: string
+        srcAddress:
+          type: string
+        srcTag:
+          type: string
+          description: optional
+        fee:
+          type: string
+          description: optional
+    ToExchangeTransaction:
+      type: object
+      properties:
+        assetId:
+          type: string
+        amount:
+          type: string
+        dstAddress:
+          type: string
+        dstTag:
+          type: string
+          description: optional
+    TransactionOperation:
+      type: string
+      default: TRANSFER
+      enum:
+      - TRANSFER
+      - BURN
+      - CONTRACT_CALL
+      - MINT
+      - RAW
+      - TYPED_MESSAGE
+      - PROGRAM_CALL
+      description: "* `TRANSFER` - The default value for an operation. Transfers funds from one account to another. UTXO blockchains\
+        \ allow multi-input and multi-output transfers. All other blockchains allow transfers with one source address and\
+        \ one destination address.\n* `MINT` - Mints new tokens. Supported for Stellar, Ripple and EVM-based blockchains.\n\
+        * `BURN` - Burns tokens. Supported for Stellar, Ripple and EVM-based blockchains.\n* `CONTRACT_CALL` - Calls a smart\
+        \ contract method for web3 operations on any EVM blockchain. The Fireblocks [development libraries](https://developers.fireblocks.com/docs/ethereum-development#convenience-libraries)\
+        \ are recommended for building contract call transactions.\n* `PROGRAM_CALL` - Calls a smart contract for web3 operations\
+        \ on the Solana blockchain.\n  Read more in the [Solana Programs Interactions guide](https://developers.fireblocks.com/reference/interact-with-solana-programs).\n\
+        \n* `TYPED_MESSAGE` - An off-chain message in either Ethereum Personal Message or EIP712 format. Use it to sign specific\
+        \ readable messages that are not actual transactions. [Learn more about typed messages](https://developers.fireblocks.com/docs/typed-message-signing-1).\n\
+        * `RAW` - An off-chain message with no predefined format. Use it to sign any message with your private key, including\
+        \ protocols such as blockchains and custom transaction types that are not natively supported by Fireblocks. [Learn\
+        \ more about raw signing transactions.](https://developers.fireblocks.com/docs/raw-signing)\n"
+    TransactionRequest:
+      type: object
+      properties:
+        operation:
+          $ref: '#/components/schemas/TransactionOperation'
+        note:
+          type: string
+          description: Custom note, not sent to the blockchain, to describe the transaction at your Fireblocks workspace.
+          example: Ticket 123
+        externalTxId:
+          type: string
+          description: 'Allows you to add a unique ID to help prevent duplicate transactions. No specific format is required
+            for this parameter. After you submit a transaction with an external ID, Fireblocks will automatically reject all
+            future transactions with the same ID.
+
+            - Using an external ID primarily helps in situations where, even though a submitted transaction responds with
+            an error due to an internet outage, the transaction was still sent to and processed on the blockchain.
+
+            - Use [Get a specific transaction by external transaction ID](https://developers.fireblocks.com/reference/gettransactionbyexternalid)
+            to validate whether these transactions have been processed.
+
+            '
+          example: some_unique_external_tx_id
+        assetId:
+          type: string
+          description: The ID of the asset to transfer; used for `TRANSFER`, `MINT`, or `BURN` operations. See [the list of
+            supported assets and their IDs](https://developers.fireblocks.com/reference/listassets).
+          x-fb-entity: asset
+          example: ETH
+        source:
+          $ref: '#/components/schemas/SourceTransferPeerPath'
+        destination:
+          $ref: '#/components/schemas/DestinationTransferPeerPath'
+        destinations:
+          type: array
+          description: For UTXO based blockchains, you can send a single transaction to multiple destinations.
+          items:
+            $ref: '#/components/schemas/TransactionRequestDestination'
+        amount:
+          description: "For `TRANSFER` operations, the requested amount to transfer, in the asset\u2019s unit. Fireblocks\
+            \ recommends using a numeric string for accurate precision. Although a number input exists, it is deprecated."
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+            example: '0.02'
+          - type: number
+            description: Number (deprecated)
+            example: 0.02
+        treatAsGrossAmount:
+          type: boolean
+          description: "\"When set to `true`, the fee will be deducted from the requested amount.\"\n\n**Note**: This parameter\
+            \ can only be considered if a transaction\u2019s asset is a base asset, such as ETH or MATIC. If the asset can\u2019\
+            t be used for transaction fees, like USDC, this parameter is ignored and the fee is deducted from the relevant\
+            \ base asset wallet in the source account."
+          example: false
+        forceSweep:
+          type: boolean
+          description: "For Polkadot, TON, Kusama and Westend transactions only. When set to true, Fireblocks will empty the\
+            \ asset wallet.\n\n   **Note:** If set to true when the source account is exactly 1 DOT, the transaction will\
+            \ fail. Any amount more or less than 1 DOT succeeds. This is a Polkadot blockchain limitation."
+          example: false
+        feeLevel:
+          type: string
+          description: For UTXO or EVM-based blockchains only. Defines the blockchain fee level which will be payed for the
+            transaction. Alternatively, specific fee estimation parameters exist below.
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          example: MEDIUM
+        fee:
+          description: '- **For UTXO-based blockchains**, the fee per bytes in the asset''s smallest unit (Satoshi, Latoshi,
+            etc.).
+
+            - **For Ripple**, the fee for the transaction.
+
+
+            Note:
+
+            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
+
+            '
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        priorityFee:
+          description: '**For Ethereum-based blockchains only.** The fee (in Gwei) for EIP-1559 transaction pricing mechanism.
+
+
+            Note:
+
+            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
+
+            '
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+            example: '2'
+          - type: number
+            description: Number (deprecated)
+            example: 2
+        failOnLowFee:
+          type: boolean
+          description: When set to `true`, in case the current `MEDIUM` fee level is higher than the one specified in the
+            transaction, the transaction will fail to avoid getting stuck with no confirmations.
+        maxFee:
+          description: The maximum fee (gas price or fee per byte) that should be paid for the transaction. In case the current
+            value of the requested `feeLevel` is higher than this requested maximum fee. Represented by a numeric string for
+            more precision.
+          type: string
+          example: '120'
+        gasLimit:
+          description: '**For EVM-based blockchains only.**  Units of gas required to process the transaction.
+
+
+            Notes:
+
+            - Only two of the three arguments can be specified in a single transaction: `gasLimit`, `gasPrice`, and/or `networkFee`.
+
+            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
+
+            '
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+            example: '21000'
+          - type: number
+            description: Number (deprecated)
+            example: 21000
+        gasPrice:
+          description: '**For non-EIP-1559, EVM-based transactions.** Price per gas unit. In Ethereum, this is specified in
+            Gwei.
+
+
+            Notes:
+
+            - Only two of the three arguments can be specified in a single transaction: `gasLimit`, `gasPrice`, and/or `networkFee`.
+
+            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
+
+            '
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        networkFee:
+          description: 'The total transaction fee in the blockchain''s largest unit.
+
+
+            Notes:
+
+            - Only two of the three arguments can be specified in a single transaction: `gasLimit`, `gasPrice`, and/or `networkFee`.
+
+            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
+
+            '
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        replaceTxByHash:
+          type: string
+          description: '**For EVM-based blockchains only.**
+
+
+            Notes:
+
+            - To replace a transaction, create another transaction using the stuck transaction''s hash and specify a higher
+            fee.
+
+            - To drop a transaction, create another transaction using the stuck transaction''s hash and change the `amount`
+            field to 0.
+
+            '
+          example: 00000000-0000-0000-0000-000000000000
+        extraParameters:
+          $ref: '#/components/schemas/ExtraParameters'
+        customerRefId:
+          type: string
+          description: The ID for AML providers to associate the owner of funds with transactions.
+          example: abcdef
+        travelRuleMessage:
+          $ref: '#/components/schemas/TravelRuleCreateTransactionRequest'
+        autoStaking:
+          type: boolean
+          description: This feature is no longer supported.
+          deprecated: true
+        networkStaking:
+          deprecated: true
+          description: This feature is no longer supported.
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        cpuStaking:
+          deprecated: true
+          description: This feature is no longer supported.
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        useGasless:
+          type: boolean
+          description: '- Override the default gasless configuration by sending true\false'
+    TransactionRequestDestination:
+      type: object
+      properties:
+        amount:
+          type: string
+        destination:
+          $ref: '#/components/schemas/DestinationTransferPeerPath'
+    TransferPeerPathSubType:
+      type: string
+      enum:
+      - BINANCE
+      - BINANCEUS
+      - BITFINEX
+      - BITHUMB
+      - BITMEX
+      - BITSO
+      - BITSTAMP
+      - BITTREX
+      - BLINC
+      - BULLISHEXCHANGE
+      - BYBIT
+      - CIRCLE
+      - COINBASEEXCHANGE
+      - COINBASEPRO
+      - COINMETRO
+      - COINSPRO
+      - CRYPTOCOM
+      - DERIBIT
+      - GEMINI
+      - HITBTC
+      - HUOBI
+      - INDEPENDENTRESERVE
+      - KORBIT
+      - KRAKEN
+      - KRAKENINTL
+      - KUCOIN
+      - LIQUID
+      - OKCOIN
+      - OKEX
+      - PAXOS
+      - POLONIEX
+      - External
+      - Internal
+    TransferPeerPathType:
+      type: string
+      enum:
+      - VAULT_ACCOUNT
+      - EXCHANGE_ACCOUNT
+      - INTERNAL_WALLET
+      - EXTERNAL_WALLET
+      - UNMANAGED_WALLET
+      - CONTRACT
+      - NETWORK_CONNECTION
+      - FIAT_ACCOUNT
+      - COMPOUND
+      - GAS_STATION
+      - ONE_TIME_ADDRESS
+      - UNKNOWN
+      - END_USER_WALLET
+      - PROGRAM_CALL
+      - MULTI_DESTINATION
+      - OEC_PARTNER
+    TravelRuleCreateTransactionRequest:
+      type: object
+      properties:
+        originatorVASPdid:
+          type: string
+          description: The Decentralized Identifier (DID) of the exchange (VASP) that is sending the virtual assets. This
+            identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene
+            network.
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+        beneficiaryVASPdid:
+          type: string
+          description: The Decentralized Identifier (DID) of the exchange (VASP) that is receiving the virtual assets. This
+            identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene
+            network.
+          example: did:ethr:0x17fe2dd11a2daa7f6c1fdf22532a4763f963aea6
+        originatorVASPname:
+          type: string
+          description: The name of the VASP acting as the transaction originator.
+          example: Originator VASP Ltd.
+        beneficiaryVASPname:
+          type: string
+          description: The name of the VASP acting as the transaction beneficiary.
+          example: Beneficiary VASP Inc.
+        beneficiaryVASPwebsite:
+          type: string
+          description: The website of the VASP acting as the transaction beneficiary.
+          example: https://www.beneficiaryvasp.com
+        transactionBlockchainInfo:
+          description: Information about the blockchain transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleTransactionBlockchainInfo'
+        originator:
+          description: Information about the originator of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRulePiiIVMS'
+        beneficiary:
+          description: Information about the beneficiary of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRulePiiIVMS'
+        encrypted:
+          type: string
+          description: Encrypted data related to the transaction.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        protocol:
+          type: string
+          description: The protocol used to perform the travel rule.
+          example: IVMS101
+        skipBeneficiaryDataValidation:
+          type: boolean
+          description: Whether to skip validation of beneficiary data.
+          example: false
+        travelRuleBehavior:
+          type: boolean
+          description: Whether to check if the transaction complies with the travel rule in the beneficiary VASP's jurisdiction.
+          example: true
+        originatorRef:
+          type: string
+          description: A reference ID related to the originator of the transaction.
+          example: ORG123456
+        beneficiaryRef:
+          type: string
+          description: A reference ID related to the beneficiary of the transaction.
+          example: BEN654321
+        travelRuleBehaviorRef:
+          type: string
+          description: A reference ID related to the travel rule behavior.
+          example: TRB987654
+        originatorProof:
+          description: Ownership proof related to the originator of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
+        beneficiaryProof:
+          description: Ownership proof related to the beneficiary of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
+        beneficiaryDid:
+          type: string
+          description: "The Decentralized Identifier (DID) of the person at the receiving exchange (VASP).  This identifier\
+            \ is generated when the customer is registered in the Notabene network,  or automatically created based on the\
+            \ `beneficiaryRef`.  - If neither `beneficiaryRef` nor `beneficiaryDid` is provided in the `txCreate` payload,\
+            \ \n  a new random DID is generated for every transaction."
+          example: did:key:z6Mkf67890Zghijkl67890
+        originatorDid:
+          type: string
+          description: "The Decentralized Identifier (DID) of the person at the exchange (VASP) who is requesting the withdrawal.\
+            \ This identifier is generated when the customer is registered in the Notabene network or automatically created\
+            \ based on the `originatorRef`.  - If neither `originatorRef` nor `originatorDid` is provided in the `txCreate`\
+            \ payload, \n  a new random DID is generated for every transaction."
+          example: did:key:z6Mkf12345Zabcdef12345
+        isNonCustodial:
+          type: boolean
+          description: Indicates if the transaction involves a non-custodial wallet.
+          example: true
+      required:
+      - originator
+      - beneficiary
+    TravelRuleDateAndPlaceOfBirth:
+      type: object
+      description: Represents the date and place of birth for a natural person
+      properties:
+        dateOfBirth:
+          type: string
+          description: Date of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+        placeOfBirth:
+          type: string
+          description: Place of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    TravelRuleGeographicAddress:
+      type: object
+      properties:
+        streetName:
+          type: string
+          description: Name of a street or thoroughfare. The value must be encrypted.
+          example: QmZGXXsKPk5iPS97LLjXB5e8Qs555ocdzcpbPMXvt84Ji9
+        townName:
+          type: string
+          description: Name of a built-up area, with defined boundaries, and a local government. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+        country:
+          type: string
+          description: Nation with its own government (ISO-3166 Alpha-2 country code). The value must be encrypted.
+          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
+        buildingNumber:
+          type: string
+          description: Number that identifies the position of a building on a street. The value must be encrypted.
+          example: QmUFpNkxdsVtebDSUz5eP51kzoysXmqj2gBgeH11PD7SVP
+        postCode:
+          type: string
+          description: Identifier consisting of a group of letters and/or numbers added to a postal address to assist the
+            sorting of mail. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        addressType:
+          type: string
+          description: 'Specifies the type of address. Acceptable values are: - ''HOME'': Residential, the home address -
+            ''BIZZ'': Business, the business address - ''GEOG'': Geographic, an unspecified physical (geographical) address
+            The value must be encrypted.'
+          example: Qmdr9LcChZsoivS6uAhe7Qk7cGLDAx73wBZTVvq4WoU71H
+        department:
+          type: string
+          description: Identification of a division of a large organisation or building. The value must be encrypted.
+          example: QmN7fb65x5MyA7RKyhbXaUKvJ7U4Y9eqpEZTmJYpNyEG8
+        subDepartment:
+          type: string
+          description: Identification of a sub-division of a large organisation or building. The value must be encrypted.
+          example: QmTkfyGh54tXNqFxyEGK9NyTJZYpQ6RZ9zpNykxykME8s
+        buildingName:
+          type: string
+          description: Name of the building or house. The value must be encrypted.
+          example: QmXJfGk85t6RKyhbXaEK9Nz4MEeMKypq6EY9zpJyC9nM9
+        floor:
+          type: string
+          description: Floor or storey within a building. The value must be encrypted.
+          example: QmZP5G7fhZpMyQxXnT9KyR6ybXaEM9zpJy4ME9MkTJGE1
+        postBox:
+          type: string
+          description: Numbered box in a post office. The value must be encrypted.
+          example: QmTkfYRGK54xFqXyJYNZyE9kY9zpMKytJnXy5z9EME9sJ
+        room:
+          type: string
+          description: Building room number. The value must be encrypted.
+          example: QmRYXnT9KyhbXaEMZpMyxMkZ9zpYNYTJ4ME5kCGE7fhMJ
+        townLocationName:
+          type: string
+          description: Specific location name within the town. The value must be encrypted.
+          example: QmNpZTyXJXnT9K6EYZpQxYNYMkC5p4kGEfhnkMJzpYT9Jm
+        districtName:
+          type: string
+          description: Identifies a subdivision within a country subdivision. The value must be encrypted.
+          example: QmT9p6ERKyNYXnTyhbpMYJ4zpYT9kMJZT9QmEMGZ5kMhCy
+        countrySubDivision:
+          type: string
+          description: Identifies a subdivision of a country, such as a state, region, or province. The value must be encrypted.
+          example: QmK9yTbXaZpMYJYTYp6NT9QmEMGZT9p9kMJfhyGE4Z7k5C
+        addressLine:
+          type: array
+          items:
+            type: string
+          description: Information that locates and identifies a specific address, presented in free-format text. Each item
+            must be encrypted.
+          example:
+          - QmNp9kMjfhGZ5kMJzpNYXZTy6NQmZYEMGZ4kZT9Y6pNYT
+    TravelRuleLegalPerson:
+      type: object
+      properties:
+        name:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleLegalPersonNameIdentifier'
+          description: The structured name of the legal person, referencing name identifiers.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: The array of geographic addresses associated with the legal person.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleNationalIdentification'
+        customerIdentification:
+          type: string
+          description: A unique identifier that identifies the customer in the organization's context. The value must be encrypted.
+          example: QmRY9AA4Uit2JRTxDzfzshrJdTK86Kf5HriA3dXDnihDmy
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must
+            be encrypted.
+          example: QmXvyML3AJUFpBbJqL5NVp7Vn7xNkuedTsSMk93duLCNW8
+        countryOfRegistration:
+          type: string
+          description: The ISO-3166 Alpha-2 country code where the legal person is registered. The value must be encrypted.
+          example: QmeoTk6UPruEAYNbJEAHdQYc53ap9BXmpnPMcuvs8wutdr
+    TravelRuleLegalPersonNameIdentifier:
+      type: object
+      properties:
+        legalPersonName:
+          type: string
+          description: Name by which the legal person is known. The value must be encrypted.
+          example: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
+        legalPersonNameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official
+            registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name.
+            The value must be encrypted.'
+          example: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
+    TravelRuleNationalIdentification:
+      type: object
+      description: Represents a national identifier for a person or entity
+      properties:
+        countryOfIssue:
+          type: string
+          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code). The value must be encrypted.
+          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
+        nationalIdentifier:
+          type: string
+          description: National identifier (max 35 characters). The value must be encrypted.
+          example: QmdR6qLnZ7Kwf5cBaXG8QFQenEvRg9JNZeoPranVuGd63z
+        nationalIdentifierType:
+          type: string
+          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'':
+            National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security
+            number The value must be encrypted.'
+          example: QmUKTg3aFJFhMz1o9gPqA3MgTRwd2LvDLwWTPHYUoMEYVi
+        registrationAuthority:
+          type: string
+          description: Registration authority (format -> RA followed by 6 digits). The value must be encrypted.
+          example: QmV9KJMyT9RJzpYfhME5xNCZ4G67fEkzTpRMyJzp9kTNYk
+    TravelRuleNaturalNameIdentifier:
+      type: object
+      properties:
+        primaryIdentifier:
+          type: string
+          description: The primary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+        secondaryIdentifier:
+          type: string
+          description: The secondary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+        nameIdentifierType:
+          type: string
+          description: 'The type of the name identifier. The value must be encrypted. The value must be one of the following:
+            [LEGL, DBA, TRAD, NICK, ALIA, MAID, FORM, PREV, BORN, OTHR].'
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+    TravelRuleNaturalPerson:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalPersonNameIdentifier'
+          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier
+            schema.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress
+            schema.
+        nationalIdentification:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleNationalIdentification'
+          description: The national identification of the natural person, referencing the TravelRuleNationalIdentification
+            schema.
+        dateAndPlaceOfBirth:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleDateAndPlaceOfBirth'
+          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
+        customerIdentification:
+          type: string
+          description: A unique identifier for the customer within the organization's context. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        countryOfResidence:
+          type: string
+          description: The ISO-3166 Alpha-2 country code of the natural person's residence. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must
+            be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+    TravelRuleNaturalPersonNameIdentifier:
+      type: object
+      properties:
+        nameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+        localNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+        phoneticNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+    TravelRuleOwnershipProof:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'The type of ownership proof. Example values: - `eip-191`: Ethereum signature proof - `eip-712`: Ethereum
+            typed data signature proof - `bip-137`: Bitcoin signature proof - `microtransfer`: Microtransaction (Satoshi test)
+            - `screenshot`: Uploaded screenshot of the wallet - `self-declaration`: Checkbox attestation of ownership'
+          example: eip-191
+        proof:
+          type: string
+          description: 'The cryptographic signature, transaction hash, or other proof depending on the type. Examples: - For
+            `eip-191`: `0x3dd4a17a...ce4a2bcd1b` - For `microtransfer`: The transaction hash `H3V8GXBy39Dz...tr3TSTkY=`'
+          example: 0x3dd4a17a...ce4a2bcd1b
+        attestation:
+          type: string
+          description: 'A human-readable statement of wallet ownership. Required for signature proofs and self-declarations.
+            Examples: - `I certify that ETH account 0x896B...0b9b belongs to me.` - `I hereby declare that the blockchain
+            address 0xa437bEed902AF9338B7DEB23848e195d85019510 is under my control.`'
+          example: I certify that ETH account 0x896B...0b9b belongs to me.
+        address:
+          type: string
+          description: 'The wallet address being verified. Examples: - For Ethereum: `0x896B...0b9b` - For Bitcoin: `1442...dxhsQ`'
+          example: 0x896B...0b9b
+        wallet_provider:
+          type: string
+          description: 'The wallet provider or method used for verification. Examples: - For Metamask: `Metamask` - For manual
+            signature: `manual`'
+          example: Metamask
+        url:
+          type: string
+          description: 'The URL for the uploaded screenshot (for `screenshot` proof types only). Example: `https://example.com/uploaded_image.png`'
+          example: https://example.com/uploaded_image.png
+        confirmed:
+          type: boolean
+          description: 'Whether the user confirmed ownership of the wallet (for `self-declaration` proofs). Example: `true`'
+          example: true
+    TravelRulePerson:
+      type: object
+      properties:
+        naturalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleNaturalPerson'
+        legalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleLegalPerson'
+    TravelRulePersons:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TravelRulePerson'
+    TravelRulePiiIVMS:
+      type: object
+      properties:
+        originatorPersons:
+          type: array
+          description: Information about the originator of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePersons'
+        beneficiaryPersons:
+          type: array
+          description: Information about the beneficiary of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePersons'
+        accountNumber:
+          type: array
+          description: Beneficiary account number. The value must be encrypted.
+          items:
+            type: string
+            example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    TravelRuleTransactionBlockchainInfo:
+      type: object
+      properties:
+        txHash:
+          type: string
+          description: The hash of the transaction
+          example: 66857308435587568925907217391782424136140297125402684115258137778343590111402
+        origin:
+          type: string
+          description: The origin address of the transaction
+          example: 841132469470587054656177892491842814721854784787
+        destination:
+          type: string
+          description: The destination address of the transaction
+          example: 841132469470587054656177892491842814721854784787
+    UnsignedMessage:
+      type: object
+      properties:
+        preHash:
+          $ref: '#/components/schemas/PreHash'
+        content:
+          description: 'Content to sign on.
+
+            - EIP-191: Requires a 32 byte-long string for ECDSA (hash of the actual message to sign) or any length for EdDSA,
+            as prehashing is not required.
+
+            - EIP-712: Requires an object specifying the structured data format, including `types`, `domain`, `primaryType`,
+            and `message`.
+
+            '
+          type: string
+          example: ababababababababababababababababababbababababababbababababababab
+        bip44addressIndex:
+          description: BIP44 address index
+          type: integer
+          example: 0
+        bip44change:
+          description: BIP44 change index
+          type: number
+          example: 0
+        derivationPath:
+          type: array
+          description: BIP44 full derivation path
+          items:
+            type: number
+            example:
+            - 44
+            - 60
+            - 0
+            - 0
+            - 0
+        type:
+          type: string
+          description: 'Typed Message Signing - message type.
+
+
+            - EIP191 & EIP712: for ETH and all EVM based assets typed message signing
+
+            - TIP191: For Tron (TRX) typed message signing
+
+            - BTC_MESSAGE: For Bitcoin (BTC) typed message signing
+
+            '
+          enum:
+          - EIP191
+          - EIP712
+          - TIP191
+          - BTC_MESSAGE
+      required:
+      - content
+    UnspentInput:
+      description: 'A representation of an Unspent Transaction Output (UTXO).
+
+        '
+      type: object
+      properties:
+        txHash:
+          description: Transaction Hash
+          type: string
+          example: 6b21446af4a5e3ec588960d2338ab52428a3eb729038146ea09905199723061f
+        index:
+          description: The UTXO index (vOut)
+          type: number
+          example: 0
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key,
+        the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
+    X-End-User-Wallet-Id:
+      name: X-End-User-Wallet-Id
+      in: header
+      description: Unique ID of the End-User wallet to the API request. Required for end-user wallet operations.
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'

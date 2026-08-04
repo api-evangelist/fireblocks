@@ -1,0 +1,905 @@
+{
+  "info": {
+    "_postman_id": "94c9d54b-b744-4c25-b16d-b0be7dda1a8b",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Off Exchange API",
+    "description": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:40:10.000Z",
+    "updatedAt": "2026-07-28T01:40:11.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-94c9d54b-b744-4c25-b16d-b0be7dda1a8b"
+  },
+  "item": [
+    {
+      "name": "off_exchange",
+      "item": [
+        {
+          "name": "add",
+          "item": [
+            {
+              "name": "Add Collateral",
+              "id": "cb77936a-b30b-4646-9e3d-3edac5f3d178",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transactionRequest\": {\n    \"operation\": \"TRANSFER\",\n    \"note\": \"<string>\",\n    \"externalTxId\": \"<string>\",\n    \"assetId\": \"<string>\",\n    \"source\": {\n      \"type\": \"GAS_STATION\",\n      \"subType\": \"BLINC\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destination\": {\n      \"type\": \"EXTERNAL_WALLET\",\n      \"subType\": \"BITSTAMP\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"oneTimeAddress\": {\n        \"address\": \"<string>\",\n        \"tag\": \"<string>\"\n      },\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destinations\": [\n      {\n        \"amount\": \"<string>\",\n        \"destination\": {\n          \"type\": \"MULTI_DESTINATION\",\n          \"subType\": \"BITMEX\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"walletId\": \"<uuid>\",\n          \"oneTimeAddress\": {\n            \"address\": \"<string>\",\n            \"tag\": \"<string>\"\n          },\n          \"isCollateral\": \"<boolean>\"\n        }\n      }\n    ],\n    \"amount\": \"<string>\",\n    \"treatAsGrossAmount\": \"<boolean>\",\n    \"forceSweep\": \"<boolean>\",\n    \"feeLevel\": \"LOW\",\n    \"fee\": \"<string>\",\n    \"priorityFee\": \"<string>\",\n    \"failOnLowFee\": \"<boolean>\",\n    \"maxFee\": \"<string>\",\n    \"gasLimit\": \"<string>\",\n    \"gasPrice\": \"<string>\",\n    \"networkFee\": \"<string>\",\n    \"replaceTxByHash\": \"<string>\",\n    \"extraParameters\": {\n      \"nodeControls\": {\n        \"type\": \"MEV\",\n        \"tag\": \"<string>\"\n      },\n      \"rawMessageData\": {\n        \"messages\": [\n          {\n            \"content\": \"<string>\",\n            \"preHash\": {\n              \"content\": \"<string>\",\n              \"hashAlgorithm\": \"KECCAK256\"\n            },\n            \"bip44addressIndex\": \"<integer>\",\n            \"bip44change\": \"<number>\",\n            \"derivationPath\": [\n              \"<number>\"\n            ],\n            \"type\": \"TIP191\"\n          }\n        ],\n        \"algorithm\": \"MPC_ECDSA_SECP256R1\"\n      },\n      \"contractCallData\": \"<string>\",\n      \"programCallData\": \"<string>\",\n      \"inputsSelection\": {\n        \"inputsToSpend\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ],\n        \"inputsToExclude\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ]\n      },\n      \"allowBaseAssetAddress\": false\n    },\n    \"customerRefId\": \"<string>\",\n    \"travelRuleMessage\": {\n      \"originator\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"beneficiary\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"originatorVASPdid\": \"<string>\",\n      \"beneficiaryVASPdid\": \"<string>\",\n      \"originatorVASPname\": \"<string>\",\n      \"beneficiaryVASPname\": \"<string>\",\n      \"beneficiaryVASPwebsite\": \"<string>\",\n      \"transactionBlockchainInfo\": {\n        \"txHash\": \"<string>\",\n        \"origin\": \"<string>\",\n        \"destination\": \"<string>\"\n      },\n      \"encrypted\": \"<string>\",\n      \"protocol\": \"<string>\",\n      \"skipBeneficiaryDataValidation\": \"<boolean>\",\n      \"travelRuleBehavior\": \"<boolean>\",\n      \"originatorRef\": \"<string>\",\n      \"beneficiaryRef\": \"<string>\",\n      \"travelRuleBehaviorRef\": \"<string>\",\n      \"originatorProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryDid\": \"<string>\",\n      \"originatorDid\": \"<string>\",\n      \"isNonCustodial\": \"<boolean>\"\n    },\n    \"autoStaking\": \"<boolean>\",\n    \"networkStaking\": \"<string>\",\n    \"cpuStaking\": \"<string>\",\n    \"useGasless\": \"<boolean>\"\n  },\n  \"isSrcCollateral\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/off_exchange/add",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "off_exchange",
+                    "add"
+                  ]
+                },
+                "description": "Add collateral and create deposit request.\nLearn more about Fireblocks Off Exchange in the following [guide](https://developers.fireblocks.com/docs/off-exchange).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+              },
+              "response": [
+                {
+                  "id": "c059a2d4-2454-438f-b0f3-699fca3e54fb",
+                  "name": "A transaction object",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"transactionRequest\": {\n    \"operation\": \"TRANSFER\",\n    \"note\": \"<string>\",\n    \"externalTxId\": \"<string>\",\n    \"assetId\": \"<string>\",\n    \"source\": {\n      \"type\": \"GAS_STATION\",\n      \"subType\": \"BLINC\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destination\": {\n      \"type\": \"EXTERNAL_WALLET\",\n      \"subType\": \"BITSTAMP\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"oneTimeAddress\": {\n        \"address\": \"<string>\",\n        \"tag\": \"<string>\"\n      },\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destinations\": [\n      {\n        \"amount\": \"<string>\",\n        \"destination\": {\n          \"type\": \"MULTI_DESTINATION\",\n          \"subType\": \"BITMEX\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"walletId\": \"<uuid>\",\n          \"oneTimeAddress\": {\n            \"address\": \"<string>\",\n            \"tag\": \"<string>\"\n          },\n          \"isCollateral\": \"<boolean>\"\n        }\n      }\n    ],\n    \"amount\": \"<string>\",\n    \"treatAsGrossAmount\": \"<boolean>\",\n    \"forceSweep\": \"<boolean>\",\n    \"feeLevel\": \"LOW\",\n    \"fee\": \"<string>\",\n    \"priorityFee\": \"<string>\",\n    \"failOnLowFee\": \"<boolean>\",\n    \"maxFee\": \"<string>\",\n    \"gasLimit\": \"<string>\",\n    \"gasPrice\": \"<string>\",\n    \"networkFee\": \"<string>\",\n    \"replaceTxByHash\": \"<string>\",\n    \"extraParameters\": {\n      \"nodeControls\": {\n        \"type\": \"MEV\",\n        \"tag\": \"<string>\"\n      },\n      \"rawMessageData\": {\n        \"messages\": [\n          {\n            \"content\": \"<string>\",\n            \"preHash\": {\n              \"content\": \"<string>\",\n              \"hashAlgorithm\": \"KECCAK256\"\n            },\n            \"bip44addressIndex\": \"<integer>\",\n            \"bip44change\": \"<number>\",\n            \"derivationPath\": [\n              \"<number>\"\n            ],\n            \"type\": \"TIP191\"\n          }\n        ],\n        \"algorithm\": \"MPC_ECDSA_SECP256R1\"\n      },\n      \"contractCallData\": \"<string>\",\n      \"programCallData\": \"<string>\",\n      \"inputsSelection\": {\n        \"inputsToSpend\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ],\n        \"inputsToExclude\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ]\n      },\n      \"allowBaseAssetAddress\": false\n    },\n    \"customerRefId\": \"<string>\",\n    \"travelRuleMessage\": {\n      \"originator\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"beneficiary\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"originatorVASPdid\": \"<string>\",\n      \"beneficiaryVASPdid\": \"<string>\",\n      \"originatorVASPname\": \"<string>\",\n      \"beneficiaryVASPname\": \"<string>\",\n      \"beneficiaryVASPwebsite\": \"<string>\",\n      \"transactionBlockchainInfo\": {\n        \"txHash\": \"<string>\",\n        \"origin\": \"<string>\",\n        \"destination\": \"<string>\"\n      },\n      \"encrypted\": \"<string>\",\n      \"protocol\": \"<string>\",\n      \"skipBeneficiaryDataValidation\": \"<boolean>\",\n      \"travelRuleBehavior\": \"<boolean>\",\n      \"originatorRef\": \"<string>\",\n      \"beneficiaryRef\": \"<string>\",\n      \"travelRuleBehaviorRef\": \"<string>\",\n      \"originatorProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryDid\": \"<string>\",\n      \"originatorDid\": \"<string>\",\n      \"isNonCustodial\": \"<boolean>\"\n    },\n    \"autoStaking\": \"<boolean>\",\n    \"networkStaking\": \"<string>\",\n    \"cpuStaking\": \"<string>\",\n    \"useGasless\": \"<boolean>\"\n  },\n  \"isSrcCollateral\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/off_exchange/add",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "off_exchange",
+                        "add"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"status\": \"<string>\",\n  \"systemMessages\": {\n    \"type\": \"BLOCK\",\n    \"message\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:11.000Z",
+                  "updatedAt": "2026-07-28T01:40:11.000Z",
+                  "uid": "35240-c059a2d4-2454-438f-b0f3-699fca3e54fb"
+                },
+                {
+                  "id": "4511bdfd-b413-4f26-bfdb-f3e6d64f9f09",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"transactionRequest\": {\n    \"operation\": \"TRANSFER\",\n    \"note\": \"<string>\",\n    \"externalTxId\": \"<string>\",\n    \"assetId\": \"<string>\",\n    \"source\": {\n      \"type\": \"GAS_STATION\",\n      \"subType\": \"BLINC\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destination\": {\n      \"type\": \"EXTERNAL_WALLET\",\n      \"subType\": \"BITSTAMP\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"oneTimeAddress\": {\n        \"address\": \"<string>\",\n        \"tag\": \"<string>\"\n      },\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destinations\": [\n      {\n        \"amount\": \"<string>\",\n        \"destination\": {\n          \"type\": \"MULTI_DESTINATION\",\n          \"subType\": \"BITMEX\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"walletId\": \"<uuid>\",\n          \"oneTimeAddress\": {\n            \"address\": \"<string>\",\n            \"tag\": \"<string>\"\n          },\n          \"isCollateral\": \"<boolean>\"\n        }\n      }\n    ],\n    \"amount\": \"<string>\",\n    \"treatAsGrossAmount\": \"<boolean>\",\n    \"forceSweep\": \"<boolean>\",\n    \"feeLevel\": \"LOW\",\n    \"fee\": \"<string>\",\n    \"priorityFee\": \"<string>\",\n    \"failOnLowFee\": \"<boolean>\",\n    \"maxFee\": \"<string>\",\n    \"gasLimit\": \"<string>\",\n    \"gasPrice\": \"<string>\",\n    \"networkFee\": \"<string>\",\n    \"replaceTxByHash\": \"<string>\",\n    \"extraParameters\": {\n      \"nodeControls\": {\n        \"type\": \"MEV\",\n        \"tag\": \"<string>\"\n      },\n      \"rawMessageData\": {\n        \"messages\": [\n          {\n            \"content\": \"<string>\",\n            \"preHash\": {\n              \"content\": \"<string>\",\n              \"hashAlgorithm\": \"KECCAK256\"\n            },\n            \"bip44addressIndex\": \"<integer>\",\n            \"bip44change\": \"<number>\",\n            \"derivationPath\": [\n              \"<number>\"\n            ],\n            \"type\": \"TIP191\"\n          }\n        ],\n        \"algorithm\": \"MPC_ECDSA_SECP256R1\"\n      },\n      \"contractCallData\": \"<string>\",\n      \"programCallData\": \"<string>\",\n      \"inputsSelection\": {\n        \"inputsToSpend\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ],\n        \"inputsToExclude\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ]\n      },\n      \"allowBaseAssetAddress\": false\n    },\n    \"customerRefId\": \"<string>\",\n    \"travelRuleMessage\": {\n      \"originator\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"beneficiary\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"originatorVASPdid\": \"<string>\",\n      \"beneficiaryVASPdid\": \"<string>\",\n      \"originatorVASPname\": \"<string>\",\n      \"beneficiaryVASPname\": \"<string>\",\n      \"beneficiaryVASPwebsite\": \"<string>\",\n      \"transactionBlockchainInfo\": {\n        \"txHash\": \"<string>\",\n        \"origin\": \"<string>\",\n        \"destination\": \"<string>\"\n      },\n      \"encrypted\": \"<string>\",\n      \"protocol\": \"<string>\",\n      \"skipBeneficiaryDataValidation\": \"<boolean>\",\n      \"travelRuleBehavior\": \"<boolean>\",\n      \"originatorRef\": \"<string>\",\n      \"beneficiaryRef\": \"<string>\",\n      \"travelRuleBehaviorRef\": \"<string>\",\n      \"originatorProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryDid\": \"<string>\",\n      \"originatorDid\": \"<string>\",\n      \"isNonCustodial\": \"<boolean>\"\n    },\n    \"autoStaking\": \"<boolean>\",\n    \"networkStaking\": \"<string>\",\n    \"cpuStaking\": \"<string>\",\n    \"useGasless\": \"<boolean>\"\n  },\n  \"isSrcCollateral\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/off_exchange/add",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "off_exchange",
+                        "add"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"value\": \"reference #/components/schemas/ErrorSchema not found in the OpenAPI spec\"\n}",
+                  "createdAt": "2026-07-28T01:40:11.000Z",
+                  "updatedAt": "2026-07-28T01:40:11.000Z",
+                  "uid": "35240-4511bdfd-b413-4f26-bfdb-f3e6d64f9f09"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:11.000Z",
+              "updatedAt": "2026-07-28T01:40:11.000Z",
+              "uid": "35240-cb77936a-b30b-4646-9e3d-3edac5f3d178"
+            }
+          ],
+          "id": "9a00f791-4a24-486b-8062-cbf8c3a18e77",
+          "createdAt": "2026-07-28T01:40:11.000Z",
+          "updatedAt": "2026-07-28T01:40:11.000Z",
+          "uid": "35240-9a00f791-4a24-486b-8062-cbf8c3a18e77"
+        },
+        {
+          "name": "remove",
+          "item": [
+            {
+              "name": "Remove Collateral",
+              "id": "06498874-9281-4384-a66c-7080311026b3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transactionRequest\": {\n    \"operation\": \"TRANSFER\",\n    \"note\": \"<string>\",\n    \"externalTxId\": \"<string>\",\n    \"assetId\": \"<string>\",\n    \"source\": {\n      \"type\": \"NETWORK_CONNECTION\",\n      \"subType\": \"COINBASEEXCHANGE\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destination\": {\n      \"type\": \"OEC_PARTNER\",\n      \"subType\": \"CRYPTOCOM\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"oneTimeAddress\": {\n        \"address\": \"<string>\",\n        \"tag\": \"<string>\"\n      },\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destinations\": [\n      {\n        \"amount\": \"<string>\",\n        \"destination\": {\n          \"type\": \"ONE_TIME_ADDRESS\",\n          \"subType\": \"CRYPTOCOM\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"walletId\": \"<uuid>\",\n          \"oneTimeAddress\": {\n            \"address\": \"<string>\",\n            \"tag\": \"<string>\"\n          },\n          \"isCollateral\": \"<boolean>\"\n        }\n      }\n    ],\n    \"amount\": \"<string>\",\n    \"treatAsGrossAmount\": \"<boolean>\",\n    \"forceSweep\": \"<boolean>\",\n    \"feeLevel\": \"LOW\",\n    \"fee\": \"<string>\",\n    \"priorityFee\": \"<string>\",\n    \"failOnLowFee\": \"<boolean>\",\n    \"maxFee\": \"<string>\",\n    \"gasLimit\": \"<string>\",\n    \"gasPrice\": \"<string>\",\n    \"networkFee\": \"<string>\",\n    \"replaceTxByHash\": \"<string>\",\n    \"extraParameters\": {\n      \"nodeControls\": {\n        \"type\": \"MEV\",\n        \"tag\": \"<string>\"\n      },\n      \"rawMessageData\": {\n        \"messages\": [\n          {\n            \"content\": \"<string>\",\n            \"preHash\": {\n              \"content\": \"<string>\",\n              \"hashAlgorithm\": \"DOUBLE_SHA256\"\n            },\n            \"bip44addressIndex\": \"<integer>\",\n            \"bip44change\": \"<number>\",\n            \"derivationPath\": [\n              \"<number>\"\n            ],\n            \"type\": \"EIP191\"\n          }\n        ],\n        \"algorithm\": \"MPC_ECDSA_SECP256R1\"\n      },\n      \"contractCallData\": \"<string>\",\n      \"programCallData\": \"<string>\",\n      \"inputsSelection\": {\n        \"inputsToSpend\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ],\n        \"inputsToExclude\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ]\n      },\n      \"allowBaseAssetAddress\": false\n    },\n    \"customerRefId\": \"<string>\",\n    \"travelRuleMessage\": {\n      \"originator\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"beneficiary\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"originatorVASPdid\": \"<string>\",\n      \"beneficiaryVASPdid\": \"<string>\",\n      \"originatorVASPname\": \"<string>\",\n      \"beneficiaryVASPname\": \"<string>\",\n      \"beneficiaryVASPwebsite\": \"<string>\",\n      \"transactionBlockchainInfo\": {\n        \"txHash\": \"<string>\",\n        \"origin\": \"<string>\",\n        \"destination\": \"<string>\"\n      },\n      \"encrypted\": \"<string>\",\n      \"protocol\": \"<string>\",\n      \"skipBeneficiaryDataValidation\": \"<boolean>\",\n      \"travelRuleBehavior\": \"<boolean>\",\n      \"originatorRef\": \"<string>\",\n      \"beneficiaryRef\": \"<string>\",\n      \"travelRuleBehaviorRef\": \"<string>\",\n      \"originatorProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryDid\": \"<string>\",\n      \"originatorDid\": \"<string>\",\n      \"isNonCustodial\": \"<boolean>\"\n    },\n    \"autoStaking\": \"<boolean>\",\n    \"networkStaking\": \"<string>\",\n    \"cpuStaking\": \"<string>\",\n    \"useGasless\": \"<boolean>\"\n  },\n  \"isDstCollateral\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/off_exchange/remove",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "off_exchange",
+                    "remove"
+                  ]
+                },
+                "description": "Remove collateral and create withdraw request.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+              },
+              "response": [
+                {
+                  "id": "22d8ac08-0a78-4f41-87c3-24c0f05f2854",
+                  "name": "A transaction object",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"transactionRequest\": {\n    \"operation\": \"TRANSFER\",\n    \"note\": \"<string>\",\n    \"externalTxId\": \"<string>\",\n    \"assetId\": \"<string>\",\n    \"source\": {\n      \"type\": \"NETWORK_CONNECTION\",\n      \"subType\": \"COINBASEEXCHANGE\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destination\": {\n      \"type\": \"OEC_PARTNER\",\n      \"subType\": \"CRYPTOCOM\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"oneTimeAddress\": {\n        \"address\": \"<string>\",\n        \"tag\": \"<string>\"\n      },\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destinations\": [\n      {\n        \"amount\": \"<string>\",\n        \"destination\": {\n          \"type\": \"ONE_TIME_ADDRESS\",\n          \"subType\": \"CRYPTOCOM\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"walletId\": \"<uuid>\",\n          \"oneTimeAddress\": {\n            \"address\": \"<string>\",\n            \"tag\": \"<string>\"\n          },\n          \"isCollateral\": \"<boolean>\"\n        }\n      }\n    ],\n    \"amount\": \"<string>\",\n    \"treatAsGrossAmount\": \"<boolean>\",\n    \"forceSweep\": \"<boolean>\",\n    \"feeLevel\": \"LOW\",\n    \"fee\": \"<string>\",\n    \"priorityFee\": \"<string>\",\n    \"failOnLowFee\": \"<boolean>\",\n    \"maxFee\": \"<string>\",\n    \"gasLimit\": \"<string>\",\n    \"gasPrice\": \"<string>\",\n    \"networkFee\": \"<string>\",\n    \"replaceTxByHash\": \"<string>\",\n    \"extraParameters\": {\n      \"nodeControls\": {\n        \"type\": \"MEV\",\n        \"tag\": \"<string>\"\n      },\n      \"rawMessageData\": {\n        \"messages\": [\n          {\n            \"content\": \"<string>\",\n            \"preHash\": {\n              \"content\": \"<string>\",\n              \"hashAlgorithm\": \"DOUBLE_SHA256\"\n            },\n            \"bip44addressIndex\": \"<integer>\",\n            \"bip44change\": \"<number>\",\n            \"derivationPath\": [\n              \"<number>\"\n            ],\n            \"type\": \"EIP191\"\n          }\n        ],\n        \"algorithm\": \"MPC_ECDSA_SECP256R1\"\n      },\n      \"contractCallData\": \"<string>\",\n      \"programCallData\": \"<string>\",\n      \"inputsSelection\": {\n        \"inputsToSpend\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ],\n        \"inputsToExclude\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ]\n      },\n      \"allowBaseAssetAddress\": false\n    },\n    \"customerRefId\": \"<string>\",\n    \"travelRuleMessage\": {\n      \"originator\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"beneficiary\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"originatorVASPdid\": \"<string>\",\n      \"beneficiaryVASPdid\": \"<string>\",\n      \"originatorVASPname\": \"<string>\",\n      \"beneficiaryVASPname\": \"<string>\",\n      \"beneficiaryVASPwebsite\": \"<string>\",\n      \"transactionBlockchainInfo\": {\n        \"txHash\": \"<string>\",\n        \"origin\": \"<string>\",\n        \"destination\": \"<string>\"\n      },\n      \"encrypted\": \"<string>\",\n      \"protocol\": \"<string>\",\n      \"skipBeneficiaryDataValidation\": \"<boolean>\",\n      \"travelRuleBehavior\": \"<boolean>\",\n      \"originatorRef\": \"<string>\",\n      \"beneficiaryRef\": \"<string>\",\n      \"travelRuleBehaviorRef\": \"<string>\",\n      \"originatorProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryDid\": \"<string>\",\n      \"originatorDid\": \"<string>\",\n      \"isNonCustodial\": \"<boolean>\"\n    },\n    \"autoStaking\": \"<boolean>\",\n    \"networkStaking\": \"<string>\",\n    \"cpuStaking\": \"<string>\",\n    \"useGasless\": \"<boolean>\"\n  },\n  \"isDstCollateral\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/off_exchange/remove",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "off_exchange",
+                        "remove"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"status\": \"<string>\",\n  \"systemMessages\": {\n    \"type\": \"BLOCK\",\n    \"message\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:11.000Z",
+                  "updatedAt": "2026-07-28T01:40:11.000Z",
+                  "uid": "35240-22d8ac08-0a78-4f41-87c3-24c0f05f2854"
+                },
+                {
+                  "id": "0522cdaf-884c-4678-8727-1dc57c4f68ed",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"transactionRequest\": {\n    \"operation\": \"TRANSFER\",\n    \"note\": \"<string>\",\n    \"externalTxId\": \"<string>\",\n    \"assetId\": \"<string>\",\n    \"source\": {\n      \"type\": \"NETWORK_CONNECTION\",\n      \"subType\": \"COINBASEEXCHANGE\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destination\": {\n      \"type\": \"OEC_PARTNER\",\n      \"subType\": \"CRYPTOCOM\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"walletId\": \"<uuid>\",\n      \"oneTimeAddress\": {\n        \"address\": \"<string>\",\n        \"tag\": \"<string>\"\n      },\n      \"isCollateral\": \"<boolean>\"\n    },\n    \"destinations\": [\n      {\n        \"amount\": \"<string>\",\n        \"destination\": {\n          \"type\": \"ONE_TIME_ADDRESS\",\n          \"subType\": \"CRYPTOCOM\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"walletId\": \"<uuid>\",\n          \"oneTimeAddress\": {\n            \"address\": \"<string>\",\n            \"tag\": \"<string>\"\n          },\n          \"isCollateral\": \"<boolean>\"\n        }\n      }\n    ],\n    \"amount\": \"<string>\",\n    \"treatAsGrossAmount\": \"<boolean>\",\n    \"forceSweep\": \"<boolean>\",\n    \"feeLevel\": \"LOW\",\n    \"fee\": \"<string>\",\n    \"priorityFee\": \"<string>\",\n    \"failOnLowFee\": \"<boolean>\",\n    \"maxFee\": \"<string>\",\n    \"gasLimit\": \"<string>\",\n    \"gasPrice\": \"<string>\",\n    \"networkFee\": \"<string>\",\n    \"replaceTxByHash\": \"<string>\",\n    \"extraParameters\": {\n      \"nodeControls\": {\n        \"type\": \"MEV\",\n        \"tag\": \"<string>\"\n      },\n      \"rawMessageData\": {\n        \"messages\": [\n          {\n            \"content\": \"<string>\",\n            \"preHash\": {\n              \"content\": \"<string>\",\n              \"hashAlgorithm\": \"DOUBLE_SHA256\"\n            },\n            \"bip44addressIndex\": \"<integer>\",\n            \"bip44change\": \"<number>\",\n            \"derivationPath\": [\n              \"<number>\"\n            ],\n            \"type\": \"EIP191\"\n          }\n        ],\n        \"algorithm\": \"MPC_ECDSA_SECP256R1\"\n      },\n      \"contractCallData\": \"<string>\",\n      \"programCallData\": \"<string>\",\n      \"inputsSelection\": {\n        \"inputsToSpend\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ],\n        \"inputsToExclude\": [\n          {\n            \"txHash\": \"<string>\",\n            \"index\": \"<number>\"\n          }\n        ]\n      },\n      \"allowBaseAssetAddress\": false\n    },\n    \"customerRefId\": \"<string>\",\n    \"travelRuleMessage\": {\n      \"originator\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"beneficiary\": {\n        \"originatorPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"beneficiaryPersons\": [\n          {\n            \"naturalPerson\": {\n              \"name\": [\n                {\n                  \"nameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"localNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ],\n                  \"phoneticNameIdentifier\": [\n                    {\n                      \"primaryIdentifier\": \"<string>\",\n                      \"secondaryIdentifier\": \"<string>\",\n                      \"nameIdentifierType\": \"<string>\"\n                    }\n                  ]\n                }\n              ],\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"dateAndPlaceOfBirth\": {\n                \"dateOfBirth\": \"<string>\",\n                \"placeOfBirth\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"countryOfResidence\": \"<string>\",\n              \"customerNumber\": \"<string>\"\n            },\n            \"legalPerson\": {\n              \"name\": {\n                \"legalPersonName\": \"<string>\",\n                \"legalPersonNameIdentifierType\": \"<string>\"\n              },\n              \"geographicAddress\": [\n                {\n                  \"streetName\": \"<string>\",\n                  \"townName\": \"<string>\",\n                  \"country\": \"<string>\",\n                  \"buildingNumber\": \"<string>\",\n                  \"postCode\": \"<string>\",\n                  \"addressType\": \"<string>\",\n                  \"department\": \"<string>\",\n                  \"subDepartment\": \"<string>\",\n                  \"buildingName\": \"<string>\",\n                  \"floor\": \"<string>\",\n                  \"postBox\": \"<string>\",\n                  \"room\": \"<string>\",\n                  \"townLocationName\": \"<string>\",\n                  \"districtName\": \"<string>\",\n                  \"countrySubDivision\": \"<string>\",\n                  \"addressLine\": [\n                    \"<string>\"\n                  ]\n                }\n              ],\n              \"nationalIdentification\": {\n                \"countryOfIssue\": \"<string>\",\n                \"nationalIdentifier\": \"<string>\",\n                \"nationalIdentifierType\": \"<string>\",\n                \"registrationAuthority\": \"<string>\"\n              },\n              \"customerIdentification\": \"<string>\",\n              \"customerNumber\": \"<string>\",\n              \"countryOfRegistration\": \"<string>\"\n            }\n          }\n        ],\n        \"accountNumber\": [\n          \"<string>\"\n        ]\n      },\n      \"originatorVASPdid\": \"<string>\",\n      \"beneficiaryVASPdid\": \"<string>\",\n      \"originatorVASPname\": \"<string>\",\n      \"beneficiaryVASPname\": \"<string>\",\n      \"beneficiaryVASPwebsite\": \"<string>\",\n      \"transactionBlockchainInfo\": {\n        \"txHash\": \"<string>\",\n        \"origin\": \"<string>\",\n        \"destination\": \"<string>\"\n      },\n      \"encrypted\": \"<string>\",\n      \"protocol\": \"<string>\",\n      \"skipBeneficiaryDataValidation\": \"<boolean>\",\n      \"travelRuleBehavior\": \"<boolean>\",\n      \"originatorRef\": \"<string>\",\n      \"beneficiaryRef\": \"<string>\",\n      \"travelRuleBehaviorRef\": \"<string>\",\n      \"originatorProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryProof\": {\n        \"type\": \"<string>\",\n        \"proof\": \"<string>\",\n        \"attestation\": \"<string>\",\n        \"address\": \"<string>\",\n        \"wallet_provider\": \"<string>\",\n        \"url\": \"<string>\",\n        \"confirmed\": \"<boolean>\"\n      },\n      \"beneficiaryDid\": \"<string>\",\n      \"originatorDid\": \"<string>\",\n      \"isNonCustodial\": \"<boolean>\"\n    },\n    \"autoStaking\": \"<boolean>\",\n    \"networkStaking\": \"<string>\",\n    \"cpuStaking\": \"<string>\",\n    \"useGasless\": \"<boolean>\"\n  },\n  \"isDstCollateral\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/off_exchange/remove",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "off_exchange",
+                        "remove"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"value\": \"reference #/components/schemas/ErrorSchema not found in the OpenAPI spec\"\n}",
+                  "createdAt": "2026-07-28T01:40:11.000Z",
+                  "updatedAt": "2026-07-28T01:40:11.000Z",
+                  "uid": "35240-0522cdaf-884c-4678-8727-1dc57c4f68ed"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:11.000Z",
+              "updatedAt": "2026-07-28T01:40:11.000Z",
+              "uid": "35240-06498874-9281-4384-a66c-7080311026b3"
+            }
+          ],
+          "id": "a2cd1682-f367-45b2-867d-521be97ea162",
+          "createdAt": "2026-07-28T01:40:11.000Z",
+          "updatedAt": "2026-07-28T01:40:11.000Z",
+          "uid": "35240-a2cd1682-f367-45b2-867d-521be97ea162"
+        },
+        {
+          "name": "settlements",
+          "item": [
+            {
+              "name": "trader",
+              "item": [
+                {
+                  "name": "Create Settlement for a Trader",
+                  "id": "8fb4b57d-8e15-4710-8df5-b8f7e46aabcf",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mainExchangeAccountId\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/off_exchange/settlements/trader",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "off_exchange",
+                        "settlements",
+                        "trader"
+                      ]
+                    },
+                    "description": "Create settlement for a trader.\nLearn more about Fireblocks Off Exchange in the following [guide](https://developers.fireblocks.com/docs/off-exchange).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+                  },
+                  "response": [
+                    {
+                      "id": "202cbc61-81df-439f-90b4-f5ccd885b717",
+                      "name": "A settlement object",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                            "key": "Idempotency-Key",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"mainExchangeAccountId\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/off_exchange/settlements/trader",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "off_exchange",
+                            "settlements",
+                            "trader"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"initiator\": \"<string>\",\n  \"exchangeReply\": \"<string>\",\n  \"fireblocksInitiatedTransactions\": {},\n  \"exchangeRequestedTransactions\": {\n    \"toExchange\": [\n      {\n        \"assetId\": \"<string>\",\n        \"amount\": \"<string>\",\n        \"dstAddress\": \"<string>\",\n        \"dstTag\": \"<string>\"\n      },\n      {\n        \"assetId\": \"<string>\",\n        \"amount\": \"<string>\",\n        \"dstAddress\": \"<string>\",\n        \"dstTag\": \"<string>\"\n      }\n    ],\n    \"toCollateral\": [\n      {\n        \"asset\": \"<string>\",\n        \"amount\": \"<string>\",\n        \"srcAddress\": \"<string>\",\n        \"srcTag\": \"<string>\",\n        \"fee\": \"<string>\"\n      },\n      {\n        \"asset\": \"<string>\",\n        \"amount\": \"<string>\",\n        \"srcAddress\": \"<string>\",\n        \"srcTag\": \"<string>\",\n        \"fee\": \"<string>\"\n      }\n    ]\n  }\n}",
+                      "createdAt": "2026-07-28T01:40:11.000Z",
+                      "updatedAt": "2026-07-28T01:40:11.000Z",
+                      "uid": "35240-202cbc61-81df-439f-90b4-f5ccd885b717"
+                    },
+                    {
+                      "id": "0db2227e-a34e-40dc-b6e4-45e136163ed8",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                            "key": "Idempotency-Key",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"mainExchangeAccountId\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/off_exchange/settlements/trader",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "off_exchange",
+                            "settlements",
+                            "trader"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-ID",
+                          "value": ""
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"value\": \"reference #/components/schemas/ErrorSchema not found in the OpenAPI spec\"\n}",
+                      "createdAt": "2026-07-28T01:40:11.000Z",
+                      "updatedAt": "2026-07-28T01:40:11.000Z",
+                      "uid": "35240-0db2227e-a34e-40dc-b6e4-45e136163ed8"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:40:11.000Z",
+                  "updatedAt": "2026-07-28T01:40:11.000Z",
+                  "uid": "35240-8fb4b57d-8e15-4710-8df5-b8f7e46aabcf"
+                }
+              ],
+              "id": "aedf40ad-9fe0-4270-8765-30379026e9a9",
+              "createdAt": "2026-07-28T01:40:11.000Z",
+              "updatedAt": "2026-07-28T01:40:11.000Z",
+              "uid": "35240-aedf40ad-9fe0-4270-8765-30379026e9a9"
+            },
+            {
+              "name": "transactions",
+              "item": [
+                {
+                  "name": "Get Settlements Transactions",
+                  "id": "88862a1a-ef1c-499e-bf6b-85ef8697251c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/off_exchange/settlements/transactions?mainExchangeAccountId=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "off_exchange",
+                        "settlements",
+                        "transactions"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) ",
+                          "key": "mainExchangeAccountId",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "description": "Get settlements transactions from exchange.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+                  },
+                  "response": [
+                    {
+                      "id": "08bed863-4537-4de7-960c-470a5b5672dc",
+                      "name": "A settlement transactions",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/off_exchange/settlements/transactions?mainExchangeAccountId=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "off_exchange",
+                            "settlements",
+                            "transactions"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) ",
+                              "key": "mainExchangeAccountId",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"toExchange\": [\n    {\n      \"assetId\": \"<string>\",\n      \"amount\": \"<string>\",\n      \"dstAddress\": \"<string>\",\n      \"dstTag\": \"<string>\"\n    },\n    {\n      \"assetId\": \"<string>\",\n      \"amount\": \"<string>\",\n      \"dstAddress\": \"<string>\",\n      \"dstTag\": \"<string>\"\n    }\n  ],\n  \"toCollateral\": [\n    {\n      \"asset\": \"<string>\",\n      \"amount\": \"<string>\",\n      \"srcAddress\": \"<string>\",\n      \"srcTag\": \"<string>\",\n      \"fee\": \"<string>\"\n    },\n    {\n      \"asset\": \"<string>\",\n      \"amount\": \"<string>\",\n      \"srcAddress\": \"<string>\",\n      \"srcTag\": \"<string>\",\n      \"fee\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:40:11.000Z",
+                      "updatedAt": "2026-07-28T01:40:11.000Z",
+                      "uid": "35240-08bed863-4537-4de7-960c-470a5b5672dc"
+                    },
+                    {
+                      "id": "b1af82b5-de0c-474b-b010-0dcc4a43f515",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/off_exchange/settlements/transactions?mainExchangeAccountId=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "off_exchange",
+                            "settlements",
+                            "transactions"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) ",
+                              "key": "mainExchangeAccountId",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-ID",
+                          "value": ""
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"value\": \"reference #/components/schemas/ErrorSchema not found in the OpenAPI spec\"\n}",
+                      "createdAt": "2026-07-28T01:40:11.000Z",
+                      "updatedAt": "2026-07-28T01:40:11.000Z",
+                      "uid": "35240-b1af82b5-de0c-474b-b010-0dcc4a43f515"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:40:11.000Z",
+                  "updatedAt": "2026-07-28T01:40:11.000Z",
+                  "uid": "35240-88862a1a-ef1c-499e-bf6b-85ef8697251c"
+                }
+              ],
+              "id": "bd6fd60f-aff8-48c1-a33b-31cb1a683401",
+              "createdAt": "2026-07-28T01:40:11.000Z",
+              "updatedAt": "2026-07-28T01:40:11.000Z",
+              "uid": "35240-bd6fd60f-aff8-48c1-a33b-31cb1a683401"
+            }
+          ],
+          "id": "a1ea9f43-0875-4547-9132-18e4e8a3d679",
+          "createdAt": "2026-07-28T01:40:11.000Z",
+          "updatedAt": "2026-07-28T01:40:11.000Z",
+          "uid": "35240-a1ea9f43-0875-4547-9132-18e4e8a3d679"
+        },
+        {
+          "name": "collateral_accounts",
+          "item": [
+            {
+              "name": "{mainExchangeAccountId}",
+              "item": [
+                {
+                  "name": "Find a specific collateral exchange account",
+                  "id": "aa46eba4-ea9f-4980-be0e-398ab9cadc8a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/off_exchange/collateral_accounts/:mainExchangeAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "off_exchange",
+                        "collateral_accounts",
+                        ":mainExchangeAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "30f503ea-0838-4595-9512-fbedacd47d39",
+                          "key": "mainExchangeAccountId",
+                          "value": "<string>",
+                          "description": "(Required) The id of the main exchange account for which the requested collateral account is associated with"
+                        }
+                      ]
+                    },
+                    "description": "Returns a collateral account by mainExchangeAccountId.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+                  },
+                  "response": [
+                    {
+                      "id": "f207fca2-b936-4d16-8d0a-0ebe8656d25b",
+                      "name": "An ExchangeAccount object",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/off_exchange/collateral_accounts/:mainExchangeAccountId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "off_exchange",
+                            "collateral_accounts",
+                            ":mainExchangeAccountId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "mainExchangeAccountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-ID",
+                          "value": ""
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"KRAKEN\",\n  \"name\": \"<string>\",\n  \"status\": \"<string>\",\n  \"assets\": [\n    {\n      \"id\": \"<string>\",\n      \"balance\": \"<string>\",\n      \"lockedAmount\": \"<string>\",\n      \"total\": \"<string>\",\n      \"available\": \"<string>\",\n      \"credit\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"balance\": \"<string>\",\n      \"lockedAmount\": \"<string>\",\n      \"total\": \"<string>\",\n      \"available\": \"<string>\",\n      \"credit\": \"<string>\"\n    }\n  ],\n  \"success\": \"<boolean>\",\n  \"tradingAccounts\": [\n    {\n      \"type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"assets\": [\n        {\n          \"id\": \"<string>\",\n          \"balance\": \"<string>\",\n          \"lockedAmount\": \"<string>\",\n          \"total\": \"<string>\",\n          \"available\": \"<string>\",\n          \"credit\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"balance\": \"<string>\",\n          \"lockedAmount\": \"<string>\",\n          \"total\": \"<string>\",\n          \"available\": \"<string>\",\n          \"credit\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"assets\": [\n        {\n          \"id\": \"<string>\",\n          \"balance\": \"<string>\",\n          \"lockedAmount\": \"<string>\",\n          \"total\": \"<string>\",\n          \"available\": \"<string>\",\n          \"credit\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"balance\": \"<string>\",\n          \"lockedAmount\": \"<string>\",\n          \"total\": \"<string>\",\n          \"available\": \"<string>\",\n          \"credit\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"isSubaccount\": \"<boolean>\",\n  \"mainAccountId\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:40:11.000Z",
+                      "updatedAt": "2026-07-28T01:40:11.000Z",
+                      "uid": "35240-f207fca2-b936-4d16-8d0a-0ebe8656d25b"
+                    },
+                    {
+                      "id": "ace8200f-3334-44b1-8ea1-85fdec37f8d9",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/off_exchange/collateral_accounts/:mainExchangeAccountId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "off_exchange",
+                            "collateral_accounts",
+                            ":mainExchangeAccountId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "mainExchangeAccountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-ID",
+                          "value": ""
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"value\": \"reference #/components/schemas/ErrorSchema not found in the OpenAPI spec\"\n}",
+                      "createdAt": "2026-07-28T01:40:11.000Z",
+                      "updatedAt": "2026-07-28T01:40:11.000Z",
+                      "uid": "35240-ace8200f-3334-44b1-8ea1-85fdec37f8d9"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:40:11.000Z",
+                  "updatedAt": "2026-07-28T01:40:11.000Z",
+                  "uid": "35240-aa46eba4-ea9f-4980-be0e-398ab9cadc8a"
+                }
+              ],
+              "id": "fa946cfe-57eb-4fa8-a80d-c2876f496a52",
+              "createdAt": "2026-07-28T01:40:11.000Z",
+              "updatedAt": "2026-07-28T01:40:11.000Z",
+              "uid": "35240-fa946cfe-57eb-4fa8-a80d-c2876f496a52"
+            }
+          ],
+          "id": "ecc23966-fec6-4432-aa5e-656a643671e7",
+          "createdAt": "2026-07-28T01:40:11.000Z",
+          "updatedAt": "2026-07-28T01:40:11.000Z",
+          "uid": "35240-ecc23966-fec6-4432-aa5e-656a643671e7"
+        }
+      ],
+      "id": "f41bef9c-742c-400a-a838-b96767336e33",
+      "createdAt": "2026-07-28T01:40:11.000Z",
+      "updatedAt": "2026-07-28T01:40:11.000Z",
+      "uid": "35240-f41bef9c-742c-400a-a838-b96767336e33"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.fireblocks.io/v1"
+    }
+  ]
+}

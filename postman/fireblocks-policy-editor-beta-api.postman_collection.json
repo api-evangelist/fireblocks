@@ -1,0 +1,857 @@
+{
+  "info": {
+    "_postman_id": "59f745bb-cdfb-4e6e-aef7-803efa52eeff",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Policy Editor (Beta) API",
+    "description": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:40:13.000Z",
+    "updatedAt": "2026-07-28T01:40:14.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-59f745bb-cdfb-4e6e-aef7-803efa52eeff"
+  },
+  "item": [
+    {
+      "name": "tap",
+      "item": [
+        {
+          "name": "active_policy",
+          "item": [
+            {
+              "name": "Get the active policy and its validation",
+              "id": "df7210a8-ab57-476f-bfc0-7e6c7013bf26",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tap/active_policy",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tap",
+                    "active_policy"
+                  ]
+                },
+                "description": "Returns the active policy and its validation. </br>\n**Note:** These endpoints are currently in beta and might be subject to changes.\nIf you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+              },
+              "response": [
+                {
+                  "id": "a32dcfc2-244d-4b8f-90db-fb55cd9d7dc2",
+                  "name": "A policy object",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tap/active_policy",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tap",
+                        "active_policy"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"policy\": {\n    \"rules\": [\n      {\n        \"type\": \"TRANSFER\",\n        \"action\": \"ALLOW\",\n        \"asset\": \"<string>\",\n        \"amountCurrency\": \"NATIVE\",\n        \"amountScope\": \"SINGLE_TX\",\n        \"amount\": \"<string>\",\n        \"periodSec\": \"<number>\",\n        \"operator\": \"<string>\",\n        \"operators\": {\n          \"wildcard\": \"*\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"services\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"transactionType\": \"MINT\",\n        \"designatedSigner\": \"<string>\",\n        \"designatedSigners\": {\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"srcType\": \"COMPOUND\",\n        \"srcSubType\": \"INTERNAL\",\n        \"srcId\": \"<string>\",\n        \"src\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstType\": \"VAULT\",\n        \"dstSubType\": \"EXCHANGETEST\",\n        \"dstId\": \"<string>\",\n        \"dst\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstAddressType\": \"WHITELISTED\",\n        \"authorizers\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"authorizersCount\": \"<number>\",\n        \"authorizationGroups\": {\n          \"logic\": \"AND\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"groups\": [\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            },\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            }\n          ]\n        },\n        \"amountAggregation\": {\n          \"operators\": \"ACROSS_ALL_MATCHES\",\n          \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n          \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n        },\n        \"rawMessageSigning\": {\n          \"algorithm\": \"<string>\",\n          \"derivationPath\": {\n            \"path\": [\n              \"<number>\",\n              \"<number>\"\n            ]\n          }\n        },\n        \"applyForApprove\": \"<boolean>\",\n        \"applyForTypedMessage\": \"<boolean>\",\n        \"externalDescriptor\": \"<string>\"\n      },\n      {\n        \"type\": \"TRANSFER\",\n        \"action\": \"BLOCK\",\n        \"asset\": \"<string>\",\n        \"amountCurrency\": \"USD\",\n        \"amountScope\": \"SINGLE_TX\",\n        \"amount\": \"<string>\",\n        \"periodSec\": \"<number>\",\n        \"operator\": \"<string>\",\n        \"operators\": {\n          \"wildcard\": \"*\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"services\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"transactionType\": \"TYPED_MESSAGE\",\n        \"designatedSigner\": \"<string>\",\n        \"designatedSigners\": {\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"srcType\": \"ONE_TIME_ADDRESS\",\n        \"srcSubType\": \"CONTRACT\",\n        \"srcId\": \"<string>\",\n        \"src\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstType\": \"VAULT\",\n        \"dstSubType\": \"INTERNAL\",\n        \"dstId\": \"<string>\",\n        \"dst\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstAddressType\": \"WHITELISTED\",\n        \"authorizers\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"authorizersCount\": \"<number>\",\n        \"authorizationGroups\": {\n          \"logic\": \"AND\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"groups\": [\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            },\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            }\n          ]\n        },\n        \"amountAggregation\": {\n          \"operators\": \"PER_SINGLE_MATCH\",\n          \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n          \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n        },\n        \"rawMessageSigning\": {\n          \"algorithm\": \"<string>\",\n          \"derivationPath\": {\n            \"path\": [\n              \"<number>\",\n              \"<number>\"\n            ]\n          }\n        },\n        \"applyForApprove\": \"<boolean>\",\n        \"applyForTypedMessage\": \"<boolean>\",\n        \"externalDescriptor\": \"<string>\"\n      }\n    ],\n    \"metadata\": {\n      \"editedBy\": \"<string>\",\n      \"editedAt\": \"<string>\",\n      \"publishedBy\": \"<string>\",\n      \"publishedAt\": \"<string>\"\n    }\n  },\n  \"validation\": {\n    \"status\": \"<string>\",\n    \"checkResult\": {\n      \"errors\": \"<number>\",\n      \"result\": [\n        {\n          \"index\": \"<number>\",\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"contractMethods\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"authorizationGroups\"\n            }\n          ]\n        },\n        {\n          \"index\": \"<number>\",\n          \"status\": \"failure\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"designatedSigners\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"contractMethods\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:14.000Z",
+                  "updatedAt": "2026-07-28T01:40:14.000Z",
+                  "uid": "35240-a32dcfc2-244d-4b8f-90db-fb55cd9d7dc2"
+                },
+                {
+                  "id": "a25031c6-b845-42ba-a40a-c7fcada36bc9",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tap/active_policy",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tap",
+                        "active_policy"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<number>\"\n}",
+                  "createdAt": "2026-07-28T01:40:14.000Z",
+                  "updatedAt": "2026-07-28T01:40:14.000Z",
+                  "uid": "35240-a25031c6-b845-42ba-a40a-c7fcada36bc9"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:14.000Z",
+              "updatedAt": "2026-07-28T01:40:14.000Z",
+              "uid": "35240-df7210a8-ab57-476f-bfc0-7e6c7013bf26"
+            }
+          ],
+          "id": "be81dbe9-7412-41ed-943a-c44197e71d2a",
+          "createdAt": "2026-07-28T01:40:14.000Z",
+          "updatedAt": "2026-07-28T01:40:14.000Z",
+          "uid": "35240-be81dbe9-7412-41ed-943a-c44197e71d2a"
+        },
+        {
+          "name": "draft",
+          "item": [
+            {
+              "name": "Get the active draft",
+              "id": "e0d52d1e-bc5c-4d44-a665-5f75a57d2b9b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tap/draft",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tap",
+                    "draft"
+                  ]
+                },
+                "description": "Returns the active draft and its validation. </br>\n**Note:** These endpoints are currently in beta and might be subject to changes.\nIf you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+              },
+              "response": [
+                {
+                  "id": "88189bea-87a2-4149-a5e0-95fc7c8aae5a",
+                  "name": "A draft validation response object",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tap/draft",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tap",
+                        "draft"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"draftResponse\": {\n    \"draftId\": \"<string>\",\n    \"status\": \"<string>\",\n    \"rules\": [\n      {\n        \"type\": \"TRANSFER\",\n        \"action\": \"2-TIER\",\n        \"asset\": \"<string>\",\n        \"amountCurrency\": \"EUR\",\n        \"amountScope\": \"TIMEFRAME\",\n        \"amount\": \"<string>\",\n        \"periodSec\": \"<number>\",\n        \"operator\": \"<string>\",\n        \"operators\": {\n          \"wildcard\": \"*\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"services\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"transactionType\": \"STAKE\",\n        \"designatedSigner\": \"<string>\",\n        \"designatedSigners\": {\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"srcType\": \"EXCHANGE\",\n        \"srcSubType\": \"INTERNAL\",\n        \"srcId\": \"<string>\",\n        \"src\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstType\": \"ONE_TIME_ADDRESS\",\n        \"dstSubType\": \"EXTERNAL\",\n        \"dstId\": \"<string>\",\n        \"dst\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstAddressType\": \"*\",\n        \"authorizers\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"authorizersCount\": \"<number>\",\n        \"authorizationGroups\": {\n          \"logic\": \"OR\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"groups\": [\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            },\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            }\n          ]\n        },\n        \"amountAggregation\": {\n          \"operators\": \"ACROSS_ALL_MATCHES\",\n          \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n          \"dstTransferPeers\": \"ACROSS_ALL_MATCHES\"\n        },\n        \"rawMessageSigning\": {\n          \"algorithm\": \"<string>\",\n          \"derivationPath\": {\n            \"path\": [\n              \"<number>\",\n              \"<number>\"\n            ]\n          }\n        },\n        \"applyForApprove\": \"<boolean>\",\n        \"applyForTypedMessage\": \"<boolean>\",\n        \"externalDescriptor\": \"<string>\"\n      },\n      {\n        \"type\": \"TRANSFER\",\n        \"action\": \"2-TIER\",\n        \"asset\": \"<string>\",\n        \"amountCurrency\": \"EUR\",\n        \"amountScope\": \"TIMEFRAME\",\n        \"amount\": \"<string>\",\n        \"periodSec\": \"<number>\",\n        \"operator\": \"<string>\",\n        \"operators\": {\n          \"wildcard\": \"*\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"services\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"transactionType\": \"MINT\",\n        \"designatedSigner\": \"<string>\",\n        \"designatedSigners\": {\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"srcType\": \"NETWORK_CONNECTION\",\n        \"srcSubType\": \"*\",\n        \"srcId\": \"<string>\",\n        \"src\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstType\": \"*\",\n        \"dstSubType\": \"*\",\n        \"dstId\": \"<string>\",\n        \"dst\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstAddressType\": \"*\",\n        \"authorizers\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"authorizersCount\": \"<number>\",\n        \"authorizationGroups\": {\n          \"logic\": \"AND\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"groups\": [\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            },\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            }\n          ]\n        },\n        \"amountAggregation\": {\n          \"operators\": \"PER_SINGLE_MATCH\",\n          \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n          \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n        },\n        \"rawMessageSigning\": {\n          \"algorithm\": \"<string>\",\n          \"derivationPath\": {\n            \"path\": [\n              \"<number>\",\n              \"<number>\"\n            ]\n          }\n        },\n        \"applyForApprove\": \"<boolean>\",\n        \"applyForTypedMessage\": \"<boolean>\",\n        \"externalDescriptor\": \"<string>\"\n      }\n    ],\n    \"metadata\": {\n      \"editedBy\": \"<string>\",\n      \"editedAt\": \"<string>\",\n      \"publishedBy\": \"<string>\",\n      \"publishedAt\": \"<string>\"\n    }\n  },\n  \"validation\": {\n    \"status\": \"<string>\",\n    \"checkResult\": {\n      \"errors\": \"<number>\",\n      \"result\": [\n        {\n          \"index\": \"<number>\",\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"designatedSigner\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"src\"\n            }\n          ]\n        },\n        {\n          \"index\": \"<number>\",\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"operators\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"authorizationGroups\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:14.000Z",
+                  "updatedAt": "2026-07-28T01:40:14.000Z",
+                  "uid": "35240-88189bea-87a2-4149-a5e0-95fc7c8aae5a"
+                },
+                {
+                  "id": "b31b3c1b-4e08-4916-a316-e1946c1c797b",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tap/draft",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tap",
+                        "draft"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<number>\"\n}",
+                  "createdAt": "2026-07-28T01:40:14.000Z",
+                  "updatedAt": "2026-07-28T01:40:14.000Z",
+                  "uid": "35240-b31b3c1b-4e08-4916-a316-e1946c1c797b"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:14.000Z",
+              "updatedAt": "2026-07-28T01:40:14.000Z",
+              "uid": "35240-e0d52d1e-bc5c-4d44-a665-5f75a57d2b9b"
+            },
+            {
+              "name": "Update the draft with a new set of rules",
+              "id": "bbacd56c-f8ce-4111-b3ae-fd93b236de7f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rules\": [\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"ALLOW\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"REDEEM\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"FIAT_ACCOUNT\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"FIAT_ACCOUNT\",\n      \"dstSubType\": \"INTERNAL\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"WHITELISTED\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"ACROSS_ALL_MATCHES\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    },\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"BLOCK\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"RAW\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"*\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"EXCHANGE\",\n      \"dstSubType\": \"*\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"ONE_TIME\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tap/draft",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tap",
+                    "draft"
+                  ]
+                },
+                "description": "Update the draft and return its validation. </br>\n**Note:** These endpoints are currently in beta and might be subject to changes.\nIf you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\nLearn more about Fireblocks Transaction Authorization Policy in the following [guide](https://developers.fireblocks.com/docs/set-transaction-authorization-policy).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+              },
+              "response": [
+                {
+                  "id": "6e6fe5ea-f524-4cf5-a807-649e629c638d",
+                  "name": "A draft validation response object",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"rules\": [\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"ALLOW\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"REDEEM\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"FIAT_ACCOUNT\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"FIAT_ACCOUNT\",\n      \"dstSubType\": \"INTERNAL\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"WHITELISTED\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"ACROSS_ALL_MATCHES\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    },\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"BLOCK\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"RAW\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"*\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"EXCHANGE\",\n      \"dstSubType\": \"*\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"ONE_TIME\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tap/draft",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tap",
+                        "draft"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"draftResponse\": {\n    \"draftId\": \"<string>\",\n    \"status\": \"<string>\",\n    \"rules\": [\n      {\n        \"type\": \"TRANSFER\",\n        \"action\": \"2-TIER\",\n        \"asset\": \"<string>\",\n        \"amountCurrency\": \"EUR\",\n        \"amountScope\": \"TIMEFRAME\",\n        \"amount\": \"<string>\",\n        \"periodSec\": \"<number>\",\n        \"operator\": \"<string>\",\n        \"operators\": {\n          \"wildcard\": \"*\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"services\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"transactionType\": \"STAKE\",\n        \"designatedSigner\": \"<string>\",\n        \"designatedSigners\": {\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"srcType\": \"EXCHANGE\",\n        \"srcSubType\": \"INTERNAL\",\n        \"srcId\": \"<string>\",\n        \"src\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstType\": \"ONE_TIME_ADDRESS\",\n        \"dstSubType\": \"EXTERNAL\",\n        \"dstId\": \"<string>\",\n        \"dst\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstAddressType\": \"*\",\n        \"authorizers\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"authorizersCount\": \"<number>\",\n        \"authorizationGroups\": {\n          \"logic\": \"OR\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"groups\": [\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            },\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            }\n          ]\n        },\n        \"amountAggregation\": {\n          \"operators\": \"ACROSS_ALL_MATCHES\",\n          \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n          \"dstTransferPeers\": \"ACROSS_ALL_MATCHES\"\n        },\n        \"rawMessageSigning\": {\n          \"algorithm\": \"<string>\",\n          \"derivationPath\": {\n            \"path\": [\n              \"<number>\",\n              \"<number>\"\n            ]\n          }\n        },\n        \"applyForApprove\": \"<boolean>\",\n        \"applyForTypedMessage\": \"<boolean>\",\n        \"externalDescriptor\": \"<string>\"\n      },\n      {\n        \"type\": \"TRANSFER\",\n        \"action\": \"2-TIER\",\n        \"asset\": \"<string>\",\n        \"amountCurrency\": \"EUR\",\n        \"amountScope\": \"TIMEFRAME\",\n        \"amount\": \"<string>\",\n        \"periodSec\": \"<number>\",\n        \"operator\": \"<string>\",\n        \"operators\": {\n          \"wildcard\": \"*\",\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"services\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"transactionType\": \"MINT\",\n        \"designatedSigner\": \"<string>\",\n        \"designatedSigners\": {\n          \"users\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"usersGroups\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"srcType\": \"NETWORK_CONNECTION\",\n        \"srcSubType\": \"*\",\n        \"srcId\": \"<string>\",\n        \"src\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstType\": \"*\",\n        \"dstSubType\": \"*\",\n        \"dstId\": \"<string>\",\n        \"dst\": {\n          \"ids\": [\n            [\n              \"<string>\"\n            ],\n            [\n              \"<string>\"\n            ]\n          ]\n        },\n        \"dstAddressType\": \"*\",\n        \"authorizers\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"authorizersCount\": \"<number>\",\n        \"authorizationGroups\": {\n          \"logic\": \"AND\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"groups\": [\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            },\n            {\n              \"users\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"usersGroups\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"th\": \"<number>\"\n            }\n          ]\n        },\n        \"amountAggregation\": {\n          \"operators\": \"PER_SINGLE_MATCH\",\n          \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n          \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n        },\n        \"rawMessageSigning\": {\n          \"algorithm\": \"<string>\",\n          \"derivationPath\": {\n            \"path\": [\n              \"<number>\",\n              \"<number>\"\n            ]\n          }\n        },\n        \"applyForApprove\": \"<boolean>\",\n        \"applyForTypedMessage\": \"<boolean>\",\n        \"externalDescriptor\": \"<string>\"\n      }\n    ],\n    \"metadata\": {\n      \"editedBy\": \"<string>\",\n      \"editedAt\": \"<string>\",\n      \"publishedBy\": \"<string>\",\n      \"publishedAt\": \"<string>\"\n    }\n  },\n  \"validation\": {\n    \"status\": \"<string>\",\n    \"checkResult\": {\n      \"errors\": \"<number>\",\n      \"result\": [\n        {\n          \"index\": \"<number>\",\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"designatedSigner\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"src\"\n            }\n          ]\n        },\n        {\n          \"index\": \"<number>\",\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"operators\"\n            },\n            {\n              \"errorMessage\": \"<string>\",\n              \"errorCode\": \"<number>\",\n              \"errorCodeName\": \"<string>\",\n              \"errorField\": \"authorizationGroups\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:14.000Z",
+                  "updatedAt": "2026-07-28T01:40:14.000Z",
+                  "uid": "35240-6e6fe5ea-f524-4cf5-a807-649e629c638d"
+                },
+                {
+                  "id": "0dd1c122-a5d0-45ab-9269-6cf30238d5a9",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"rules\": [\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"ALLOW\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"REDEEM\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"FIAT_ACCOUNT\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"FIAT_ACCOUNT\",\n      \"dstSubType\": \"INTERNAL\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"WHITELISTED\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"ACROSS_ALL_MATCHES\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    },\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"BLOCK\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"RAW\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"*\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"EXCHANGE\",\n      \"dstSubType\": \"*\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"ONE_TIME\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tap/draft",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tap",
+                        "draft"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<number>\"\n}",
+                  "createdAt": "2026-07-28T01:40:14.000Z",
+                  "updatedAt": "2026-07-28T01:40:14.000Z",
+                  "uid": "35240-0dd1c122-a5d0-45ab-9269-6cf30238d5a9"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:14.000Z",
+              "updatedAt": "2026-07-28T01:40:14.000Z",
+              "uid": "35240-bbacd56c-f8ce-4111-b3ae-fd93b236de7f"
+            },
+            {
+              "name": "Send publish request for a certain draft id",
+              "id": "04175056-e925-4807-9e84-a3ab178198c7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policyTypes\": [\n    \"DEPLOYMENT\",\n    \"RAW\"\n  ],\n  \"draftId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tap/draft",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tap",
+                    "draft"
+                  ]
+                },
+                "description": "Send publish request of certain draft id and returns the response. </br>\n**Note:** These endpoints are currently in beta and might be subject to changes.\nIf you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+              },
+              "response": [
+                {
+                  "id": "14c233df-96ce-4c8b-8e73-7f33d65c88a1",
+                  "name": "A policy publish result object",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"policyTypes\": [\n    \"DEPLOYMENT\",\n    \"RAW\"\n  ],\n  \"draftId\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tap/draft",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tap",
+                        "draft"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"INVALID_CONFIGURATION\",\n  \"rules\": [\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"BLOCK\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"USD\",\n      \"amountScope\": \"SINGLE_TX\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"CONTRACT_CALL\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"*\",\n      \"srcSubType\": \"CONTRACT\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"EXCHANGE\",\n      \"dstSubType\": \"EXCHANGETEST\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"WHITELISTED\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"AND\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"ACROSS_ALL_MATCHES\",\n        \"srcTransferPeers\": \"ACROSS_ALL_MATCHES\",\n        \"dstTransferPeers\": \"ACROSS_ALL_MATCHES\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    },\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"2-TIER\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"USD\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"MINT\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"UNMANAGED\",\n      \"srcSubType\": \"EXTERNAL\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"NETWORK_CONNECTION\",\n      \"dstSubType\": \"INTERNAL\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"*\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"ACROSS_ALL_MATCHES\",\n        \"dstTransferPeers\": \"ACROSS_ALL_MATCHES\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    }\n  ],\n  \"checkResult\": {\n    \"errors\": \"<number>\",\n    \"result\": [\n      {\n        \"index\": \"<number>\",\n        \"status\": \"ok\",\n        \"errors\": [\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"contractMethods\"\n          },\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"designatedSigners\"\n          }\n        ]\n      },\n      {\n        \"index\": \"<number>\",\n        \"status\": \"ok\",\n        \"errors\": [\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"dst\"\n          },\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"amountAggregation\"\n          }\n        ]\n      }\n    ]\n  },\n  \"metadata\": {\n    \"editedBy\": \"<string>\",\n    \"editedAt\": \"<string>\",\n    \"publishedBy\": \"<string>\",\n    \"publishedAt\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:14.000Z",
+                  "updatedAt": "2026-07-28T01:40:14.000Z",
+                  "uid": "35240-14c233df-96ce-4c8b-8e73-7f33d65c88a1"
+                },
+                {
+                  "id": "c5403fb5-24a7-4ab0-9863-19a28af2b636",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"policyTypes\": [\n    \"DEPLOYMENT\",\n    \"RAW\"\n  ],\n  \"draftId\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tap/draft",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tap",
+                        "draft"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<number>\"\n}",
+                  "createdAt": "2026-07-28T01:40:14.000Z",
+                  "updatedAt": "2026-07-28T01:40:14.000Z",
+                  "uid": "35240-c5403fb5-24a7-4ab0-9863-19a28af2b636"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:14.000Z",
+              "updatedAt": "2026-07-28T01:40:14.000Z",
+              "uid": "35240-04175056-e925-4807-9e84-a3ab178198c7"
+            }
+          ],
+          "id": "caa17fc5-f80e-4b2b-9f82-4ee472edb4cc",
+          "createdAt": "2026-07-28T01:40:14.000Z",
+          "updatedAt": "2026-07-28T01:40:14.000Z",
+          "uid": "35240-caa17fc5-f80e-4b2b-9f82-4ee472edb4cc"
+        },
+        {
+          "name": "publish",
+          "item": [
+            {
+              "name": "Send publish request for a set of policy rules",
+              "id": "cdd26d5f-53dd-4880-b0c8-b755c8475938",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rules\": [\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"ALLOW\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"REDEEM\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"FIAT_ACCOUNT\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"FIAT_ACCOUNT\",\n      \"dstSubType\": \"INTERNAL\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"WHITELISTED\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"ACROSS_ALL_MATCHES\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    },\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"BLOCK\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"RAW\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"*\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"EXCHANGE\",\n      \"dstSubType\": \"*\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"ONE_TIME\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tap/publish",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tap",
+                    "publish"
+                  ]
+                },
+                "description": "Send publish request of set of policy rules and returns the response. </br>\n**Note:** These endpoints are currently in beta and might be subject to changes.\nIf you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+              },
+              "response": [
+                {
+                  "id": "24412832-eb71-4e6b-8862-6504e40ae7a2",
+                  "name": "A policy publish result object",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"rules\": [\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"ALLOW\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"REDEEM\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"FIAT_ACCOUNT\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"FIAT_ACCOUNT\",\n      \"dstSubType\": \"INTERNAL\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"WHITELISTED\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"ACROSS_ALL_MATCHES\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    },\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"BLOCK\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"RAW\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"*\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"EXCHANGE\",\n      \"dstSubType\": \"*\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"ONE_TIME\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tap/publish",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tap",
+                        "publish"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"INVALID_CONFIGURATION\",\n  \"rules\": [\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"BLOCK\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"USD\",\n      \"amountScope\": \"SINGLE_TX\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"CONTRACT_CALL\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"*\",\n      \"srcSubType\": \"CONTRACT\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"EXCHANGE\",\n      \"dstSubType\": \"EXCHANGETEST\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"WHITELISTED\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"AND\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"ACROSS_ALL_MATCHES\",\n        \"srcTransferPeers\": \"ACROSS_ALL_MATCHES\",\n        \"dstTransferPeers\": \"ACROSS_ALL_MATCHES\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    },\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"2-TIER\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"USD\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"MINT\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"UNMANAGED\",\n      \"srcSubType\": \"EXTERNAL\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"NETWORK_CONNECTION\",\n      \"dstSubType\": \"INTERNAL\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"*\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"ACROSS_ALL_MATCHES\",\n        \"dstTransferPeers\": \"ACROSS_ALL_MATCHES\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    }\n  ],\n  \"checkResult\": {\n    \"errors\": \"<number>\",\n    \"result\": [\n      {\n        \"index\": \"<number>\",\n        \"status\": \"ok\",\n        \"errors\": [\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"contractMethods\"\n          },\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"designatedSigners\"\n          }\n        ]\n      },\n      {\n        \"index\": \"<number>\",\n        \"status\": \"ok\",\n        \"errors\": [\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"dst\"\n          },\n          {\n            \"errorMessage\": \"<string>\",\n            \"errorCode\": \"<number>\",\n            \"errorCodeName\": \"<string>\",\n            \"errorField\": \"amountAggregation\"\n          }\n        ]\n      }\n    ]\n  },\n  \"metadata\": {\n    \"editedBy\": \"<string>\",\n    \"editedAt\": \"<string>\",\n    \"publishedBy\": \"<string>\",\n    \"publishedAt\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:40:14.000Z",
+                  "updatedAt": "2026-07-28T01:40:14.000Z",
+                  "uid": "35240-24412832-eb71-4e6b-8862-6504e40ae7a2"
+                },
+                {
+                  "id": "d38fb9ce-8387-43b6-972c-16f5031786a0",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                        "key": "Idempotency-Key",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"rules\": [\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"ALLOW\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"REDEEM\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"FIAT_ACCOUNT\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"FIAT_ACCOUNT\",\n      \"dstSubType\": \"INTERNAL\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"WHITELISTED\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"ACROSS_ALL_MATCHES\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    },\n    {\n      \"type\": \"TRANSFER\",\n      \"action\": \"BLOCK\",\n      \"asset\": \"<string>\",\n      \"amountCurrency\": \"NATIVE\",\n      \"amountScope\": \"TIMEFRAME\",\n      \"amount\": \"<string>\",\n      \"periodSec\": \"<number>\",\n      \"operator\": \"<string>\",\n      \"operators\": {\n        \"wildcard\": \"*\",\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"services\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"transactionType\": \"RAW\",\n      \"designatedSigner\": \"<string>\",\n      \"designatedSigners\": {\n        \"users\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"usersGroups\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"srcType\": \"*\",\n      \"srcSubType\": \"*\",\n      \"srcId\": \"<string>\",\n      \"src\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstType\": \"EXCHANGE\",\n      \"dstSubType\": \"*\",\n      \"dstId\": \"<string>\",\n      \"dst\": {\n        \"ids\": [\n          [\n            \"<string>\"\n          ],\n          [\n            \"<string>\"\n          ]\n        ]\n      },\n      \"dstAddressType\": \"ONE_TIME\",\n      \"authorizers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authorizersCount\": \"<number>\",\n      \"authorizationGroups\": {\n        \"logic\": \"OR\",\n        \"allowOperatorAsAuthorizer\": \"<boolean>\",\n        \"groups\": [\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          },\n          {\n            \"users\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"usersGroups\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"th\": \"<number>\"\n          }\n        ]\n      },\n      \"amountAggregation\": {\n        \"operators\": \"PER_SINGLE_MATCH\",\n        \"srcTransferPeers\": \"PER_SINGLE_MATCH\",\n        \"dstTransferPeers\": \"PER_SINGLE_MATCH\"\n      },\n      \"rawMessageSigning\": {\n        \"algorithm\": \"<string>\",\n        \"derivationPath\": {\n          \"path\": [\n            \"<number>\",\n            \"<number>\"\n          ]\n        }\n      },\n      \"applyForApprove\": \"<boolean>\",\n      \"applyForTypedMessage\": \"<boolean>\",\n      \"externalDescriptor\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tap/publish",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tap",
+                        "publish"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-ID",
+                      "value": ""
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<number>\"\n}",
+                  "createdAt": "2026-07-28T01:40:14.000Z",
+                  "updatedAt": "2026-07-28T01:40:14.000Z",
+                  "uid": "35240-d38fb9ce-8387-43b6-972c-16f5031786a0"
+                }
+              ],
+              "createdAt": "2026-07-28T01:40:14.000Z",
+              "updatedAt": "2026-07-28T01:40:14.000Z",
+              "uid": "35240-cdd26d5f-53dd-4880-b0c8-b755c8475938"
+            }
+          ],
+          "id": "d523c0f7-4d8f-4dfd-855b-57c26860b69d",
+          "createdAt": "2026-07-28T01:40:14.000Z",
+          "updatedAt": "2026-07-28T01:40:14.000Z",
+          "uid": "35240-d523c0f7-4d8f-4dfd-855b-57c26860b69d"
+        }
+      ],
+      "id": "46f914e9-38be-46c8-b5d9-bbd196d4bfe9",
+      "createdAt": "2026-07-28T01:40:14.000Z",
+      "updatedAt": "2026-07-28T01:40:14.000Z",
+      "uid": "35240-46f914e9-38be-46c8-b5d9-bbd196d4bfe9"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.fireblocks.io/v1"
+    }
+  ]
+}
