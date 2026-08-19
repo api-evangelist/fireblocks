@@ -1,0 +1,205 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Blockchains and Assets Approval Requests Contract Templates API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contract Templates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all contract templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/templates",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (max 100)"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Paging offset"
+              },
+              {
+                "name": "pageCursor",
+                "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==",
+                "type": "query",
+                "description": "Page cursor to get the next page"
+              },
+              {
+                "name": "pageSize",
+                "value": "10",
+                "type": "query",
+                "description": "Number of items per page, requesting more then max will return max items"
+              },
+              {
+                "name": "type",
+                "value": "FUNGIBLE_TOKEN",
+                "type": "query",
+                "description": "The type of the contract templates you wish to retrieve. Can accept one type, more or none"
+              },
+              {
+                "name": "initializationPhase",
+                "value": "",
+                "type": "query",
+                "description": "For standalone contracts use ON_DEPLOYMENT and for contracts that are behind proxies use POST_DEPLOYMENT"
+              }
+            ]
+          },
+          "docs": "Return minimal representation of all the contract templates available for the workspace.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Upload contract template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tokenization/templates",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upload a new contract template. This contract template will be available for the workspace.\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor"
+        },
+        {
+          "info": {
+            "name": "Return contract template by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/templates/:contractTemplateId",
+            "params": [
+              {
+                "name": "contractTemplateId",
+                "value": "b70701f4-d7b1-4795-a8ee-b09cdb5b850d",
+                "type": "path",
+                "description": "The Contract Template identifier"
+              }
+            ]
+          },
+          "docs": "Return detailed information about the contract template.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Delete a contract template by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/tokenization/templates/:contractTemplateId",
+            "params": [
+              {
+                "name": "contractTemplateId",
+                "value": "b70701f4-d7b1-4795-a8ee-b09cdb5b850d",
+                "type": "path",
+                "description": "The Contract Template identifier"
+              }
+            ]
+          },
+          "docs": "Delete a contract by id. allowed only for private contract templates. Notice: it is irreversible!\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor"
+        },
+        {
+          "info": {
+            "name": "Return contract template's constructor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/templates/:contractTemplateId/constructor",
+            "params": [
+              {
+                "name": "contractTemplateId",
+                "value": "b70701f4-d7b1-4795-a8ee-b09cdb5b850d",
+                "type": "path",
+                "description": "The Contract Template identifier"
+              },
+              {
+                "name": "withDocs",
+                "value": "",
+                "type": "query",
+                "description": "true if you want to get the abi with its docs"
+              }
+            ]
+          },
+          "docs": "Return contract template's constructor ABI.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Return contract template's function",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/templates/:contractTemplateId/function",
+            "params": [
+              {
+                "name": "contractTemplateId",
+                "value": "b70701f4-d7b1-4795-a8ee-b09cdb5b850d",
+                "type": "path",
+                "description": "The Contract Template identifier"
+              },
+              {
+                "name": "functionSignature",
+                "value": "initialize(string,string,address)",
+                "type": "query",
+                "description": "The contract's function signature"
+              }
+            ]
+          },
+          "docs": "Return contract template`s function ABI by signature.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Deploy contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tokenization/templates/:contractTemplateId/deploy",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "contractTemplateId",
+                "value": "b70701f4-d7b1-4795-a8ee-b09cdb5b850d",
+                "type": "path",
+                "description": "The Contract Template identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deploy a new contract by contract template id. If you wish to deploy a token (ERC20, ERC721 etc), and create asset please use `POST /tokenization`.\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Approver, and Editor, Viewer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

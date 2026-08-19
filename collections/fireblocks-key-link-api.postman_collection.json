@@ -1,0 +1,1613 @@
+{
+  "item": [
+    {
+      "id": "d9048830-49ee-4dde-bd48-0f34052f3abf",
+      "name": "Key Link",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c1776b8b-d717-41ee-aa46-6d5187aa0878",
+          "name": "Add a new signing key",
+          "request": {
+            "name": "Add a new signing key",
+            "description": {
+              "content": "Adds a new signing key to the workspace. The added key will be linked to the specific Fireblocks agent user ID. The same user will receive the proof of ownership message to be signed, and upon successful proof, the key will become enabled.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "key_link",
+                "signing_keys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"signingDeviceKeyId\": \"<string>\",\n  \"signedCertPem\": \"<string>\",\n  \"agentUserId\": \"<string>\",\n  \"proofOfOwnership\": {\n    \"message\": \"<string>\",\n    \"signature\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b4bf1542-6d2d-4413-bcb3-f9f60dcff379",
+              "name": "Newly created signing key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "signing_keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"signingDeviceKeyId\": \"MyKey1\",\n  \"signedCertPem\": \"-----BEGIN CERTIFICATE ... END CERTIFICATE-----\",\n  \"agentUserId\": \"d18847b5-1df6-4c46-8f99-5cce47284529\",\n  \"proofOfOwnership\": {\n    \"message\": \"<string>\",\n    \"signature\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"keyId\": \"46a92767-5f93-4a46-9eed-f012196bb4fc\",\n  \"signingDeviceKeyId\": \"MyKey1\",\n  \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ... END PUBLIC KEY-----\",\n  \"algorithm\": \"ECDSA_SECP256K1\",\n  \"enabled\": true,\n  \"vaultAccountId\": 10,\n  \"agentUserId\": \"d18847b5-1df6-4c46-8f99-5cce47284529\",\n  \"createdAt\": 124757537\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "afb9173b-23d4-41a9-9a4a-17e2aa7a52ed",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "signing_keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"signingDeviceKeyId\": \"MyKey1\",\n  \"signedCertPem\": \"-----BEGIN CERTIFICATE ... END CERTIFICATE-----\",\n  \"agentUserId\": \"d18847b5-1df6-4c46-8f99-5cce47284529\",\n  \"proofOfOwnership\": {\n    \"message\": \"<string>\",\n    \"signature\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b9b04bb9-76d4-45cf-88a4-51027e432edb",
+          "name": "Get list of signing keys",
+          "request": {
+            "name": "Get list of signing keys",
+            "description": {
+              "content": "Returns the list of signing keys in the workspace\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "key_link",
+                "signing_keys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Cursor to the next page"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "10",
+                  "description": "Amount of results to return in the next page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "description": "Field(s) to use for sorting"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "ASC",
+                  "description": "Is the order ascending or descending"
+                },
+                {
+                  "disabled": false,
+                  "key": "vaultAccountId",
+                  "value": "<number>",
+                  "description": "Return keys assigned to a specific vault"
+                },
+                {
+                  "disabled": false,
+                  "key": "agentUserId",
+                  "value": "<string>",
+                  "description": "Return keys associated with a specific agent user"
+                },
+                {
+                  "disabled": false,
+                  "key": "algorithm",
+                  "value": "<string>",
+                  "description": "Return only keys with a specific algorithm"
+                },
+                {
+                  "disabled": false,
+                  "key": "enabled",
+                  "value": "<boolean>",
+                  "description": "Return keys that have been proof of ownership"
+                },
+                {
+                  "disabled": false,
+                  "key": "available",
+                  "value": "<boolean>",
+                  "description": "Return keys that are proof of ownership but not assigned. Available filter can be used only when vaultAccountId and enabled filters are not set"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0f4521c7-9cc9-4cb6-9507-ae78e7321698",
+              "name": "List of signing keys and a data that allows requesting the next page if applicable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "signing_keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageCursor",
+                      "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA=="
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "vaultAccountId",
+                      "value": "4"
+                    },
+                    {
+                      "key": "agentUserId",
+                      "value": "12fed207-5bdf-4a0c-ab12-fcd2627f75d1"
+                    },
+                    {
+                      "key": "algorithm",
+                      "value": "ECDSA_SECP256K1"
+                    },
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "available",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"keyId\": \"46a92767-5f93-4a46-9eed-f012196bb4fc\",\n      \"signingDeviceKeyId\": \"MyKey1\",\n      \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ... END PUBLIC KEY-----\",\n      \"algorithm\": \"ECDSA_SECP256K1\",\n      \"enabled\": true,\n      \"vaultAccountId\": 10,\n      \"agentUserId\": \"d18847b5-1df6-4c46-8f99-5cce47284529\",\n      \"createdAt\": 124757537\n    },\n    {\n      \"keyId\": \"46a92767-5f93-4a46-9eed-f012196bb4fc\",\n      \"signingDeviceKeyId\": \"MyKey1\",\n      \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ... END PUBLIC KEY-----\",\n      \"algorithm\": \"ECDSA_SECP256K1\",\n      \"enabled\": true,\n      \"vaultAccountId\": 10,\n      \"agentUserId\": \"d18847b5-1df6-4c46-8f99-5cce47284529\",\n      \"createdAt\": 124757537\n    }\n  ],\n  \"next\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9cd0b06b-95a1-498f-b874-f9a7cce6c7a1",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "signing_keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageCursor",
+                      "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA=="
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "vaultAccountId",
+                      "value": "4"
+                    },
+                    {
+                      "key": "agentUserId",
+                      "value": "12fed207-5bdf-4a0c-ab12-fcd2627f75d1"
+                    },
+                    {
+                      "key": "algorithm",
+                      "value": "ECDSA_SECP256K1"
+                    },
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "available",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "841c06ed-590e-4bf5-ae25-18d288339942",
+          "name": "Get a signing key by `keyId`",
+          "request": {
+            "name": "Get a signing key by `keyId`",
+            "description": {
+              "content": "Returns a signing key if it exists, identified by the specified Fireblocks provided `keyId`.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "key_link",
+                "signing_keys",
+                ":keyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "keyId",
+                  "description": "(Required) The unique identifier for the signing key provided by Fireblocks"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3f95f65e-1c0a-4700-9d33-581beeffca2a",
+              "name": "Requested signing key data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "signing_keys",
+                    ":keyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "keyId",
+                      "description": "(Required) The unique identifier for the signing key provided by Fireblocks"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"keyId\": \"46a92767-5f93-4a46-9eed-f012196bb4fc\",\n  \"signingDeviceKeyId\": \"MyKey1\",\n  \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ... END PUBLIC KEY-----\",\n  \"algorithm\": \"ECDSA_SECP256K1\",\n  \"enabled\": true,\n  \"vaultAccountId\": 10,\n  \"agentUserId\": \"d18847b5-1df6-4c46-8f99-5cce47284529\",\n  \"createdAt\": 124757537\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23e3d667-f79e-40b7-bdc4-5a54dbe8f68b",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "signing_keys",
+                    ":keyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "keyId",
+                      "description": "(Required) The unique identifier for the signing key provided by Fireblocks"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d1d76954-3aa5-451e-a26f-322fabdc3121",
+          "name": "Modify the signing keyId",
+          "request": {
+            "name": "Modify the signing keyId",
+            "description": {
+              "content": "Allows assigning the signing key to a vault account, if it hasn't been assigned to any other vault accounts yet.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "key_link",
+                "signing_keys",
+                ":keyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "keyId",
+                  "description": "(Required) The unique identifier for the signing key provided by Fireblocks"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vaultAccountId\": \"<number>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "78178087-24ed-46e2-ab07-f4e03e6fd129",
+              "name": "Modified signing key data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "signing_keys",
+                    ":keyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "keyId",
+                      "description": "(Required) The unique identifier for the signing key provided by Fireblocks"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vaultAccountId\": 123\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"keyId\": \"46a92767-5f93-4a46-9eed-f012196bb4fc\",\n  \"signingDeviceKeyId\": \"MyKey1\",\n  \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ... END PUBLIC KEY-----\",\n  \"algorithm\": \"ECDSA_SECP256K1\",\n  \"enabled\": true,\n  \"vaultAccountId\": 10,\n  \"agentUserId\": \"d18847b5-1df6-4c46-8f99-5cce47284529\",\n  \"createdAt\": 124757537\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "223b7588-eec9-44f0-8009-bcbb6235df7f",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "signing_keys",
+                    ":keyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "keyId",
+                      "description": "(Required) The unique identifier for the signing key provided by Fireblocks"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vaultAccountId\": 123\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4e2bb31a-ba4e-47d5-8915-ba01925b1697",
+          "name": "Set agent user id",
+          "request": {
+            "name": "Set agent user id",
+            "description": {
+              "content": "Can modify existing signing key id if the key is not enabled. The change done in background and will be visible once applied. If key is already enabled (after proof of ownership) the user cannot be changed.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "key_link",
+                "signing_keys",
+                ":keyId",
+                "agent_user_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "keyId",
+                  "description": "(Required) The unique identifier for the signing key provided by Fireblocks"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agentUserId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "df970328-ca97-49cd-bfe0-1f20fdd50926",
+              "name": "Agent user id modification process has started in background.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "signing_keys",
+                    ":keyId",
+                    "agent_user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "keyId",
+                      "description": "(Required) The unique identifier for the signing key provided by Fireblocks"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agentUserId\": \"d18847b5-1df6-4c46-8f99-5cce47284529\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cd10dfd0-9e26-4ca7-b5b0-a466cb53f5e2",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "signing_keys",
+                    ":keyId",
+                    "agent_user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "keyId",
+                      "description": "(Required) The unique identifier for the signing key provided by Fireblocks"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agentUserId\": \"d18847b5-1df6-4c46-8f99-5cce47284529\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3963b435-cf44-444d-9af8-0bd20f0b603b",
+          "name": "Add a new validation key",
+          "request": {
+            "name": "Add a new validation key",
+            "description": {
+              "content": "Adds a new validation key used to validate signing keys. The new validation key will undergo an approval process by the workspace quorum.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "key_link",
+                "validation_keys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"publicKeyPem\": \"<string>\",\n  \"daysTillExpired\": \"<number>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "26e0fe00-f25c-4b06-bd5d-2afdf2541cc6",
+              "name": "The validation key that was added and is pending approval.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "validation_keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----\",\n  \"daysTillExpired\": 365\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"validationKey\": {\n    \"keyId\": \"46a92767-5f93-4a46-9eed-f012196bb4fc\",\n    \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----\",\n    \"daysTillExpired\": 365,\n    \"enabled\": false,\n    \"createdAt\": 12345633\n  },\n  \"admins\": [\n    \"string\",\n    \"string\"\n  ],\n  \"approvalThreshold\": 0,\n  \"requestId\": 1234\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7020475e-b337-451e-963c-dcf711de2342",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "validation_keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----\",\n  \"daysTillExpired\": 365\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f4e87d0c-ddec-4ca4-a277-6f1fce98b3e6",
+          "name": "Get list of registered validation keys",
+          "request": {
+            "name": "Get list of registered validation keys",
+            "description": {
+              "content": "Returns the list of validation keys in the workspace\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "key_link",
+                "validation_keys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Cursor to the next page"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "10",
+                  "description": "Amount of results to return in the next page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "description": "Field(s) to use for sorting"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "ASC",
+                  "description": "Is the order ascending or descending"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d3287334-05c8-46f3-87a2-9db623d8e832",
+              "name": "Validation keys list along with data required to request the next page if applicable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "validation_keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageCursor",
+                      "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA=="
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"keyId\": \"46a92767-5f93-4a46-9eed-f012196bb4fc\",\n      \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----\",\n      \"daysTillExpired\": 365,\n      \"enabled\": false,\n      \"createdAt\": 12345633\n    },\n    {\n      \"keyId\": \"46a92767-5f93-4a46-9eed-f012196bb4fc\",\n      \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----\",\n      \"daysTillExpired\": 365,\n      \"enabled\": false,\n      \"createdAt\": 12345633\n    }\n  ],\n  \"next\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "476b211c-343c-45b9-a90b-c46ec9461671",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "validation_keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageCursor",
+                      "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA=="
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3314042f-9886-4531-805e-40d0aa3b5f86",
+          "name": "Get a validation key by `keyId`",
+          "request": {
+            "name": "Get a validation key by `keyId`",
+            "description": {
+              "content": "Returns a validation key if it exists, identified by the specified `keyId`.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "key_link",
+                "validation_keys",
+                ":keyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "keyId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "edae237f-c9ef-4b44-a97b-c9abdfd4b9ab",
+              "name": "The requested validation key data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "validation_keys",
+                    ":keyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "keyId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"keyId\": \"46a92767-5f93-4a46-9eed-f012196bb4fc\",\n  \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----\",\n  \"daysTillExpired\": 365,\n  \"enabled\": false,\n  \"createdAt\": 12345633\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd98dee7-4554-49bf-9bb7-90d7c2b75156",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "validation_keys",
+                    ":keyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "keyId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2ad9aa24-b63c-43ee-b226-a01be1f1fad6",
+          "name": "Disables a validation key",
+          "request": {
+            "name": "Disables a validation key",
+            "description": {
+              "content": "Allows disabling validation key even if it has not expired yet. It is not allowed to enable the validation key back. Another key has to be used for future validations.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "key_link",
+                "validation_keys",
+                ":keyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "keyId",
+                  "description": "(Required) The unique identifier for the validation key provided by Fireblocks"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b03d3275-612e-44b3-a23d-07a8c906eb53",
+              "name": "Modified validation key data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "validation_keys",
+                    ":keyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "keyId",
+                      "description": "(Required) The unique identifier for the validation key provided by Fireblocks"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"keyId\": \"46a92767-5f93-4a46-9eed-f012196bb4fc\",\n  \"publicKeyPem\": \"-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----\",\n  \"daysTillExpired\": 365,\n  \"enabled\": false,\n  \"createdAt\": 12345633\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bbe65318-a645-48c1-ab76-27e1f5635ef7",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "key_link",
+                    "validation_keys",
+                    ":keyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "keyId",
+                      "description": "(Required) The unique identifier for the validation key provided by Fireblocks"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireblocks.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "45f8ffbe-e101-42e1-a935-84f2913abe7e",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Key Link API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+      "type": "text/plain"
+    }
+  }
+}

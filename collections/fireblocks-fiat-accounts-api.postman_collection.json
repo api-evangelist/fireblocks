@@ -1,25 +1,25 @@
 {
   "item": [
     {
-      "id": "996361cc-6e09-4090-944c-a7cdb1f886bf",
-      "name": "Gas Station",
+      "id": "4a1c130a-33b3-46d8-9b5f-401349b5edde",
+      "name": "Fiat Accounts",
       "description": {
         "content": "",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "3443f3dd-e9e7-4500-b1e5-174755d351ad",
-          "name": "Get gas station settings",
+          "id": "686c427f-e279-4047-b7ae-21ce49611191",
+          "name": "List fiat accounts",
           "request": {
-            "name": "Get gas station settings",
+            "name": "List fiat accounts",
             "description": {
-              "content": "Returns gas station settings and ETH balance.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "content": "Returns all fiat accounts.\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "gas_station"
+                "fiat_accounts"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -38,12 +38,12 @@
           },
           "response": [
             {
-              "id": "4ad5e3c3-7513-4dea-a672-1113a64ea888",
-              "name": "Gas Station properties",
+              "id": "a986964b-57dc-4b7e-85f7-cf215a3e6130",
+              "name": "A fiat account object",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "gas_station"
+                    "fiat_accounts"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -74,17 +74,17 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"balance\": {},\n  \"configuration\": {\n    \"gasThreshold\": \"0.005\",\n    \"gasCap\": \"0.01\",\n    \"maxGasPrice\": \"20\"\n  }\n}",
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"type\": \"BLINC\",\n    \"name\": \"string\",\n    \"address\": \"string\",\n    \"assets\": [\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\"\n      },\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\"\n      }\n    ]\n  },\n  {\n    \"id\": \"string\",\n    \"type\": \"BLINC\",\n    \"name\": \"string\",\n    \"address\": \"string\",\n    \"assets\": [\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\"\n      },\n      {\n        \"id\": \"string\",\n        \"balance\": \"string\"\n      }\n    ]\n  }\n]",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "9a93596f-050b-4868-8615-0a5f506d8385",
+              "id": "8c2e8f5c-66d4-4059-be38-4c04a2bc18f1",
               "name": "Error Response",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "gas_station"
+                    "fiat_accounts"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -126,18 +126,18 @@
           }
         },
         {
-          "id": "651cf4e2-4874-4075-a1d9-77ee729dfceb",
-          "name": "Get gas station settings by asset",
+          "id": "26a850ef-d20b-4557-86e9-438671b3ac7e",
+          "name": "Find a specific fiat account",
           "request": {
-            "name": "Get gas station settings by asset",
+            "name": "Find a specific fiat account",
             "description": {
-              "content": "Returns gas station settings and balances for a requested asset.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "content": "Returns a fiat account by ID.\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "gas_station",
-                ":assetId"
+                "fiat_accounts",
+                ":accountId"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -148,8 +148,8 @@
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "assetId",
-                  "description": "(Required) The ID of the asset"
+                  "key": "accountId",
+                  "description": "(Required) The ID of the fiat account to return"
                 }
               ]
             },
@@ -164,13 +164,13 @@
           },
           "response": [
             {
-              "id": "1c58cb19-14ef-4b4e-8652-e3aa6da61fd1",
-              "name": "Gas Station properties",
+              "id": "51ff49b0-df88-4f57-b06d-6731f5bc59d1",
+              "name": "A fiat account object",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "gas_station",
-                    ":assetId"
+                    "fiat_accounts",
+                    ":accountId"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -181,8 +181,8 @@
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
-                      "key": "assetId",
-                      "description": "(Required) The ID of the asset"
+                      "key": "accountId",
+                      "description": "(Required) The ID of the fiat account to return"
                     }
                   ]
                 },
@@ -209,18 +209,18 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"balance\": {},\n  \"configuration\": {\n    \"gasThreshold\": \"0.005\",\n    \"gasCap\": \"0.01\",\n    \"maxGasPrice\": \"20\"\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"BLINC\",\n  \"name\": \"string\",\n  \"address\": \"string\",\n  \"assets\": [\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"balance\": \"string\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "0a269593-bf1e-4aed-a43b-e43b56a9d180",
+              "id": "c959f879-09db-49b5-8fd4-1f94896da8c9",
               "name": "Error Response",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "gas_station",
-                    ":assetId"
+                    "fiat_accounts",
+                    ":accountId"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -231,8 +231,8 @@
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
-                      "key": "assetId",
-                      "description": "(Required) The ID of the asset"
+                      "key": "accountId",
+                      "description": "(Required) The ID of the fiat account to return"
                     }
                   ]
                 },
@@ -270,24 +270,33 @@
           }
         },
         {
-          "id": "071d1623-81ae-4e42-8d9c-e8e6e21985fc",
-          "name": "Edit gas station settings",
+          "id": "aa71e698-27f7-4414-bcac-d27e7fc4b53b",
+          "name": "Redeem funds to DDA",
           "request": {
-            "name": "Edit gas station settings",
+            "name": "Redeem funds to DDA",
             "description": {
-              "content": "Configures gas station settings for ETH.\nLearn more about the Fireblocks Gas Station in the following [guide](https://developers.fireblocks.com/docs/work-with-gas-station).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "content": "Redeems funds to the linked DDA.\nLearn more about Fireblocks FIAT Connectivity in the following [guide](https://developers.fireblocks.com/docs/connect-to-exchanges-and-fiat-providers).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "gas_station",
-                "configuration"
+                "fiat_accounts",
+                ":accountId",
+                "redeem_to_linked_dda"
               ],
               "host": [
                 "{{baseUrl}}"
               ],
               "query": [],
-              "variable": []
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The ID of the fiat account to use"
+                }
+              ]
             },
             "header": [
               {
@@ -305,11 +314,11 @@
                 "value": "application/json"
               }
             ],
-            "method": "PUT",
+            "method": "POST",
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"gasThreshold\": \"0.005\",\n  \"gasCap\": \"0.01\",\n  \"maxGasPrice\": null\n}",
+              "raw": "{\n  \"amount\": \"<number>\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -319,19 +328,28 @@
           },
           "response": [
             {
-              "id": "0bec7bae-89c5-451d-a29a-403de808237f",
-              "name": "OK",
+              "id": "d0472a78-590c-4225-abea-000004832ade",
+              "name": "Transfer succeeded",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "gas_station",
-                    "configuration"
+                    "fiat_accounts",
+                    ":accountId",
+                    "redeem_to_linked_dda"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "query": [],
-                  "variable": []
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The ID of the fiat account to use"
+                    }
+                  ]
                 },
                 "header": [
                   {
@@ -345,10 +363,10 @@
                     "value": "application/json"
                   }
                 ],
-                "method": "PUT",
+                "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"gasThreshold\": \"0.005\",\n  \"gasCap\": \"0.01\",\n  \"maxGasPrice\": \"20\"\n}",
+                  "raw": "{\n  \"amount\": \"<number>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -375,19 +393,28 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "1a6c873c-f267-4d19-83c2-abb5897e20e9",
+              "id": "453164b9-fab8-4bac-bc7c-be6215a0dcf8",
               "name": "Error Response",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "gas_station",
-                    "configuration"
+                    "fiat_accounts",
+                    ":accountId",
+                    "redeem_to_linked_dda"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "query": [],
-                  "variable": []
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The ID of the fiat account to use"
+                    }
+                  ]
                 },
                 "header": [
                   {
@@ -401,10 +428,10 @@
                     "value": "application/json"
                   }
                 ],
-                "method": "PUT",
+                "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"gasThreshold\": \"0.005\",\n  \"gasCap\": \"0.01\",\n  \"maxGasPrice\": \"20\"\n}",
+                  "raw": "{\n  \"amount\": \"<number>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -437,19 +464,19 @@
           }
         },
         {
-          "id": "f17388a7-3a95-4fc4-a04a-a4baa0f2c340",
-          "name": "Edit gas station settings for an asset",
+          "id": "a4c4d866-c591-4416-a07a-34c554150f98",
+          "name": "Deposit funds from DDA",
           "request": {
-            "name": "Edit gas station settings for an asset",
+            "name": "Deposit funds from DDA",
             "description": {
-              "content": "Configures gas station settings for a requested asset.\nLearn more about the Fireblocks Gas Station in the following [guide](https://developers.fireblocks.com/docs/work-with-gas-station).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.",
+              "content": "Deposits funds from the linked DDA.\nLearn more about Fireblocks FIAT Connectivity in the following [guide](https://developers.fireblocks.com/docs/connect-to-exchanges-and-fiat-providers).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "gas_station",
-                "configuration",
-                ":assetId"
+                "fiat_accounts",
+                ":accountId",
+                "deposit_from_linked_dda"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -460,8 +487,8 @@
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "assetId",
-                  "description": "(Required) The ID of the asset"
+                  "key": "accountId",
+                  "description": "(Required) The ID of the fiat account to use"
                 }
               ]
             },
@@ -481,11 +508,11 @@
                 "value": "application/json"
               }
             ],
-            "method": "PUT",
+            "method": "POST",
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"gasThreshold\": \"0.005\",\n  \"gasCap\": \"0.01\",\n  \"maxGasPrice\": null\n}",
+              "raw": "{\n  \"amount\": \"<number>\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -495,14 +522,14 @@
           },
           "response": [
             {
-              "id": "e86df27c-f158-4485-b56e-6f98a9c5d426",
-              "name": "OK",
+              "id": "d835e322-4006-4c33-8312-eb9b7390861d",
+              "name": "Transfer succeeded",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "gas_station",
-                    "configuration",
-                    ":assetId"
+                    "fiat_accounts",
+                    ":accountId",
+                    "deposit_from_linked_dda"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -513,8 +540,8 @@
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
-                      "key": "assetId",
-                      "description": "(Required) The ID of the asset"
+                      "key": "accountId",
+                      "description": "(Required) The ID of the fiat account to use"
                     }
                   ]
                 },
@@ -530,10 +557,10 @@
                     "value": "application/json"
                   }
                 ],
-                "method": "PUT",
+                "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"gasThreshold\": \"0.005\",\n  \"gasCap\": \"0.01\",\n  \"maxGasPrice\": \"20\"\n}",
+                  "raw": "{\n  \"amount\": \"<number>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -555,19 +582,19 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"success\": false\n}",
+              "body": "{\n  \"success\": true\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "ee29fe46-5a4a-4600-9c2d-95b44a29e518",
+              "id": "08afb921-3f3b-4555-830e-14968d3d1a7c",
               "name": "Error Response",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "gas_station",
-                    "configuration",
-                    ":assetId"
+                    "fiat_accounts",
+                    ":accountId",
+                    "deposit_from_linked_dda"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -578,8 +605,8 @@
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
-                      "key": "assetId",
-                      "description": "(Required) The ID of the asset"
+                      "key": "accountId",
+                      "description": "(Required) The ID of the fiat account to use"
                     }
                   ]
                 },
@@ -595,10 +622,10 @@
                     "value": "application/json"
                   }
                 ],
-                "method": "PUT",
+                "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"gasThreshold\": \"0.005\",\n  \"gasCap\": \"0.01\",\n  \"maxGasPrice\": \"20\"\n}",
+                  "raw": "{\n  \"amount\": \"<number>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -643,8 +670,8 @@
     }
   ],
   "info": {
-    "_postman_id": "4a9be7ef-0c2a-4db2-af86-6c1cd1f89599",
-    "name": "Fireblocks Blockchains and Assets Approval Requests Gas Station API",
+    "_postman_id": "db8e53bb-a45d-4cb9-a4b0-590cc47a7f5f",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Fiat Accounts API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
       "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",

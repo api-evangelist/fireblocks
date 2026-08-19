@@ -1,0 +1,1840 @@
+{
+  "item": [
+    {
+      "id": "499627c3-e472-46bd-8108-3f8b8f19796d",
+      "name": "Cosigners (Beta)",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "750387b2-b4a8-45c7-825e-22bed44c8ac6",
+          "name": "Get all cosigners",
+          "request": {
+            "name": "Get all cosigners",
+            "description": {
+              "content": "Get all workspace cosigners (paginated).\n**Note:** These endpoints are currently in beta and might be subject to changes.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cosigners"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "DESC",
+                  "description": "ASC / DESC ordering (default DESC)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Cursor of the required page"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "10",
+                  "description": "Maximum number of items in the page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5567f0b5-8c34-4ade-ac2c-dd551cb3e265",
+              "name": "A paginated response containing Cosigner objects",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"archived\": false,\n      \"id\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n      \"name\": \"My Cosigner 1\"\n    },\n    {\n      \"archived\": false,\n      \"id\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n      \"name\": \"My Cosigner 1\"\n    }\n  ],\n  \"next\": \"eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d23d6d57-09d4-4fe3-ab6f-3f30c0fc7a88",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1f12c1dd-9685-4e26-abc1-dd4a291774e7",
+          "name": "Add cosigner",
+          "request": {
+            "name": "Add cosigner",
+            "description": {
+              "content": "Add a new cosigner. The cosigner will be pending pairing until the API key is manually paired\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cosigners"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKeyId\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"existingCosigner\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d99869b2-dff3-4b17-9e97-888036ba411e",
+              "name": "Pending cosigner added",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKeyId\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"name\": \"My Cosigner 1\",\n  \"existingCosigner\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"apiKeyId\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"name\": \"My Cosigner 1\",\n  \"pendingCosignerId\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n  \"existingCosigner\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e521f830-853a-4371-aea9-05639dcd8690",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKeyId\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"name\": \"My Cosigner 1\",\n  \"existingCosigner\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a477e587-ba8c-4c5e-ab21-862c7a0b872c",
+          "name": "Get cosigner",
+          "request": {
+            "name": "Get cosigner",
+            "description": {
+              "content": "Get a cosigner by ID.\n**Note:** These endpoints are currently in beta and might be subject to changes.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cosigners",
+                ":cosignerId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "cosignerId",
+                  "description": "(Required) The unique identifier of the cosigner"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "daf14e6f-7840-46e6-b86b-c3a4bff75452",
+              "name": "A cosigner object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"archived\": false,\n  \"id\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n  \"name\": \"My Cosigner 1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4113c3a2-4c81-4180-beab-4e972f2737a0",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b2affa6b-57fd-413a-8f41-b3db38afea16",
+          "name": "Rename cosigner",
+          "request": {
+            "name": "Rename cosigner",
+            "description": {
+              "content": "Rename a cosigner by ID.\n**Note:** These endpoints are currently in beta and might be subject to changes.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cosigners",
+                ":cosignerId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "cosignerId",
+                  "description": "(Required) The unique identifier of the cosigner"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2a46a79d-ed3d-440b-a16a-7de562f1a03e",
+              "name": "A cosigner object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"My Cosigner 1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"archived\": false,\n  \"id\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n  \"name\": \"My Cosigner 1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a6a30f7-7fb9-4182-837f-d748c75fb00a",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"My Cosigner 1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "98f1a2bd-cf0f-4f15-9948-be7231ab72d1",
+          "name": "Get all API keys",
+          "request": {
+            "name": "Get all API keys",
+            "description": {
+              "content": "Get all cosigner paired API keys (paginated).\n**Note:** These endpoints are currently in beta and might be subject to changes.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cosigners",
+                ":cosignerId",
+                "api_keys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "DESC",
+                  "description": "ASC / DESC ordering (default DESC)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Cursor of the required page"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "10",
+                  "description": "Maximum number of items in the page"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "cosignerId",
+                  "description": "(Required) The unique identifier of the cosigner"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7a5a84f3-f659-4107-a631-8589e75ae20e",
+              "name": "A paginated response containing ApiKey objects",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n      \"lastSeen\": \"2021-07-01T00:00:00.000Z\"\n    },\n    {\n      \"id\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n      \"lastSeen\": \"2021-07-01T00:00:00.000Z\"\n    }\n  ],\n  \"next\": \"eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9a873c0-7a58-44e9-91d6-18032e48a241",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "order",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "caa844cb-012e-4eb2-aad9-bbddcf674ba6",
+          "name": "Get API key",
+          "request": {
+            "name": "Get API key",
+            "description": {
+              "content": "Get an API key by ID.\n**Note:** These endpoints are currently in beta and might be subject to changes.\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cosigners",
+                ":cosignerId",
+                "api_keys",
+                ":apiKeyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "cosignerId",
+                  "description": "(Required) The unique identifier of the cosigner"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "apiKeyId",
+                  "description": "(Required) The unique identifier of the API key"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "64b4cc64-ad1b-4b3d-9540-7637f0151a0f",
+              "name": "An ApiKey object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys",
+                    ":apiKeyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apiKeyId",
+                      "description": "(Required) The unique identifier of the API key"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n  \"lastSeen\": \"2021-07-01T00:00:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "30f731a0-3743-46f2-85e1-375611ea29af",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys",
+                    ":apiKeyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apiKeyId",
+                      "description": "(Required) The unique identifier of the API key"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f52461a6-984d-41ef-acb8-b0967aa821d7",
+          "name": "Pair API key",
+          "request": {
+            "name": "Pair API key",
+            "description": {
+              "content": "Pair an API key to a cosigner\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cosigners",
+                ":cosignerId",
+                "api_keys",
+                ":apiKeyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "cosignerId",
+                  "description": "(Required) The unique identifier of the cosigner"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "apiKeyId",
+                  "description": "(Required) The unique identifier of the API key"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callbackHandler\": {\n    \"url\": \"<string>\",\n    \"publicKey\": \"<string>\",\n    \"cert\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4728eab5-67ab-42f9-9271-6872abb0d57f",
+              "name": "The API key object to be paired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys",
+                    ":apiKeyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apiKeyId",
+                      "description": "(Required) The unique identifier of the API key"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"callbackHandler\": {\n    \"url\": \"https://example.com/callback-handler\",\n    \"publicKey\": \"-----BEGIN PUBLIC KEY-----\\n... truncated ...-----END PUBLIC KEY-----\",\n    \"cert\": \"-----BEGIN CERTIFICATE-----\\n... truncated ...\\n-----END CERTIFICATE-----\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "Location",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n  \"callbackHandler\": {\n    \"url\": \"https://example.com/callback-handler\",\n    \"publicKey\": \"-----BEGIN PUBLIC KEY-----\\n... truncated ...-----END PUBLIC KEY-----\",\n    \"cert\": \"-----BEGIN CERTIFICATE-----\\n... truncated ...\\n-----END CERTIFICATE-----\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "881daa31-b9aa-42e8-be12-9b6c3aa308fb",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys",
+                    ":apiKeyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apiKeyId",
+                      "description": "(Required) The unique identifier of the API key"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"callbackHandler\": {\n    \"url\": \"https://example.com/callback-handler\",\n    \"publicKey\": \"-----BEGIN PUBLIC KEY-----\\n... truncated ...-----END PUBLIC KEY-----\",\n    \"cert\": \"-----BEGIN CERTIFICATE-----\\n... truncated ...\\n-----END CERTIFICATE-----\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5bb53d90-3fb7-42f6-af3f-8e948f0d5b23",
+          "name": "Unpair API key",
+          "request": {
+            "name": "Unpair API key",
+            "description": {
+              "content": "Unpair an API key from a cosigner\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cosigners",
+                ":cosignerId",
+                "api_keys",
+                ":apiKeyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "cosignerId",
+                  "description": "(Required) The unique identifier of the cosigner"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "apiKeyId",
+                  "description": "(Required) The unique identifier of the API key"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f2a6713c-f2eb-4cd8-9cba-f3d4d56c802d",
+              "name": "The API key object to be unpaired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys",
+                    ":apiKeyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apiKeyId",
+                      "description": "(Required) The unique identifier of the API key"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "Location",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n  \"lastSeen\": \"2021-07-01T00:00:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab461d7c-626e-4b3e-8da4-630fd5cb5df0",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys",
+                    ":apiKeyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apiKeyId",
+                      "description": "(Required) The unique identifier of the API key"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a687f385-b125-4bf8-84d1-4510c3ff1fc6",
+          "name": "Update API key callback handler",
+          "request": {
+            "name": "Update API key callback handler",
+            "description": {
+              "content": "Update the callback handler of an API key\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cosigners",
+                ":cosignerId",
+                "api_keys",
+                ":apiKeyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "cosignerId",
+                  "description": "(Required) The unique identifier of the cosigner"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "apiKeyId",
+                  "description": "(Required) The unique identifier of the API key"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callbackHandler\": {\n    \"url\": \"<string>\",\n    \"publicKey\": \"<string>\",\n    \"cert\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2858c22c-ad84-41b1-9afa-6d79e3483f6c",
+              "name": "The API key object with the new callback handler",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys",
+                    ":apiKeyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apiKeyId",
+                      "description": "(Required) The unique identifier of the API key"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"callbackHandler\": {\n    \"url\": \"https://example.com/callback-handler\",\n    \"publicKey\": \"-----BEGIN PUBLIC KEY-----\\n... truncated ...-----END PUBLIC KEY-----\",\n    \"cert\": \"-----BEGIN CERTIFICATE-----\\n... truncated ...\\n-----END CERTIFICATE-----\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "Location",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"44fcead0-7053-4831-a53a-df7fb90d440f\",\n  \"callbackHandler\": {\n    \"url\": \"https://example.com/callback-handler\",\n    \"publicKey\": \"-----BEGIN PUBLIC KEY-----\\n... truncated ...-----END PUBLIC KEY-----\",\n    \"cert\": \"-----BEGIN CERTIFICATE-----\\n... truncated ...\\n-----END CERTIFICATE-----\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85349bd6-8cda-4662-ae0c-883191eac22f",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys",
+                    ":apiKeyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apiKeyId",
+                      "description": "(Required) The unique identifier of the API key"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"callbackHandler\": {\n    \"url\": \"https://example.com/callback-handler\",\n    \"publicKey\": \"-----BEGIN PUBLIC KEY-----\\n... truncated ...-----END PUBLIC KEY-----\",\n    \"cert\": \"-----BEGIN CERTIFICATE-----\\n... truncated ...\\n-----END CERTIFICATE-----\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aa2c9a12-0aed-4fcd-815f-4e94a281026e",
+          "name": "Get request status",
+          "request": {
+            "name": "Get request status",
+            "description": {
+              "content": "Get the status of an asynchronous request\n</br>Endpoint Permission: Admin and Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cosigners",
+                ":cosignerId",
+                "api_keys",
+                ":apiKeyId",
+                ":requestId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "cosignerId",
+                  "description": "(Required) The unique identifier of the cosigner"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "apiKeyId",
+                  "description": "(Required) The unique identifier of the API key"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "requestId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9491251a-f3d8-4367-8c82-eaff61c341d6",
+              "name": "The status of the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys",
+                    ":apiKeyId",
+                    ":requestId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apiKeyId",
+                      "description": "(Required) The unique identifier of the API key"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "requestId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"COMPLETED\",\n  \"type\": \"PAIR_API_KEY\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "141f3e73-42a4-4687-bee3-1c57655ce564",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cosigners",
+                    ":cosignerId",
+                    "api_keys",
+                    ":apiKeyId",
+                    ":requestId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "cosignerId",
+                      "description": "(Required) The unique identifier of the cosigner"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apiKeyId",
+                      "description": "(Required) The unique identifier of the API key"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "requestId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireblocks.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "71ff03c4-e313-4e0a-85a9-8b82335a6b4e",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Cosigners (Beta) API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+      "type": "text/plain"
+    }
+  }
+}

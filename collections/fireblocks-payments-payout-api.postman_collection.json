@@ -1,0 +1,777 @@
+{
+  "item": [
+    {
+      "id": "ce82759b-8d74-4dde-862f-e84f84a9c169",
+      "name": "Payments - Payout",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "91e30d4f-3e0f-4396-a866-6c03ea858a60",
+          "name": "Create a payout instruction set",
+          "request": {
+            "name": "Create a payout instruction set",
+            "description": {
+              "content": "**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>\n</br>These endpoints are currently in beta and might be subject to changes.</br>\n</br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager or email CSM@fireblocks.com. </br>\n</br> <b u>Create a payout instruction set.</b> </u></br>\nA payout instruction set is a set of instructions for distributing payments from a single payment account to a list of payee accounts. </br>\nThe instruction set defines: </br>\n<ul>\n<li>the payment account and its account type (vault, exchange, or fiat). </li>\n<li>the account type (vault account, exchange account, whitelisted address, network connection, fiat account, or merchant account), the amount, and the asset of payment for each payee account.</li>\n</ul>\nLearn more about Fireblocks Payments - Payouts in the following [guide](https://developers.fireblocks.com/docs/create-payouts).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payments",
+                "payout"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentAccount\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"instructionSet\": [\n    {\n      \"amount\": {\n        \"amount\": \"<string>\",\n        \"assetId\": \"<string>\"\n      },\n      \"payeeAccount\": {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"id\": \"<string>\"\n    },\n    {\n      \"amount\": {\n        \"amount\": \"<string>\",\n        \"assetId\": \"<string>\"\n      },\n      \"payeeAccount\": {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"id\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c2016889-3d43-49c6-b8aa-b1d56cbe9aeb",
+              "name": "The payout instruction set creation succeeded and returns the generated instruction set with a unique payout IDThe payout ID will be used for executing the payout and checking the payout status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"paymentAccount\": {\n    \"id\": \"EX_SUB1\",\n    \"type\": \"EXCHANGE_ACCOUNT\"\n  },\n  \"instructionSet\": [\n    {\n      \"payeeAccount\": {\n        \"id\": \"bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3\",\n        \"type\": \"EXTERNAL_WALLET\"\n      },\n      \"amount\": {\n        \"amount\": \"43\",\n        \"assetId\": \"USDC\"\n      }\n    },\n    {\n      \"payeeAccount\": {\n        \"id\": \"3adc1f92-e791-44a8-9aee-7f31c2108b78\",\n        \"type\": \"NETWORK_CONNECTION\"\n      },\n      \"amount\": {\n        \"amount\": \"4423\",\n        \"assetId\": \"USDC\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payoutId\": \"1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7\",\n  \"paymentAccount\": {\n    \"id\": \"EX_SUB2\",\n    \"type\": \"EXCHANGE_ACCOUNT\"\n  },\n  \"createdAt\": 1645365800,\n  \"state\": \"REQUESTED\",\n  \"status\": \"REGISTERED\",\n  \"initMethod\": \"API\",\n  \"instructionSet\": [\n    {\n      \"id\": \"6ea4a016-536b-49af-b1a0-40b343ccf879\",\n      \"name\": \"payee-wallet-name\",\n      \"payeeAccount\": {\n        \"id\": \"bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3\",\n        \"type\": \"EXTERNAL_WALLET\"\n      },\n      \"amount\": {\n        \"amount\": \"43\",\n        \"assetId\": \"USDC\"\n      },\n      \"state\": \"NOT_STARTED\",\n      \"transactions\": []\n    },\n    {\n      \"id\": \"e783a79b-6acc-4d18-885d-ed533cad8eeb\",\n      \"name\": \"payee-by-network\",\n      \"payeeAccount\": {\n        \"id\": \"3adc1f92-e791-44a8-9aee-7f31c2108b78\",\n        \"type\": \"NETWORK_CONNECTION\"\n      },\n      \"amount\": {\n        \"amount\": \"4423.23\",\n        \"assetId\": \"USDC\"\n      },\n      \"state\": \"NOT_STARTED\",\n      \"transactions\": []\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "badd7bed-fb51-48c9-b245-4c33e5a57ea2",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"paymentAccount\": {\n    \"id\": \"EX_SUB1\",\n    \"type\": \"EXCHANGE_ACCOUNT\"\n  },\n  \"instructionSet\": [\n    {\n      \"payeeAccount\": {\n        \"id\": \"bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3\",\n        \"type\": \"EXTERNAL_WALLET\"\n      },\n      \"amount\": {\n        \"amount\": \"43\",\n        \"assetId\": \"USDC\"\n      }\n    },\n    {\n      \"payeeAccount\": {\n        \"id\": \"3adc1f92-e791-44a8-9aee-7f31c2108b78\",\n        \"type\": \"NETWORK_CONNECTION\"\n      },\n      \"amount\": {\n        \"amount\": \"4423\",\n        \"assetId\": \"USDC\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"FORBIDDEN\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "729e0f0c-7b54-499c-8a69-1a3fbb7c53dd",
+              "name": "Unauthorized. Missing / invalid JWT token in Authorization header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"paymentAccount\": {\n    \"id\": \"EX_SUB1\",\n    \"type\": \"EXCHANGE_ACCOUNT\"\n  },\n  \"instructionSet\": [\n    {\n      \"payeeAccount\": {\n        \"id\": \"bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3\",\n        \"type\": \"EXTERNAL_WALLET\"\n      },\n      \"amount\": {\n        \"amount\": \"43\",\n        \"assetId\": \"USDC\"\n      }\n    },\n    {\n      \"payeeAccount\": {\n        \"id\": \"3adc1f92-e791-44a8-9aee-7f31c2108b78\",\n        \"type\": \"NETWORK_CONNECTION\"\n      },\n      \"amount\": {\n        \"amount\": \"4423\",\n        \"assetId\": \"USDC\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"FORBIDDEN\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a12847f2-20df-4b26-bc6a-31bdac2393df",
+              "name": "Internal error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"paymentAccount\": {\n    \"id\": \"EX_SUB1\",\n    \"type\": \"EXCHANGE_ACCOUNT\"\n  },\n  \"instructionSet\": [\n    {\n      \"payeeAccount\": {\n        \"id\": \"bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3\",\n        \"type\": \"EXTERNAL_WALLET\"\n      },\n      \"amount\": {\n        \"amount\": \"43\",\n        \"assetId\": \"USDC\"\n      }\n    },\n    {\n      \"payeeAccount\": {\n        \"id\": \"3adc1f92-e791-44a8-9aee-7f31c2108b78\",\n        \"type\": \"NETWORK_CONNECTION\"\n      },\n      \"amount\": {\n        \"amount\": \"4423\",\n        \"assetId\": \"USDC\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"FORBIDDEN\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0aad1173-c8a1-4000-aa3f-fb05c6f119ff",
+          "name": "Execute a payout instruction set",
+          "request": {
+            "name": "Execute a payout instruction set",
+            "description": {
+              "content": "**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>\n</br>These endpoints are currently in beta and might be subject to changes.</br>\n</br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager or email CSM@fireblocks.com. </br>\n</br><b u>Execute a payout instruction set.</b> </u> </br>\n</br>The instruction set will be verified and executed.</br>\n<b><u>Source locking</br></b> </u>\nIf you are executing a payout instruction set from a payment account with an already active payout the active payout will complete before the new payout instruction set can be executed. </br>\nYou cannot execute the same payout instruction set more than once.\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payments",
+                "payout",
+                ":payoutId",
+                "actions",
+                "execute"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "payoutId",
+                  "description": "(Required) the payout id received from the creation of the payout instruction set"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7169a3bd-2a8e-4eeb-b7a1-7e641051c8c7",
+              "name": "Executed the payout instruction set",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout",
+                    ":payoutId",
+                    "actions",
+                    "execute"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payoutId",
+                      "description": "(Required) the payout id received from the creation of the payout instruction set"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payoutId\": \"1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97da6e2c-ae70-415a-b0b3-7313ef1487da",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout",
+                    ":payoutId",
+                    "actions",
+                    "execute"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payoutId",
+                      "description": "(Required) the payout id received from the creation of the payout instruction set"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"FORBIDDEN\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "355889b1-850b-498a-93ee-ff964d3beef1",
+              "name": "Unauthorized. Missing / invalid JWT token in Authorization header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout",
+                    ":payoutId",
+                    "actions",
+                    "execute"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payoutId",
+                      "description": "(Required) the payout id received from the creation of the payout instruction set"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"FORBIDDEN\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05e4df92-68ec-47d3-bbca-e525d7267c5d",
+              "name": "Internal error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout",
+                    ":payoutId",
+                    "actions",
+                    "execute"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payoutId",
+                      "description": "(Required) the payout id received from the creation of the payout instruction set"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"FORBIDDEN\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9240bca8-e18f-4dc6-b6c8-88a7ec79323a",
+          "name": "Get the status of a payout instruction set",
+          "request": {
+            "name": "Get the status of a payout instruction set",
+            "description": {
+              "content": "**Note:** The reference content in this section documents the Payments Engine endpoint. The Payments Engine endpoints include APIs available only for customers with Payments Engine enabled on their accounts. </br>\n</br>These endpoints are currently in beta and might be subject to changes.</br>\n</br>If you want to learn more about Fireblocks Payments Engine, please contact your Fireblocks Customer Success Manager or email CSM@fireblocks.com. </br>\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payments",
+                "payout",
+                ":payoutId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "payoutId",
+                  "description": "(Required) the payout id received from the creation of the payout instruction set"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "50e666f9-e684-4b84-967a-0c43c06baf36",
+              "name": "Returns the current status of the payout instruction set, including the status of each payout instruction and the transactions created in the process.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout",
+                    ":payoutId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payoutId",
+                      "description": "(Required) the payout id received from the creation of the payout instruction set"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payoutId\": \"1fe3b61f-7e1f-4a19-aff0-4f0a524d44d7\",\n  \"paymentAccount\": {\n    \"id\": \"EX_SUB3\",\n    \"type\": \"EXCHANGE_ACCOUNT\"\n  },\n  \"createdAt\": 1645365800,\n  \"state\": \"FINALIZED\",\n  \"status\": \"DONE\",\n  \"initMethod\": \"API\",\n  \"instructionSet\": [\n    {\n      \"id\": \"6ea4a016-536b-49af-b1a0-40b343ccf879\",\n      \"name\": \"payee-wallet-name\",\n      \"payeeAccount\": {\n        \"id\": \"bef85a1c-b605-4b2e-bdb5-2d400f4d0bf3\",\n        \"type\": \"EXTERNAL_WALLET\"\n      },\n      \"amount\": {\n        \"amount\": \"4312\",\n        \"assetId\": \"USDC\"\n      },\n      \"state\": \"COMPLETED\",\n      \"transactions\": [\n        {\n          \"id\": \"35a4b10c-1f83-4f0b-ba2a-da0e73be2d6e\",\n          \"state\": \"COMPLETED\",\n          \"timestamp\": 1645367429\n        }\n      ]\n    },\n    {\n      \"id\": \"e783a79b-6acc-4d18-885d-ed533cad8eeb\",\n      \"name\": \"payee-by-network\",\n      \"payeeAccount\": {\n        \"id\": \"3adc1f92-e791-44a8-9aee-7f31c2108b78\",\n        \"type\": \"NETWORK_CONNECTION\"\n      },\n      \"amount\": {\n        \"amount\": \"4423.23\",\n        \"assetId\": \"USDC\"\n      },\n      \"state\": \"COMPLETED\",\n      \"transactions\": [\n        {\n          \"id\": \"4505e7d9-bfc7-41bc-9750-54311fcbbf26\",\n          \"state\": \"COMPLETED\",\n          \"timestamp\": 1645367449\n        }\n      ]\n    }\n  ],\n  \"reportUrl\": \"https://some-url.com/reports/cc5777c1-75a9-4337-aebd-f1f5a40a9391\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc4b9892-e0ba-475e-bc34-862475585804",
+              "name": "Unauthorized. Missing / invalid JWT token in Authorization header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout",
+                    ":payoutId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payoutId",
+                      "description": "(Required) the payout id received from the creation of the payout instruction set"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"FORBIDDEN\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9eb7dbb6-a921-4ec1-b882-110dfe23de16",
+              "name": "No payout with the given payout ID exists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout",
+                    ":payoutId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payoutId",
+                      "description": "(Required) the payout id received from the creation of the payout instruction set"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"FORBIDDEN\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "70369e8b-29e2-4011-90cb-4824fefcf509",
+              "name": "Internal error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "payout",
+                    ":payoutId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payoutId",
+                      "description": "(Required) the payout id received from the creation of the payout instruction set"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"FORBIDDEN\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireblocks.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f07bf98b-acdc-404c-b8ea-9088e5b3f5f7",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Payments - Payout API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+      "type": "text/plain"
+    }
+  }
+}

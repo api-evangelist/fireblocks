@@ -1,0 +1,270 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Blockchains and Assets Approval Requests Key Link API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Key Link",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get list of signing keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/key_link/signing_keys",
+            "params": [
+              {
+                "name": "pageCursor",
+                "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==",
+                "type": "query",
+                "description": "Cursor to the next page"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Amount of results to return in the next page"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Field(s) to use for sorting"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Is the order ascending or descending"
+              },
+              {
+                "name": "vaultAccountId",
+                "value": "4",
+                "type": "query",
+                "description": "Return keys assigned to a specific vault"
+              },
+              {
+                "name": "agentUserId",
+                "value": "12fed207-5bdf-4a0c-ab12-fcd2627f75d1",
+                "type": "query",
+                "description": "Return keys associated with a specific agent user"
+              },
+              {
+                "name": "algorithm",
+                "value": "ECDSA_SECP256K1",
+                "type": "query",
+                "description": "Return only keys with a specific algorithm"
+              },
+              {
+                "name": "enabled",
+                "value": "",
+                "type": "query",
+                "description": "Return keys that have been proof of ownership"
+              },
+              {
+                "name": "available",
+                "value": "",
+                "type": "query",
+                "description": "Return keys that are proof of ownership but not assigned. Available filter can be used only when vaultAccountId and enabled filters are not set"
+              }
+            ]
+          },
+          "docs": "Returns the list of signing keys in the workspace\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Add a new signing key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/key_link/signing_keys",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a new signing key to the workspace. The added key will be linked to the specific Fireblocks agent user ID. The same user will receive the proof of ownership message to be signed, and upon successful proof, the key will become enabled.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get a signing key by `keyId`",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/key_link/signing_keys/:keyId",
+            "params": [
+              {
+                "name": "keyId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the signing key provided by Fireblocks"
+              }
+            ]
+          },
+          "docs": "Returns a signing key if it exists, identified by the specified Fireblocks provided `keyId`.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Modify the signing keyId",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/key_link/signing_keys/:keyId",
+            "params": [
+              {
+                "name": "keyId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the signing key provided by Fireblocks"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows assigning the signing key to a vault account, if it hasn't been assigned to any other vault accounts yet.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Set agent user id",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/key_link/signing_keys/:keyId/agent_user_id",
+            "params": [
+              {
+                "name": "keyId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the signing key provided by Fireblocks"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Can modify existing signing key id if the key is not enabled. The change done in background and will be visible once applied. If key is already enabled (after proof of ownership) the user cannot be changed.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get list of registered validation keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/key_link/validation_keys",
+            "params": [
+              {
+                "name": "pageCursor",
+                "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==",
+                "type": "query",
+                "description": "Cursor to the next page"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Amount of results to return in the next page"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Field(s) to use for sorting"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Is the order ascending or descending"
+              }
+            ]
+          },
+          "docs": "Returns the list of validation keys in the workspace\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Add a new validation key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/key_link/validation_keys",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a new validation key used to validate signing keys. The new validation key will undergo an approval process by the workspace quorum.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Get a validation key by `keyId`",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/key_link/validation_keys/:keyId",
+            "params": [
+              {
+                "name": "keyId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns a validation key if it exists, identified by the specified `keyId`.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Disables a validation key",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fireblocks.io/v1/key_link/validation_keys/:keyId",
+            "params": [
+              {
+                "name": "keyId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the validation key provided by Fireblocks"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows disabling validation key even if it has not expired yet. It is not allowed to enable the validation key back. Another key has to be used for future validations.\nPlease note that this endpoint is available only for Key Link enabled workspaces.\n</br>Endpoint Permission: Admin and Non-Signing Admin."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

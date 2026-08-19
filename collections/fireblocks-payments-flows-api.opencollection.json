@@ -1,0 +1,138 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Blockchains and Assets Approval Requests Payments - Flows API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments - Flows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create payment flow configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_config",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a new configuration ID to be used for initiating executions in subsequent phases. This configuration should include the operations you intend to incorporate into the workflow, such as TRANSFER, CONVERT, and DISBURSE, in addition to your pre-screening preferences, which are disabled by default.\nLearn more about Fireblocks Payments - Flows in the following [guide](https://developers.fireblocks.com/docs/payment-flows-copy).\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Retrieve workflow configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_config/:configId",
+            "params": [
+              {
+                "name": "configId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a previously created workflow configuration using the specified \"configId\".\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Delete workflow configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_config/:configId",
+            "params": [
+              {
+                "name": "configId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a configuration using the specified \"configId\".\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Create workflow execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_execution",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validate the \"workflow-config\" previously created by utilizing the unique \"configId\". This step requires the mandatory field amount, and allows for modifications to other fields defined via the \"workflow-config\" endpoint, including pre-screening preferences. A response containing the \"workflowExecutionId\" and detailing the validation status will be provided. Execution is ready when the \"workflow-execution\" status is READY_FOR_LAUNCH, at which point it can be initiated with \"POST /workflow-execut"
+        },
+        {
+          "info": {
+            "name": "Get workflow execution details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_execution/:workflowExecutionId",
+            "params": [
+              {
+                "name": "workflowExecutionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a previously initiated workflow execution by specifying the \"workflowExecutionId\"\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        },
+        {
+          "info": {
+            "name": "Execute the payments workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/payments/workflow_execution/:workflowExecutionId/actions/execute",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workflowExecutionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Launch the execution of a pre-configured workflow, identified by \"workflowExecutionId\", once it reaches the READY_FOR_LAUNCH state. The workflow undergoes several phases during execution - EXECUTION_IN_PROGRESS - Marks the start of the workflow execution. EXECUTION_COMPLETED or EXECUTION_FAILED - Indicates the execution has reached a final state.\n</br>Endpoint Permission: Admin, Non-Signing Admin."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

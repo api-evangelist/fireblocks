@@ -1,0 +1,147 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Blockchains and Assets Approval Requests Deployed Contracts API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Deployed Contracts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List deployed contracts data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/contracts",
+            "params": [
+              {
+                "name": "pageCursor",
+                "value": "MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==",
+                "type": "query",
+                "description": "Page cursor to get the next page"
+              },
+              {
+                "name": "pageSize",
+                "value": "10",
+                "type": "query",
+                "description": "Number of items per page, requesting more then max will return max items"
+              },
+              {
+                "name": "contractAddress",
+                "value": "0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66",
+                "type": "query",
+                "description": "The contract's onchain address"
+              },
+              {
+                "name": "baseAssetId",
+                "value": "ETH",
+                "type": "query",
+                "description": "The blockchain asset ID"
+              },
+              {
+                "name": "contractTemplateId",
+                "value": "b70701f4-d7b1-4795-a8ee-b09cdb5b850d",
+                "type": "query",
+                "description": "The contract template identifier"
+              }
+            ]
+          },
+          "docs": "Return a filtered lean representation of the deployed contracts data on all blockchains (paginated).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Return deployed contract data by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/contracts/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "b70701f4-d7b1-4795-a8ee-b09cdb5b850d",
+                "type": "path",
+                "description": "The deployed contract data identifier"
+              }
+            ]
+          },
+          "docs": "Return deployed contract data by id.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Return deployed contract data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/tokenization/contracts/:assetId/:contractAddress",
+            "params": [
+              {
+                "name": "contractAddress",
+                "value": "0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66",
+                "type": "path",
+                "description": "The contract's onchain address"
+              },
+              {
+                "name": "assetId",
+                "value": "ETH",
+                "type": "path",
+                "description": "The blockchain base asset ID"
+              }
+            ]
+          },
+          "docs": "Return deployed contract data by blockchain native asset id and contract address.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Fetch the contract ABI",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tokenization/contracts/fetch_abi",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Fetch the ABI. If not found fetch the ABI from the block explorer.\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer."
+        },
+        {
+          "info": {
+            "name": "Save contract ABI",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/tokenization/contracts/abi",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Save contract ABI for the tenant.\n</br>Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,881 @@
+{
+  "item": [
+    {
+      "id": "a17d629e-2e2d-415f-a117-8800247f40b7",
+      "name": "Connected Accounts (Beta)",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "218ce985-763a-44bb-94fa-37c84377fab8",
+          "name": "Get connected accounts",
+          "request": {
+            "name": "Get connected accounts",
+            "description": {
+              "content": "Returns all connected accounts.\n\n**Note:** This endpoint is currently in beta and might be subject to changes.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connected_accounts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "mainAccounts",
+                  "value": "false",
+                  "description": "Whether to include only main accounts in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "Page size for pagination."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Page cursor for pagination."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4d3225ab-d8a2-49e7-acca-d504f3ce5e1b",
+              "name": "Get accounts response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connected_accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "mainAccounts",
+                      "value": "false"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"acc-123456\",\n      \"name\": \"Main Venue Account\",\n      \"providerId\": \"BRIDGE\",\n      \"status\": \"CANCELLED\",\n      \"manifest\": {\n        \"capabilities\": [\n          \"WITHDRAWALS\"\n        ]\n      },\n      \"parentId\": \"acc-parent-001\"\n    },\n    {\n      \"id\": \"acc-123456\",\n      \"name\": \"Main Venue Account\",\n      \"providerId\": \"BRIDGE\",\n      \"status\": \"APPROVED\",\n      \"manifest\": {\n        \"capabilities\": [\n          \"WITHDRAWALS\"\n        ]\n      },\n      \"parentId\": \"acc-parent-001\"\n    }\n  ],\n  \"total\": 2,\n  \"next\": \"eyJwYWdlIjoyfQ==\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "658880ca-722b-4872-bbd1-781d739e0525",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connected_accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "mainAccounts",
+                      "value": "false"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f88db420-02ab-4cc1-ab0e-2a6ced76feed",
+          "name": "Get connected account",
+          "request": {
+            "name": "Get connected account",
+            "description": {
+              "content": "Retrieve detailed information about a specific connected account by ID.\n\n**Note:** This endpoint is currently in beta and might be subject to changes.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connected_accounts",
+                ":accountId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The ID of the account to fetch."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6ac6304c-9fe5-423e-b8dc-5b840bd884f0",
+              "name": "Account response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connected_accounts",
+                    ":accountId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The ID of the account to fetch."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"acc-123456\",\n  \"name\": \"Main Venue Account\",\n  \"providerId\": \"BRIDGE\",\n  \"status\": \"APPROVED\",\n  \"manifest\": {\n    \"capabilities\": [\n      \"WITHDRAWALS\"\n    ]\n  },\n  \"parentId\": \"acc-parent-001\",\n  \"subAccountsIds\": [\n    \"acc-sub-001\",\n    \"acc-sub-002\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d66c089-b857-4cdf-bc3b-288b732e2e47",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connected_accounts",
+                    ":accountId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The ID of the account to fetch."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "70b780e2-d1d4-4ab2-9cb2-68fe5ec5e783",
+          "name": "Get balances for an account",
+          "request": {
+            "name": "Get balances for an account",
+            "description": {
+              "content": "Retrieve current asset balances for a specific connected account as a flat list (one row per `assetId`, `balanceType`).\n\n**Note:** This endpoint is currently in beta and might be subject to changes.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connected_accounts",
+                ":accountId",
+                "balances"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "Page size for pagination."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Page cursor for pagination."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The ID of the account to fetch balances for."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "168ae71e-f406-4358-a4d6-0b4de94e6d15",
+              "name": "Account balances response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connected_accounts",
+                    ":accountId",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The ID of the account to fetch balances for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"assetId\": \"BTC\",\n      \"availableAmount\": \"100.00\",\n      \"totalAmount\": \"120.00\",\n      \"balanceType\": \"FUNDING\",\n      \"balanceName\": \"Trader1 Wallet\"\n    }\n  ],\n  \"total\": 2,\n  \"next\": \"eyJwYWdlIjoyfQ==\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a775e406-ae08-4a44-9a85-98f35cc018a2",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connected_accounts",
+                    ":accountId",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The ID of the account to fetch balances for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "672e4777-29e2-4d25-9990-48d4b7aafff7",
+          "name": "Get exchange rates for an account",
+          "request": {
+            "name": "Get exchange rates for an account",
+            "description": {
+              "content": "Retrieve current exchange rates for converting between specific assets in a connected account.\n\n**Note:** This endpoint is currently in beta and might be subject to changes.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connected_accounts",
+                ":accountId",
+                "rates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "baseAssetId",
+                  "value": "<string>",
+                  "description": "(Required) The ID of the asset to fetch rates for."
+                },
+                {
+                  "disabled": false,
+                  "key": "quoteAssetId",
+                  "value": "<string>",
+                  "description": "(Required) The ID of the asset to get the rates nominally."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The ID of the account to fetch rates for."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "837d0cb3-9634-4ecb-ad27-510812b19cc8",
+              "name": "Rates response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connected_accounts",
+                    ":accountId",
+                    "rates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "baseAssetId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "quoteAssetId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The ID of the account to fetch rates for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountId\": \"ea6c3cb7-355a-4ee3-82ff-267c69970210\",\n  \"baseAssetId\": \"BTC\",\n  \"quoteAssetId\": \"USD\",\n  \"rate\": \"1.2345\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7bb4c8a9-928b-4741-bdc6-95ca472c0b04",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connected_accounts",
+                    ":accountId",
+                    "rates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "baseAssetId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "quoteAssetId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The ID of the account to fetch rates for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "411de6a2-4dec-4875-ad85-8cef50f3663a",
+          "name": "Get supported trading pairs for an account",
+          "request": {
+            "name": "Get supported trading pairs for an account",
+            "description": {
+              "content": "Retrieve all asset trading pairs supported by a specific connected account, including the pair type (`quote`, `market`, `onOffRamp`).\n\n**Note:** This endpoint is currently in beta and might be subject to changes.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connected_accounts",
+                ":accountId",
+                "manifest",
+                "capabilities",
+                "trading",
+                "pairs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "100",
+                  "description": "Page size for pagination."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "Page cursor for pagination."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The ID of the account to fetch supported pairs for."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bc5b722d-05a5-4d9f-9d59-870befc99498",
+              "name": "Supported pairs response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connected_accounts",
+                    ":accountId",
+                    "manifest",
+                    "capabilities",
+                    "trading",
+                    "pairs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageSize",
+                      "value": "100"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The ID of the account to fetch supported pairs for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"ea6c3cb7-355a-4ee3-82ff-267c69970210\",\n      \"baseAssetId\": \"BTC\",\n      \"quoteAssetId\": \"USD\",\n      \"supportedTypes\": [\n        \"MARKET\",\n        \"QUOTE\"\n      ]\n    },\n    {\n      \"id\": \"ea6c3cb7-355a-4ee3-82ff-267c69970210\",\n      \"baseAssetId\": \"BTC\",\n      \"quoteAssetId\": \"USD\",\n      \"supportedTypes\": [\n        \"QUOTE\",\n        \"QUOTE\"\n      ]\n    }\n  ],\n  \"total\": 2,\n  \"next\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "76d0d937-50cf-46c7-90a9-bb53b3b6de7f",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connected_accounts",
+                    ":accountId",
+                    "manifest",
+                    "capabilities",
+                    "trading",
+                    "pairs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageSize",
+                      "value": "100"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The ID of the account to fetch supported pairs for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireblocks.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "36713f9f-cb6b-478d-b0a7-3461a21bdbf3",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Connected Accounts (Beta) API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+      "type": "text/plain"
+    }
+  }
+}

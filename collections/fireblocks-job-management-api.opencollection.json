@@ -1,0 +1,156 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireblocks Blockchains and Assets Approval Requests Job Management API",
+    "version": "1.8.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Job Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Return a list of jobs belonging to tenant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/batch/jobs",
+            "params": [
+              {
+                "name": "fromTime",
+                "value": "",
+                "type": "query",
+                "description": "Start of time range in ms since 1970"
+              },
+              {
+                "name": "toTime",
+                "value": "",
+                "type": "query",
+                "description": "End of time range in ms since 1970"
+              }
+            ]
+          },
+          "docs": "Get an array of objects including all active, paused, canceled, and complete jobs in a workspace."
+        },
+        {
+          "info": {
+            "name": "Get job details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/batch/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The requested job id"
+              }
+            ]
+          },
+          "docs": "Get an object describing the given job"
+        },
+        {
+          "info": {
+            "name": "Pause a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/batch/:jobId/pause",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The requested job id"
+              }
+            ]
+          },
+          "docs": "Pause the given job, after the current task is done. A paused job can later be resumed by calling ‘continue’, or canceled."
+        },
+        {
+          "info": {
+            "name": "Continue a paused job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/batch/:jobId/continue",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The requested job id"
+              }
+            ]
+          },
+          "docs": "Continue the given paused job."
+        },
+        {
+          "info": {
+            "name": "Cancel a running job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireblocks.io/v1/batch/:jobId/cancel",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The requested job id"
+              }
+            ]
+          },
+          "docs": "Stop the given job immediately. If the job is in the ‘Active’ state, the job will be canceled after completing the current task. Vault accounts and Wallets that are already created will not be affected."
+        },
+        {
+          "info": {
+            "name": "Return a list of tasks for given job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fireblocks.io/v1/batch/:jobId/tasks",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The requested job id"
+              }
+            ]
+          },
+          "docs": "Return a list of tasks for given job"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

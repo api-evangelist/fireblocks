@@ -1,0 +1,2352 @@
+{
+  "item": [
+    {
+      "id": "13d53022-88fb-4463-9019-6200e2a2614a",
+      "name": "Fireblocks Network",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c656f86b-7289-4734-838e-61fe03591f05",
+          "name": "List network connections",
+          "request": {
+            "name": "List network connections",
+            "description": {
+              "content": "Returns all network connections.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n    - **Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_connections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "490f3ff4-5ddf-450a-bece-69d5f4a5bbcc",
+              "name": "A list of network connections",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"localNetworkId\": {\n      \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n      \"name\": \"My Network Connection Name\"\n    },\n    \"remoteNetworkId\": {\n      \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n      \"name\": \"My Network Connection Name\"\n    },\n    \"routingPolicy\": {\n      \"key_0\": {\n        \"scheme\": \"CUSTOM\",\n        \"dstType\": \"VAULT\",\n        \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n      }\n    },\n    \"status\": \"REJECTED\",\n    \"localChannel\": {\n      \"networkId\": \"string\",\n      \"name\": \"string\"\n    },\n    \"remoteChannel\": {\n      \"networkId\": \"string\",\n      \"name\": \"string\"\n    }\n  },\n  {\n    \"id\": \"string\",\n    \"localNetworkId\": {\n      \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n      \"name\": \"My Network Connection Name\"\n    },\n    \"remoteNetworkId\": {\n      \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n      \"name\": \"My Network Connection Name\"\n    },\n    \"routingPolicy\": {\n      \"key_0\": {\n        \"scheme\": \"CUSTOM\",\n        \"dstType\": \"VAULT\",\n        \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n      }\n    },\n    \"status\": \"FAILED\",\n    \"localChannel\": {\n      \"networkId\": \"string\",\n      \"name\": \"string\"\n    },\n    \"remoteChannel\": {\n      \"networkId\": \"string\",\n      \"name\": \"string\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d27a3768-ebd6-423b-9e6c-8f6b3e0a73a4",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bf349f52-a448-40c9-9d56-9e9cd9480ec3",
+          "name": "Creates a new network connection",
+          "request": {
+            "name": "Creates a new network connection",
+            "description": {
+              "content": "Initiates a new network connection.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\nLearn more about Fireblocks Network in the following [guide](https://developers.fireblocks.com/docs/connect-to-the-fireblocks-network).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_connections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"localNetworkId\": \"<string>\",\n  \"remoteNetworkId\": \"<string>\",\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"<string>\"\n    },\n    \"key_1\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"<string>\"\n    },\n    \"key_2\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1008a7fa-aadd-4538-a3e4-1fff63998b75",
+              "name": "A Network Connection object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"localNetworkId\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n  \"remoteNetworkId\": \"ebde71be-30d6-4498-95c4-a151effdb377\",\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_1\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"localNetworkId\": {\n    \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n    \"name\": \"My Network Connection Name\"\n  },\n  \"remoteNetworkId\": {\n    \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n    \"name\": \"My Network Connection Name\"\n  },\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_1\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_2\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_3\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  },\n  \"status\": \"CANCELLED\",\n  \"localChannel\": {\n    \"networkId\": \"string\",\n    \"name\": \"string\"\n  },\n  \"remoteChannel\": {\n    \"networkId\": \"string\",\n    \"name\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38939a2c-b4a6-412d-9155-cc63fd52a697",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"localNetworkId\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n  \"remoteNetworkId\": \"ebde71be-30d6-4498-95c4-a151effdb377\",\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_1\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c1f1d0c0-27e2-4ddf-85c0-10c98d7cd170",
+          "name": "Update network connection routing policy.",
+          "request": {
+            "name": "Update network connection routing policy.",
+            "description": {
+              "content": "Updates an existing network connection's routing policy.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_connections",
+                ":connectionId",
+                "set_routing_policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "connectionId",
+                  "description": "(Required) The ID of the network connection"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fce9f70b-d8b2-4dc9-9798-d9d50cc65a72",
+              "name": "Network ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections",
+                    ":connectionId",
+                    "set_routing_policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) The ID of the network connection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0467bffd-9f4f-42bf-9901-cce1948173af",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections",
+                    ":connectionId",
+                    "set_routing_policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) The ID of the network connection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3cdd6479-5825-419b-87d6-32efe796244c",
+          "name": "Retrieve third-party network routing validation",
+          "request": {
+            "name": "Retrieve third-party network routing validation",
+            "description": {
+              "content": "The Fireblocks Network allows for flexibility around incoming deposits. A receiver can receive network deposits to locations other than Fireblocks. This endpoint validates whether future transactions are routed to the displayed recipient or to a 3rd party.\n\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_connections",
+                ":connectionId",
+                "is_third_party_routing",
+                ":assetType"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "connectionId",
+                  "description": "(Required) The ID of the network connection"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetType",
+                  "description": "(Required) The destination asset type"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2e686212-6ae6-4777-9ba2-1a568532cdad",
+              "name": "result for the validation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections",
+                    ":connectionId",
+                    "is_third_party_routing",
+                    ":assetType"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) The ID of the network connection"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetType",
+                      "description": "(Required) The destination asset type"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"isThirdPartyRouting\": false,\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a62c67de-e34c-4d30-a825-b4d8b092f0fe",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections",
+                    ":connectionId",
+                    "is_third_party_routing",
+                    ":assetType"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) The ID of the network connection"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetType",
+                      "description": "(Required) The destination asset type"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "54f34834-141f-4ee0-bdc8-626bd3b71f01",
+          "name": "Get a network connection",
+          "request": {
+            "name": "Get a network connection",
+            "description": {
+              "content": "Gets a network connection by ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_connections",
+                ":connectionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "connectionId",
+                  "description": "(Required) The ID of the connection"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2e134aa7-1999-46dd-a9ae-2de23e0592ed",
+              "name": "A network connection",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections",
+                    ":connectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) The ID of the connection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"localNetworkId\": {\n    \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n    \"name\": \"My Network Connection Name\"\n  },\n  \"remoteNetworkId\": {\n    \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n    \"name\": \"My Network Connection Name\"\n  },\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_1\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_2\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_3\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  },\n  \"status\": \"CANCELLED\",\n  \"localChannel\": {\n    \"networkId\": \"string\",\n    \"name\": \"string\"\n  },\n  \"remoteChannel\": {\n    \"networkId\": \"string\",\n    \"name\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4617c115-b65c-461a-acff-94a9b51cbf58",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections",
+                    ":connectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) The ID of the connection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6f51fc03-7c6a-4c0f-80ea-ca0cd8ed18ce",
+          "name": "Deletes a network connection by ID",
+          "request": {
+            "name": "Deletes a network connection by ID",
+            "description": {
+              "content": "Deletes an existing network connection specified by its connection ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_connections",
+                ":connectionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "connectionId",
+                  "description": "(Required) The ID of the network connection to delete"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0839430b-3e1c-4775-947d-cb904d8472fe",
+              "name": "Network ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections",
+                    ":connectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) The ID of the network connection to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd1c032b-c5eb-4983-b72f-9b80a987d99f",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_connections",
+                    ":connectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) The ID of the network connection to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c383d74e-043c-434c-8220-521f3f761aa5",
+          "name": "Get all network IDs",
+          "request": {
+            "name": "Get all network IDs",
+            "description": {
+              "content": "Retrieves a list of all local and discoverable remote network IDs.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_ids"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "261a7e62-1e21-4d5a-b645-3d4076094e23",
+              "name": "A list of network IDs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n    \"name\": \"My Network Connection Name\",\n    \"routingPolicy\": {\n      \"key_0\": {\n        \"scheme\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dstType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dstId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"key_1\": {\n        \"scheme\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dstType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dstId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"isDiscoverable\": false\n  },\n  {\n    \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n    \"name\": \"My Network Connection Name\",\n    \"routingPolicy\": {\n      \"key_0\": {\n        \"scheme\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dstType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dstId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"key_1\": {\n        \"scheme\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dstType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dstId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"key_2\": {\n        \"scheme\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dstType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dstId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"isDiscoverable\": false\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "24a89b92-2a21-432a-82e4-576bb0762dfc",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "069844c7-05cd-438e-853b-4502a5ddbdd6",
+          "name": "Creates a new Network ID",
+          "request": {
+            "name": "Creates a new Network ID",
+            "description": {
+              "content": "Creates a new Network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_ids"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8d742acf-8740-4157-8d0f-806548cd2f03",
+              "name": "Returns the new network ID in your workspace",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"My Network ID name\",\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_1\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_2\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_3\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n  \"name\": \"My Network Connection Name\",\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_1\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_2\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_3\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  },\n  \"isDiscoverable\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f40b91b-5287-4b87-bafc-559ab943ca92",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"My Network ID name\",\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_1\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_2\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_3\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "da58ddc7-a25a-4861-af9e-d81e8d0de0ca",
+          "name": "Returns all enabled routing policy asset groups",
+          "request": {
+            "name": "Returns all enabled routing policy asset groups",
+            "description": {
+              "content": "Retrieves a list of all enabled routing policy asset groups.\nYour routing policy defines how your transactions are routed.\nYou can use one or more enabled routing policy asset groups to describe connection or network id routing policy.\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_ids",
+                "routing_policy_asset_groups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "81bf756b-88b7-493b-ac2c-b7c4509666f3",
+              "name": "A list of enabled routing policy asset groups",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    "routing_policy_asset_groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  \"string\",\n  \"string\"\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "435eb6d6-4aae-4ac1-920a-10e998abaa8c",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    "routing_policy_asset_groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cfc94ad6-6653-4fdb-b3bc-7ec405f574b5",
+          "name": "Get both local IDs and discoverable remote IDs",
+          "request": {
+            "name": "Get both local IDs and discoverable remote IDs",
+            "description": {
+              "content": "Retrieves a list of all local and discoverable remote network IDs. Can be filtered.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n    - **Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_ids",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search string - displayName networkId. Optional"
+                },
+                {
+                  "disabled": false,
+                  "key": "excludeSelf",
+                  "value": "<boolean>",
+                  "description": "Exclude your networkIds. Optional, default false"
+                },
+                {
+                  "disabled": false,
+                  "key": "excludeConnected",
+                  "value": "<boolean>",
+                  "description": "Exclude connected networkIds. Optional, default false"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageCursor",
+                  "value": "<string>",
+                  "description": "ID of the record after which to fetch $limit records"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "50",
+                  "description": "Number of records to fetch. By default, it is 50"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "86ce5acb-5f1d-4569-97a2-a60b61c10de1",
+              "name": "A list of network IDs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "excludeSelf",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "excludeConnected",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n      \"name\": \"My Network Connection Name\",\n      \"routingPolicy\": {\n        \"key_0\": {\n          \"scheme\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"dstType\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"dstId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"isDiscoverable\": false\n    },\n    {\n      \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n      \"name\": \"My Network Connection Name\",\n      \"routingPolicy\": {\n        \"key_0\": {\n          \"scheme\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"dstType\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"dstId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_1\": {\n          \"scheme\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"dstType\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"dstId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_2\": {\n          \"scheme\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"dstType\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"dstId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"isDiscoverable\": true\n    }\n  ],\n  \"next\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b4fe181b-4fe1-41d6-b828-ea29257c4b7a",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "excludeSelf",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "excludeConnected",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "pageCursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "244b3bb7-035b-4eb2-9474-bd6c292dcfd7",
+          "name": "Returns specific network ID.",
+          "request": {
+            "name": "Returns specific network ID.",
+            "description": {
+              "content": "Retrieves a network by its ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_ids",
+                ":networkId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "networkId",
+                  "description": "(Required) The ID of the network"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "81078eff-ab6a-417c-b962-15a9644723fa",
+              "name": "Network ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    ":networkId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "networkId",
+                      "description": "(Required) The ID of the network"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"494ae5f7-7807-4bc5-863b-2963aa94398f\",\n  \"name\": \"My Network Connection Name\",\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_1\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_2\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    },\n    \"key_3\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  },\n  \"isDiscoverable\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38f6b541-e911-4b9c-89c4-b0fb6ff8ac6c",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    ":networkId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "networkId",
+                      "description": "(Required) The ID of the network"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "64baec6d-9b2b-4339-bba9-5d990542e268",
+          "name": "Deletes specific network ID.",
+          "request": {
+            "name": "Deletes specific network ID.",
+            "description": {
+              "content": "Deletes a network by its ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_ids",
+                ":networkId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "networkId",
+                  "description": "(Required) The ID of the network"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d42ac492-0129-4369-9468-8b3d665faa99",
+              "name": "Network ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    ":networkId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "networkId",
+                      "description": "(Required) The ID of the network"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d241f5fb-c01b-4735-ba69-024f263e18c0",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    ":networkId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "networkId",
+                      "description": "(Required) The ID of the network"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "904fec14-2e11-42cd-acad-e26299fdf568",
+          "name": "Update network id routing policy.",
+          "request": {
+            "name": "Update network id routing policy.",
+            "description": {
+              "content": "Updates the routing policy of a specified network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\nSupported asset groups for routing policy can be found at `/network_ids/routing_policy_asset_groups`\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_ids",
+                ":networkId",
+                "set_routing_policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "networkId",
+                  "description": "(Required) The ID of the network"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "53f42d0c-db90-416c-9dfc-783de8a273ef",
+              "name": "Network ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    ":networkId",
+                    "set_routing_policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "networkId",
+                      "description": "(Required) The ID of the network"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4b60fd89-dd49-42d8-aa1d-83bce0c7527c",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    ":networkId",
+                    "set_routing_policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "networkId",
+                      "description": "(Required) The ID of the network"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"routingPolicy\": {\n    \"key_0\": {\n      \"scheme\": \"<string>\",\n      \"dstType\": \"<string>\",\n      \"dstId\": \"29a425f4-f621-4c01-a888-27adec7d1dfa\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8da2a207-e7d7-4b9f-aad0-0503f89ec8b2",
+          "name": "Update network ID's discoverability.",
+          "request": {
+            "name": "Update network ID's discoverability.",
+            "description": {
+              "content": "Update whether or not the network ID is discoverable by others.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_ids",
+                ":networkId",
+                "set_discoverability"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "networkId",
+                  "description": "(Required) The ID of the network"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isDiscoverable\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d26982a9-2854-4049-8756-9bbc3012dd4d",
+              "name": "Network ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    ":networkId",
+                    "set_discoverability"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "networkId",
+                      "description": "(Required) The ID of the network"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isDiscoverable\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39c6676c-8909-4050-8f1c-cb096acd4428",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    ":networkId",
+                    "set_discoverability"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "networkId",
+                      "description": "(Required) The ID of the network"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isDiscoverable\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "41972e3e-d7e6-45c6-b50f-e83ce20c1523",
+          "name": "Update network ID's name.",
+          "request": {
+            "name": "Update network ID's name.",
+            "description": {
+              "content": "Updates name of a specified network ID.\n\n**Note:** This API call is subject to Flexible Routing Schemes.\n\nYour routing policy defines how your transactions are routed.\nYou can choose 1 of the 3 different schemes mentioned below for each asset type:\n  - **None**; Defines the profile routing to no destination for that asset type. Incoming transactions to asset types routed to `None` will fail.\n  - **Custom**; Route to an account that you choose. If you remove the account, incoming transactions will fail until you choose another one.\n  - **Default**; Use the routing specified by the network profile the connection is connected to. This scheme is also referred to as \"Profile Routing\"\n\nDefault Workspace Presets:\n  - Network Profile Crypto → **Custom**\n  - Network Profile FIAT → **None**\n  - Network Connection Crypto → **Default**\n  - Network Connection FIAT → **Default**\n\n**Note**: By default, Custom routing scheme uses (`dstId` = `0`, `dstType` = `VAULT`).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "network_ids",
+                ":networkId",
+                "set_name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "networkId",
+                  "description": "(Required) The ID of the network"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "14c429b4-6f00-4ab0-8280-5ec85ace5a66",
+              "name": "Network ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    ":networkId",
+                    "set_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "networkId",
+                      "description": "(Required) The ID of the network"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"My Network ID name\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5bf5c102-f4f1-4537-a1f9-0cee73b4c56f",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network_ids",
+                    ":networkId",
+                    "set_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "networkId",
+                      "description": "(Required) The ID of the network"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"My Network ID name\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireblocks.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "baf7046e-a0a6-4fb5-b26c-8860801177b1",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Fireblocks Network API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+      "type": "text/plain"
+    }
+  }
+}

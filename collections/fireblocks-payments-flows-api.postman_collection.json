@@ -1,0 +1,1194 @@
+{
+  "item": [
+    {
+      "id": "ce96e510-6e15-4be0-84b0-2191c3b84f39",
+      "name": "Payments - Flows",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "caaeac84-4cd7-4cee-ab7a-b110097bfb86",
+          "name": "Create payment flow configuration",
+          "request": {
+            "name": "Create payment flow configuration",
+            "description": {
+              "content": "Generate a new configuration ID to be used for initiating executions in subsequent phases. This configuration should include the operations you intend to incorporate into the workflow, such as TRANSFER, CONVERT, and DISBURSE, in addition to your pre-screening preferences, which are disabled by default.\nLearn more about Fireblocks Payments - Flows in the following [guide](https://developers.fireblocks.com/docs/payment-flows-copy).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payments",
+                "workflow_config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"configName\": \"<string>\",\n  \"configOperations\": [\n    {\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"<string>\",\n        \"amount\": \"<string>\",\n        \"accountId\": \"<string>\",\n        \"srcAssetId\": \"<string>\",\n        \"slippageBasisPoints\": \"<integer>\"\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"<string>\",\n        \"amount\": \"<string>\",\n        \"accountId\": \"<string>\",\n        \"srcAssetId\": \"<string>\",\n        \"slippageBasisPoints\": \"<integer>\"\n      }\n    }\n  ],\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5958e053-d2f4-470b-97d9-e2ddff42f4c6",
+              "name": "Configuration is being generated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configName\": \"my_config_name\",\n  \"configOperations\": [\n    {\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"USDC\",\n        \"amount\": \"10\",\n        \"accountId\": \"0\",\n        \"srcAssetId\": \"ETH\",\n        \"slippageBasisPoints\": 100\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"USDC\",\n        \"amount\": \"10\",\n        \"accountId\": \"0\",\n        \"srcAssetId\": \"ETH\",\n        \"slippageBasisPoints\": 100\n      }\n    }\n  ],\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"configId\": \"98822424-15ad-498c-9ef4-19c7430b4b6e\",\n  \"configName\": \"my_cofig_name\",\n  \"configOperations\": [\n    {\n      \"operationId\": \"7bf16b28-6cd6-403f-af60-045c4b68a767\",\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"USDC\",\n        \"amount\": \"10\",\n        \"accountId\": \"0\",\n        \"srcAssetId\": \"ETH\",\n        \"slippageBasisPoints\": 100\n      },\n      \"status\": \"VALIDATION_FAILED\",\n      \"validationFailure\": {\n        \"reason\": \"EQUAL_ASSETS_NOT_ALLOWED\",\n        \"data\": {\n          \"key_0\": {}\n        }\n      }\n    },\n    {\n      \"operationId\": \"7bf16b28-6cd6-403f-af60-045c4b68a767\",\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"USDC\",\n        \"amount\": \"10\",\n        \"accountId\": \"0\",\n        \"srcAssetId\": \"ETH\",\n        \"slippageBasisPoints\": 100\n      },\n      \"status\": \"PENDING\",\n      \"validationFailure\": {\n        \"reason\": \"ACCOUNTS_CONTINUITY_MISMATCH\",\n        \"data\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        }\n      }\n    }\n  ],\n  \"createdAt\": 1717325386,\n  \"status\": \"VALIDATION_FAILED\",\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29ca7429-af41-4504-9e47-13380b9283bc",
+              "name": "Unauthorized. Missing / invalid JWT token in Authorization header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configName\": \"my_config_name\",\n  \"configOperations\": [\n    {\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"USDC\",\n        \"amount\": \"10\",\n        \"accountId\": \"0\",\n        \"srcAssetId\": \"ETH\",\n        \"slippageBasisPoints\": 100\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"USDC\",\n        \"amount\": \"10\",\n        \"accountId\": \"0\",\n        \"srcAssetId\": \"ETH\",\n        \"slippageBasisPoints\": 100\n      }\n    }\n  ],\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9706d98-9b9b-4b5a-a556-17212cb69c51",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configName\": \"my_config_name\",\n  \"configOperations\": [\n    {\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"USDC\",\n        \"amount\": \"10\",\n        \"accountId\": \"0\",\n        \"srcAssetId\": \"ETH\",\n        \"slippageBasisPoints\": 100\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"USDC\",\n        \"amount\": \"10\",\n        \"accountId\": \"0\",\n        \"srcAssetId\": \"ETH\",\n        \"slippageBasisPoints\": 100\n      }\n    }\n  ],\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "87dedaa0-01c7-4c8b-91f7-674d6c8397f4",
+          "name": "Retrieve workflow configuration",
+          "request": {
+            "name": "Retrieve workflow configuration",
+            "description": {
+              "content": "Retrieve a previously created workflow configuration using the specified \"configId\".\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payments",
+                "workflow_config",
+                ":configId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "configId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2582cbfe-70f5-4702-ac75-12100be40128",
+              "name": "Returns a workflow configuration",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_config",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"configId\": \"98822424-15ad-498c-9ef4-19c7430b4b6e\",\n  \"configName\": \"my_cofig_name\",\n  \"configOperations\": [\n    {\n      \"operationId\": \"7bf16b28-6cd6-403f-af60-045c4b68a767\",\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"USDC\",\n        \"amount\": \"10\",\n        \"accountId\": \"0\",\n        \"srcAssetId\": \"ETH\",\n        \"slippageBasisPoints\": 100\n      },\n      \"status\": \"VALIDATION_FAILED\",\n      \"validationFailure\": {\n        \"reason\": \"EQUAL_ACCOUNTS_NOT_ALLOWED\",\n        \"data\": {\n          \"key_0\": {}\n        }\n      }\n    },\n    {\n      \"operationId\": \"7bf16b28-6cd6-403f-af60-045c4b68a767\",\n      \"type\": \"<string>\",\n      \"params\": {\n        \"destAssetId\": \"USDC\",\n        \"amount\": \"10\",\n        \"accountId\": \"0\",\n        \"srcAssetId\": \"ETH\",\n        \"slippageBasisPoints\": 100\n      },\n      \"status\": \"VALIDATION_FAILED\",\n      \"validationFailure\": {\n        \"reason\": \"ONE_TIME_ADDRESS_CONTINUITY_NOT_ALLOWED\",\n        \"data\": {\n          \"key_0\": {}\n        }\n      }\n    }\n  ],\n  \"createdAt\": 1717325386,\n  \"status\": \"VALIDATION_IN_PROGRESS\",\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2f03331-822f-4393-a2cb-a1a428db4a68",
+              "name": "Unauthorized. Missing / invalid JWT token in Authorization header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_config",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "be554e04-151b-48b2-962a-0a0940c13d5d",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_config",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "933a9648-ee03-4266-9cb7-939304de37b5",
+          "name": "Delete workflow configuration",
+          "request": {
+            "name": "Delete workflow configuration",
+            "description": {
+              "content": "Delete a configuration using the specified \"configId\".\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payments",
+                "workflow_config",
+                ":configId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "configId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d08ce105-fed0-49ae-ab45-2eb656b79cb9",
+              "name": "The specified configuration has been deleted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_config",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"configId\": \"98822424-15ad-498c-9ef4-19c7430b4b6e\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6032084d-5645-4bb9-b11c-53d3d4c612b6",
+              "name": "Unauthorized. Missing / invalid JWT token in Authorization header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_config",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6fb2e024-f418-4033-a59c-018c1df7a2bd",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_config",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb0c3917-95e3-45b9-b77a-f9d3417c2cbe",
+          "name": "Create workflow execution",
+          "request": {
+            "name": "Create workflow execution",
+            "description": {
+              "content": "Validate the \"workflow-config\" previously created by utilizing the unique \"configId\". This step requires the mandatory field amount, and allows for modifications to other fields defined via the \"workflow-config\" endpoint, including pre-screening preferences. A response containing the \"workflowExecutionId\" and detailing the validation status will be provided. Execution is ready when the \"workflow-execution\" status is READY_FOR_LAUNCH, at which point it can be initiated with \"POST /workflow-execution/{workflowExecutionId}/actions/execute\".\nLearn more about Fireblocks Payments - Flows in the following [guide](https://developers.fireblocks.com/docs/payment-flows-copy).\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payments",
+                "workflow_execution"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"configId\": \"<string>\",\n  \"params\": [\n    {\n      \"configOperationId\": \"<string>\",\n      \"executionParams\": {\n        \"amount\": \"<string>\",\n        \"accountId\": \"<string>\",\n        \"srcAssetId\": \"<string>\",\n        \"destAssetId\": \"<string>\",\n        \"slippageBasisPoints\": \"<integer>\"\n      }\n    },\n    {\n      \"configOperationId\": \"<string>\",\n      \"executionParams\": {\n        \"amount\": \"<string>\",\n        \"accountId\": \"<string>\",\n        \"srcAssetId\": \"<string>\",\n        \"destAssetId\": \"<string>\",\n        \"slippageBasisPoints\": \"<integer>\"\n      }\n    }\n  ],\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7d8e29aa-8c82-4dde-9b84-a941effb973a",
+              "name": "Workflow execution entity has been created successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_execution"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configId\": \"98822424-15ad-498c-9ef4-19c7430b4b6e\",\n  \"params\": [\n    {\n      \"configOperationId\": \"<string>\",\n      \"executionParams\": {\n        \"amount\": \"<string>\",\n        \"accountId\": \"<string>\",\n        \"srcAssetId\": \"<string>\",\n        \"destAssetId\": \"<string>\",\n        \"slippageBasisPoints\": \"<integer>\"\n      }\n    },\n    {\n      \"configOperationId\": \"<string>\",\n      \"executionParams\": {\n        \"amount\": \"<string>\",\n        \"accountId\": \"<string>\",\n        \"srcAssetId\": \"<string>\",\n        \"destAssetId\": \"<string>\",\n        \"slippageBasisPoints\": \"<integer>\"\n      }\n    }\n  ],\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"executionId\": \"507f6867-d76b-4cd6-92c8-cf84536be0b6\",\n  \"status\": \"PREVIEW_IN_PROGRESS\",\n  \"executionOperations\": [\n    {\n      \"operationId\": \"1cbf5105-b462-4c0b-83ca-d805251835e9\",\n      \"status\": \"VALIDATION_IN_PROGRESS\",\n      \"operationType\": \"SCREENING\",\n      \"validationFailure\": {\n        \"reason\": \"SCREENING_DISABLED_IN_TENANT\",\n        \"data\": {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {}\n        }\n      },\n      \"execution\": {\n        \"startedAt\": 6765.740493892907,\n        \"output\": {\n          \"verdicts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"finishedAt\": 1149.3857676721075,\n        \"failure\": {\n          \"reason\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"operationId\": \"1cbf5105-b462-4c0b-83ca-d805251835e9\",\n      \"status\": \"EXECUTION_FAILED\",\n      \"operationType\": \"SCREENING\",\n      \"validationFailure\": {\n        \"reason\": \"SCREENING_DISABLED_IN_TENANT\",\n        \"data\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        }\n      },\n      \"execution\": {\n        \"startedAt\": 4181.55700600554,\n        \"output\": {\n          \"verdicts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"finishedAt\": 5206.247061406514,\n        \"failure\": {\n          \"reason\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ],\n  \"configSnapshot\": {\n    \"configId\": \"98822424-15ad-498c-9ef4-19c7430b4b6e\",\n    \"configName\": \"my_config_name\",\n    \"configOperations\": [\n      {\n        \"operationId\": \"string\",\n        \"type\": \"<string>\",\n        \"params\": {\n          \"destAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"accountId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"srcAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"slippageBasisPoints\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      {\n        \"operationId\": \"string\",\n        \"type\": \"<string>\",\n        \"params\": {\n          \"destAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"accountId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"srcAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"slippageBasisPoints\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    ],\n    \"createdAt\": 1717325386,\n    \"externalCorrelationData\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  },\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"triggeredBy\": \"string\",\n  \"triggeredAt\": 5931.578872923236,\n  \"finishedAt\": 6576.285836671657,\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "53b02fef-9dec-4134-aecd-4d450605824c",
+              "name": "Unauthorized. Missing / invalid JWT token in Authorization header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_execution"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configId\": \"98822424-15ad-498c-9ef4-19c7430b4b6e\",\n  \"params\": [\n    {\n      \"configOperationId\": \"<string>\",\n      \"executionParams\": {\n        \"amount\": \"<string>\",\n        \"accountId\": \"<string>\",\n        \"srcAssetId\": \"<string>\",\n        \"destAssetId\": \"<string>\",\n        \"slippageBasisPoints\": \"<integer>\"\n      }\n    },\n    {\n      \"configOperationId\": \"<string>\",\n      \"executionParams\": {\n        \"amount\": \"<string>\",\n        \"accountId\": \"<string>\",\n        \"srcAssetId\": \"<string>\",\n        \"destAssetId\": \"<string>\",\n        \"slippageBasisPoints\": \"<integer>\"\n      }\n    }\n  ],\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f67ee0a-a5bc-40ca-afc7-135c67d8b694",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_execution"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configId\": \"98822424-15ad-498c-9ef4-19c7430b4b6e\",\n  \"params\": [\n    {\n      \"configOperationId\": \"<string>\",\n      \"executionParams\": {\n        \"amount\": \"<string>\",\n        \"accountId\": \"<string>\",\n        \"srcAssetId\": \"<string>\",\n        \"destAssetId\": \"<string>\",\n        \"slippageBasisPoints\": \"<integer>\"\n      }\n    },\n    {\n      \"configOperationId\": \"<string>\",\n      \"executionParams\": {\n        \"amount\": \"<string>\",\n        \"accountId\": \"<string>\",\n        \"srcAssetId\": \"<string>\",\n        \"destAssetId\": \"<string>\",\n        \"slippageBasisPoints\": \"<integer>\"\n      }\n    }\n  ],\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7ef599c9-f30f-4a5f-99b3-dc8d26b00283",
+          "name": "Get workflow execution details",
+          "request": {
+            "name": "Get workflow execution details",
+            "description": {
+              "content": "Retrieve details of a previously initiated workflow execution by specifying the \"workflowExecutionId\"\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payments",
+                "workflow_execution",
+                ":workflowExecutionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workflowExecutionId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dc9cd0c6-edff-42d8-af51-40feee858a3f",
+              "name": "Returns workflow execution by id with preview info",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_execution",
+                    ":workflowExecutionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowExecutionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"executionId\": \"507f6867-d76b-4cd6-92c8-cf84536be0b6\",\n  \"status\": \"EXECUTION_FAILED\",\n  \"executionOperations\": [\n    {\n      \"operationId\": \"1cbf5105-b462-4c0b-83ca-d805251835e9\",\n      \"status\": \"VALIDATION_COMPLETED\",\n      \"operationType\": \"SCREENING\",\n      \"validationFailure\": {\n        \"reason\": \"SCREENING_DISABLED_IN_TENANT\",\n        \"data\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        }\n      },\n      \"execution\": {\n        \"startedAt\": 4952.679284972298,\n        \"output\": {\n          \"verdicts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"finishedAt\": 4133.883191393844,\n        \"failure\": {\n          \"reason\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"operationId\": \"1cbf5105-b462-4c0b-83ca-d805251835e9\",\n      \"status\": \"PENDING\",\n      \"operationType\": \"SCREENING\",\n      \"validationFailure\": {\n        \"reason\": \"SCREENING_DISABLED_IN_TENANT\",\n        \"data\": {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {},\n          \"key_3\": {}\n        }\n      },\n      \"execution\": {\n        \"startedAt\": 4798.300435448724,\n        \"output\": {\n          \"verdicts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"finishedAt\": 5334.887871952987,\n        \"failure\": {\n          \"reason\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ],\n  \"configSnapshot\": {\n    \"configId\": \"98822424-15ad-498c-9ef4-19c7430b4b6e\",\n    \"configName\": \"my_config_name\",\n    \"configOperations\": [\n      {\n        \"operationId\": \"string\",\n        \"type\": \"<string>\",\n        \"params\": {\n          \"destAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"accountId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"srcAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"slippageBasisPoints\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      {\n        \"operationId\": \"string\",\n        \"type\": \"<string>\",\n        \"params\": {\n          \"destAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"accountId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"srcAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"slippageBasisPoints\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    ],\n    \"createdAt\": 1717325386,\n    \"externalCorrelationData\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\",\n      \"key_3\": \"<string>\",\n      \"key_4\": \"<string>\"\n    }\n  },\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"triggeredBy\": \"string\",\n  \"triggeredAt\": 3219.906553239843,\n  \"finishedAt\": 3273.9693495842694,\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7921a0af-1e87-4808-a19d-4cbe85b6dbae",
+              "name": "Unauthorized. Missing / invalid JWT token in Authorization header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_execution",
+                    ":workflowExecutionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowExecutionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a269977d-d0bb-435e-af00-19c882e04767",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_execution",
+                    ":workflowExecutionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowExecutionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "57cfe91b-1549-44dd-aef4-5ca84039ff62",
+          "name": "Execute the payments workflow",
+          "request": {
+            "name": "Execute the payments workflow",
+            "description": {
+              "content": "Launch the execution of a pre-configured workflow, identified by \"workflowExecutionId\", once it reaches the READY_FOR_LAUNCH state. The workflow undergoes several phases during execution - EXECUTION_IN_PROGRESS - Marks the start of the workflow execution. EXECUTION_COMPLETED or EXECUTION_FAILED - Indicates the execution has reached a final state.\n</br>Endpoint Permission: Admin, Non-Signing Admin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payments",
+                "workflow_execution",
+                ":workflowExecutionId",
+                "actions",
+                "execute"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workflowExecutionId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b47cb1e5-7051-4511-87f6-5a8f838af347",
+              "name": "Workflow execution has been executed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_execution",
+                    ":workflowExecutionId",
+                    "actions",
+                    "execute"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowExecutionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"executionId\": \"507f6867-d76b-4cd6-92c8-cf84536be0b6\",\n  \"status\": \"EXECUTION_FAILED\",\n  \"executionOperations\": [\n    {\n      \"operationId\": \"1cbf5105-b462-4c0b-83ca-d805251835e9\",\n      \"status\": \"VALIDATION_COMPLETED\",\n      \"operationType\": \"SCREENING\",\n      \"validationFailure\": {\n        \"reason\": \"SCREENING_DISABLED_IN_TENANT\",\n        \"data\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        }\n      },\n      \"execution\": {\n        \"startedAt\": 4952.679284972298,\n        \"output\": {\n          \"verdicts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"finishedAt\": 4133.883191393844,\n        \"failure\": {\n          \"reason\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"operationId\": \"1cbf5105-b462-4c0b-83ca-d805251835e9\",\n      \"status\": \"PENDING\",\n      \"operationType\": \"SCREENING\",\n      \"validationFailure\": {\n        \"reason\": \"SCREENING_DISABLED_IN_TENANT\",\n        \"data\": {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {},\n          \"key_3\": {}\n        }\n      },\n      \"execution\": {\n        \"startedAt\": 4798.300435448724,\n        \"output\": {\n          \"verdicts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"finishedAt\": 5334.887871952987,\n        \"failure\": {\n          \"reason\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ],\n  \"configSnapshot\": {\n    \"configId\": \"98822424-15ad-498c-9ef4-19c7430b4b6e\",\n    \"configName\": \"my_config_name\",\n    \"configOperations\": [\n      {\n        \"operationId\": \"string\",\n        \"type\": \"<string>\",\n        \"params\": {\n          \"destAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"accountId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"srcAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"slippageBasisPoints\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      {\n        \"operationId\": \"string\",\n        \"type\": \"<string>\",\n        \"params\": {\n          \"destAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"accountId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"srcAssetId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"slippageBasisPoints\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    ],\n    \"createdAt\": 1717325386,\n    \"externalCorrelationData\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\",\n      \"key_3\": \"<string>\",\n      \"key_4\": \"<string>\"\n    }\n  },\n  \"preScreening\": {\n    \"enabled\": \"<boolean>\"\n  },\n  \"triggeredBy\": \"string\",\n  \"triggeredAt\": 3219.906553239843,\n  \"finishedAt\": 3273.9693495842694,\n  \"externalCorrelationData\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b7624d2-ecb3-407d-ad50-3b22dbda95f4",
+              "name": "Unauthorized. Missing / invalid JWT token in Authorization header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_execution",
+                    ":workflowExecutionId",
+                    "actions",
+                    "execute"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowExecutionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7194f329-0930-47d9-9471-f6443058a4d6",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payments",
+                    "workflow_execution",
+                    ":workflowExecutionId",
+                    "actions",
+                    "execute"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowExecutionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"INTERNAL\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireblocks.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c1b929d6-3941-47e9-8a88-b59f4ac42c85",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Payments - Flows API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+      "type": "text/plain"
+    }
+  }
+}

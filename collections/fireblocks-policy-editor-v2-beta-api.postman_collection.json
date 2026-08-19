@@ -1,0 +1,640 @@
+{
+  "item": [
+    {
+      "id": "33579101-2b68-4ef6-ac65-7bb3dd3c8090",
+      "name": "Policy Editor V2 (Beta)",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0ca683fd-03fa-4d85-8cf3-0fa88a954735",
+          "name": "Get the active policy and its validation by policy type",
+          "request": {
+            "name": "Get the active policy and its validation by policy type",
+            "description": {
+              "content": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nReturns the active policy and its validation for a specific policy type.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "policy",
+                "active_policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "policyType",
+                  "value": "<string>",
+                  "description": "(Required) The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "37dd404f-4a40-4efd-bc4b-bc34e5fc4811",
+              "name": "A policy object with validation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    "active_policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "policyType",
+                      "value": "TRANSFER"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"policy\": {\n    \"rules\": [\n      {\n        \"name\": \"High Value Transfer Policy\",\n        \"id\": \"policy_rule_001\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"TRANSFER\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"SOURCE\"\n        },\n        \"verdict\": {\n          \"action\": \"ALLOW\",\n          \"approvers\": {\n            \"canInitiatorApprove\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"allowOperatorAsAuthorizer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"approvalGroups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"designatedSigners\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"users\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"groups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"subType\": \"TRANSFER\",\n        \"destination\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"addressType\": \"WHITELISTED\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"SOURCE\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"100\",\n            \"max\": \"10000\"\n          },\n          \"timePeriod\": {\n            \"seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"initiator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"source\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"destination\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"currency\": \"USD\"\n        },\n        \"amount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": false,\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"OUTBOUND\",\n          \"provider\": \"CHAINALYSIS\",\n          \"riskRating\": \"MEDIUM\",\n          \"riskScore\": \"0.8\",\n          \"exposureType\": \"DIRECT\",\n          \"category\": [\n            \"string\",\n            \"string\"\n          ],\n          \"name\": [\n            \"string\",\n            \"string\"\n          ],\n          \"categoryId\": [\n            \"string\",\n            \"string\"\n          ],\n          \"status\": \"COMPLETED\",\n          \"sourceAddress\": \"0x123...\",\n          \"destAddress\": \"0x456...\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"baseAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            44,\n            0,\n            0,\n            0,\n            0\n          ],\n          \"partial\": false\n        },\n        \"index\": 1\n      },\n      {\n        \"name\": \"High Value Transfer Policy\",\n        \"id\": \"policy_rule_001\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"TRANSFER\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"SOURCE\"\n        },\n        \"verdict\": {\n          \"action\": \"ALLOW\",\n          \"approvers\": {\n            \"canInitiatorApprove\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"allowOperatorAsAuthorizer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"approvalGroups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"designatedSigners\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"users\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"groups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"subType\": \"TRANSFER\",\n        \"destination\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"addressType\": \"WHITELISTED\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"100\",\n            \"max\": \"10000\"\n          },\n          \"timePeriod\": {\n            \"seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"initiator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"source\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"destination\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"currency\": \"USD\"\n        },\n        \"amount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": false,\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"OUTBOUND\",\n          \"provider\": \"CHAINALYSIS\",\n          \"riskRating\": \"MEDIUM\",\n          \"riskScore\": \"0.8\",\n          \"exposureType\": \"DIRECT\",\n          \"category\": [\n            \"string\",\n            \"string\"\n          ],\n          \"name\": [\n            \"string\",\n            \"string\"\n          ],\n          \"categoryId\": [\n            \"string\",\n            \"string\"\n          ],\n          \"status\": \"COMPLETED\",\n          \"sourceAddress\": \"0x123...\",\n          \"destAddress\": \"0x456...\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"baseAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            44,\n            0,\n            0,\n            0,\n            0\n          ],\n          \"partial\": false\n        },\n        \"index\": 1\n      }\n    ],\n    \"metadata\": {\n      \"policyType\": \"TRANSFER\",\n      \"editedBy\": \"user123\",\n      \"editedAt\": \"2024-01-15T10:30:00Z\",\n      \"publishedBy\": \"user456\",\n      \"publishedAt\": \"2024-01-15T11:00:00Z\"\n    }\n  },\n  \"validation\": {\n    \"status\": \"string\",\n    \"checkResult\": {\n      \"errors\": 7669.205906725178,\n      \"results\": [\n        {\n          \"index\": 5972.976769591582,\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        {\n          \"index\": 4603.8491002160645,\n          \"status\": \"failure\",\n          \"errors\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cce988c8-463a-4851-a2af-18b0fd93a35c",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    "active_policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "policyType",
+                      "value": "TRANSFER"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": 5100.294270043409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2e2438ee-43ff-41d3-8808-dc71b4f71f3d",
+          "name": "Get the active draft by policy type",
+          "request": {
+            "name": "Get the active draft by policy type",
+            "description": {
+              "content": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nReturns the active draft and its validation for a specific policy type.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "policy",
+                "draft"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "policyType",
+                  "value": "<string>",
+                  "description": "(Required) The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b82a960b-4b2c-4842-83ac-79e9aa8a0919",
+              "name": "A draft validation response object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    "draft"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "policyType",
+                      "value": "TRANSFER"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"draftResponse\": {\n    \"draftId\": \"string\",\n    \"status\": \"string\",\n    \"rules\": [\n      {\n        \"name\": \"High Value Transfer Policy\",\n        \"id\": \"policy_rule_001\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"TRANSFER\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"SOURCE\"\n        },\n        \"verdict\": {\n          \"action\": \"ALLOW\",\n          \"approvers\": {\n            \"canInitiatorApprove\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"allowOperatorAsAuthorizer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"approvalGroups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"designatedSigners\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"users\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"groups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"subType\": \"TRANSFER\",\n        \"destination\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"addressType\": \"WHITELISTED\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"SOURCE\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"100\",\n            \"max\": \"10000\"\n          },\n          \"timePeriod\": {\n            \"seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"initiator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"source\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"destination\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"currency\": \"USD\"\n        },\n        \"amount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": false,\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"OUTBOUND\",\n          \"provider\": \"CHAINALYSIS\",\n          \"riskRating\": \"MEDIUM\",\n          \"riskScore\": \"0.8\",\n          \"exposureType\": \"DIRECT\",\n          \"category\": [\n            \"string\",\n            \"string\"\n          ],\n          \"name\": [\n            \"string\",\n            \"string\"\n          ],\n          \"categoryId\": [\n            \"string\",\n            \"string\"\n          ],\n          \"status\": \"COMPLETED\",\n          \"sourceAddress\": \"0x123...\",\n          \"destAddress\": \"0x456...\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"baseAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            44,\n            0,\n            0,\n            0,\n            0\n          ],\n          \"partial\": false\n        },\n        \"index\": 1\n      },\n      {\n        \"name\": \"High Value Transfer Policy\",\n        \"id\": \"policy_rule_001\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"TRANSFER\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"verdict\": {\n          \"action\": \"ALLOW\",\n          \"approvers\": {\n            \"canInitiatorApprove\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"allowOperatorAsAuthorizer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"approvalGroups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"designatedSigners\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"users\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"groups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"subType\": \"TRANSFER\",\n        \"destination\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"addressType\": \"WHITELISTED\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"SOURCE\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"100\",\n            \"max\": \"10000\"\n          },\n          \"timePeriod\": {\n            \"seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"initiator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"source\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"destination\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"currency\": \"USD\"\n        },\n        \"amount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": false,\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"OUTBOUND\",\n          \"provider\": \"CHAINALYSIS\",\n          \"riskRating\": \"MEDIUM\",\n          \"riskScore\": \"0.8\",\n          \"exposureType\": \"DIRECT\",\n          \"category\": [\n            \"string\",\n            \"string\"\n          ],\n          \"name\": [\n            \"string\",\n            \"string\"\n          ],\n          \"categoryId\": [\n            \"string\",\n            \"string\"\n          ],\n          \"status\": \"COMPLETED\",\n          \"sourceAddress\": \"0x123...\",\n          \"destAddress\": \"0x456...\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"baseAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            44,\n            0,\n            0,\n            0,\n            0\n          ],\n          \"partial\": false\n        },\n        \"index\": 1\n      }\n    ],\n    \"metadata\": {\n      \"policyType\": \"TRANSFER\",\n      \"editedBy\": \"user123\",\n      \"editedAt\": \"2024-01-15T10:30:00Z\",\n      \"publishedBy\": \"user456\",\n      \"publishedAt\": \"2024-01-15T11:00:00Z\"\n    }\n  },\n  \"validation\": {\n    \"status\": \"string\",\n    \"checkResult\": {\n      \"errors\": 2207.667471084216,\n      \"results\": [\n        {\n          \"index\": 3320.1352545796913,\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        {\n          \"index\": 3670.66725406339,\n          \"status\": \"failure\",\n          \"errors\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a78a5135-59d4-4e5f-8ad4-0bc72867317b",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    "draft"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "policyType",
+                      "value": "TRANSFER"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": 5100.294270043409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f8178997-f1e7-4859-b969-a68cdb890fee",
+          "name": "Update the draft with a new set of rules by policy types",
+          "request": {
+            "name": "Update the draft with a new set of rules by policy types",
+            "description": {
+              "content": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nUpdates the draft and returns its validation for specific policy types.  \n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "policy",
+                "draft"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"policyTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"rules\": [\n    {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"policyEngineVersion\": \"<string>\",\n      \"type\": \"<string>\",\n      \"initiator\": \"<string>\",\n      \"asset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"<string>\"\n      },\n      \"source\": {\n        \"type\": \"<string>\",\n        \"operator\": \"<string>\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"verdict\": {\n        \"action\": \"<string>\",\n        \"approvers\": {\n          \"canInitiatorApprove\": \"<boolean>\",\n          \"operator\": \"<string>\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"approvalGroups\": [\n            {\n              \"threshold\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"users\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"groups\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"threshold\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"users\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"groups\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"<string>\",\n          \"users\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"groups\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"subType\": \"<string>\",\n      \"destination\": {\n        \"type\": \"<string>\",\n        \"operator\": \"<string>\",\n        \"addressType\": \"<string>\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"account\": {\n        \"type\": \"<string>\",\n        \"operator\": \"<string>\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"<string>\",\n          \"initiator\": \"<string>\",\n          \"source\": \"<string>\",\n          \"destination\": \"<string>\"\n        },\n        \"currency\": \"<string>\"\n      },\n      \"amount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"externalDescriptor\": \"<string>\",\n      \"method\": \"<string>\",\n      \"isGlobalPolicy\": \"<boolean>\",\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"<string>\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"<string>\",\n        \"provider\": \"<string>\",\n        \"riskRating\": \"<string>\",\n        \"riskScore\": \"<string>\",\n        \"exposureType\": \"<string>\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"<string>\",\n        \"sourceAddress\": \"<string>\",\n        \"destAddress\": \"<string>\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"<string>\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"<string>\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"baseAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          \"<number>\",\n          \"<number>\"\n        ],\n        \"partial\": \"<boolean>\"\n      },\n      \"index\": \"<number>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"policyEngineVersion\": \"<string>\",\n      \"type\": \"<string>\",\n      \"initiator\": \"<string>\",\n      \"asset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"<string>\"\n      },\n      \"source\": {\n        \"type\": \"<string>\",\n        \"operator\": \"<string>\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"verdict\": {\n        \"action\": \"<string>\",\n        \"approvers\": {\n          \"canInitiatorApprove\": \"<boolean>\",\n          \"operator\": \"<string>\",\n          \"allowOperatorAsAuthorizer\": \"<boolean>\",\n          \"approvalGroups\": [\n            {\n              \"threshold\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"users\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"groups\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"threshold\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"users\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"groups\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"<string>\",\n          \"users\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"groups\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"subType\": \"<string>\",\n      \"destination\": {\n        \"type\": \"<string>\",\n        \"operator\": \"<string>\",\n        \"addressType\": \"<string>\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"account\": {\n        \"type\": \"<string>\",\n        \"operator\": \"<string>\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"subType\": \"<string>\",\n            \"address\": \"<string>\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"<string>\",\n          \"max\": \"<string>\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"<string>\",\n          \"initiator\": \"<string>\",\n          \"source\": \"<string>\",\n          \"destination\": \"<string>\"\n        },\n        \"currency\": \"<string>\"\n      },\n      \"amount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"externalDescriptor\": \"<string>\",\n      \"method\": \"<string>\",\n      \"isGlobalPolicy\": \"<boolean>\",\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"<string>\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"<string>\",\n        \"provider\": \"<string>\",\n        \"riskRating\": \"<string>\",\n        \"riskScore\": \"<string>\",\n        \"exposureType\": \"<string>\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"<string>\",\n        \"sourceAddress\": \"<string>\",\n        \"destAddress\": \"<string>\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"<string>\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": \"<boolean>\",\n        \"assetTypes\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"operator\": \"<string>\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"baseAmount\": {\n        \"min\": \"<string>\",\n        \"max\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          \"<number>\",\n          \"<number>\"\n        ],\n        \"partial\": \"<boolean>\"\n      },\n      \"index\": \"<number>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "07e34102-5b34-441e-baf3-1a871a4d6e3a",
+              "name": "A draft validation response object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    "draft"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policyTypes\": [\n    \"TRANSFER\",\n    \"TRANSFER\"\n  ],\n  \"rules\": [\n    {\n      \"name\": \"High Value Transfer Policy\",\n      \"id\": \"policy_rule_001\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"TRANSFER\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": false,\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": false,\n          \"approvalGroups\": [\n            {\n              \"threshold\": 2,\n              \"users\": [\n                \"user1\",\n                \"user2\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"SINGLE\",\n          \"users\": [\n            \"user1\",\n            \"user2\"\n          ],\n          \"groups\": [\n            \"group1\",\n            \"group2\"\n          ]\n        }\n      },\n      \"subType\": \"TRANSFER\",\n      \"destination\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"addressType\": \"WHITELISTED\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"account\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"100\",\n          \"max\": \"10000\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"86400\",\n          \"initiator\": \"PER_SINGLE_MATCH\",\n          \"source\": \"PER_SINGLE_MATCH\",\n          \"destination\": \"PER_SINGLE_MATCH\"\n        },\n        \"currency\": \"USD\"\n      },\n      \"amount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": false,\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"OUTBOUND\",\n        \"provider\": \"CHAINALYSIS\",\n        \"riskRating\": \"MEDIUM\",\n        \"riskScore\": \"0.8\",\n        \"exposureType\": \"DIRECT\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"COMPLETED\",\n        \"sourceAddress\": \"0x123...\",\n        \"destAddress\": \"0x456...\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"baseAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          44,\n          0,\n          0,\n          0,\n          0\n        ],\n        \"partial\": false\n      },\n      \"index\": 1\n    },\n    {\n      \"name\": \"High Value Transfer Policy\",\n      \"id\": \"policy_rule_001\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"TRANSFER\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": false,\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": false,\n          \"approvalGroups\": [\n            {\n              \"threshold\": 2,\n              \"users\": [\n                \"user1\",\n                \"user2\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"SINGLE\",\n          \"users\": [\n            \"user1\",\n            \"user2\"\n          ],\n          \"groups\": [\n            \"group1\",\n            \"group2\"\n          ]\n        }\n      },\n      \"subType\": \"TRANSFER\",\n      \"destination\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"addressType\": \"WHITELISTED\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"account\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"100\",\n          \"max\": \"10000\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"86400\",\n          \"initiator\": \"PER_SINGLE_MATCH\",\n          \"source\": \"PER_SINGLE_MATCH\",\n          \"destination\": \"PER_SINGLE_MATCH\"\n        },\n        \"currency\": \"USD\"\n      },\n      \"amount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": false,\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"OUTBOUND\",\n        \"provider\": \"CHAINALYSIS\",\n        \"riskRating\": \"MEDIUM\",\n        \"riskScore\": \"0.8\",\n        \"exposureType\": \"DIRECT\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"COMPLETED\",\n        \"sourceAddress\": \"0x123...\",\n        \"destAddress\": \"0x456...\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"baseAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          44,\n          0,\n          0,\n          0,\n          0\n        ],\n        \"partial\": false\n      },\n      \"index\": 1\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"draftResponse\": {\n    \"draftId\": \"string\",\n    \"status\": \"string\",\n    \"rules\": [\n      {\n        \"name\": \"High Value Transfer Policy\",\n        \"id\": \"policy_rule_001\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"TRANSFER\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"<string>\"\n        },\n        \"verdict\": {\n          \"action\": \"ALLOW\",\n          \"approvers\": {\n            \"canInitiatorApprove\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"allowOperatorAsAuthorizer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"approvalGroups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"designatedSigners\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"users\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"groups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"subType\": \"TRANSFER\",\n        \"destination\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"addressType\": \"WHITELISTED\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"<string>\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"100\",\n            \"max\": \"10000\"\n          },\n          \"timePeriod\": {\n            \"seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"initiator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"source\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"destination\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"currency\": \"USD\"\n        },\n        \"amount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": false,\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"OUTBOUND\",\n          \"provider\": \"CHAINALYSIS\",\n          \"riskRating\": \"MEDIUM\",\n          \"riskScore\": \"0.8\",\n          \"exposureType\": \"DIRECT\",\n          \"category\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"name\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"categoryId\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"status\": \"COMPLETED\",\n          \"sourceAddress\": \"0x123...\",\n          \"destAddress\": \"0x456...\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"baseAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            44,\n            0,\n            0,\n            0,\n            0\n          ],\n          \"partial\": false\n        },\n        \"index\": 1\n      },\n      {\n        \"name\": \"High Value Transfer Policy\",\n        \"id\": \"policy_rule_001\",\n        \"policyEngineVersion\": \"v2\",\n        \"type\": \"TRANSFER\",\n        \"initiator\": \"*\",\n        \"asset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"source\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"<string>\"\n        },\n        \"verdict\": {\n          \"action\": \"ALLOW\",\n          \"approvers\": {\n            \"canInitiatorApprove\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"allowOperatorAsAuthorizer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"approvalGroups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"designatedSigners\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"users\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"groups\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"subType\": \"TRANSFER\",\n        \"destination\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"addressType\": \"WHITELISTED\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"ACCOUNT\"\n        },\n        \"account\": {\n          \"type\": \"VAULT\",\n          \"operator\": \"INCLUDES\",\n          \"subType\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"ids\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"matchFrom\": \"<string>\"\n        },\n        \"amountOverTime\": {\n          \"range\": {\n            \"min\": \"100\",\n            \"max\": \"10000\"\n          },\n          \"timePeriod\": {\n            \"seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"initiator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"source\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"destination\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"currency\": \"USD\"\n        },\n        \"amount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n        \"method\": \"*\",\n        \"isGlobalPolicy\": false,\n        \"programCall\": {\n          \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n        },\n        \"screeningMetadata\": {\n          \"direction\": \"OUTBOUND\",\n          \"provider\": \"CHAINALYSIS\",\n          \"riskRating\": \"MEDIUM\",\n          \"riskScore\": \"0.8\",\n          \"exposureType\": \"DIRECT\",\n          \"category\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"name\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"categoryId\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"status\": \"COMPLETED\",\n          \"sourceAddress\": \"0x123...\",\n          \"destAddress\": \"0x456...\"\n        },\n        \"quoteAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"baseAsset\": {\n          \"nftTransfer\": false,\n          \"assetTypes\": [\n            \"FUNGIBLE\",\n            \"NFT\",\n            \"*\"\n          ],\n          \"operator\": \"INCLUDES\"\n        },\n        \"quoteAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"baseAmount\": {\n          \"min\": \"100\",\n          \"max\": \"10000\",\n          \"currency\": \"USD\"\n        },\n        \"derivationPath\": {\n          \"path\": [\n            44,\n            0,\n            0,\n            0,\n            0\n          ],\n          \"partial\": false\n        },\n        \"index\": 1\n      }\n    ],\n    \"metadata\": {\n      \"policyType\": \"TRANSFER\",\n      \"editedBy\": \"user123\",\n      \"editedAt\": \"2024-01-15T10:30:00Z\",\n      \"publishedBy\": \"user456\",\n      \"publishedAt\": \"2024-01-15T11:00:00Z\"\n    }\n  },\n  \"validation\": {\n    \"status\": \"string\",\n    \"checkResult\": {\n      \"errors\": 1243.7914947311845,\n      \"results\": [\n        {\n          \"index\": 8935.265588536833,\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        {\n          \"index\": 571.1560099609459,\n          \"status\": \"ok\",\n          \"errors\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14898317-38eb-444d-ab39-1f6e494ba39e",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    "draft"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policyTypes\": [\n    \"TRANSFER\",\n    \"TRANSFER\"\n  ],\n  \"rules\": [\n    {\n      \"name\": \"High Value Transfer Policy\",\n      \"id\": \"policy_rule_001\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"TRANSFER\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": false,\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": false,\n          \"approvalGroups\": [\n            {\n              \"threshold\": 2,\n              \"users\": [\n                \"user1\",\n                \"user2\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"SINGLE\",\n          \"users\": [\n            \"user1\",\n            \"user2\"\n          ],\n          \"groups\": [\n            \"group1\",\n            \"group2\"\n          ]\n        }\n      },\n      \"subType\": \"TRANSFER\",\n      \"destination\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"addressType\": \"WHITELISTED\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"account\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"100\",\n          \"max\": \"10000\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"86400\",\n          \"initiator\": \"PER_SINGLE_MATCH\",\n          \"source\": \"PER_SINGLE_MATCH\",\n          \"destination\": \"PER_SINGLE_MATCH\"\n        },\n        \"currency\": \"USD\"\n      },\n      \"amount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": false,\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"OUTBOUND\",\n        \"provider\": \"CHAINALYSIS\",\n        \"riskRating\": \"MEDIUM\",\n        \"riskScore\": \"0.8\",\n        \"exposureType\": \"DIRECT\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"COMPLETED\",\n        \"sourceAddress\": \"0x123...\",\n        \"destAddress\": \"0x456...\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"baseAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          44,\n          0,\n          0,\n          0,\n          0\n        ],\n        \"partial\": false\n      },\n      \"index\": 1\n    },\n    {\n      \"name\": \"High Value Transfer Policy\",\n      \"id\": \"policy_rule_001\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"TRANSFER\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": false,\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": false,\n          \"approvalGroups\": [\n            {\n              \"threshold\": 2,\n              \"users\": [\n                \"user1\",\n                \"user2\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"SINGLE\",\n          \"users\": [\n            \"user1\",\n            \"user2\"\n          ],\n          \"groups\": [\n            \"group1\",\n            \"group2\"\n          ]\n        }\n      },\n      \"subType\": \"TRANSFER\",\n      \"destination\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"addressType\": \"WHITELISTED\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"account\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"100\",\n          \"max\": \"10000\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"86400\",\n          \"initiator\": \"PER_SINGLE_MATCH\",\n          \"source\": \"PER_SINGLE_MATCH\",\n          \"destination\": \"PER_SINGLE_MATCH\"\n        },\n        \"currency\": \"USD\"\n      },\n      \"amount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": false,\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"OUTBOUND\",\n        \"provider\": \"CHAINALYSIS\",\n        \"riskRating\": \"MEDIUM\",\n        \"riskScore\": \"0.8\",\n        \"exposureType\": \"DIRECT\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"COMPLETED\",\n        \"sourceAddress\": \"0x123...\",\n        \"destAddress\": \"0x456...\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"baseAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          44,\n          0,\n          0,\n          0,\n          0\n        ],\n        \"partial\": false\n      },\n      \"index\": 1\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": 5100.294270043409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "533708a4-0e9a-4108-a6ff-588985db1633",
+          "name": "Send publish request for a certain draft ID",
+          "request": {
+            "name": "Send publish request for a certain draft ID",
+            "description": {
+              "content": "**Note:** This endpoint is currently in beta and subject to change. If you want to participate in the Policies beta, contact your Fireblocks Customer Success Manager or send an email to csm@fireblocks.com.\n\nPublishes a draft policy by request, and returns the response.\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin.        \n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "policy",
+                "draft"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"policyTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"draftId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b0af4d1a-0f4a-4ad0-9b50-761a320071f6",
+              "name": "A policy publish result object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    "draft"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policyTypes\": [\n    \"TRANSFER\",\n    \"TRANSFER\"\n  ],\n  \"draftId\": \"draft-123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"AWAITING_QUORUM\",\n  \"rules\": [\n    {\n      \"name\": \"High Value Transfer Policy\",\n      \"id\": \"policy_rule_001\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"TRANSFER\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": false,\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": false,\n          \"approvalGroups\": [\n            {\n              \"threshold\": 2,\n              \"users\": [\n                \"user1\",\n                \"user2\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"SINGLE\",\n          \"users\": [\n            \"user1\",\n            \"user2\"\n          ],\n          \"groups\": [\n            \"group1\",\n            \"group2\"\n          ]\n        }\n      },\n      \"subType\": \"TRANSFER\",\n      \"destination\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"addressType\": \"WHITELISTED\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"account\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"100\",\n          \"max\": \"10000\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"86400\",\n          \"initiator\": \"PER_SINGLE_MATCH\",\n          \"source\": \"PER_SINGLE_MATCH\",\n          \"destination\": \"PER_SINGLE_MATCH\"\n        },\n        \"currency\": \"USD\"\n      },\n      \"amount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": false,\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"OUTBOUND\",\n        \"provider\": \"CHAINALYSIS\",\n        \"riskRating\": \"MEDIUM\",\n        \"riskScore\": \"0.8\",\n        \"exposureType\": \"DIRECT\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"COMPLETED\",\n        \"sourceAddress\": \"0x123...\",\n        \"destAddress\": \"0x456...\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"baseAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          44,\n          0,\n          0,\n          0,\n          0\n        ],\n        \"partial\": false\n      },\n      \"index\": 1\n    },\n    {\n      \"name\": \"High Value Transfer Policy\",\n      \"id\": \"policy_rule_001\",\n      \"policyEngineVersion\": \"v2\",\n      \"type\": \"TRANSFER\",\n      \"initiator\": \"*\",\n      \"asset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"source\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"verdict\": {\n        \"action\": \"ALLOW\",\n        \"approvers\": {\n          \"canInitiatorApprove\": false,\n          \"operator\": \"AND\",\n          \"allowOperatorAsAuthorizer\": false,\n          \"approvalGroups\": [\n            {\n              \"threshold\": 2,\n              \"users\": [\n                \"user1\",\n                \"user2\"\n              ]\n            }\n          ]\n        },\n        \"designatedSigners\": {\n          \"type\": \"SINGLE\",\n          \"users\": [\n            \"user1\",\n            \"user2\"\n          ],\n          \"groups\": [\n            \"group1\",\n            \"group2\"\n          ]\n        }\n      },\n      \"subType\": \"TRANSFER\",\n      \"destination\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"addressType\": \"WHITELISTED\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"ACCOUNT\"\n      },\n      \"account\": {\n        \"type\": \"VAULT\",\n        \"operator\": \"INCLUDES\",\n        \"subType\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"ids\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"account123\",\n            \"subType\": \"INTERNAL\",\n            \"address\": \"0x123...\"\n          }\n        ],\n        \"matchFrom\": \"<string>\"\n      },\n      \"amountOverTime\": {\n        \"range\": {\n          \"min\": \"100\",\n          \"max\": \"10000\"\n        },\n        \"timePeriod\": {\n          \"seconds\": \"86400\",\n          \"initiator\": \"PER_SINGLE_MATCH\",\n          \"source\": \"PER_SINGLE_MATCH\",\n          \"destination\": \"PER_SINGLE_MATCH\"\n        },\n        \"currency\": \"USD\"\n      },\n      \"amount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"externalDescriptor\": \"High value transfer policy for institutional clients\",\n      \"method\": \"*\",\n      \"isGlobalPolicy\": false,\n      \"programCall\": {\n        \"allowedSolanaProgramCalls\": \"WHITELISTED\"\n      },\n      \"screeningMetadata\": {\n        \"direction\": \"OUTBOUND\",\n        \"provider\": \"CHAINALYSIS\",\n        \"riskRating\": \"MEDIUM\",\n        \"riskScore\": \"0.8\",\n        \"exposureType\": \"DIRECT\",\n        \"category\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"categoryId\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"status\": \"COMPLETED\",\n        \"sourceAddress\": \"0x123...\",\n        \"destAddress\": \"0x456...\"\n      },\n      \"quoteAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"baseAsset\": {\n        \"nftTransfer\": false,\n        \"assetTypes\": [\n          \"FUNGIBLE\",\n          \"NFT\",\n          \"*\"\n        ],\n        \"operator\": \"INCLUDES\"\n      },\n      \"quoteAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"baseAmount\": {\n        \"min\": \"100\",\n        \"max\": \"10000\",\n        \"currency\": \"USD\"\n      },\n      \"derivationPath\": {\n        \"path\": [\n          44,\n          0,\n          0,\n          0,\n          0\n        ],\n        \"partial\": false\n      },\n      \"index\": 1\n    }\n  ],\n  \"checkResult\": {\n    \"errors\": 8.305977653666474,\n    \"results\": [\n      {\n        \"index\": 7374.933210313017,\n        \"status\": \"ok\",\n        \"errors\": [\n          {\n            \"errorMessage\": \"string\",\n            \"errorCode\": 8030.32175541411,\n            \"errorCodeName\": \"string\",\n            \"errorField\": \"operators\"\n          },\n          {\n            \"errorMessage\": \"string\",\n            \"errorCode\": 3545.2417154021778,\n            \"errorCodeName\": \"string\",\n            \"errorField\": \"amountAggregation\"\n          }\n        ]\n      },\n      {\n        \"index\": 8001.8019440347225,\n        \"status\": \"ok\",\n        \"errors\": [\n          {\n            \"errorMessage\": \"string\",\n            \"errorCode\": 1862.5464178580464,\n            \"errorCodeName\": \"string\",\n            \"errorField\": \"src\"\n          },\n          {\n            \"errorMessage\": \"string\",\n            \"errorCode\": 726.5470531734852,\n            \"errorCodeName\": \"string\",\n            \"errorField\": \"designatedSigner\"\n          }\n        ]\n      }\n    ]\n  },\n  \"metadata\": {\n    \"policyType\": \"TRANSFER\",\n    \"editedBy\": \"user123\",\n    \"editedAt\": \"2024-01-15T10:30:00Z\",\n    \"publishedBy\": \"user456\",\n    \"publishedAt\": \"2024-01-15T11:00:00Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ecfe54ba-54a7-4913-aa8f-da9d3829ea27",
+              "name": "Error Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    "draft"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.",
+                    "key": "Idempotency-Key",
+                    "value": "some-unique-id"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policyTypes\": [\n    \"TRANSFER\",\n    \"TRANSFER\"\n  ],\n  \"draftId\": \"draft-123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Request-ID",
+                  "value": "",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": 5100.294270043409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireblocks.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b748f5e1-4024-456e-8304-e5b86d822e32",
+    "name": "Fireblocks Blockchains and Assets Approval Requests Policy Editor V2 (Beta) API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.\n\n- Visit our website for more information: [Fireblocks Website](https://fireblocks.com)\n- Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)\n\n\nContact Support:\n Email: developers@fireblocks.com",
+      "type": "text/plain"
+    }
+  }
+}
