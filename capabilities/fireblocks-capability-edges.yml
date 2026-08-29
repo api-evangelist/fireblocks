@@ -1,0 +1,48 @@
+slug: fireblocks
+provider: fireblocks
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Compliance
+  spec_file: fireblocks-compliance-api-openapi.yml
+  capability_id: BC-130.10
+  capability_id_l1: BC-130
+  capability_name: Regulatory Compliance Management
+  confidence: 0.85
+  evidence: POST /screening/travel_rule/transaction/validate 'Validate Travel Rule Transaction'; GET /screening/aml/policy_configuration
+    'Get AML Screening Policy Configuration'
+  reason: The surface implements FATF Travel Rule validation, VASP registry lookup and AML screening policy
+    configuration — adherence to sector-specific financial-crime regulation, i.e. Regulatory Compliance
+    Management. Some ambiguity only because screening is also a risk-control activity, but the operations
+    name the regulation explicitly.
+- tag: Webhooks V2
+  spec_file: fireblocks-webhooks-v2-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.85
+  evidence: POST /webhooks createWebhook  Create a new webhook; GET /webhooks/{webhookId}/notifications/{notificationId}/attempts  Get
+    notification attempts; schema WebhookEvent
+  reason: Full CRUD over outbound webhook subscriptions plus notification event delivery, attempts and
+    failed-delivery redrive — the lifecycle of outbound webhook subscriptions, event schemas and delivery
+    reliability described by BC-4270.80.
+- tag: Webhooks
+  spec_file: fireblocks-webhooks-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.7
+  evidence: POST /webhooks/resend  resendWebhooks  Resend failed webhooks
+  reason: Operations exist solely to redrive outbound webhook deliveries, which is exactly the delivery-reliability
+    aspect of Webhook & Event Subscription Management on the developer platform. Confidence moderated
+    because the surface is only two resend endpoints, with no subscription lifecycle.
