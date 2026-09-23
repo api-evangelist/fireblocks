@@ -1,14 +1,12 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Policy Editor (Beta) API
+  title: Fireblocks Blockchains and Assets Approval Requests Policy…
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
-    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+    - Visit our website for more information: Fireblocks Website
 
-    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
-
-    '
+    - Visit our developer docs: Fireblocks DevPortal'
   version: 1.8.0
   contact:
     email: developers@fireblocks.com
@@ -25,13 +23,15 @@ paths:
     get:
       operationId: getActivePolicy
       summary: Get the active policy and its validation
-      description: 'Returns the active policy and its validation. </br>
+      description: 'Returns the active policy and its validation.
+
 
         **Note:** These endpoints are currently in beta and might be subject to changes.
 
         If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
       tags:
       - Policy Editor (Beta)
       x-readme:
@@ -71,13 +71,15 @@ paths:
     get:
       operationId: getDraft
       summary: Get the active draft
-      description: 'Returns the active draft and its validation. </br>
+      description: 'Returns the active draft and its validation.
+
 
         **Note:** These endpoints are currently in beta and might be subject to changes.
 
         If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
       tags:
       - Policy Editor (Beta)
       x-readme:
@@ -116,15 +118,17 @@ paths:
     put:
       operationId: updateDraft
       summary: Update the draft with a new set of rules
-      description: 'Update the draft and return its validation. </br>
+      description: 'Update the draft and return its validation.
+
 
         **Note:** These endpoints are currently in beta and might be subject to changes.
 
         If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.
 
-        Learn more about Fireblocks Transaction Authorization Policy in the following [guide](https://developers.fireblocks.com/docs/set-transaction-authorization-policy).
+        Learn more about Fireblocks Transaction Authorization Policy in the following guide.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
       tags:
       - Policy Editor (Beta)
       parameters:
@@ -171,13 +175,15 @@ paths:
     post:
       operationId: publishDraft
       summary: Send publish request for a certain draft id
-      description: 'Send publish request of certain draft id and returns the response. </br>
+      description: 'Send publish request of certain draft id and returns the response.
+
 
         **Note:** These endpoints are currently in beta and might be subject to changes.
 
         If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
       tags:
       - Policy Editor (Beta)
       x-readme:
@@ -225,13 +231,15 @@ paths:
     post:
       operationId: publishPolicyRules
       summary: Send publish request for a set of policy rules
-      description: 'Send publish request of set of policy rules and returns the response. </br>
+      description: 'Send publish request of set of policy rules and returns the response.
+
 
         **Note:** These endpoints are currently in beta and might be subject to changes.
 
         If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin.'
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
       tags:
       - Policy Editor (Beta)
       x-readme:
@@ -277,26 +285,6 @@ paths:
         source: response = fireblocks.policy_editor_beta.publish_policy_rules(policy_rules, idempotency_key);
 components:
   schemas:
-    PolicyValidation:
-      type: object
-      description: Policy validation object
-      properties:
-        status:
-          type: string
-          description: Validation status
-        checkResult:
-          $ref: '#/components/schemas/PolicyCheckResult'
-      required:
-      - status
-      - checkResult
-    PolicyRules:
-      type: object
-      properties:
-        rules:
-          description: Policy rules
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyRule'
     DraftResponse:
       type: object
       description: Response object for draft operations
@@ -319,44 +307,138 @@ components:
       - status
       - rules
       - metadata
-    AmountAggregationTimePeriodMethod:
+    PolicyRuleError:
+      type: object
+      description: Rule validation result error
+      properties:
+        errorMessage:
+          type: string
+          description: Error message
+        errorCode:
+          type: number
+          description: error code
+        errorCodeName:
+          type: string
+          description: error code name
+        errorField:
+          type: string
+          enum:
+          - operator
+          - operators
+          - authorizationGroups
+          - designatedSigner
+          - designatedSigners
+          - contractMethods
+          - amountAggregation
+          - src
+          - dst
+          description: 'The field which the error relates to
+
+            * operator - transaction initiator
+
+            * operators - transaction initiators
+
+            * authorizationGroups - transaction authorizer groups
+
+            * designatedSigner - transaction signer
+
+            * designatedSigners - transaction signers
+
+            * contractMethods - contract methods
+
+            * amountAggregation - transaction amount aggregation configuration
+
+            * src - transaction source asset configuration
+
+            * dst - transaction destination asset configuration
+
+            '
+      required:
+      - errorMessage
+      - errorCode
+      - errorCodeName
+      - errorField
+    PolicyRules:
+      type: object
+      properties:
+        rules:
+          description: Policy rules
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+    PolicyAndValidationResponse:
+      type: object
+      description: Policy validation
+      properties:
+        policy:
+          $ref: '#/components/schemas/PolicyResponse'
+        validation:
+          $ref: '#/components/schemas/PolicyValidation'
+      required:
+      - policy
+      - validation
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    PublishDraftRequestV2:
+      type: object
+      description: Request schema for publishing draft with policy types and draft ID
+      required:
+      - policyTypes
+      - draftId
+      properties:
+        policyTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTypeV2'
+        draftId:
+          type: string
+          description: The ID of the draft to publish
+          example: draft-123
+    PolicySrcOrDestType:
       type: string
       enum:
-      - PER_SINGLE_MATCH
-      - ACROSS_ALL_MATCHES
-      description: '* PER_SINGLE_MATCH - Apply the limit to each listed entity
-
-        * ACROSS_ALL_MATCHES - Apply the limit to the sum of all listed entities
-
-        '
-    PolicySrcOrDestId:
-      type: string
-      description: 'Defines the account id, options are
-
-        * "*" - All accounts
-
-        * Specific account id
-
-        '
-    PolicySrcOrDestSubType:
-      type: string
-      enum:
-      - EXTERNAL
-      - INTERNAL
-      - CONTRACT
-      - EXCHANGETEST
+      - EXCHANGE
+      - UNMANAGED
+      - VAULT
+      - NETWORK_CONNECTION
+      - COMPOUND
+      - FIAT_ACCOUNT
+      - ONE_TIME_ADDRESS
       - '*'
-      description: '* EXTERNAL - A whitelisted wallet assigned as external is typically used for addresses managed by your clients and counterparties
+      description: '* EXCHANGE - A third-party exchange account connected to your workspace
 
-        * INTERNAL - A whitelisted wallet assigned as internal, is typically used for addresses that you control outside of your Fireblocks workspace
+        * UNMANAGED - A unmanaged wallet outside of Fireblocks workspace
 
-        * CONTRACT - A whitelisted wallet assigned as contract is for identifying and managing external smart contracts
+        * VAULT - An account in your Fireblocks Vault
 
-        * EXCHANGETEST - Exchanges which operate only on testnet assets
+        * NETWORK_CONNECTION - A connection in your Fireblocks network
 
-        * "*" - All subtypes
+        * COMPOUND - (deprecated) An asset retrieved by using the Compound DeFI protocol
+
+        * FIAT_ACCOUNT - A third-party fiat account connected to your workspace
+
+        * ONE_TIME_ADDRESS - A non-whitelisted asset from your Fireblocks Workspace
+
+        * "*" - All types
 
         '
+    PolicyValidation:
+      type: object
+      description: Policy validation object
+      properties:
+        status:
+          type: string
+          description: Validation status
+        checkResult:
+          $ref: '#/components/schemas/PolicyCheckResult'
+      required:
+      - status
+      - checkResult
     PolicyTypeV2:
       type: string
       enum:
@@ -382,65 +464,110 @@ components:
       - TR_NOTABENE_POST_SCREENING
       description: Policy type enumeration
       example: TRANSFER
-    PolicyAndValidationResponse:
+    PolicyCheckResult:
       type: object
-      description: Policy validation
+      description: Policy rules validation result
       properties:
-        policy:
-          $ref: '#/components/schemas/PolicyResponse'
+        errors:
+          type: number
+          description: Number of errors
+        result:
+          type: array
+          description: A set of validation results
+          items:
+            $ref: '#/components/schemas/PolicyRuleCheckResult'
+      required:
+      - errors
+      - result
+    SrcOrDestAttributes:
+      type: array
+      description: 'Defines source or destination component, options are:
+
+        * id only
+
+        * id and type - first item in the array MUST be id.
+
+        * id, type and subtype - first item in the array MUST be id and second item MUST be type.
+
+        '
+      items:
+        anyOf:
+        - $ref: '#/components/schemas/PolicySrcOrDestId'
+        - $ref: '#/components/schemas/PolicySrcOrDestType'
+        - $ref: '#/components/schemas/PolicySrcOrDestSubType'
+      minItems: 1
+      maxItems: 3
+    PolicySrcOrDestSubType:
+      type: string
+      enum:
+      - EXTERNAL
+      - INTERNAL
+      - CONTRACT
+      - EXCHANGETEST
+      - '*'
+      description: '* EXTERNAL - A whitelisted wallet assigned as external is typically used for addresses managed by your clients and counterparties
+
+        * INTERNAL - A whitelisted wallet assigned as internal, is typically used for addresses that you control outside of your Fireblocks workspace
+
+        * CONTRACT - A whitelisted wallet assigned as contract is for identifying and managing external smart contracts
+
+        * EXCHANGETEST - Exchanges which operate only on testnet assets
+
+        * "*" - All subtypes
+
+        '
+    AmountAggregationTimePeriodMethod:
+      type: string
+      enum:
+      - PER_SINGLE_MATCH
+      - ACROSS_ALL_MATCHES
+      description: '* PER_SINGLE_MATCH - Apply the limit to each listed entity
+
+        * ACROSS_ALL_MATCHES - Apply the limit to the sum of all listed entities
+
+        '
+    DraftReviewAndValidationResponse:
+      type: object
+      description: Draft validation
+      properties:
+        draftResponse:
+          $ref: '#/components/schemas/DraftResponse'
         validation:
           $ref: '#/components/schemas/PolicyValidation'
       required:
-      - policy
+      - draftResponse
       - validation
-    ErrorSchema:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: number
-    PolicyMetadata:
-      type: object
-      description: Policy related metadata
-      properties:
-        editedBy:
-          type: string
-          description: The user id of the user who last edited the policy
-        editedAt:
-          type: string
-          description: The timestamp of the last edit of the policy
-        publishedBy:
-          type: string
-          description: The user id of the user who last published the policy
-        publishedAt:
-          type: string
-          description: The timestamp of the last publish of the policy
-    PolicyStatus:
+    PolicySrcOrDestId:
       type: string
-      enum:
-      - SUCCESS
-      - UNVALIDATED
-      - INVALID_CONFIGURATION
-      - PENDING
-      - PENDING_CONSOLE_APPROVAL
-      - AWAITING_QUORUM
-      - UNHANDLED_ERROR
-      description: '* SUCCESS - success
+      description: 'Defines the account id, options are
 
-        * UNVALIDATED - not validated yet
+        * "*" - All accounts
 
-        * INVALID_CONFIGURATION - at least one rule is invalid
-
-        * PENDING - pending approval
-
-        * PENDING_CONSOLE_APPROVAL - pending approval from the console app
-
-        * AWAITING_QUORUM - pending quorum approval
-
-        * UNHANDLED_ERROR - unhandled error
+        * Specific account id
 
         '
+    PolicyRuleCheckResult:
+      type: object
+      description: The rule validation result
+      properties:
+        index:
+          type: number
+          description: Rule index number in the policy
+        status:
+          type: string
+          description: Validation status
+          enum:
+          - ok
+          - failure
+        errors:
+          type: array
+          description: A set of rule validation error objects
+          items:
+            $ref: '#/components/schemas/PolicyRuleError'
+      required:
+      - index
+      - status
+      - errors
     PolicyRule:
       type: object
       description: Policy rule which is enforced on transactions
@@ -713,6 +840,61 @@ components:
       - amountScope
       - amount
       - periodSec
+    PolicyResponse:
+      type: object
+      description: Response object for policy operations
+      properties:
+        rules:
+          type: array
+          description: A set of policy rules
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadata'
+      required:
+      - rules
+      - metadata
+    PolicyStatus:
+      type: string
+      enum:
+      - SUCCESS
+      - UNVALIDATED
+      - INVALID_CONFIGURATION
+      - PENDING
+      - PENDING_CONSOLE_APPROVAL
+      - AWAITING_QUORUM
+      - UNHANDLED_ERROR
+      description: '* SUCCESS - success
+
+        * UNVALIDATED - not validated yet
+
+        * INVALID_CONFIGURATION - at least one rule is invalid
+
+        * PENDING - pending approval
+
+        * PENDING_CONSOLE_APPROVAL - pending approval from the console app
+
+        * AWAITING_QUORUM - pending quorum approval
+
+        * UNHANDLED_ERROR - unhandled error
+
+        '
+    PolicyMetadata:
+      type: object
+      description: Policy related metadata
+      properties:
+        editedBy:
+          type: string
+          description: The user id of the user who last edited the policy
+        editedAt:
+          type: string
+          description: The timestamp of the last edit of the policy
+        publishedBy:
+          type: string
+          description: The user id of the user who last published the policy
+        publishedAt:
+          type: string
+          description: The timestamp of the last publish of the policy
     PublishResult:
       type: object
       description: Response object of the publish policy operation
@@ -732,180 +914,6 @@ components:
       - rules
       - checkResult
       - metadata
-    PolicySrcOrDestType:
-      type: string
-      enum:
-      - EXCHANGE
-      - UNMANAGED
-      - VAULT
-      - NETWORK_CONNECTION
-      - COMPOUND
-      - FIAT_ACCOUNT
-      - ONE_TIME_ADDRESS
-      - '*'
-      description: '* EXCHANGE - A third-party exchange account connected to your workspace
-
-        * UNMANAGED - A unmanaged wallet outside of Fireblocks workspace
-
-        * VAULT - An account in your Fireblocks Vault
-
-        * NETWORK_CONNECTION - A connection in your Fireblocks network
-
-        * COMPOUND - (deprecated) An asset retrieved by using the Compound DeFI protocol
-
-        * FIAT_ACCOUNT - A third-party fiat account connected to your workspace
-
-        * ONE_TIME_ADDRESS - A non-whitelisted asset from your Fireblocks Workspace
-
-        * "*" - All types
-
-        '
-    DraftReviewAndValidationResponse:
-      type: object
-      description: Draft validation
-      properties:
-        draftResponse:
-          $ref: '#/components/schemas/DraftResponse'
-        validation:
-          $ref: '#/components/schemas/PolicyValidation'
-      required:
-      - draftResponse
-      - validation
-    PublishDraftRequestV2:
-      type: object
-      description: Request schema for publishing draft with policy types and draft ID
-      required:
-      - policyTypes
-      - draftId
-      properties:
-        policyTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyTypeV2'
-        draftId:
-          type: string
-          description: The ID of the draft to publish
-          example: draft-123
-    PolicyRuleError:
-      type: object
-      description: Rule validation result error
-      properties:
-        errorMessage:
-          type: string
-          description: Error message
-        errorCode:
-          type: number
-          description: error code
-        errorCodeName:
-          type: string
-          description: error code name
-        errorField:
-          type: string
-          enum:
-          - operator
-          - operators
-          - authorizationGroups
-          - designatedSigner
-          - designatedSigners
-          - contractMethods
-          - amountAggregation
-          - src
-          - dst
-          description: 'The field which the error relates to
-
-            * operator - transaction initiator
-
-            * operators - transaction initiators
-
-            * authorizationGroups - transaction authorizer groups
-
-            * designatedSigner - transaction signer
-
-            * designatedSigners - transaction signers
-
-            * contractMethods - contract methods
-
-            * amountAggregation - transaction amount aggregation configuration
-
-            * src - transaction source asset configuration
-
-            * dst - transaction destination asset configuration
-
-            '
-      required:
-      - errorMessage
-      - errorCode
-      - errorCodeName
-      - errorField
-    PolicyResponse:
-      type: object
-      description: Response object for policy operations
-      properties:
-        rules:
-          type: array
-          description: A set of policy rules
-          items:
-            $ref: '#/components/schemas/PolicyRule'
-        metadata:
-          $ref: '#/components/schemas/PolicyMetadata'
-      required:
-      - rules
-      - metadata
-    PolicyRuleCheckResult:
-      type: object
-      description: The rule validation result
-      properties:
-        index:
-          type: number
-          description: Rule index number in the policy
-        status:
-          type: string
-          description: Validation status
-          enum:
-          - ok
-          - failure
-        errors:
-          type: array
-          description: A set of rule validation error objects
-          items:
-            $ref: '#/components/schemas/PolicyRuleError'
-      required:
-      - index
-      - status
-      - errors
-    SrcOrDestAttributes:
-      type: array
-      description: 'Defines source or destination component, options are:
-
-        * id only
-
-        * id and type - first item in the array MUST be id.
-
-        * id, type and subtype - first item in the array MUST be id and second item MUST be type.
-
-        '
-      items:
-        anyOf:
-        - $ref: '#/components/schemas/PolicySrcOrDestId'
-        - $ref: '#/components/schemas/PolicySrcOrDestType'
-        - $ref: '#/components/schemas/PolicySrcOrDestSubType'
-      minItems: 1
-      maxItems: 3
-    PolicyCheckResult:
-      type: object
-      description: Policy rules validation result
-      properties:
-        errors:
-          type: number
-          description: Number of errors
-        result:
-          type: array
-          description: A set of validation results
-          items:
-            $ref: '#/components/schemas/PolicyRuleCheckResult'
-      required:
-      - errors
-      - result
   responses:
     Error:
       description: Error Response

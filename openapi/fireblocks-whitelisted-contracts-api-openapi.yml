@@ -1,14 +1,12 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Whitelisted Contracts API
+  title: Fireblocks Whitelisted Wallets Whitelisted Contracts API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
-    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+    - Visit our website for more information: Fireblocks Website
 
-    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
-
-    '
+    - Visit our developer docs: Fireblocks DevPortal'
   version: 1.8.0
   contact:
     email: developers@fireblocks.com
@@ -26,7 +24,8 @@ paths:
       summary: List Whitelisted Contracts
       description: 'Gets a list of whitelisted contracts.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
       tags:
       - Whitelisted Contracts
       responses:
@@ -65,10 +64,10 @@ paths:
       description: 'Creates a new whitelisted contract.
 
 
-        Learn more about Whitelisted Smart Contracts [here](https://developers.fireblocks.com/docs/whitelist-addresses#contracts).
+        Learn more about Whitelisted Smart Contracts here.
 
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Whitelisted Contracts
       parameters:
@@ -115,7 +114,7 @@ paths:
       description: 'Returns a whitelisted contract by Fireblocks Contract ID.
 
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Whitelisted Contracts
       parameters:
@@ -161,7 +160,8 @@ paths:
       summary: Delete a Whitelisted Contract
       description: 'Deletes a whitelisted contract by Fireblocks Contract ID.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Whitelisted Contracts
       parameters:
@@ -205,7 +205,7 @@ paths:
       description: 'Returns a whitelisted contract''s asset by ID.
 
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Whitelisted Contracts
       parameters:
@@ -259,7 +259,8 @@ paths:
       summary: Add an Asset to a Whitelisted Contract
       description: 'Adds an asset to an existing whitelisted contract.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Whitelisted Contracts
       parameters:
@@ -319,7 +320,8 @@ paths:
       summary: Delete a Whitelisted Contract's Asset
       description: 'Deletes a whitelisted contract''s asset by Fireblocks Contract ID and Asset ID.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Whitelisted Contracts
       parameters:
@@ -366,11 +368,28 @@ paths:
       - lang: Python
         source: response = fireblocks.contracts.delete_contract_asset(contract_id, asset_id);
 components:
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   schemas:
-    GetContractsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/UnmanagedWallet'
+    AddContractAssetRequest:
+      type: object
+      properties:
+        address:
+          type: string
+          description: The contract's address (or xpub) of the wallet
+        tag:
+          type: string
+          description: The destination tag, for XRP wallets
+      required:
+      - address
     ExternalWalletAsset:
       type: object
       properties:
@@ -392,65 +411,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WalletAssetAdditionalInfo'
-    WalletAsset:
-      type: object
-      properties:
-        id:
-          type: string
-        balance:
-          type: string
-        lockedAmount:
-          type: string
-        status:
-          $ref: '#/components/schemas/ConfigChangeRequestStatus'
-        address:
-          type: string
-        tag:
-          type: string
-        activationTime:
-          type: string
-    CreateContractRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: the contract's display name
-    UnmanagedWallet:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        customerRefId:
-          type: string
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/WalletAsset'
-      required:
-      - id
-      - name
-      - assets
-    AddContractAssetRequest:
-      type: object
-      properties:
-        address:
-          type: string
-          description: The contract's address (or xpub) of the wallet
-        tag:
-          type: string
-          description: The destination tag, for XRP wallets
-      required:
-      - address
-    ConfigChangeRequestStatus:
-      type: string
-      enum:
-      - WAITING_FOR_APPROVAL
-      - APPROVED
-      - CANCELLED
-      - REJECTED
-      - FAILED
     WalletAssetAdditionalInfo:
       type: object
       properties:
@@ -486,16 +446,58 @@ components:
           type: string
         speiName:
           type: string
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
+    UnmanagedWallet:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        customerRefId:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletAsset'
+      required:
+      - id
+      - name
+      - assets
+    ConfigChangeRequestStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - APPROVED
+      - CANCELLED
+      - REJECTED
+      - FAILED
+    CreateContractRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: the contract's display name
+    WalletAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        status:
+          $ref: '#/components/schemas/ConfigChangeRequestStatus'
+        address:
+          type: string
+        tag:
+          type: string
+        activationTime:
+          type: string
+    GetContractsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UnmanagedWallet'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

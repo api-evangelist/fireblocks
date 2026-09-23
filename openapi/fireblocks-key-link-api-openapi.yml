@@ -1,14 +1,12 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Key Link API
+  title: Fireblocks Workspace Management Key Link API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
-    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+    - Visit our website for more information: Fireblocks Website
 
-    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
-
-    '
+    - Visit our developer docs: Fireblocks DevPortal'
   version: 1.8.0
   contact:
     email: developers@fireblocks.com
@@ -29,7 +27,8 @@ paths:
 
         Please note that this endpoint is available only for Key Link enabled workspaces.
 
-        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+
+        Endpoint Permission: Admin and Non-Signing Admin.'
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
       requestBody:
@@ -77,7 +76,8 @@ paths:
 
         Please note that this endpoint is available only for Key Link enabled workspaces.
 
-        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+
+        Endpoint Permission: Admin and Non-Signing Admin.'
       parameters:
       - name: pageCursor
         required: false
@@ -190,7 +190,8 @@ paths:
 
         Please note that this endpoint is available only for Key Link enabled workspaces.
 
-        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+
+        Endpoint Permission: Admin and Non-Signing Admin.'
       parameters:
       - name: keyId
         required: true
@@ -238,7 +239,8 @@ paths:
 
         Please note that this endpoint is available only for Key Link enabled workspaces.
 
-        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+
+        Endpoint Permission: Admin and Non-Signing Admin.'
       parameters:
       - name: keyId
         required: true
@@ -293,7 +295,8 @@ paths:
 
         Please note that this endpoint is available only for Key Link enabled workspaces.
 
-        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+
+        Endpoint Permission: Admin and Non-Signing Admin.'
       parameters:
       - name: keyId
         required: true
@@ -344,7 +347,8 @@ paths:
 
         Please note that this endpoint is available only for Key Link enabled workspaces.
 
-        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+
+        Endpoint Permission: Admin and Non-Signing Admin.'
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
       requestBody:
@@ -392,7 +396,8 @@ paths:
 
         Please note that this endpoint is available only for Key Link enabled workspaces.
 
-        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+
+        Endpoint Permission: Admin and Non-Signing Admin.'
       parameters:
       - name: pageCursor
         required: false
@@ -469,7 +474,8 @@ paths:
 
         Please note that this endpoint is available only for Key Link enabled workspaces.
 
-        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+
+        Endpoint Permission: Admin and Non-Signing Admin.'
       parameters:
       - name: keyId
         required: true
@@ -515,7 +521,8 @@ paths:
 
         Please note that this endpoint is available only for Key Link enabled workspaces.
 
-        </br>Endpoint Permission: Admin and Non-Signing Admin.'
+
+        Endpoint Permission: Admin and Non-Signing Admin.'
       parameters:
       - name: keyId
         required: true
@@ -564,41 +571,57 @@ paths:
         source: response = fireblocks.key_link_beta.disable_validation_key(modify_validation_key_dto, key_id);
 components:
   schemas:
-    GetSigningKeyResponseDto:
+    SigningKeyDto:
       type: object
       properties:
-        data:
-          description: Response object for getting external signing keys.
-          type: array
-          items:
-            $ref: '#/components/schemas/SigningKeyDto'
-        next:
+        keyId:
           type: string
-          description: The ID of the next page
-      required:
-      - data
-    GetValidationKeyResponseDto:
-      type: object
-      properties:
-        data:
-          description: Response object for getting external validation keys.
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationKeyDto'
-        next:
+          minLength: 36
+          maxLength: 36
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+          description: External signing key id set by Fireblocks.
+        signingDeviceKeyId:
           type: string
-          description: The ID of the next page
-      required:
-      - data
-    ModifyValidationKeyDto:
-      type: object
-      properties:
+          maxLength: 256
+          example: MyKey1
+          description: The ID, name or label of the key specified on the customer's signing device.
+        publicKeyPem:
+          type: string
+          example: '-----BEGIN PUBLIC KEY ... END PUBLIC KEY-----'
+          description: PEM encoded public key
+        algorithm:
+          type: string
+          example: ECDSA_SECP256K1
+          description: 'Algorithm and curve used for the signature. Can be: ECDSA_SECP256K1 or EDDSA_ED25519'
         enabled:
           type: boolean
-          example: false
-          description: Disable validation key
+          example: true
+          description: True if the signing key is enabled
+        vaultAccountId:
+          type:
+          - number
+          - 'null'
+          example: 10
+          description: Id of the vault account which this key is linked to
+        agentUserId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: d18847b5-1df6-4c46-8f99-5cce47284529
+          description: Id of user that represent agent servers that can sign with the key
+        createdAt:
+          type: number
+          example: 124757537
+          description: Creation date (timestamp) in milliseconds.
       required:
+      - keyId
+      - signingDeviceKeyId
+      - publicKeyPem
+      - algorithm
       - enabled
+      - vaultAccountId
+      - agentUserId
+      - createdAt
     CreateValidationKeyResponseDto:
       type: object
       properties:
@@ -625,6 +648,28 @@ components:
       - admins
       - approvalThreshold
       - requestId
+    GetSigningKeyResponseDto:
+      type: object
+      properties:
+        data:
+          description: Response object for getting external signing keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/SigningKeyDto'
+        next:
+          type: string
+          description: The ID of the next page
+      required:
+      - data
+    ModifyValidationKeyDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          example: false
+          description: Disable validation key
+      required:
+      - enabled
     CreateSigningKeyDto:
       type: object
       properties:
@@ -664,82 +709,6 @@ components:
       - signingDeviceKeyId
       - signedCertPem
       - agentUserId
-    SigningKeyDto:
-      type: object
-      properties:
-        keyId:
-          type: string
-          minLength: 36
-          maxLength: 36
-          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
-          description: External signing key id set by Fireblocks.
-        signingDeviceKeyId:
-          type: string
-          maxLength: 256
-          example: MyKey1
-          description: The ID, name or label of the key specified on the customer's signing device.
-        publicKeyPem:
-          type: string
-          example: '-----BEGIN PUBLIC KEY ... END PUBLIC KEY-----'
-          description: PEM encoded public key
-        algorithm:
-          type: string
-          example: ECDSA_SECP256K1
-          description: 'Algorithm and curve used for the signature. Can be: ECDSA_SECP256K1 or EDDSA_ED25519'
-        enabled:
-          type: boolean
-          example: true
-          description: True if the signing key is enabled
-        vaultAccountId:
-          type: number
-          nullable: true
-          example: 10
-          description: Id of the vault account which this key is linked to
-        agentUserId:
-          type: string
-          minLength: 36
-          maxLength: 36
-          example: d18847b5-1df6-4c46-8f99-5cce47284529
-          description: Id of user that represent agent servers that can sign with the key
-        createdAt:
-          type: number
-          example: 124757537
-          description: Creation date (timestamp) in milliseconds.
-      required:
-      - keyId
-      - signingDeviceKeyId
-      - publicKeyPem
-      - algorithm
-      - enabled
-      - vaultAccountId
-      - agentUserId
-      - createdAt
-    ModifySigningKeyAgentIdDto:
-      type: object
-      properties:
-        agentUserId:
-          type: string
-          minLength: 36
-          maxLength: 36
-          example: d18847b5-1df6-4c46-8f99-5cce47284529
-          description: Id of user that represent agent servers which signs with the key
-      required:
-      - agentUserId
-    CreateValidationKeyDto:
-      type: object
-      properties:
-        publicKeyPem:
-          type: string
-          example: '-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----'
-          description: The PEM encoded public key of the validation key being added
-        daysTillExpired:
-          type: number
-          minimum: 1
-          example: 365
-          description: The number of days from the date the validation key was added until it expires
-      required:
-      - publicKeyPem
-      - daysTillExpired
     ValidationKeyDto:
       type: object
       properties:
@@ -771,6 +740,21 @@ components:
       - daysTillExpired
       - enabled
       - createdAt
+    CreateValidationKeyDto:
+      type: object
+      properties:
+        publicKeyPem:
+          type: string
+          example: '-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----'
+          description: The PEM encoded public key of the validation key being added
+        daysTillExpired:
+          type: number
+          minimum: 1
+          example: 365
+          description: The number of days from the date the validation key was added until it expires
+      required:
+      - publicKeyPem
+      - daysTillExpired
     ModifySigningKeyDto:
       type: object
       properties:
@@ -780,15 +764,30 @@ components:
           example: 123
       required:
       - vaultAccountId
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
+    ModifySigningKeyAgentIdDto:
+      type: object
+      properties:
+        agentUserId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: d18847b5-1df6-4c46-8f99-5cce47284529
+          description: Id of user that represent agent servers which signs with the key
+      required:
+      - agentUserId
+    GetValidationKeyResponseDto:
+      type: object
+      properties:
+        data:
+          description: Response object for getting external validation keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationKeyDto'
+        next:
+          type: string
+          description: The ID of the next page
+      required:
+      - data
   responses:
     Error:
       description: Error Response
@@ -799,6 +798,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

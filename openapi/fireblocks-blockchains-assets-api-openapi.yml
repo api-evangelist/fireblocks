@@ -1,14 +1,12 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Blockchains & Assets API
+  title: Fireblocks Blockchains and Assets Blockchains & Assets API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
-    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+    - Visit our website for more information: Fireblocks Website
 
-    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
-
-    '
+    - Visit our developer docs: Fireblocks DevPortal'
   version: 1.8.0
   contact:
     email: developers@fireblocks.com
@@ -28,9 +26,7 @@ paths:
       description: 'Retrieves a paginated list of all assets supported by Fireblocks in your workspace.
 
 
-        **Note:** We will continue to support and display the legacy ID (API ID). Since not all Fireblocks services fully support the new Assets UUID, please use only the legacy ID until further notice.
-
-        '
+        **Note:** We will continue to support and display the legacy ID (API ID). Since not all Fireblocks services fully support the new Assets UUID, please use only the legacy ID until further notice.'
       tags:
       - Blockchains & Assets
       x-readme:
@@ -137,7 +133,24 @@ paths:
     post:
       operationId: registerNewAsset
       summary: Register an asset
-      description: "Registers a new asset to a workspace and retrieves the newly created asset's details. Currently supported chains are: \n  - EVM-based chains\n  - Algorand\n  - NEAR\n  - Solana\n  - Stellar\n  - Sui\n  - TRON\n\n**Endpoint Permissions:** Owner, Admin, Non-Signing Admin, NCW Admin, Editor, Signer.        \n"
+      description: 'Registers a new asset to a workspace and retrieves the newly created asset''s details. Currently supported chains are:
+
+        - EVM-based chains
+
+        - Algorand
+
+        - NEAR
+
+        - Solana
+
+        - Stellar
+
+        - Sui
+
+        - TRON
+
+
+        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin, NCW Admin, Editor, Signer.'
       tags:
       - Blockchains & Assets
       parameters:
@@ -242,7 +255,14 @@ paths:
     get:
       operationId: getAsset
       summary: Get an asset by ID
-      description: "Returns an asset by ID or legacyID.</br>\n\n\n**Note**:\n- We will continue displaying and supporting the legacy ID (API ID). \nSince not all Fireblocks services fully support the new Assets UUID, please use only the legacy ID until further notice.\n"
+      description: 'Returns an asset by ID or legacyID.
+
+
+        **Note**:
+
+        - We will continue displaying and supporting the legacy ID (API ID).
+
+        Since not all Fireblocks services fully support the new Assets UUID, please use only the legacy ID until further notice.'
       tags:
       - Blockchains & Assets
       x-readme:
@@ -364,9 +384,7 @@ paths:
     post:
       operationId: setAssetPrice
       summary: Set asset price
-      description: 'Set asset price for the given asset id. Returns the asset price response.
-
-        '
+      description: Set asset price for the given asset id. Returns the asset price response.
       tags:
       - Blockchains & Assets
       x-readme:
@@ -433,9 +451,7 @@ paths:
     get:
       operationId: listBlockchains
       summary: List blockchains
-      description: 'Returns all blockchains supported by Fireblocks.</br>
-
-        '
+      description: Returns all blockchains supported by Fireblocks.
       tags:
       - Blockchains & Assets
       x-readme:
@@ -529,9 +545,7 @@ paths:
     get:
       operationId: getBlockchain
       summary: Get a Blockchain by ID
-      description: 'Returns a blockchain by ID or legacyID.
-
-        '
+      description: Returns a blockchain by ID or legacyID.
       tags:
       - Blockchains & Assets
       x-readme:
@@ -594,7 +608,8 @@ paths:
       summary: Validate destination address
       description: 'Checks if an address is valid and active (for XRP, DOT, XLM, and EOS).
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Blockchains & Assets
       x-readme:
@@ -650,7 +665,31 @@ paths:
   /estimate_network_fee:
     get:
       summary: Estimate the required fee for an asset
-      description: "Gets the estimated required fee for an asset.\nFireblocks fetches, calculates and caches the result every 30 seconds.\nCustomers should query this API while taking the caching interval into consideration.\nNotes:\n- The `networkFee` parameter is the `gasPrice` with a given delta added, multiplied by the gasLimit plus the delta. - The estimation provided depends on the asset type.\n    - For UTXO-based assets, the response contains the `feePerByte` parameter\n    - For ETH-based and all EVM based assets, the response will contain `gasPrice` parameter. This is calculated by adding the `baseFee` to the `actualPriority` based on the latest 12 blocks. The response for ETH-based  contains the `baseFee`, `gasPrice`, and `priorityFee` parameters.\n    - For ADA-based assets, the response will contain the parameter `networkFee` and `feePerByte` parameters.\n    - For XRP and XLM, the response will contain the transaction fee.\n    - For other assets, the response will contain the `networkFee` parameter.\n\nLearn more about Fireblocks Fee Management in the following [guide](https://developers.fireblocks.com/reference/estimate-transaction-fee).\n</br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor."
+      description: 'Gets the estimated required fee for an asset.
+
+        Fireblocks fetches, calculates and caches the result every 30 seconds.
+
+        Customers should query this API while taking the caching interval into consideration.
+
+        Notes:
+
+        - The `networkFee` parameter is the `gasPrice` with a given delta added, multiplied by the gasLimit plus the delta. - The estimation provided depends on the asset type.
+
+        - For UTXO-based assets, the response contains the `feePerByte` parameter
+
+        - For ETH-based and all EVM based assets, the response will contain `gasPrice` parameter. This is calculated by adding the `baseFee` to the `actualPriority` based on the latest 12 blocks. The response for ETH-based contains the `baseFee`, `gasPrice`, and `priorityFee` parameters.
+
+        - For ADA-based assets, the response will contain the parameter `networkFee` and `feePerByte` parameters.
+
+        - For XRP and XLM, the response will contain the transaction fee.
+
+        - For other assets, the response will contain the `networkFee` parameter.
+
+
+        Learn more about Fireblocks Fee Management in the following guide.
+
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Blockchains & Assets
       x-readme:
@@ -699,15 +738,13 @@ paths:
   /supported_assets:
     get:
       summary: List assets (Legacy)
-      description: '**This legacy endpoint has not been deprecated but it should not be used in your operations. Instead, use the new [List assets](https://developers.fireblocks.com/reference/listassets) endpoint for better performance and to retrieve more detailed asset information.**
+      description: '**This legacy endpoint has not been deprecated but it should not be used in your operations. Instead, use the new List assets endpoint for better performance and to retrieve more detailed asset information.**
 
 
         Retrieves all assets supported by Fireblocks in your workspace.
 
 
-        **Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor.
-
-        '
+        **Endpoint Permissions:** Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Blockchains & Assets
       x-readme:
@@ -746,88 +783,163 @@ paths:
         source: response = fireblocks.blockchains_&_assets.get_supported_assets();
 components:
   schemas:
-    BlockchainMetadata:
+    AssetFeature:
+      type: string
+      description: Asset feature
+      example: STABLECOIN
+      enum:
+      - STABLECOIN
+    ListAssetsResponse:
       type: object
       properties:
-        scope:
-          $ref: '#/components/schemas/AssetScope'
-        deprecated:
-          type: boolean
-          description: Is blockchain deprecated
-          example: false
-        media:
-          description: Blockchain’s media
+        data:
           type: array
+          description: The data on the current page
           items:
-            $ref: '#/components/schemas/BlockchainMedia'
-        explorer:
-          $ref: '#/components/schemas/BlockchainExplorer'
+            $ref: '#/components/schemas/Asset'
+        next:
+          type:
+          - string
+          - 'null'
+          description: Cursor to the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
       required:
-      - scope
-      - deprecated
-    AssetDetailsMetadata:
+      - data
+      - next
+    ValidateAddressResponse:
       type: object
       properties:
-        scope:
-          $ref: '#/components/schemas/AssetScope'
-        deprecated:
+        isValid:
           type: boolean
-          description: Is asset deprecated
-          example: false
-        deprecationReferralId:
-          type: string
-          description: New asset ID replacement
-          example: 056776ab-9efa-4219-9820-9ece0cc4d90d
-        verified:
+        isActive:
           type: boolean
-          description: Is asset verified by Fireblocks
-          example: false
-        website:
-          type: string
-          description: Vendor’s website
-          example: https://example.org
-        media:
-          description: Asset’s media
-          type: array
-          items:
-            $ref: '#/components/schemas/Media'
-        note:
-          $ref: '#/components/schemas/AssetNote'
-        features:
-          description: Asset features
-          type: array
-          items:
-            $ref: '#/components/schemas/AssetFeature'
-      required:
-      - scope
-      - verified
-      - deprecated
-    BlockchainOnchain:
+        requiresTag:
+          type: boolean
+    AssetNotFoundErrorResponse:
       type: object
       properties:
-        protocol:
+        message:
           type: string
-          description: The protocol of the blockchain
-          example: EVM
-        chainId:
-          type: string
-          description: Network/chain ID
-          example: 1
-        test:
-          type: boolean
-          description: Is test blockchain
-          example: false
-        signingAlgo:
-          enum:
-          - ECDSA_SECP256K1
-          - EDDSA_ED25519
-          type: string
-          description: Signing alghorithm
-          example: ECDSA_SECP256K1
+          description: Not found error code
+          example: Asset with specified ID not found
+        code:
+          type: number
+          description: Error code
+          example: 1504
       required:
-      - protocol
-      - test
-      - signingAlgo
+      - message
+      - code
+    RegisterNewAssetRequest:
+      type: object
+      properties:
+        blockchainId:
+          type: string
+          description: Native asset of blockchain
+          example: ETH
+        address:
+          type: string
+          description: 'Asset address.
+
+            - EVM-based chains: Token contract address
+
+            - Algorand (ALGO): Asset ID
+
+            - NEAR: Token address
+
+            - Solana: Token''s mint account address
+
+            - Stellar (XLM): Issuer address
+
+            - Sui: The token''s type
+
+            - TRON (TRX): Token contract address
+
+            '
+          example: 0xe7A9as1oa38bc4da0248s179E30aa94CcF453991
+        symbol:
+          type: string
+          description: Asset symbol
+          example: TST3
+      required:
+      - blockchainId
+      - address
+    AssetConflictErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Conflict error code
+          example: Asset already listed
+        code:
+          type: string
+          description: Error code
+          example: 3002
+      required:
+      - message
+      - code
+    ListBlockchainsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/BlockchainResponse'
+        next:
+          type:
+          - string
+          - 'null'
+          description: Cursor to the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+      - next
+    AssetInternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Internal server error code
+          example: Internal server error
+        code:
+          type: string
+          description: Error code
+          example: 3005
+      required:
+      - message
+      - code
+    GetSupportedAssetsResponse:
+      type: array
+      description: An Array of Supported Assets Objects
+      items:
+        $ref: '#/components/schemas/AssetTypeResponse'
+    EstimatedNetworkFeeResponse:
+      type: object
+      properties:
+        low:
+          $ref: '#/components/schemas/NetworkFee'
+        medium:
+          $ref: '#/components/schemas/NetworkFee'
+        high:
+          $ref: '#/components/schemas/NetworkFee'
+      required:
+      - low
+      - medium
+      - high
+    SetAssetPriceRequest:
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency (according to ISO 4217 currency codes)
+          example: USD
+        price:
+          type: number
+          description: Price in currency
+          example: 3100
+      required:
+      - currency
+      - price
     Media:
       type: object
       properties:
@@ -853,154 +965,6 @@ components:
       required:
       - url
       - type
-    Asset:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the asset
-          example: 9f9f7062-df90-4fc0-8697-96685184358d
-        legacyId:
-          type: string
-          description: The Legacy ID of the asset
-          example: USDT_ERC20
-        blockchainId:
-          type: string
-          description: The ID of the asset's blockchain
-          example: e85208ff-3b15-44e9-af14-0ed0280b2a15
-        displayName:
-          type: string
-          description: Asset's display name
-          example: Tether USD
-        displaySymbol:
-          type: string
-          description: Asset's display symbol
-          example: USDT
-        assetClass:
-          $ref: '#/components/schemas/AssetClass'
-        onchain:
-          $ref: '#/components/schemas/AssetDetailsOnchain'
-        metadata:
-          $ref: '#/components/schemas/AssetDetailsMetadata'
-      required:
-      - id
-      - legacyId
-      - assetClass
-      - metadata
-      - displayName
-      - displaySymbol
-    AssetNoteRequest:
-      type: object
-      properties:
-        text:
-          type: string
-          description: Asset user note
-          example: Pay attention to ETH gas fees
-    AssetFeature:
-      type: string
-      description: Asset feature
-      example: STABLECOIN
-      enum:
-      - STABLECOIN
-    ListBlockchainsResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/BlockchainResponse'
-        next:
-          type: string
-          description: Cursor to the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-          nullable: true
-      required:
-      - data
-      - next
-    ListAssetsResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data on the current page
-          items:
-            $ref: '#/components/schemas/Asset'
-        next:
-          type: string
-          description: Cursor to the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-          nullable: true
-      required:
-      - data
-      - next
-    AssetOnchain:
-      type: object
-      properties:
-        symbol:
-          type: string
-          description: The asset symbol
-          example: TST3
-        name:
-          type: string
-          description: The asset name
-          example: Test 3
-        address:
-          type: string
-          description: The asset address
-          example: 0xe7A9as1oa38bc4da0248s179E30aa94CcF453991
-        decimals:
-          type: number
-          description: Number of decimals
-          example: 18
-        standard:
-          type: string
-          description: The asset standard
-          example: ERC20
-      required:
-      - symbol
-      - name
-      - decimals
-    AssetMetadataRequest:
-      type: object
-      properties:
-        note:
-          $ref: '#/components/schemas/AssetNoteRequest'
-    BlockchainResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the blockchain
-          example: 9f9f7062-df90-4fc0-8697-96685184357b
-        legacyId:
-          type: string
-          description: The old blockchain ID representation of the blockchain
-          example: ETH
-        displayName:
-          type: string
-          description: The name of the blockchain
-          example: Ethereum
-        nativeAssetId:
-          type: string
-          description: Native asset ID of this blockchain
-          example: 9f9f7062-df90-4fc0-8697-96685184356a
-        onchain:
-          $ref: '#/components/schemas/BlockchainOnchain'
-        metadata:
-          $ref: '#/components/schemas/BlockchainMetadata'
-      required:
-      - id
-      - legacyId
-      - displayName
-      - nativeAssetId
-      - onchain
-      - metadata
-    UpdateAssetUserMetadataRequest:
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/AssetMetadataRequest'
     AssetTypeResponse:
       type: object
       description: Supported Asset Object
@@ -1044,43 +1008,108 @@ components:
       - id
       - name
       - type
-    AssetInternalServerErrorResponse:
+    AssetBadRequestErrorResponse:
       type: object
       properties:
         message:
           type: string
-          description: Internal server error code
-          example: Internal server error
+          description: Bad request error code
+          example: Listing an asset on the requested blockchain is not supported
         code:
           type: string
           description: Error code
-          example: 3005
+          example: 3001
       required:
       - message
       - code
-    TokenInfoNotFoundErrorResponse:
+    AssetPriceForbiddenErrorResponse:
       type: object
       properties:
         message:
           type: string
-          description: Not found error code
-          example: Invalid address, could not get asset information
+          description: Forbidden error message
+          example: Tenant is not allowed to update asset
         code:
           type: number
           description: Error code
-          example: 3009
+          example: 3002
       required:
       - message
       - code
-    ValidateAddressResponse:
+    BlockchainResponse:
       type: object
       properties:
-        isValid:
+        id:
+          type: string
+          description: The ID of the blockchain
+          example: 9f9f7062-df90-4fc0-8697-96685184357b
+        legacyId:
+          type: string
+          description: The old blockchain ID representation of the blockchain
+          example: ETH
+        displayName:
+          type: string
+          description: The name of the blockchain
+          example: Ethereum
+        nativeAssetId:
+          type: string
+          description: Native asset ID of this blockchain
+          example: 9f9f7062-df90-4fc0-8697-96685184356a
+        onchain:
+          $ref: '#/components/schemas/BlockchainOnchain'
+        metadata:
+          $ref: '#/components/schemas/BlockchainMetadata'
+      required:
+      - id
+      - legacyId
+      - displayName
+      - nativeAssetId
+      - onchain
+      - metadata
+    AssetOnchain:
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: The asset symbol
+          example: TST3
+        name:
+          type: string
+          description: The asset name
+          example: Test 3
+        address:
+          type: string
+          description: The asset address
+          example: 0xe7A9as1oa38bc4da0248s179E30aa94CcF453991
+        decimals:
+          type: number
+          description: Number of decimals
+          example: 18
+        standard:
+          type: string
+          description: The asset standard
+          example: ERC20
+      required:
+      - symbol
+      - name
+      - decimals
+    AssetMetadata:
+      type: object
+      properties:
+        scope:
+          type: string
+          description: The scope of the asset
+          example: Global
+          enum:
+          - Global
+          - Local
+        deprecated:
           type: boolean
-        isActive:
-          type: boolean
-        requiresTag:
-          type: boolean
+          description: Is asset deprecated
+          example: false
+      required:
+      - scope
+      - deprecated
     BlockchainExplorer:
       type: object
       properties:
@@ -1102,39 +1131,29 @@ components:
           example: https://example.com/nft/{contract}/{tokenId}
       required:
       - base
-    AssetForbiddenErrorResponse:
+    NetworkFee:
       type: object
       properties:
-        message:
+        feePerByte:
+          description: The fee per byte value for UTXO based assets
           type: string
-          description: Forbidden error code
-          example: Asset creation quota reached
-        code:
+          example: '21.6'
+        gasPrice:
+          description: Gas price in gwei units for EVM based networks
           type: string
-          description: Error code
-          example: 3006
-      required:
-      - message
-      - code
-    AssetPriceForbiddenErrorResponse:
-      type: object
-      properties:
-        message:
+          example: '32'
+        networkFee:
+          description: The full network fee for non EVM and UTXO based assets (in the base asset units)
           type: string
-          description: Forbidden error message
-          example: Tenant is not allowed to update asset
-        code:
-          type: number
-          description: Error code
-          example: 3002
-      required:
-      - message
-      - code
-    GetSupportedAssetsResponse:
-      type: array
-      description: An Array of Supported Assets Objects
-      items:
-        $ref: '#/components/schemas/AssetTypeResponse'
+          example: '0.0001'
+        baseFee:
+          description: (optional) Base Fee according to EIP-1559 (ETH assets)
+          type: string
+          example: '10'
+        priorityFee:
+          description: (optional) Priority Fee according to EIP-1559 (ETH assets)
+          type: string
+          example: '22'
     BlockchainMedia:
       type: object
       properties:
@@ -1152,62 +1171,6 @@ components:
       required:
       - url
       - type
-    BlockchainNotFoundErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Not found error code
-          example: Blockchain with specified ID not found
-        code:
-          type: number
-          description: Error code
-          example: 1505
-      required:
-      - message
-      - code
-    AssetResponse:
-      type: object
-      properties:
-        legacyId:
-          type: string
-          example: TST3_ETH
-        assetClass:
-          type: string
-          example: FT
-          enum:
-          - NATIVE
-          - FT
-          - NFT
-          - SFT
-        onchain:
-          $ref: '#/components/schemas/AssetOnchain'
-        metadata:
-          $ref: '#/components/schemas/AssetMetadata'
-      required:
-      - legacyId
-      - assetClass
-      - displayName
-      - displaySymbol
-      - onchain
-      - metadata
-    AssetMetadata:
-      type: object
-      properties:
-        scope:
-          type: string
-          description: The scope of the asset
-          example: Global
-          enum:
-          - Global
-          - Local
-        deprecated:
-          type: boolean
-          description: Is asset deprecated
-          example: false
-      required:
-      - scope
-      - deprecated
     AssetNote:
       type: object
       properties:
@@ -1234,148 +1197,6 @@ components:
       - userId
       - userName
       - updatedAt
-    AssetNotFoundErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Not found error code
-          example: Asset with specified ID not found
-        code:
-          type: number
-          description: Error code
-          example: 1504
-      required:
-      - message
-      - code
-    NetworkFee:
-      type: object
-      properties:
-        feePerByte:
-          description: The fee per byte value for UTXO based assets
-          type: string
-          example: '21.6'
-        gasPrice:
-          description: Gas price in gwei units for EVM based networks
-          type: string
-          example: '32'
-        networkFee:
-          description: The full network fee for non EVM and UTXO based assets (in the base asset units)
-          type: string
-          example: '0.0001'
-        baseFee:
-          description: (optional) Base Fee according to EIP-1559 (ETH assets)
-          type: string
-          example: '10'
-        priorityFee:
-          description: (optional) Priority Fee according to EIP-1559 (ETH assets)
-          type: string
-          example: '22'
-    RegisterNewAssetRequest:
-      type: object
-      properties:
-        blockchainId:
-          type: string
-          description: Native asset of blockchain
-          example: ETH
-        address:
-          type: string
-          description: 'Asset address.
-
-            - EVM-based chains: Token contract address
-
-            - Algorand (ALGO): Asset ID
-
-            - NEAR: Token address
-
-            - Solana: Token''s mint account address
-
-            - Stellar (XLM): Issuer address
-
-            - Sui: The token''s type
-
-            - TRON (TRX): Token contract address
-
-            '
-          example: 0xe7A9as1oa38bc4da0248s179E30aa94CcF453991
-        symbol:
-          type: string
-          description: Asset symbol
-          example: TST3
-      required:
-      - blockchainId
-      - address
-    EstimatedNetworkFeeResponse:
-      type: object
-      properties:
-        low:
-          $ref: '#/components/schemas/NetworkFee'
-        medium:
-          $ref: '#/components/schemas/NetworkFee'
-        high:
-          $ref: '#/components/schemas/NetworkFee'
-      required:
-      - low
-      - medium
-      - high
-    SetAssetPriceRequest:
-      type: object
-      properties:
-        currency:
-          type: string
-          description: Currency (according to ISO 4217 currency codes)
-          example: USD
-        price:
-          type: number
-          description: Price in currency
-          example: 3100
-      required:
-      - currency
-      - price
-    AssetClass:
-      type: string
-      example: FT
-      enum:
-      - NATIVE
-      - FT
-      - FIAT
-      - NFT
-      - SFT
-    AssetScope:
-      type: string
-      description: The scope of the asset
-      example: GLOBAL
-      enum:
-      - GLOBAL
-      - LOCAL
-    AssetPriceNotFoundErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Not found error message
-          example: Currency not found
-        code:
-          type: number
-          description: Error code
-          example: 3001
-      required:
-      - message
-      - code
-    AssetBadRequestErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Bad request error code
-          example: Listing an asset on the requested blockchain is not supported
-        code:
-          type: string
-          description: Error code
-          example: 3001
-      required:
-      - message
-      - code
     AssetPriceResponse:
       type: object
       properties:
@@ -1408,6 +1229,114 @@ components:
       - currency
       - price
       - source
+    AssetDetailsMetadata:
+      type: object
+      properties:
+        scope:
+          $ref: '#/components/schemas/AssetScope'
+        deprecated:
+          type: boolean
+          description: Is asset deprecated
+          example: false
+        deprecationReferralId:
+          type: string
+          description: New asset ID replacement
+          example: 056776ab-9efa-4219-9820-9ece0cc4d90d
+        verified:
+          type: boolean
+          description: Is asset verified by Fireblocks
+          example: false
+        website:
+          type: string
+          description: Vendor’s website
+          example: https://example.org
+        media:
+          description: Asset’s media
+          type: array
+          items:
+            $ref: '#/components/schemas/Media'
+        note:
+          $ref: '#/components/schemas/AssetNote'
+        features:
+          description: Asset features
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetFeature'
+      required:
+      - scope
+      - verified
+      - deprecated
+    TokenInfoNotFoundErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not found error code
+          example: Invalid address, could not get asset information
+        code:
+          type: number
+          description: Error code
+          example: 3009
+      required:
+      - message
+      - code
+    BlockchainNotFoundErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not found error code
+          example: Blockchain with specified ID not found
+        code:
+          type: number
+          description: Error code
+          example: 1505
+      required:
+      - message
+      - code
+    AssetScope:
+      type: string
+      description: The scope of the asset
+      example: GLOBAL
+      enum:
+      - GLOBAL
+      - LOCAL
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the asset
+          example: 9f9f7062-df90-4fc0-8697-96685184358d
+        legacyId:
+          type: string
+          description: The Legacy ID of the asset
+          example: USDT_ERC20
+        blockchainId:
+          type: string
+          description: The ID of the asset's blockchain
+          example: e85208ff-3b15-44e9-af14-0ed0280b2a15
+        displayName:
+          type: string
+          description: Asset's display name
+          example: Tether USD
+        displaySymbol:
+          type: string
+          description: Asset's display symbol
+          example: USDT
+        assetClass:
+          $ref: '#/components/schemas/AssetClass'
+        onchain:
+          $ref: '#/components/schemas/AssetDetailsOnchain'
+        metadata:
+          $ref: '#/components/schemas/AssetDetailsMetadata'
+      required:
+      - id
+      - legacyId
+      - assetClass
+      - metadata
+      - displayName
+      - displaySymbol
     AssetDetailsOnchain:
       type: object
       properties:
@@ -1438,20 +1367,130 @@ components:
       - symbol
       - name
       - decimals
-    AssetConflictErrorResponse:
+    AssetForbiddenErrorResponse:
       type: object
       properties:
         message:
           type: string
-          description: Conflict error code
-          example: Asset already listed
+          description: Forbidden error code
+          example: Asset creation quota reached
         code:
           type: string
           description: Error code
-          example: 3002
+          example: 3006
       required:
       - message
       - code
+    AssetPriceNotFoundErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not found error message
+          example: Currency not found
+        code:
+          type: number
+          description: Error code
+          example: 3001
+      required:
+      - message
+      - code
+    BlockchainOnchain:
+      type: object
+      properties:
+        protocol:
+          type: string
+          description: The protocol of the blockchain
+          example: EVM
+        chainId:
+          type: string
+          description: Network/chain ID
+          example: 1
+        test:
+          type: boolean
+          description: Is test blockchain
+          example: false
+        signingAlgo:
+          enum:
+          - ECDSA_SECP256K1
+          - EDDSA_ED25519
+          type: string
+          description: Signing alghorithm
+          example: ECDSA_SECP256K1
+      required:
+      - protocol
+      - test
+      - signingAlgo
+    AssetClass:
+      type: string
+      example: FT
+      enum:
+      - NATIVE
+      - FT
+      - FIAT
+      - NFT
+      - SFT
+    AssetResponse:
+      type: object
+      properties:
+        legacyId:
+          type: string
+          example: TST3_ETH
+        assetClass:
+          type: string
+          example: FT
+          enum:
+          - NATIVE
+          - FT
+          - NFT
+          - SFT
+        onchain:
+          $ref: '#/components/schemas/AssetOnchain'
+        metadata:
+          $ref: '#/components/schemas/AssetMetadata'
+      required:
+      - legacyId
+      - assetClass
+      - displayName
+      - displaySymbol
+      - onchain
+      - metadata
+    BlockchainMetadata:
+      type: object
+      properties:
+        scope:
+          $ref: '#/components/schemas/AssetScope'
+        deprecated:
+          type: boolean
+          description: Is blockchain deprecated
+          example: false
+        media:
+          description: Blockchain’s media
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockchainMedia'
+        explorer:
+          $ref: '#/components/schemas/BlockchainExplorer'
+      required:
+      - scope
+      - deprecated
+    AssetNoteRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Asset user note
+          example: Pay attention to ETH gas fees
+    AssetMetadataRequest:
+      type: object
+      properties:
+        note:
+          $ref: '#/components/schemas/AssetNoteRequest'
+    UpdateAssetUserMetadataRequest:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/AssetMetadataRequest'
   responses:
     Error:
       description: Error Response

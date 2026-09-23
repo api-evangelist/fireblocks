@@ -1,14 +1,12 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
   title: Fireblocks Blockchains and Assets Approval Requests Tags API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
-    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+    - Visit our website for more information: Fireblocks Website
 
-    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
-
-    '
+    - Visit our developer docs: Fireblocks DevPortal'
   version: 1.8.0
   contact:
     email: developers@fireblocks.com
@@ -31,9 +29,7 @@ paths:
 
         - For protected tags: Owner, Admin, Non-Signing Admin.
 
-        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.
-
-        '
+        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.'
       tags:
       - Tags
       x-rate-limit-category: write
@@ -149,9 +145,7 @@ paths:
 
         - For protected tags: Owner, Admin, Non-Signing Admin.
 
-        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.
-
-        '
+        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.'
       tags:
       - Tags
       x-rate-limit-category: write
@@ -190,9 +184,7 @@ paths:
 
         - For protected tags: Owner, Admin, Non-Signing Admin.
 
-        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.
-
-        '
+        - For non-protected tags: Owner, Admin, Non-Signing Admin, Signer, Editor, Approver.'
       tags:
       - Tags
       x-rate-limit-category: write
@@ -248,6 +240,33 @@ components:
       - label
       - isProtected
       - updatedAt
+    UpdateTagRequest:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The tag label
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          example: Tag for VIP customers
+    TagsPagedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        next:
+          type:
+          - string
+          - 'null'
+          description: Cursor to the next page
+          example: MjAyNS0wNy0wOSAxMDo1MzoxMy40NTI=:NA==
+      required:
+      - data
+      - next
     ApprovalRequest:
       type: object
       description: Approval request details
@@ -278,32 +297,6 @@ components:
       - id
       - type
       - state
-    TagsPagedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-        next:
-          type: string
-          description: Cursor to the next page
-          example: MjAyNS0wNy0wOSAxMDo1MzoxMy40NTI=:NA==
-          nullable: true
-      required:
-      - data
-      - next
-    UpdateTagRequest:
-      type: object
-      properties:
-        label:
-          type: string
-          description: The tag label
-          example: VIP
-        description:
-          type: string
-          description: Description for the tag
-          example: Tag for VIP customers
     CreateTagRequest:
       type: object
       properties:

@@ -1,14 +1,12 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Gas Station API
+  title: Fireblocks Blockchains and Assets Approval Requests Gas…
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
-    - Visit our website for more information: [Fireblocks Website](https://fireblocks.com)
+    - Visit our website for more information: Fireblocks Website
 
-    - Visit our developer docs: [Fireblocks DevPortal](https://developers.fireblocks.com)
-
-    '
+    - Visit our developer docs: Fireblocks DevPortal'
   version: 1.8.0
   contact:
     email: developers@fireblocks.com
@@ -26,7 +24,8 @@ paths:
       summary: Get gas station settings
       description: 'Returns gas station settings and ETH balance.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Gas Station
       x-readme:
@@ -68,7 +67,8 @@ paths:
       summary: Get gas station settings by asset
       description: 'Returns gas station settings and balances for a requested asset.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Gas Station
       x-readme:
@@ -119,9 +119,10 @@ paths:
       summary: Edit gas station settings
       description: 'Configures gas station settings for ETH.
 
-        Learn more about the Fireblocks Gas Station in the following [guide](https://developers.fireblocks.com/docs/work-with-gas-station).
+        Learn more about the Fireblocks Gas Station in the following guide.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Gas Station
       x-readme:
@@ -172,9 +173,10 @@ paths:
       summary: Edit gas station settings for an asset
       description: 'Configures gas station settings for a requested asset.
 
-        Learn more about the Fireblocks Gas Station in the following [guide](https://developers.fireblocks.com/docs/work-with-gas-station).
+        Learn more about the Fireblocks Gas Station in the following guide.
 
-        </br>Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
       - Gas Station
       parameters:
@@ -225,13 +227,6 @@ paths:
         source: response = fireblocks.gas_stations.update_gas_station_configuration_by_asset_id(gas_station_configuration, asset_id, idempotency_key);
 components:
   schemas:
-    GasStationPropertiesResponse:
-      type: object
-      properties:
-        balance:
-          type: object
-        configuration:
-          $ref: '#/components/schemas/GasStationConfigurationResponse'
     EditGasStationConfigurationResponse:
       type: object
       properties:
@@ -240,25 +235,6 @@ components:
           description: Indicates whether editing the gas station configuration was successful
       required:
       - success
-    GasStationConfiguration:
-      type: object
-      properties:
-        gasThreshold:
-          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the gasThreshold value
-          type: string
-          default: '0.005'
-          example: '0.005'
-        gasCap:
-          description: The Gas Station will top up the vault account with gas until the balance reaches the gasCap value
-          example: '0.01'
-          default: '0.01'
-          type: string
-        maxGasPrice:
-          description: Maximum gas price for the fueling transaction (in gwei)
-          nullable: true
-          example: '20'
-          default: null
-          type: string
     GasStationConfigurationResponse:
       type: object
       properties:
@@ -274,10 +250,38 @@ components:
           type: string
         maxGasPrice:
           description: Maximum gas price for the fueling transaction (in gwei)
-          nullable: true
           example: '20'
           default: null
+          type:
+          - string
+          - 'null'
+    GasStationConfiguration:
+      type: object
+      properties:
+        gasThreshold:
+          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the gasThreshold value
           type: string
+          default: '0.005'
+          example: '0.005'
+        gasCap:
+          description: The Gas Station will top up the vault account with gas until the balance reaches the gasCap value
+          example: '0.01'
+          default: '0.01'
+          type: string
+        maxGasPrice:
+          description: Maximum gas price for the fueling transaction (in gwei)
+          example: '20'
+          default: null
+          type:
+          - string
+          - 'null'
+    GasStationPropertiesResponse:
+      type: object
+      properties:
+        balance:
+          type: object
+        configuration:
+          $ref: '#/components/schemas/GasStationConfigurationResponse'
   responses:
     Error:
       description: Error Response
