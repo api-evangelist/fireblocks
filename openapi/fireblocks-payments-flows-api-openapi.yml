@@ -247,773 +247,6 @@ paths:
       operationId: launchFlowExecution
 components:
   schemas:
-    ConversionOperationExecutionOutput:
-      type: object
-      properties:
-        amount:
-          $ref: '#/components/schemas/AssetAmount'
-        fee:
-          $ref: '#/components/schemas/AssetAmount'
-        conversionRate:
-          type: string
-      required:
-      - amount
-      - fee
-      - conversionRate
-    PreScreening:
-      type: object
-      description: Should the configured AML pre-screening policy be enabled or not
-      properties:
-        enabled:
-          type: boolean
-      required:
-      - enabled
-    ConfigConversionOperationSnapshot:
-      type: object
-      properties:
-        operationId:
-          type: string
-        type:
-          $ref: '#/components/schemas/ConversionOperationType'
-        params:
-          $ref: '#/components/schemas/ConversionOperationConfigParams'
-      required:
-      - operationId
-      - type
-      - params
-    ConversionOperationConfigParams:
-      type: object
-      properties:
-        amount:
-          description: The amount to convert
-          type: string
-          example: '10'
-        accountId:
-          description: Source account ID
-          example: '0'
-          type: string
-        srcAssetId:
-          description: The asset ID to convert
-          type: string
-          example: ETH
-        destAssetId:
-          description: The asset ID to get as a result of the conversion
-          type: string
-          example: USDC
-        slippageBasisPoints:
-          type: integer
-          description: Slippage tolerance (basis points)
-          minimum: 0
-          maximum: 10000
-          example: 100
-      required:
-      - destAssetId
-    ScreeningValidationFailure:
-      type: object
-      properties:
-        reason:
-          type: string
-          enum:
-          - SCREENING_DISABLED_IN_TENANT
-        data:
-          type: object
-          additionalProperties: {}
-      required:
-      - reason
-    TransferOperationExecutionParams:
-      type: object
-      properties:
-        configOperationId:
-          type: string
-        executionParams:
-          type: object
-          properties:
-            amount:
-              type: string
-            assetId:
-              type: string
-            source:
-              $ref: '#/components/schemas/Account'
-            destination:
-              $ref: '#/components/schemas/Destination'
-      required:
-      - configOperationId
-    DisbursementConfigOperation:
-      type: object
-      properties:
-        operationId:
-          type: string
-        type:
-          $ref: '#/components/schemas/DisbursementOperationType'
-        params:
-          $ref: '#/components/schemas/DisbursementOperationConfigParams'
-        status:
-          $ref: '#/components/schemas/ConfigOperationStatus'
-        validationFailure:
-          $ref: '#/components/schemas/DisbursementValidationFailure'
-      required:
-      - operationId
-      - type
-      - params
-      - status
-    Account:
-      type: object
-      properties:
-        accountId:
-          description: The unique ID of the account
-          type: string
-          example: '0'
-        accountType:
-          $ref: '#/components/schemas/AccountType'
-      required:
-      - accountId
-      - accountType
-    Destination:
-      oneOf:
-      - $ref: '#/components/schemas/Account'
-      - $ref: '#/components/schemas/OneTimeAddressAccount'
-    ConversionOperationFailure:
-      type: object
-      properties:
-        reason:
-          type: string
-          enum:
-          - INVALID_AMOUNT
-          - SLIPPAGE_EXCEEDED
-          - AMOUNT_TOO_SMALL
-          - INSUFFICIENT_FUNDS
-        data:
-          type: object
-          additionalProperties: {}
-      required:
-      - reason
-    WorkflowConfigStatus:
-      type: string
-      enum:
-      - PENDING
-      - VALIDATION_IN_PROGRESS
-      - VALIDATION_FAILED
-      - READY_FOR_EXECUTION
-    CreateConversionConfigOperationRequest:
-      type: object
-      description: Conversion Operation object
-      properties:
-        type:
-          $ref: '#/components/schemas/ConversionOperationType'
-        params:
-          $ref: '#/components/schemas/ConversionOperationConfigParams'
-      required:
-      - type
-      - params
-    ConversionConfigOperation:
-      type: object
-      properties:
-        operationId:
-          description: Operation unique identifier
-          example: 7bf16b28-6cd6-403f-af60-045c4b68a767
-          type: string
-        type:
-          $ref: '#/components/schemas/ConversionOperationType'
-        params:
-          $ref: '#/components/schemas/ConversionOperationConfigParams'
-        status:
-          $ref: '#/components/schemas/ConfigOperationStatus'
-        validationFailure:
-          $ref: '#/components/schemas/ConversionValidationFailure'
-      required:
-      - operationId
-      - type
-      - params
-      - status
-    ExecutionDisbursementOperation:
-      type: object
-      properties:
-        operationId:
-          type: string
-          description: Configuration unique identifier
-          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
-        status:
-          $ref: '#/components/schemas/ExecutionOperationStatus'
-        validationFailure:
-          $ref: '#/components/schemas/DisbursementValidationFailure'
-        operationType:
-          $ref: '#/components/schemas/DisbursementOperationType'
-        preview:
-          $ref: '#/components/schemas/DisbursementOperationPreview'
-        execution:
-          $ref: '#/components/schemas/DisbursementOperationExecution'
-      required:
-      - operationId
-      - status
-      - operationType
-    ConversionOperationExecution:
-      type: object
-      properties:
-        input:
-          $ref: '#/components/schemas/ConversionOperationConfigParams'
-        output:
-          $ref: '#/components/schemas/ConversionOperationExecutionOutput'
-        startedAt:
-          type: number
-        finishedAt:
-          type: number
-        failure:
-          $ref: '#/components/schemas/ConversionOperationFailure'
-      required:
-      - input
-      - startedAt
-    CreateWorkflowExecutionRequest:
-      type: object
-      x-internal: true
-      properties:
-        configId:
-          description: The created configuration unique identifier
-          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
-          type: string
-        preScreening:
-          $ref: '#/components/schemas/PreScreening'
-        params:
-          type: array
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/ConversionOperationExecutionParams'
-            - $ref: '#/components/schemas/TransferOperationExecutionParams'
-            - $ref: '#/components/schemas/DisbursementOperationExecutionParams'
-        externalCorrelationData:
-          $ref: '#/components/schemas/CorrelationData'
-      required:
-      - configId
-      - params
-    WorkflowConfigurationSnapshot:
-      type: object
-      x-internal: true
-      properties:
-        configId:
-          type: string
-          description: Configuration unique identifier
-          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
-        configName:
-          type: string
-          description: You configuration name
-          example: my_config_name
-        createdAt:
-          description: Create at timestamp
-          example: 1717325386
-          type: number
-        configOperations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConfigOperationSnapshot'
-        externalCorrelationData:
-          $ref: '#/components/schemas/CorrelationData'
-      required:
-      - configId
-      - configName
-      - configOperations
-      - createdAt
-    ConfigOperation:
-      oneOf:
-      - $ref: '#/components/schemas/ConversionConfigOperation'
-      - $ref: '#/components/schemas/TransferConfigOperation'
-      - $ref: '#/components/schemas/DisbursementConfigOperation'
-    TransferOperationType:
-      type: string
-      description: Transfer operation type
-      enum:
-      - TRANSFER
-    DisbursementInstructionOutput:
-      type: object
-      properties:
-        amount:
-          $ref: '#/components/schemas/AssetAmount'
-        fee:
-          $ref: '#/components/schemas/AssetAmount'
-        payeeAccount:
-          $ref: '#/components/schemas/Destination'
-      required:
-      - amount
-      - fee
-      - payeeAccount
-    DisbursementAmountInstruction:
-      type: object
-      properties:
-        payeeAccount:
-          $ref: '#/components/schemas/Destination'
-        assetId:
-          description: Asset unique identifier
-          type: string
-          example: ETH
-        amount:
-          description: The amount to disburse
-          type: string
-          example: '100'
-      required:
-      - payeeAccount
-      - assetId
-      - amount
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-              enum:
-              - INTERNAL
-              - AUTHENTICATION
-              - AUTHORIZATION
-              - VALIDATION
-              - NOT_FOUND
-              - UNPROCESSABLE_ENTITY
-              - FORBIDDEN
-            message:
-              type: string
-          required:
-          - type
-          - message
-      required:
-      - error
-    TransferOperationExecutionOutput:
-      type: object
-      properties:
-        amount:
-          $ref: '#/components/schemas/AssetAmount'
-        fee:
-          $ref: '#/components/schemas/AssetAmount'
-      required:
-      - amount
-      - fee
-    CreateDisbursementConfigOperationRequest:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/DisbursementOperationType'
-        params:
-          $ref: '#/components/schemas/DisbursementOperationConfigParams'
-      required:
-      - type
-      - params
-    DisbursementOperationExecutionOutput:
-      type: object
-      properties:
-        instructionSet:
-          type: array
-          items:
-            $ref: '#/components/schemas/DisbursementInstructionOutput'
-      required:
-      - instructionSet
-    DisbursementOperationType:
-      type: string
-      description: Disbursment operation type
-      enum:
-      - DISBURSEMENT
-    ConfigTransferOperationSnapshot:
-      type: object
-      properties:
-        operationId:
-          type: string
-        type:
-          $ref: '#/components/schemas/TransferOperationType'
-        params:
-          $ref: '#/components/schemas/TransferOperationConfigParams'
-      required:
-      - operationId
-      - type
-      - params
-    DisbursementOperationPreviewOutput:
-      type: object
-      properties:
-        instructionSet:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/DisbursementInstructionOutput'
-            - type: object
-              properties:
-                timeSeconds:
-                  type: number
-              required:
-              - timeSeconds
-      required:
-      - instructionSet
-    ConversionValidationFailure:
-      type: object
-      properties:
-        reason:
-          type: string
-          enum:
-          - ACCOUNT_NOT_FOUND
-          - ACCOUNT_TYPE_NOT_SUPPORTED
-          - INSUFFICIENT_BALANCE
-          - ASSET_NOT_FOUND
-          - ASSETS_CONTINUITY_MISMATCH
-          - EXCHANGE_BASKETS_MISMATCH
-          - ACCOUNTS_CONTINUITY_MISMATCH
-          - ONE_TIME_ADDRESS_CONTINUITY_NOT_ALLOWED
-          - EQUAL_ACCOUNTS_NOT_ALLOWED
-          - EQUAL_ASSETS_NOT_ALLOWED
-          - INVALID_AMOUNT
-          - UNMANAGED_WALLET_AS_SOURCE_NOT_ALLOWED
-          - MANAGED_OPERATION_PARAMS_INVALID_SCHEMA
-          - ACCOUNT_IS_NOT_EXCHANGE
-          - UNSUPPORTED_TRADING_METHOD
-          - ASSETS_CAN_NOT_CONVERTED
-        data:
-          type: object
-          additionalProperties: {}
-      required:
-      - reason
-    ScreeningOperationExecutionOutput:
-      type: object
-      properties:
-        verdicts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScreeningVerdict'
-      required:
-      - verdicts
-    TransferOperationConfigParams:
-      type: object
-      properties:
-        amount:
-          description: The amount to transfer
-          type: string
-          example: '12'
-        assetId:
-          type: string
-          description: The assed ID to transfer
-          example: ETH
-        source:
-          $ref: '#/components/schemas/Account'
-        destination:
-          $ref: '#/components/schemas/Destination'
-      required:
-      - destination
-    ConversionOperationPreviewOutput:
-      type: object
-      properties:
-        amount:
-          $ref: '#/components/schemas/AssetAmount'
-        fee:
-          $ref: '#/components/schemas/AssetAmount'
-        conversionRate:
-          type: string
-        timeSeconds:
-          type: number
-      required:
-      - amount
-      - fee
-      - conversionRate
-      - timeSeconds
-    DisbursementPercentageInstruction:
-      type: object
-      properties:
-        payeeAccount:
-          $ref: '#/components/schemas/Destination'
-        assetId:
-          type: string
-          description: The asset ID to disburse
-          example: ETH
-        percentage:
-          description: The percentage of the asset's balance to disburse (i.e. '20' for 20% )
-          type: string
-          example: '20'
-      required:
-      - payeeAccount
-      - assetId
-      - percentage
-    TransferOperationExecution:
-      type: object
-      properties:
-        input:
-          $ref: '#/components/schemas/TransferOperationConfigParams'
-        output:
-          $ref: '#/components/schemas/TransferOperationExecutionOutput'
-        txId:
-          type: string
-        startedAt:
-          type: number
-        finishedAt:
-          type: number
-        failure:
-          $ref: '#/components/schemas/TransferOperationFailure'
-      required:
-      - input
-      - startedAt
-    ConfigDisbursementOperationSnapshot:
-      type: object
-      properties:
-        operationId:
-          type: string
-        type:
-          $ref: '#/components/schemas/DisbursementOperationType'
-        params:
-          $ref: '#/components/schemas/DisbursementOperationConfigParams'
-      required:
-      - operationId
-      - type
-      - params
-    DisbursementOperationConfigParams:
-      type: object
-      properties:
-        paymentAccount:
-          $ref: '#/components/schemas/Account'
-        instructionSet:
-          type: array
-          items:
-            $ref: '#/components/schemas/DisbursementInstruction'
-      required:
-      - instructionSet
-    OneTimeAddressAccount:
-      type: object
-      description: Non whitelisted destination address
-      properties:
-        oneTimeAddress:
-          description: The destination address
-          type: string
-          example: '0xb794f5ea0ba39494ce839613fffba74279579268'
-        tag:
-          type: string
-          description: required For Tag/Memo based assets only
-          example: '123456'
-      required:
-      - oneTimeAddress
-    DisbursementOperationExecutionParams:
-      type: object
-      properties:
-        configOperationId:
-          type: string
-        executionParams:
-          type: object
-          properties:
-            amount:
-              type: string
-            paymentAccount:
-              $ref: '#/components/schemas/Account'
-            instructionSet:
-              type: array
-              items:
-                $ref: '#/components/schemas/DisbursementInstruction'
-      required:
-      - configOperationId
-    ExecutionScreeningOperation:
-      type: object
-      properties:
-        operationId:
-          type: string
-          description: Operation unique identifier
-          example: 1cbf5105-b462-4c0b-83ca-d805251835e9
-        status:
-          $ref: '#/components/schemas/ExecutionOperationStatus'
-        operationType:
-          $ref: '#/components/schemas/ScreeningOperationType'
-        validationFailure:
-          $ref: '#/components/schemas/ScreeningValidationFailure'
-        execution:
-          $ref: '#/components/schemas/ScreeningOperationExecution'
-      required:
-      - operationId
-      - status
-      - operationType
-    ScreeningOperationExecution:
-      type: object
-      properties:
-        output:
-          $ref: '#/components/schemas/ScreeningOperationExecutionOutput'
-        startedAt:
-          type: number
-        finishedAt:
-          type: number
-        failure:
-          $ref: '#/components/schemas/ScreeningOperationFailure'
-      required:
-      - startedAt
-    ExecutionTransferOperation:
-      type: object
-      properties:
-        operationId:
-          type: string
-          example: 1cbf5105-b462-4c0b-83ca-d805251835e9
-          description: Operation unique identifier
-        status:
-          $ref: '#/components/schemas/ExecutionOperationStatus'
-        validationFailure:
-          $ref: '#/components/schemas/TransferValidationFailure'
-        operationType:
-          $ref: '#/components/schemas/TransferOperationType'
-        preview:
-          $ref: '#/components/schemas/TransferOperationPreview'
-        execution:
-          $ref: '#/components/schemas/TransferOperationExecution'
-      required:
-      - operationId
-      - status
-      - operationType
-    TransferOperationFailure:
-      type: object
-      properties:
-        reason:
-          type: string
-          enum:
-          - INVALID_AMOUNT
-          - SUBMISSION_FAILED
-          - TRANSACTION_FAILED
-        data:
-          type: object
-          properties:
-            txId:
-              type: string
-            txStatus:
-              type: string
-            txSubStatus:
-              type: string
-          required:
-          - txId
-          - txStatus
-      required:
-      - reason
-    CreateWorkflowConfigurationRequest:
-      type: object
-      x-internal: true
-      properties:
-        configName:
-          description: Your configuration name
-          type: string
-          example: my_config_name
-        preScreening:
-          $ref: '#/components/schemas/PreScreening'
-        configOperations:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreateConfigOperationRequest'
-        externalCorrelationData:
-          $ref: '#/components/schemas/CorrelationData'
-      required:
-      - configName
-      - configOperations
-    ScreeningOperationType:
-      type: string
-      enum:
-      - SCREENING
-    AccountType:
-      type: string
-      description: Account type
-      enum:
-      - EXCHANGE_ACCOUNT
-      - UNMANAGED_WALLET
-      - VAULT_ACCOUNT
-      - NETWORK_CONNECTION
-      - FIAT_ACCOUNT
-    ExecutionConversionOperation:
-      type: object
-      properties:
-        operationId:
-          type: string
-        status:
-          $ref: '#/components/schemas/ExecutionOperationStatus'
-        validationFailure:
-          $ref: '#/components/schemas/ConversionValidationFailure'
-        operationType:
-          $ref: '#/components/schemas/ConversionOperationType'
-        preview:
-          $ref: '#/components/schemas/ConversionOperationPreview'
-        execution:
-          $ref: '#/components/schemas/ConversionOperationExecution'
-      required:
-      - operationId
-      - status
-      - operationType
-    DisbursementOperationInput:
-      type: object
-      properties:
-        amount:
-          type: string
-        paymentAccount:
-          $ref: '#/components/schemas/Account'
-        instructionSet:
-          type: array
-          items:
-            $ref: '#/components/schemas/DisbursementInstruction'
-      required:
-      - paymentAccount
-      - instructionSet
-    ConfigOperationSnapshot:
-      oneOf:
-      - $ref: '#/components/schemas/ConfigConversionOperationSnapshot'
-      - $ref: '#/components/schemas/ConfigTransferOperationSnapshot'
-      - $ref: '#/components/schemas/ConfigDisbursementOperationSnapshot'
-    WorkflowConfigurationId:
-      type: object
-      properties:
-        configId:
-          type: string
-          description: Configuration unique ID
-          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
-      required:
-      - configId
-    TransferConfigOperation:
-      type: object
-      properties:
-        operationId:
-          type: string
-        type:
-          $ref: '#/components/schemas/TransferOperationType'
-        params:
-          $ref: '#/components/schemas/TransferOperationConfigParams'
-        status:
-          $ref: '#/components/schemas/ConfigOperationStatus'
-        validationFailure:
-          $ref: '#/components/schemas/TransferValidationFailure'
-      required:
-      - operationId
-      - type
-      - params
-      - status
-    ConfigOperationStatus:
-      type: string
-      enum:
-      - PENDING
-      - VALIDATION_IN_PROGRESS
-      - READY_FOR_EXECUTION
-      - VALIDATION_FAILED
-    DisbursementOperationPreview:
-      type: object
-      properties:
-        input:
-          $ref: '#/components/schemas/DisbursementOperationInput'
-        output:
-          $ref: '#/components/schemas/DisbursementOperationPreviewOutput'
-        failure:
-          $ref: '#/components/schemas/OperationExecutionFailure'
-      required:
-      - input
-    ConversionOperationType:
-      type: string
-      description: Conversion Operation Type
-      enum:
-      - CONVERSION
-    OperationExecutionFailure:
-      type: object
-      properties:
-        reason:
-          type: string
-        data:
-          type: object
-          additionalProperties: {}
-      required:
-      - reason
-    ConversionOperationPreview:
-      type: object
-      properties:
-        input:
-          $ref: '#/components/schemas/ConversionOperationConfigParams'
-        output:
-          $ref: '#/components/schemas/ConversionOperationPreviewOutput'
-        failure:
-          $ref: '#/components/schemas/ConversionOperationFailure'
-      required:
-      - input
     TransferValidationFailure:
       type: object
       properties:
@@ -1038,72 +271,6 @@ components:
           additionalProperties: true
       required:
       - reason
-    AssetAmount:
-      type: object
-      properties:
-        amount:
-          type: string
-        assetId:
-          type: string
-      required:
-      - amount
-      - assetId
-    DisbursementInstruction:
-      oneOf:
-      - $ref: '#/components/schemas/DisbursementAmountInstruction'
-      - $ref: '#/components/schemas/DisbursementPercentageInstruction'
-    DisbursementOperationExecution:
-      type: object
-      properties:
-        input:
-          $ref: '#/components/schemas/DisbursementOperationInput'
-        output:
-          $ref: '#/components/schemas/DisbursementOperationExecutionOutput'
-        payoutId:
-          type: string
-        startedAt:
-          type: number
-        finishedAt:
-          type: number
-        failure:
-          $ref: '#/components/schemas/OperationExecutionFailure'
-      required:
-      - input
-      - startedAt
-    ScreeningVerdict:
-      type: object
-      properties:
-        verdict:
-          type: string
-          enum:
-          - PASSED
-          - PASSED_WITH_ALERT
-          - REJECTED
-          - FAILED
-          - BYPASSED
-        executionOperationId:
-          type: string
-        account:
-          $ref: '#/components/schemas/Destination'
-        assetId:
-          type: string
-        amount:
-          type: string
-        matchedRule:
-          type: object
-          properties:
-            action:
-              type: string
-            category:
-              type: array
-              items:
-                type: string
-      required:
-      - executionOperationId
-      - account
-      - verdict
-      - assetId
-      - amount
     ConversionOperationExecutionParams:
       type: object
       properties:
@@ -1126,97 +293,6 @@ components:
               maximum: 10000
       required:
       - configOperationId
-    CreateConfigOperationRequest:
-      oneOf:
-      - $ref: '#/components/schemas/CreateConversionConfigOperationRequest'
-      - $ref: '#/components/schemas/CreateTransferConfigOperationRequest'
-      - $ref: '#/components/schemas/CreateDisbursementConfigOperationRequest'
-    WorkflowConfiguration:
-      type: object
-      x-internal: true
-      properties:
-        configId:
-          description: Unqiue configuration ID
-          type: string
-          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
-        configName:
-          description: Configuration name
-          type: string
-          example: my_cofig_name
-        preScreening:
-          $ref: '#/components/schemas/PreScreening'
-        status:
-          $ref: '#/components/schemas/WorkflowConfigStatus'
-        createdAt:
-          type: number
-          description: Created at timestamp
-          example: 1717325386
-        configOperations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConfigOperation'
-        externalCorrelationData:
-          $ref: '#/components/schemas/CorrelationData'
-      required:
-      - configId
-      - configName
-      - configOperations
-      - createdAt
-      - status
-    CreateTransferConfigOperationRequest:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/TransferOperationType'
-        params:
-          $ref: '#/components/schemas/TransferOperationConfigParams'
-      required:
-      - type
-      - params
-    TransferOperationPreview:
-      type: object
-      properties:
-        input:
-          $ref: '#/components/schemas/TransferOperationConfigParams'
-        output:
-          $ref: '#/components/schemas/TransferOperationPreviewOutput'
-        failure:
-          $ref: '#/components/schemas/TransferOperationFailure'
-      required:
-      - input
-    DisbursementValidationFailure:
-      type: object
-      properties:
-        reason:
-          type: string
-          enum:
-          - ACCOUNT_NOT_FOUND
-          - ACCOUNT_TYPE_NOT_SUPPORTED
-          - INSUFFICIENT_BALANCE
-          - ASSET_NOT_FOUND
-          - ASSETS_CONTINUITY_MISMATCH
-          - EXCHANGE_BASKETS_MISMATCH
-          - ACCOUNTS_CONTINUITY_MISMATCH
-          - ONE_TIME_ADDRESS_CONTINUITY_NOT_ALLOWED
-          - EQUAL_ACCOUNTS_NOT_ALLOWED
-          - EQUAL_ASSETS_NOT_ALLOWED
-          - INVALID_AMOUNT
-          - UNMANAGED_WALLET_AS_SOURCE_NOT_ALLOWED
-          - MANAGED_OPERATION_PARAMS_INVALID_SCHEMA
-          - INSTRUCTIONS_EXCEED_HUNDRED_PERCENT
-          - INSTRUCTIONS_ARRAY_EMPTY
-        data:
-          type: object
-          additionalProperties: {}
-      required:
-      - reason
-    CorrelationData:
-      x-internal: true
-      oneOf:
-      - type: object
-        additionalProperties:
-          type: string
-      - type: string
     WorkflowExecution:
       type: object
       x-internal: true
@@ -1259,12 +335,229 @@ components:
       - status
       - executionOperations
       - configSnapshot
-    WorkflowExecutionOperation:
-      oneOf:
-      - $ref: '#/components/schemas/ExecutionScreeningOperation'
-      - $ref: '#/components/schemas/ExecutionConversionOperation'
-      - $ref: '#/components/schemas/ExecutionTransferOperation'
-      - $ref: '#/components/schemas/ExecutionDisbursementOperation'
+    WorkflowConfiguration:
+      type: object
+      x-internal: true
+      properties:
+        configId:
+          description: Unqiue configuration ID
+          type: string
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+        configName:
+          description: Configuration name
+          type: string
+          example: my_cofig_name
+        preScreening:
+          $ref: '#/components/schemas/PreScreening'
+        status:
+          $ref: '#/components/schemas/WorkflowConfigStatus'
+        createdAt:
+          type: number
+          description: Created at timestamp
+          example: 1717325386
+        configOperations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigOperation'
+        externalCorrelationData:
+          $ref: '#/components/schemas/CorrelationData'
+      required:
+      - configId
+      - configName
+      - configOperations
+      - createdAt
+      - status
+    ConversionOperationExecution:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/ConversionOperationConfigParams'
+        output:
+          $ref: '#/components/schemas/ConversionOperationExecutionOutput'
+        startedAt:
+          type: number
+        finishedAt:
+          type: number
+        failure:
+          $ref: '#/components/schemas/ConversionOperationFailure'
+      required:
+      - input
+      - startedAt
+    DisbursementOperationPreview:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/DisbursementOperationInput'
+        output:
+          $ref: '#/components/schemas/DisbursementOperationPreviewOutput'
+        failure:
+          $ref: '#/components/schemas/OperationExecutionFailure'
+      required:
+      - input
+    TransferOperationPreview:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/TransferOperationConfigParams'
+        output:
+          $ref: '#/components/schemas/TransferOperationPreviewOutput'
+        failure:
+          $ref: '#/components/schemas/TransferOperationFailure'
+      required:
+      - input
+    ScreeningVerdict:
+      type: object
+      properties:
+        verdict:
+          type: string
+          enum:
+          - PASSED
+          - PASSED_WITH_ALERT
+          - REJECTED
+          - FAILED
+          - BYPASSED
+        executionOperationId:
+          type: string
+        account:
+          $ref: '#/components/schemas/Destination'
+        assetId:
+          type: string
+        amount:
+          type: string
+        matchedRule:
+          type: object
+          properties:
+            action:
+              type: string
+            category:
+              type: array
+              items:
+                type: string
+      required:
+      - executionOperationId
+      - account
+      - verdict
+      - assetId
+      - amount
+    CreateWorkflowConfigurationRequest:
+      type: object
+      x-internal: true
+      properties:
+        configName:
+          description: Your configuration name
+          type: string
+          example: my_config_name
+        preScreening:
+          $ref: '#/components/schemas/PreScreening'
+        configOperations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateConfigOperationRequest'
+        externalCorrelationData:
+          $ref: '#/components/schemas/CorrelationData'
+      required:
+      - configName
+      - configOperations
+    CreateTransferConfigOperationRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/TransferOperationType'
+        params:
+          $ref: '#/components/schemas/TransferOperationConfigParams'
+      required:
+      - type
+      - params
+    ConfigDisbursementOperationSnapshot:
+      type: object
+      properties:
+        operationId:
+          type: string
+        type:
+          $ref: '#/components/schemas/DisbursementOperationType'
+        params:
+          $ref: '#/components/schemas/DisbursementOperationConfigParams'
+      required:
+      - operationId
+      - type
+      - params
+    DisbursementOperationExecution:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/DisbursementOperationInput'
+        output:
+          $ref: '#/components/schemas/DisbursementOperationExecutionOutput'
+        payoutId:
+          type: string
+        startedAt:
+          type: number
+        finishedAt:
+          type: number
+        failure:
+          $ref: '#/components/schemas/OperationExecutionFailure'
+      required:
+      - input
+      - startedAt
+    DisbursementOperationExecutionParams:
+      type: object
+      properties:
+        configOperationId:
+          type: string
+        executionParams:
+          type: object
+          properties:
+            amount:
+              type: string
+            paymentAccount:
+              $ref: '#/components/schemas/Account'
+            instructionSet:
+              type: array
+              items:
+                $ref: '#/components/schemas/DisbursementInstruction'
+      required:
+      - configOperationId
+    TransferOperationType:
+      type: string
+      description: Transfer operation type
+      enum:
+      - TRANSFER
+    ConversionOperationExecutionOutput:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/AssetAmount'
+        fee:
+          $ref: '#/components/schemas/AssetAmount'
+        conversionRate:
+          type: string
+      required:
+      - amount
+      - fee
+      - conversionRate
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - INTERNAL
+              - AUTHENTICATION
+              - AUTHORIZATION
+              - VALIDATION
+              - NOT_FOUND
+              - UNPROCESSABLE_ENTITY
+              - FORBIDDEN
+            message:
+              type: string
+          required:
+          - type
+          - message
+      required:
+      - error
     ScreeningOperationFailure:
       type: object
       properties:
@@ -1277,6 +570,212 @@ components:
           $ref: '#/components/schemas/ScreeningOperationExecutionOutput'
       required:
       - reason
+    DisbursementConfigOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+        type:
+          $ref: '#/components/schemas/DisbursementOperationType'
+        params:
+          $ref: '#/components/schemas/DisbursementOperationConfigParams'
+        status:
+          $ref: '#/components/schemas/ConfigOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/DisbursementValidationFailure'
+      required:
+      - operationId
+      - type
+      - params
+      - status
+    ConversionOperationPreview:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/ConversionOperationConfigParams'
+        output:
+          $ref: '#/components/schemas/ConversionOperationPreviewOutput'
+        failure:
+          $ref: '#/components/schemas/ConversionOperationFailure'
+      required:
+      - input
+    DisbursementValidationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - ACCOUNT_NOT_FOUND
+          - ACCOUNT_TYPE_NOT_SUPPORTED
+          - INSUFFICIENT_BALANCE
+          - ASSET_NOT_FOUND
+          - ASSETS_CONTINUITY_MISMATCH
+          - EXCHANGE_BASKETS_MISMATCH
+          - ACCOUNTS_CONTINUITY_MISMATCH
+          - ONE_TIME_ADDRESS_CONTINUITY_NOT_ALLOWED
+          - EQUAL_ACCOUNTS_NOT_ALLOWED
+          - EQUAL_ASSETS_NOT_ALLOWED
+          - INVALID_AMOUNT
+          - UNMANAGED_WALLET_AS_SOURCE_NOT_ALLOWED
+          - MANAGED_OPERATION_PARAMS_INVALID_SCHEMA
+          - INSTRUCTIONS_EXCEED_HUNDRED_PERCENT
+          - INSTRUCTIONS_ARRAY_EMPTY
+        data:
+          type: object
+          additionalProperties: {}
+      required:
+      - reason
+    ConversionValidationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - ACCOUNT_NOT_FOUND
+          - ACCOUNT_TYPE_NOT_SUPPORTED
+          - INSUFFICIENT_BALANCE
+          - ASSET_NOT_FOUND
+          - ASSETS_CONTINUITY_MISMATCH
+          - EXCHANGE_BASKETS_MISMATCH
+          - ACCOUNTS_CONTINUITY_MISMATCH
+          - ONE_TIME_ADDRESS_CONTINUITY_NOT_ALLOWED
+          - EQUAL_ACCOUNTS_NOT_ALLOWED
+          - EQUAL_ASSETS_NOT_ALLOWED
+          - INVALID_AMOUNT
+          - UNMANAGED_WALLET_AS_SOURCE_NOT_ALLOWED
+          - MANAGED_OPERATION_PARAMS_INVALID_SCHEMA
+          - ACCOUNT_IS_NOT_EXCHANGE
+          - UNSUPPORTED_TRADING_METHOD
+          - ASSETS_CAN_NOT_CONVERTED
+        data:
+          type: object
+          additionalProperties: {}
+      required:
+      - reason
+    ScreeningOperationType:
+      type: string
+      enum:
+      - SCREENING
+    TransferOperationExecutionOutput:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/AssetAmount'
+        fee:
+          $ref: '#/components/schemas/AssetAmount'
+      required:
+      - amount
+      - fee
+    CreateWorkflowExecutionRequest:
+      type: object
+      x-internal: true
+      properties:
+        configId:
+          description: The created configuration unique identifier
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+          type: string
+        preScreening:
+          $ref: '#/components/schemas/PreScreening'
+        params:
+          type: array
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/ConversionOperationExecutionParams'
+            - $ref: '#/components/schemas/TransferOperationExecutionParams'
+            - $ref: '#/components/schemas/DisbursementOperationExecutionParams'
+        externalCorrelationData:
+          $ref: '#/components/schemas/CorrelationData'
+      required:
+      - configId
+      - params
+    DisbursementAmountInstruction:
+      type: object
+      properties:
+        payeeAccount:
+          $ref: '#/components/schemas/Destination'
+        assetId:
+          description: Asset unique identifier
+          type: string
+          example: ETH
+        amount:
+          description: The amount to disburse
+          type: string
+          example: '100'
+      required:
+      - payeeAccount
+      - assetId
+      - amount
+    WorkflowConfigurationSnapshot:
+      type: object
+      x-internal: true
+      properties:
+        configId:
+          type: string
+          description: Configuration unique identifier
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+        configName:
+          type: string
+          description: You configuration name
+          example: my_config_name
+        createdAt:
+          description: Create at timestamp
+          example: 1717325386
+          type: number
+        configOperations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigOperationSnapshot'
+        externalCorrelationData:
+          $ref: '#/components/schemas/CorrelationData'
+      required:
+      - configId
+      - configName
+      - configOperations
+      - createdAt
+    DisbursementPercentageInstruction:
+      type: object
+      properties:
+        payeeAccount:
+          $ref: '#/components/schemas/Destination'
+        assetId:
+          type: string
+          description: The asset ID to disburse
+          example: ETH
+        percentage:
+          description: The percentage of the asset's balance to disburse (i.e. '20' for 20% )
+          type: string
+          example: '20'
+      required:
+      - payeeAccount
+      - assetId
+      - percentage
+    ConversionOperationConfigParams:
+      type: object
+      properties:
+        amount:
+          description: The amount to convert
+          type: string
+          example: '10'
+        accountId:
+          description: Source account ID
+          example: '0'
+          type: string
+        srcAssetId:
+          description: The asset ID to convert
+          type: string
+          example: ETH
+        destAssetId:
+          description: The asset ID to get as a result of the conversion
+          type: string
+          example: USDC
+        slippageBasisPoints:
+          type: integer
+          description: Slippage tolerance (basis points)
+          minimum: 0
+          maximum: 10000
+          example: 100
+      required:
+      - destAssetId
     TransferOperationPreviewOutput:
       type: object
       properties:
@@ -1293,6 +792,242 @@ components:
       - fee
       - isSignRequired
       - timeSeconds
+    AssetAmount:
+      type: object
+      properties:
+        amount:
+          type: string
+        assetId:
+          type: string
+      required:
+      - amount
+      - assetId
+    DisbursementInstruction:
+      oneOf:
+      - $ref: '#/components/schemas/DisbursementAmountInstruction'
+      - $ref: '#/components/schemas/DisbursementPercentageInstruction'
+    ConfigOperationSnapshot:
+      oneOf:
+      - $ref: '#/components/schemas/ConfigConversionOperationSnapshot'
+      - $ref: '#/components/schemas/ConfigTransferOperationSnapshot'
+      - $ref: '#/components/schemas/ConfigDisbursementOperationSnapshot'
+    CreateDisbursementConfigOperationRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DisbursementOperationType'
+        params:
+          $ref: '#/components/schemas/DisbursementOperationConfigParams'
+      required:
+      - type
+      - params
+    ExecutionScreeningOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+          description: Operation unique identifier
+          example: 1cbf5105-b462-4c0b-83ca-d805251835e9
+        status:
+          $ref: '#/components/schemas/ExecutionOperationStatus'
+        operationType:
+          $ref: '#/components/schemas/ScreeningOperationType'
+        validationFailure:
+          $ref: '#/components/schemas/ScreeningValidationFailure'
+        execution:
+          $ref: '#/components/schemas/ScreeningOperationExecution'
+      required:
+      - operationId
+      - status
+      - operationType
+    ScreeningOperationExecutionOutput:
+      type: object
+      properties:
+        verdicts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScreeningVerdict'
+      required:
+      - verdicts
+    ConversionOperationPreviewOutput:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/AssetAmount'
+        fee:
+          $ref: '#/components/schemas/AssetAmount'
+        conversionRate:
+          type: string
+        timeSeconds:
+          type: number
+      required:
+      - amount
+      - fee
+      - conversionRate
+      - timeSeconds
+    CreateConfigOperationRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateConversionConfigOperationRequest'
+      - $ref: '#/components/schemas/CreateTransferConfigOperationRequest'
+      - $ref: '#/components/schemas/CreateDisbursementConfigOperationRequest'
+    DisbursementInstructionOutput:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/AssetAmount'
+        fee:
+          $ref: '#/components/schemas/AssetAmount'
+        payeeAccount:
+          $ref: '#/components/schemas/Destination'
+      required:
+      - amount
+      - fee
+      - payeeAccount
+    CreateConversionConfigOperationRequest:
+      type: object
+      description: Conversion Operation object
+      properties:
+        type:
+          $ref: '#/components/schemas/ConversionOperationType'
+        params:
+          $ref: '#/components/schemas/ConversionOperationConfigParams'
+      required:
+      - type
+      - params
+    TransferOperationExecution:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/TransferOperationConfigParams'
+        output:
+          $ref: '#/components/schemas/TransferOperationExecutionOutput'
+        txId:
+          type: string
+        startedAt:
+          type: number
+        finishedAt:
+          type: number
+        failure:
+          $ref: '#/components/schemas/TransferOperationFailure'
+      required:
+      - input
+      - startedAt
+    ConfigOperation:
+      oneOf:
+      - $ref: '#/components/schemas/ConversionConfigOperation'
+      - $ref: '#/components/schemas/TransferConfigOperation'
+      - $ref: '#/components/schemas/DisbursementConfigOperation'
+    DisbursementOperationConfigParams:
+      type: object
+      properties:
+        paymentAccount:
+          $ref: '#/components/schemas/Account'
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisbursementInstruction'
+      required:
+      - instructionSet
+    Account:
+      type: object
+      properties:
+        accountId:
+          description: The unique ID of the account
+          type: string
+          example: '0'
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+      required:
+      - accountId
+      - accountType
+    ExecutionTransferOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+          example: 1cbf5105-b462-4c0b-83ca-d805251835e9
+          description: Operation unique identifier
+        status:
+          $ref: '#/components/schemas/ExecutionOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/TransferValidationFailure'
+        operationType:
+          $ref: '#/components/schemas/TransferOperationType'
+        preview:
+          $ref: '#/components/schemas/TransferOperationPreview'
+        execution:
+          $ref: '#/components/schemas/TransferOperationExecution'
+      required:
+      - operationId
+      - status
+      - operationType
+    WorkflowConfigStatus:
+      type: string
+      enum:
+      - PENDING
+      - VALIDATION_IN_PROGRESS
+      - VALIDATION_FAILED
+      - READY_FOR_EXECUTION
+    DisbursementOperationExecutionOutput:
+      type: object
+      properties:
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisbursementInstructionOutput'
+      required:
+      - instructionSet
+    TransferOperationConfigParams:
+      type: object
+      properties:
+        amount:
+          description: The amount to transfer
+          type: string
+          example: '12'
+        assetId:
+          type: string
+          description: The assed ID to transfer
+          example: ETH
+        source:
+          $ref: '#/components/schemas/Account'
+        destination:
+          $ref: '#/components/schemas/Destination'
+      required:
+      - destination
+    ExecutionConversionOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+        status:
+          $ref: '#/components/schemas/ExecutionOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/ConversionValidationFailure'
+        operationType:
+          $ref: '#/components/schemas/ConversionOperationType'
+        preview:
+          $ref: '#/components/schemas/ConversionOperationPreview'
+        execution:
+          $ref: '#/components/schemas/ConversionOperationExecution'
+      required:
+      - operationId
+      - status
+      - operationType
+    ConversionOperationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - INVALID_AMOUNT
+          - SLIPPAGE_EXCEEDED
+          - AMOUNT_TOO_SMALL
+          - INSUFFICIENT_FUNDS
+        data:
+          type: object
+          additionalProperties: {}
+      required:
+      - reason
     ExecutionOperationStatus:
       type: string
       enum:
@@ -1308,6 +1043,271 @@ components:
       - EXECUTION_IN_PROGRESS
       - EXECUTION_COMPLETED
       - EXECUTION_FAILED
+    OperationExecutionFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+        data:
+          type: object
+          additionalProperties: {}
+      required:
+      - reason
+    ConversionConfigOperation:
+      type: object
+      properties:
+        operationId:
+          description: Operation unique identifier
+          example: 7bf16b28-6cd6-403f-af60-045c4b68a767
+          type: string
+        type:
+          $ref: '#/components/schemas/ConversionOperationType'
+        params:
+          $ref: '#/components/schemas/ConversionOperationConfigParams'
+        status:
+          $ref: '#/components/schemas/ConfigOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/ConversionValidationFailure'
+      required:
+      - operationId
+      - type
+      - params
+      - status
+    DisbursementOperationType:
+      type: string
+      description: Disbursment operation type
+      enum:
+      - DISBURSEMENT
+    TransferOperationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - INVALID_AMOUNT
+          - SUBMISSION_FAILED
+          - TRANSACTION_FAILED
+        data:
+          type: object
+          properties:
+            txId:
+              type: string
+            txStatus:
+              type: string
+            txSubStatus:
+              type: string
+          required:
+          - txId
+          - txStatus
+      required:
+      - reason
+    Destination:
+      oneOf:
+      - $ref: '#/components/schemas/Account'
+      - $ref: '#/components/schemas/OneTimeAddressAccount'
+    AccountType:
+      type: string
+      description: Account type
+      enum:
+      - EXCHANGE_ACCOUNT
+      - UNMANAGED_WALLET
+      - VAULT_ACCOUNT
+      - NETWORK_CONNECTION
+      - FIAT_ACCOUNT
+    WorkflowConfigurationId:
+      type: object
+      properties:
+        configId:
+          type: string
+          description: Configuration unique ID
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+      required:
+      - configId
+    DisbursementOperationInput:
+      type: object
+      properties:
+        amount:
+          type: string
+        paymentAccount:
+          $ref: '#/components/schemas/Account'
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisbursementInstruction'
+      required:
+      - paymentAccount
+      - instructionSet
+    ExecutionDisbursementOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+          description: Configuration unique identifier
+          example: 98822424-15ad-498c-9ef4-19c7430b4b6e
+        status:
+          $ref: '#/components/schemas/ExecutionOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/DisbursementValidationFailure'
+        operationType:
+          $ref: '#/components/schemas/DisbursementOperationType'
+        preview:
+          $ref: '#/components/schemas/DisbursementOperationPreview'
+        execution:
+          $ref: '#/components/schemas/DisbursementOperationExecution'
+      required:
+      - operationId
+      - status
+      - operationType
+    CorrelationData:
+      x-internal: true
+      oneOf:
+      - type: object
+        additionalProperties:
+          type: string
+      - type: string
+    ConversionOperationType:
+      type: string
+      description: Conversion Operation Type
+      enum:
+      - CONVERSION
+    TransferConfigOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+        type:
+          $ref: '#/components/schemas/TransferOperationType'
+        params:
+          $ref: '#/components/schemas/TransferOperationConfigParams'
+        status:
+          $ref: '#/components/schemas/ConfigOperationStatus'
+        validationFailure:
+          $ref: '#/components/schemas/TransferValidationFailure'
+      required:
+      - operationId
+      - type
+      - params
+      - status
+    ScreeningOperationExecution:
+      type: object
+      properties:
+        output:
+          $ref: '#/components/schemas/ScreeningOperationExecutionOutput'
+        startedAt:
+          type: number
+        finishedAt:
+          type: number
+        failure:
+          $ref: '#/components/schemas/ScreeningOperationFailure'
+      required:
+      - startedAt
+    ConfigTransferOperationSnapshot:
+      type: object
+      properties:
+        operationId:
+          type: string
+        type:
+          $ref: '#/components/schemas/TransferOperationType'
+        params:
+          $ref: '#/components/schemas/TransferOperationConfigParams'
+      required:
+      - operationId
+      - type
+      - params
+    ConfigOperationStatus:
+      type: string
+      enum:
+      - PENDING
+      - VALIDATION_IN_PROGRESS
+      - READY_FOR_EXECUTION
+      - VALIDATION_FAILED
+    ConfigConversionOperationSnapshot:
+      type: object
+      properties:
+        operationId:
+          type: string
+        type:
+          $ref: '#/components/schemas/ConversionOperationType'
+        params:
+          $ref: '#/components/schemas/ConversionOperationConfigParams'
+      required:
+      - operationId
+      - type
+      - params
+    TransferOperationExecutionParams:
+      type: object
+      properties:
+        configOperationId:
+          type: string
+        executionParams:
+          type: object
+          properties:
+            amount:
+              type: string
+            assetId:
+              type: string
+            source:
+              $ref: '#/components/schemas/Account'
+            destination:
+              $ref: '#/components/schemas/Destination'
+      required:
+      - configOperationId
+    DisbursementOperationPreviewOutput:
+      type: object
+      properties:
+        instructionSet:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/DisbursementInstructionOutput'
+            - type: object
+              properties:
+                timeSeconds:
+                  type: number
+              required:
+              - timeSeconds
+      required:
+      - instructionSet
+    ScreeningValidationFailure:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+          - SCREENING_DISABLED_IN_TENANT
+        data:
+          type: object
+          additionalProperties: {}
+      required:
+      - reason
+    WorkflowExecutionOperation:
+      oneOf:
+      - $ref: '#/components/schemas/ExecutionScreeningOperation'
+      - $ref: '#/components/schemas/ExecutionConversionOperation'
+      - $ref: '#/components/schemas/ExecutionTransferOperation'
+      - $ref: '#/components/schemas/ExecutionDisbursementOperation'
+    OneTimeAddressAccount:
+      type: object
+      description: Non whitelisted destination address
+      properties:
+        oneTimeAddress:
+          description: The destination address
+          type: string
+          example: '0xb794f5ea0ba39494ce839613fffba74279579268'
+        tag:
+          type: string
+          description: required For Tag/Memo based assets only
+          example: '123456'
+      required:
+      - oneTimeAddress
+    PreScreening:
+      type: object
+      description: Should the configured AML pre-screening policy be enabled or not
+      properties:
+        enabled:
+          type: boolean
+      required:
+      - enabled
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

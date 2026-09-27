@@ -405,17 +405,39 @@ paths:
           $ref: '#/components/responses/Error'
       operationId: getExchangeAccountsCredentialsPublicKey
 components:
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   schemas:
+    CreateInternalTransferRequest:
+      type: object
+      properties:
+        asset:
+          type: string
+        amount:
+          type: string
+        sourceType:
+          $ref: '#/components/schemas/TradingAccountType'
+        destType:
+          $ref: '#/components/schemas/TradingAccountType'
+      required:
+      - asset
+      - amount
+      - sourceType
+      - destType
+    ConvertAssetsRequest:
+      type: object
+      properties:
+        srcAsset:
+          type: string
+          description: Name of the source asset (must be in a currency that is supported for conversions in the selected exchange type that corresponds to your exchange ID)
+        destAsset:
+          type: string
+          description: Name of the destination asset (must be in a currency that is supported for conversions in the selected exchange type that corresponds to your exchange ID)
+        amount:
+          type: number
+          description: The amount to transfer (in the currency of the source asset)
+      required:
+      - srcAsset
+      - destAsset
+      - amount
     InternalTransferResponse:
       type: object
       properties:
@@ -430,86 +452,22 @@ components:
           example: 993c89c5-6405-47e5-9407-1a77f0de801f
       required:
       - success
-    AddExchangeAccountRequest:
+    GetExchangeAccountsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/ExchangeAccount'
+    GetExchangeAccountsCredentialsPublicKeyResponse:
       type: object
       properties:
-        exchangeType:
-          $ref: '#/components/schemas/ExchangeType'
-        name:
-          description: Display name of the exchange account
+        publicKey:
           type: string
-        creds:
-          description: Encrypted credentials
+          description: Public key string
+        tenantId:
           type: string
-        key:
-          description: Api key of the exchange
-          type: string
-        mainAccountId:
-          description: Optional - main account id of the exchange
-          type: string
+          description: Tenant identifier
       required:
-      - exchangeType
-      - name
-    ExchangeAccountsPaged:
-      type: object
-      properties:
-        ExchangeAccount:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeAccount'
-        paging:
-          type: object
-          properties:
-            after:
-              type: string
-              description: Query value to the after page
-            before:
-              type: string
-              description: Query value to the before page
-        prevUrl:
-          type: string
-        nextUrl:
-          type: string
-    ExchangeAccount:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/ExchangeType'
-        name:
-          type: string
-          description: Display name of the exchange account
-        status:
-          type: string
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeAsset'
-        success:
-          type: boolean
-          description: Did succeed in retrieve balance data
-        tradingAccounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeTradingAccount'
-        isSubaccount:
-          description: True if the account is a subaccount in an exchange
-          type: boolean
-        mainAccountId:
-          description: if the account is a sub-account, the ID of the main account
-          type: string
-    ExchangeTradingAccount:
-      type: object
-      properties:
-        type:
-          type: string
-        name:
-          type: string
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeAsset'
+      - publicKey
+      - tenantId
     TradingAccountType:
       type: string
       enum:
@@ -527,60 +485,17 @@ components:
       - USDT_MARGINED_SWAP_CROSS
       - USDT_FUTURES
       - UNIFIED
-    CreateInternalTransferRequest:
+    ExchangeTradingAccount:
       type: object
       properties:
-        asset:
-          type: string
-        amount:
-          type: string
-        sourceType:
-          $ref: '#/components/schemas/TradingAccountType'
-        destType:
-          $ref: '#/components/schemas/TradingAccountType'
-      required:
-      - asset
-      - amount
-      - sourceType
-      - destType
-    ExchangeAsset:
-      type: object
-      properties:
-        id:
-          type: string
-        balance:
-          type: string
-        lockedAmount:
-          type: string
-        total:
-          type: string
-        available:
-          type: string
-        credit:
-          type: string
-    GetExchangeAccountsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/ExchangeAccount'
-    AddExchangeAccountResponse:
-      type: object
-      properties:
-        id:
-          description: Exchange account's identifier
+        type:
           type: string
         name:
-          description: Display name of the exchange account
           type: string
-        exchangeType:
-          $ref: '#/components/schemas/ExchangeType'
-    ConvertAssetsResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates whether the conversion was successful
-      required:
-      - success
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeAsset'
     ExchangeType:
       description: Exchange account's type
       type: string
@@ -627,38 +542,123 @@ components:
       - LUNO
       - BIT_GENERA
       - TRANSFERO
-    GetExchangeAccountsCredentialsPublicKeyResponse:
+    AddExchangeAccountRequest:
       type: object
       properties:
-        publicKey:
+        exchangeType:
+          $ref: '#/components/schemas/ExchangeType'
+        name:
+          description: Display name of the exchange account
           type: string
-          description: Public key string
-        tenantId:
+        creds:
+          description: Encrypted credentials
           type: string
-          description: Tenant identifier
+        key:
+          description: Api key of the exchange
+          type: string
+        mainAccountId:
+          description: Optional - main account id of the exchange
+          type: string
       required:
-      - publicKey
-      - tenantId
-    ConvertAssetsRequest:
+      - exchangeType
+      - name
+    ExchangeAccountsPaged:
       type: object
       properties:
-        srcAsset:
+        ExchangeAccount:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeAccount'
+        paging:
+          type: object
+          properties:
+            after:
+              type: string
+              description: Query value to the after page
+            before:
+              type: string
+              description: Query value to the before page
+        prevUrl:
           type: string
-          description: Name of the source asset (must be in a currency that is supported for conversions in the selected exchange type that corresponds to your exchange ID)
-        destAsset:
+        nextUrl:
           type: string
-          description: Name of the destination asset (must be in a currency that is supported for conversions in the selected exchange type that corresponds to your exchange ID)
-        amount:
-          type: number
-          description: The amount to transfer (in the currency of the source asset)
+    ExchangeAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        total:
+          type: string
+        available:
+          type: string
+        credit:
+          type: string
+    ConvertAssetsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the conversion was successful
       required:
-      - srcAsset
-      - destAsset
-      - amount
+      - success
     GetPagedExchangeAccountsResponse:
       type: array
       items:
         $ref: '#/components/schemas/ExchangeAccountsPaged'
+    ExchangeAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/ExchangeType'
+        name:
+          type: string
+          description: Display name of the exchange account
+        status:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeAsset'
+        success:
+          type: boolean
+          description: Did succeed in retrieve balance data
+        tradingAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeTradingAccount'
+        isSubaccount:
+          description: True if the account is a subaccount in an exchange
+          type: boolean
+        mainAccountId:
+          description: if the account is a sub-account, the ID of the main account
+          type: string
+    AddExchangeAccountResponse:
+      type: object
+      properties:
+        id:
+          description: Exchange account's identifier
+          type: string
+        name:
+          description: Display name of the exchange account
+          type: string
+        exchangeType:
+          $ref: '#/components/schemas/ExchangeType'
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

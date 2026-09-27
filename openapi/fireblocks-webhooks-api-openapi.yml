@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests…
+  title: Fireblocks Blockchains and Assets Approval Requests……
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -139,6 +139,20 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
   schemas:
+    ResendWebhooksResponse:
+      type: object
+      properties:
+        messagesCount:
+          description: The amount of resent notifications
+          type: number
+          example: 1
+    ResendTransactionWebhooksRequest:
+      type: object
+      properties:
+        resendCreated:
+          type: boolean
+        resendStatusUpdated:
+          type: boolean
     ResendWebhooksByTransactionIdResponse:
       type: object
       properties:
@@ -147,20 +161,6 @@ components:
           description: Indicates whether the webhooks were successfully resent
       required:
       - success
-    ResendTransactionWebhooksRequest:
-      type: object
-      properties:
-        resendCreated:
-          type: boolean
-        resendStatusUpdated:
-          type: boolean
-    ResendWebhooksResponse:
-      type: object
-      properties:
-        messagesCount:
-          description: The amount of resent notifications
-          type: number
-          example: 1
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

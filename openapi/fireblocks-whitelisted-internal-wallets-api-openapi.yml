@@ -580,82 +580,7 @@ paths:
       - lang: Python
         source: response = fireblocks.internal_wallets.delete_internal_wallet_asset(wallet_id, asset_id);
 components:
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   schemas:
-    CreateWalletRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: the wallet's display name
-        customerRefId:
-          description: Optional - Sets a customer reference ID
-          type: string
-    UnmanagedWallet:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        customerRefId:
-          type: string
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/WalletAsset'
-      required:
-      - id
-      - name
-      - assets
-    CreateInternalWalletAssetRequest:
-      type: object
-      properties:
-        address:
-          type: string
-          description: The wallet's address or, for EOS wallets, the account name
-        tag:
-          type: string
-          description: for XRP wallets, the destination tag; for EOS, the memo; for the fiat providers (BLINC by BCB Group), the Bank Transfer Description
-      required:
-      - address
-    ConfigChangeRequestStatus:
-      type: string
-      enum:
-      - WAITING_FOR_APPROVAL
-      - APPROVED
-      - CANCELLED
-      - REJECTED
-      - FAILED
-    SetCustomerRefIdRequest:
-      type: object
-      properties:
-        customerRefId:
-          description: Customer reference ID
-          type: string
-          example: some-customer-reference
-    PaginatedAssetsResponse:
-      type: object
-      properties:
-        total:
-          type: number
-          description: Total number of assets in the internal wallet
-        data:
-          $ref: '#/components/schemas/UnmanagedWallet'
-        next:
-          type: string
-          description: Cursor for the next page of results
-      required:
-      - data
     WalletAsset:
       type: object
       properties:
@@ -673,10 +598,85 @@ components:
           type: string
         activationTime:
           type: string
+    ConfigChangeRequestStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - APPROVED
+      - CANCELLED
+      - REJECTED
+      - FAILED
+    CreateInternalWalletAssetRequest:
+      type: object
+      properties:
+        address:
+          type: string
+          description: The wallet's address or, for EOS wallets, the account name
+        tag:
+          type: string
+          description: for XRP wallets, the destination tag; for EOS, the memo; for the fiat providers (BLINC by BCB Group), the Bank Transfer Description
+      required:
+      - address
     GetInternalWalletsResponse:
       type: array
       items:
         $ref: '#/components/schemas/UnmanagedWallet'
+    SetCustomerRefIdRequest:
+      type: object
+      properties:
+        customerRefId:
+          description: Customer reference ID
+          type: string
+          example: some-customer-reference
+    UnmanagedWallet:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        customerRefId:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletAsset'
+      required:
+      - id
+      - name
+      - assets
+    CreateWalletRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: the wallet's display name
+        customerRefId:
+          description: Optional - Sets a customer reference ID
+          type: string
+    PaginatedAssetsResponse:
+      type: object
+      properties:
+        total:
+          type: number
+          description: Total number of assets in the internal wallet
+        data:
+          $ref: '#/components/schemas/UnmanagedWallet'
+        next:
+          type: string
+          description: Cursor for the next page of results
+      required:
+      - data
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

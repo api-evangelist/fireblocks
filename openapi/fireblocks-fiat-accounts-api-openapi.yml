@@ -240,6 +240,18 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
   schemas:
+    FiatAccountType:
+      type: string
+      enum:
+      - BLINC
+    RedeemFundsToLinkedDDAResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the funds were successfully redeemed to the linked DDA
+      required:
+      - success
     DepositFundsFromLinkedDDAResponse:
       type: object
       properties:
@@ -253,6 +265,10 @@ components:
       properties:
         amount:
           type: number
+    GetFiatAccountsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/FiatAccount'
     FiatAccount:
       type: object
       properties:
@@ -271,14 +287,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FiatAsset'
-    GetFiatAccountsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/FiatAccount'
-    FiatAccountType:
-      type: string
-      enum:
-      - BLINC
     FiatAsset:
       type: object
       properties:
@@ -286,14 +294,6 @@ components:
           type: string
         balance:
           type: string
-    RedeemFundsToLinkedDDAResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates whether the funds were successfully redeemed to the linked DDA
-      required:
-      - success
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

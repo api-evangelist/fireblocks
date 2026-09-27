@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Gas…
+  title: Fireblocks Blockchains and Assets Approval Requests Gas……
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -226,6 +226,16 @@ paths:
       - lang: Python
         source: response = fireblocks.gas_stations.update_gas_station_configuration_by_asset_id(gas_station_configuration, asset_id, idempotency_key);
 components:
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   schemas:
     EditGasStationConfigurationResponse:
       type: object
@@ -235,26 +245,6 @@ components:
           description: Indicates whether editing the gas station configuration was successful
       required:
       - success
-    GasStationConfigurationResponse:
-      type: object
-      properties:
-        gasThreshold:
-          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the gasThreshold value
-          type: string
-          default: '0.005'
-          example: '0.005'
-        gasCap:
-          description: The Gas Station will top up the vault account with gas until the balance reaches the gasCap value
-          example: '0.01'
-          default: '0.01'
-          type: string
-        maxGasPrice:
-          description: Maximum gas price for the fueling transaction (in gwei)
-          example: '20'
-          default: null
-          type:
-          - string
-          - 'null'
     GasStationConfiguration:
       type: object
       properties:
@@ -282,16 +272,26 @@ components:
           type: object
         configuration:
           $ref: '#/components/schemas/GasStationConfigurationResponse'
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
+    GasStationConfigurationResponse:
+      type: object
+      properties:
+        gasThreshold:
+          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the gasThreshold value
+          type: string
+          default: '0.005'
+          example: '0.005'
+        gasCap:
+          description: The Gas Station will top up the vault account with gas until the balance reaches the gasCap value
+          example: '0.01'
+          default: '0.01'
+          type: string
+        maxGasPrice:
+          description: Maximum gas price for the fueling transaction (in gwei)
+          example: '20'
+          default: null
+          type:
+          - string
+          - 'null'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

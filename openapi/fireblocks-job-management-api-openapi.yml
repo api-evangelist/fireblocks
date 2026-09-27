@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Job…
+  title: Fireblocks Blockchains and Assets Approval Requests Job……
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -271,32 +271,17 @@ paths:
       - lang: Python
         source: response = fireblocks.job_management.get_job_tasks(job_id);
 components:
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   schemas:
-    Tasks:
-      type: array
-      items:
-        $ref: '#/components/schemas/Task'
-    Jobs:
-      type: array
-      items:
-        $ref: '#/components/schemas/Job'
-    Task:
-      type: object
-      properties:
-        id:
-          type: string
-        jobId:
-          type: string
-        type:
-          type: string
-        tenantId:
-          type: string
-        created:
-          type: number
-        updated:
-          type: number
-        state:
-          type: string
     Job:
       type: object
       properties:
@@ -318,16 +303,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Task'
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
+    Jobs:
+      type: array
+      items:
+        $ref: '#/components/schemas/Job'
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        jobId:
+          type: string
+        type:
+          type: string
+        tenantId:
+          type: string
+        created:
+          type: number
+        updated:
+          type: number
+        state:
+          type: string
+    Tasks:
+      type: array
+      items:
+        $ref: '#/components/schemas/Task'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

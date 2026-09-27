@@ -486,491 +486,26 @@ paths:
         source: response = fireblocks.external_wallets.remove_asset_from_external_wallet(wallet_id, asset_id);
 components:
   schemas:
-    AdditionalInfoRequest:
+    BasicAddressRequest:
       type: object
-      description: External wallet request with additional payment information for various payment rails
+      description: Basic external wallet request with address information
       properties:
-        additionalInfo:
-          type: object
-          description: Additional payment information based on the payment rail type
-          oneOf:
-          - $ref: '#/components/schemas/IbanPaymentInfo'
-          - $ref: '#/components/schemas/AbaPaymentInfo'
-          - $ref: '#/components/schemas/SpeiBasicPaymentInfo'
-          - $ref: '#/components/schemas/SpeiAdvancedPaymentInfo'
-          - $ref: '#/components/schemas/PixPaymentInfo'
-          - $ref: '#/components/schemas/SepaPaymentInfo'
-          - $ref: '#/components/schemas/AchPaymentInfo'
-          - $ref: '#/components/schemas/UsWirePaymentInfo'
-          - $ref: '#/components/schemas/MomoPaymentInfo'
-          - $ref: '#/components/schemas/LbtPaymentInfo'
-      required:
-      - additionalInfo
-    ExternalWalletAsset:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          $ref: '#/components/schemas/ConfigChangeRequestStatus'
         address:
           type: string
-        balance:
-          type: string
-        lockedAmount:
-          type: string
+          description: The external wallet's address (or its xpub)
+          example: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
         tag:
           type: string
-        activationTime:
-          type: string
-        additionalInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/WalletAssetAdditionalInfo'
-    AchPaymentInfo:
-      type: object
-      description: ACH payment information for US Automated Clearing House transfers
-      properties:
-        rail:
-          type: string
-          enum:
-          - ACH
-          description: The payment rail type for ACH transfers
-          example: ACH
-        addressingSystem:
-          type: string
-          enum:
-          - ACH
-          description: The addressing system used for ACH transfers
-          example: ACH
-        accountHolderGivenName:
-          type: string
-          description: The given name (first name) of the account holder
-          example: John
-        accountHolderSurname:
-          type: string
-          description: The surname (last name) of the account holder
-          example: Smith
-        country:
-          type: string
-          description: The country for the transfer (ISO 3166-1 alpha-2 code)
-          example: US
-        accountNumber:
-          type: string
-          description: The bank account number
-          example: '1234567890'
-        routingNumber:
-          type: string
-          description: The bank routing number (ABA routing number)
-          example: '021000021'
-        accountType:
-          type: string
-          enum:
-          - CHECKING
-          - SAVINGS
-          description: The type of bank account
-          example: CHECKING
+          description: '- For XRP wallets, the destination tag.
+
+            - For EOS/XLM wallets, the memo.
+
+            - For fiat providers, the Bank Transfer Description.
+
+            '
+          example: '12345'
       required:
-      - rail
-      - addressingSystem
-      - routingNumber
-      - accountType
-      - accountHolderGivenName
-      - accountHolderSurname
-      - country
-      - accountNumber
-    PixPaymentInfo:
-      type: object
-      description: PIX payment information for Brazilian instant payments
-      properties:
-        rail:
-          type: string
-          enum:
-          - PIX
-          description: The payment rail type for PIX transfers
-          example: PIX
-        addressingSystem:
-          type: string
-          enum:
-          - PIX
-          description: The addressing system used for PIX transfers
-          example: PIX
-        accountHolderGivenName:
-          type: string
-          description: The given name (first name) of the account holder
-          example: João
-        accountHolderSurname:
-          type: string
-          description: The surname (last name) of the account holder
-          example: Silva
-        country:
-          type: string
-          description: The country for the transfer (ISO 3166-1 alpha-2 code)
-          example: BR
-        pixKey:
-          type: string
-          description: The PIX key used for the transfer
-          example: joao.silva@email.com
-        bankName:
-          type: string
-          description: The name of the bank
-          example: Banco do Brasil
-        bankCode:
-          type: string
-          description: The bank code (ISPB - Identificador do Sistema de Pagamentos Brasileiros)
-          example: '00000000'
-        keyType:
-          type: string
-          enum:
-          - CPF
-          - CNPJ
-          - EMAIL
-          - PHONE
-          - RANDOM
-          description: The type of PIX key being used
-          example: EMAIL
-      required:
-      - rail
-      - addressingSystem
-      - accountHolderGivenName
-      - accountHolderSurname
-      - country
-      - pixKey
-      - keyType
-    ConfigChangeRequestStatus:
-      type: string
-      enum:
-      - WAITING_FOR_APPROVAL
-      - APPROVED
-      - CANCELLED
-      - REJECTED
-      - FAILED
-    SpeiAdvancedPaymentInfo:
-      type: object
-      description: Advanced SPEI payment information for Mexican bank transfers with full details
-      properties:
-        rail:
-          type: string
-          enum:
-          - SPEI
-          description: The payment rail type for SPEI transfers
-          example: SPEI
-        addressingSystem:
-          type: string
-          enum:
-          - CLABE
-          description: The addressing system used for SPEI transfers
-          example: CLABE
-        accountHolderGivenName:
-          type: string
-          description: The given name (first name) of the account holder
-          example: Juan
-        accountHolderSurname:
-          type: string
-          description: The surname (last name) of the account holder
-          example: Pérez
-        country:
-          type: string
-          description: The country for the transfer (ISO 3166-1 alpha-2 code)
-          example: MX
-        bankName:
-          type: string
-          description: The name of the bank
-          example: Banco Nacional de México
-        beneficiaryRfc:
-          type: string
-          description: The RFC (Registro Federal de Contribuyentes) of the beneficiary
-          example: PERJ800101ABC
-        senderDocumentId:
-          type: string
-          description: The document ID of the sender
-          example: CURP123456789
-        clabe:
-          type: string
-          description: The CLABE (Clave Bancaria Estandarizada) number
-          example: 012180001234567890
-      required:
-      - rail
-      - addressingSystem
-      - accountHolderGivenName
-      - accountHolderSurname
-      - country
-      - clabe
-    SetCustomerRefIdRequest:
-      type: object
-      properties:
-        customerRefId:
-          description: Customer reference ID
-          type: string
-          example: some-customer-reference
-    WalletAsset:
-      type: object
-      properties:
-        id:
-          type: string
-        balance:
-          type: string
-        lockedAmount:
-          type: string
-        status:
-          $ref: '#/components/schemas/ConfigChangeRequestStatus'
-        address:
-          type: string
-        tag:
-          type: string
-        activationTime:
-          type: string
-    SpeiBasicPaymentInfo:
-      type: object
-      description: Basic SPEI payment information for Mexican bank transfers
-      properties:
-        speiClabe:
-          type: string
-          description: The CLABE (Clave Bancaria Estandarizada) number for SPEI transfers
-          example: 012180001234567890
-        speiName:
-          type: string
-          description: The name associated with the SPEI account
-          example: Juan Pérez
-      required:
-      - speiClabe
-    SepaPaymentInfo:
-      type: object
-      description: SEPA payment information for European Single Euro Payments Area transfers
-      properties:
-        rail:
-          type: string
-          enum:
-          - SEPA
-          description: The payment rail type for SEPA transfers
-          example: SEPA
-        addressingSystem:
-          type: string
-          enum:
-          - IBAN
-          description: The addressing system used for SEPA transfers
-          example: IBAN
-        accountHolderGivenName:
-          type: string
-          description: The given name (first name) of the account holder
-          example: Marie
-        accountHolderSurname:
-          type: string
-          description: The surname (last name) of the account holder
-          example: Dupont
-        accountHolderCountry:
-          type: string
-          description: The country where the account holder resides (ISO 3166-1 alpha-2 code)
-          example: FR
-        accountHolderAddress:
-          type: string
-          description: The address of the account holder
-          example: 123 Rue de la Paix
-        iban:
-          type: string
-          description: The International Bank Account Number (IBAN)
-          example: FR1420041010050500013M02606
-        country:
-          type: string
-          description: The country for the transfer (ISO 3166-1 alpha-2 code)
-          example: FR
-        bic:
-          type: string
-          description: The Bank Identifier Code (BIC/SWIFT code)
-          example: BNPAFRPP
-        bankName:
-          type: string
-          description: The name of the bank
-          example: BNP Paribas
-        bankBranch:
-          type: string
-          description: The bank branch information
-          example: Paris Central
-        bankAddress:
-          type: string
-          description: The address of the bank
-          example: 16 Boulevard des Italiens, 75009 Paris
-        purposeCode:
-          type: string
-          description: The purpose code for the transfer
-          example: SALA
-        taxId:
-          type: string
-          description: The tax identification number
-          example: '1234567890123'
-      required:
-      - rail
-      - addressingSystem
-      - accountHolderGivenName
-      - accountHolderSurname
-      - country
-      - iban
-    GetExternalWalletsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/UnmanagedWallet'
-    AbaPaymentInfo:
-      type: object
-      description: ABA payment information for US bank transfers
-      properties:
-        accountHolderGivenName:
-          type: string
-          description: The given name (first name) of the account holder
-          example: John
-        accountHolderSurname:
-          type: string
-          description: The surname (last name) of the account holder
-          example: Doe
-        accountHolderCity:
-          type: string
-          description: The city where the account holder resides
-          example: New York
-        accountHolderCountry:
-          type: string
-          description: The country where the account holder resides (ISO 3166-1 alpha-2 code)
-          example: US
-        accountHolderAddress1:
-          type: string
-          description: The primary address line of the account holder
-          example: 123 Wall Street
-        accountHolderAddress2:
-          type: string
-          description: The secondary address line of the account holder (optional)
-          example: Suite 100
-        accountHolderDistrict:
-          type: string
-          description: The district or region where the account holder resides
-          example: Manhattan
-        accountHolderPostalCode:
-          type: string
-          description: The postal code of the account holder's address
-          example: '10005'
-        abaRoutingNumber:
-          type: string
-          description: The ABA routing number for the bank
-          example: '021000021'
-        abaAccountNumber:
-          type: string
-          description: The account number at the bank
-          example: '1234567890'
-        abaCountry:
-          type: string
-          description: The country for the ABA transfer (ISO 3166-1 alpha-2 code)
-          example: US
-      required:
-      - accountHolderGivenName
-      - accountHolderCity
-      - accountHolderCountry
-      - accountHolderAddress1
-      - accountHolderPostalCode
-      - abaRoutingNumber
-      - abaAccountNumber
-      - abaCountry
-    IbanPaymentInfo:
-      type: object
-      description: IBAN payment information for European bank transfers
-      properties:
-        accountHolderGivenName:
-          type: string
-          description: The given name (first name) of the account holder
-          example: John
-        accountHolderSurname:
-          type: string
-          description: The surname (last name) of the account holder
-          example: Doe
-        accountHolderCity:
-          type: string
-          description: The city where the account holder resides
-          example: London
-        accountHolderCountry:
-          type: string
-          description: The country where the account holder resides (ISO 3166-1 alpha-2 code)
-          example: GB
-        accountHolderAddress1:
-          type: string
-          description: The primary address line of the account holder
-          example: 123 Main Street
-        accountHolderAddress2:
-          type: string
-          description: The secondary address line of the account holder (optional)
-          example: Apartment 4B
-        accountHolderDistrict:
-          type: string
-          description: The district or region where the account holder resides
-          example: Westminster
-        accountHolderPostalCode:
-          type: string
-          description: The postal code of the account holder's address
-          example: SW1A 1AA
-        iban:
-          type: string
-          description: The International Bank Account Number (IBAN)
-          example: GB82WEST12345698765432
-        ibanCity:
-          type: string
-          description: The city associated with the IBAN
-          example: London
-        ibanCountry:
-          type: string
-          description: The country associated with the IBAN (ISO 3166-1 alpha-2 code)
-          example: GB
-      required:
-      - accountHolderGivenName
-      - accountHolderCity
-      - accountHolderCountry
-      - accountHolderAddress1
-      - accountHolderPostalCode
-      - iban
-      - ibanCity
-      - ibanCountry
-    CreateWalletRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: the wallet's display name
-        customerRefId:
-          description: Optional - Sets a customer reference ID
-          type: string
-    AddAssetToExternalWalletRequest:
-      oneOf:
-      - $ref: '#/components/schemas/BasicAddressRequest'
-      - $ref: '#/components/schemas/AdditionalInfoRequest'
-    WalletAssetAdditionalInfo:
-      type: object
-      properties:
-        accountHolderGivenName:
-          type: string
-        accountHolderSurname:
-          type: string
-        accountHolderCity:
-          type: string
-        accountHolderCountry:
-          type: string
-        accountHolderAddress1:
-          type: string
-        accountHolderAddress2:
-          type: string
-        accountHolderDistrict:
-          type: string
-        accountHolderPostalCode:
-          type: string
-        abaRoutingNumber:
-          type: string
-        abaAccountNumber:
-          type: string
-        abaCountry:
-          type: string
-        iban:
-          type: string
-        ibanCity:
-          type: string
-        ibanCountry:
-          type: string
-        speiClabe:
-          type: string
-        speiName:
-          type: string
+      - address
     UsWirePaymentInfo:
       type: object
       description: US Wire payment information for US domestic wire transfers
@@ -1053,6 +588,186 @@ components:
       - bankAddressCity
       - bankAddressCountry
       - bankAddressPostalCode
+    AddAssetToExternalWalletRequest:
+      oneOf:
+      - $ref: '#/components/schemas/BasicAddressRequest'
+      - $ref: '#/components/schemas/AdditionalInfoRequest'
+    SetCustomerRefIdRequest:
+      type: object
+      properties:
+        customerRefId:
+          description: Customer reference ID
+          type: string
+          example: some-customer-reference
+    AchPaymentInfo:
+      type: object
+      description: ACH payment information for US Automated Clearing House transfers
+      properties:
+        rail:
+          type: string
+          enum:
+          - ACH
+          description: The payment rail type for ACH transfers
+          example: ACH
+        addressingSystem:
+          type: string
+          enum:
+          - ACH
+          description: The addressing system used for ACH transfers
+          example: ACH
+        accountHolderGivenName:
+          type: string
+          description: The given name (first name) of the account holder
+          example: John
+        accountHolderSurname:
+          type: string
+          description: The surname (last name) of the account holder
+          example: Smith
+        country:
+          type: string
+          description: The country for the transfer (ISO 3166-1 alpha-2 code)
+          example: US
+        accountNumber:
+          type: string
+          description: The bank account number
+          example: '1234567890'
+        routingNumber:
+          type: string
+          description: The bank routing number (ABA routing number)
+          example: '021000021'
+        accountType:
+          type: string
+          enum:
+          - CHECKING
+          - SAVINGS
+          description: The type of bank account
+          example: CHECKING
+      required:
+      - rail
+      - addressingSystem
+      - routingNumber
+      - accountType
+      - accountHolderGivenName
+      - accountHolderSurname
+      - country
+      - accountNumber
+    ExternalWalletAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ConfigChangeRequestStatus'
+        address:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        tag:
+          type: string
+        activationTime:
+          type: string
+        additionalInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletAssetAdditionalInfo'
+    SepaPaymentInfo:
+      type: object
+      description: SEPA payment information for European Single Euro Payments Area transfers
+      properties:
+        rail:
+          type: string
+          enum:
+          - SEPA
+          description: The payment rail type for SEPA transfers
+          example: SEPA
+        addressingSystem:
+          type: string
+          enum:
+          - IBAN
+          description: The addressing system used for SEPA transfers
+          example: IBAN
+        accountHolderGivenName:
+          type: string
+          description: The given name (first name) of the account holder
+          example: Marie
+        accountHolderSurname:
+          type: string
+          description: The surname (last name) of the account holder
+          example: Dupont
+        accountHolderCountry:
+          type: string
+          description: The country where the account holder resides (ISO 3166-1 alpha-2 code)
+          example: FR
+        accountHolderAddress:
+          type: string
+          description: The address of the account holder
+          example: 123 Rue de la Paix
+        iban:
+          type: string
+          description: The International Bank Account Number (IBAN)
+          example: FR1420041010050500013M02606
+        country:
+          type: string
+          description: The country for the transfer (ISO 3166-1 alpha-2 code)
+          example: FR
+        bic:
+          type: string
+          description: The Bank Identifier Code (BIC/SWIFT code)
+          example: BNPAFRPP
+        bankName:
+          type: string
+          description: The name of the bank
+          example: BNP Paribas
+        bankBranch:
+          type: string
+          description: The bank branch information
+          example: Paris Central
+        bankAddress:
+          type: string
+          description: The address of the bank
+          example: 16 Boulevard des Italiens, 75009 Paris
+        purposeCode:
+          type: string
+          description: The purpose code for the transfer
+          example: SALA
+        taxId:
+          type: string
+          description: The tax identification number
+          example: '1234567890123'
+      required:
+      - rail
+      - addressingSystem
+      - accountHolderGivenName
+      - accountHolderSurname
+      - country
+      - iban
+    WalletAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        status:
+          $ref: '#/components/schemas/ConfigChangeRequestStatus'
+        address:
+          type: string
+        tag:
+          type: string
+        activationTime:
+          type: string
+    ConfigChangeRequestStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - APPROVED
+      - CANCELLED
+      - REJECTED
+      - FAILED
     MomoPaymentInfo:
       type: object
       description: Mobile Money (MOMO) payment information for African mobile payment services
@@ -1110,23 +825,6 @@ components:
       - country
       - mobilePhoneNumber
       - provider
-    UnmanagedWallet:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        customerRefId:
-          type: string
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/WalletAsset'
-      required:
-      - id
-      - name
-      - assets
     LbtPaymentInfo:
       type: object
       description: LBT (Lebanese Bank Transfer) payment information for Lebanese bank transfers
@@ -1176,26 +874,337 @@ components:
       - accountNumber
       - bankName
       - bankCode
-    BasicAddressRequest:
+    SpeiAdvancedPaymentInfo:
       type: object
-      description: Basic external wallet request with address information
+      description: Advanced SPEI payment information for Mexican bank transfers with full details
       properties:
-        address:
+        rail:
           type: string
-          description: The external wallet's address (or its xpub)
-          example: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
-        tag:
+          enum:
+          - SPEI
+          description: The payment rail type for SPEI transfers
+          example: SPEI
+        addressingSystem:
           type: string
-          description: '- For XRP wallets, the destination tag.
-
-            - For EOS/XLM wallets, the memo.
-
-            - For fiat providers, the Bank Transfer Description.
-
-            '
-          example: '12345'
+          enum:
+          - CLABE
+          description: The addressing system used for SPEI transfers
+          example: CLABE
+        accountHolderGivenName:
+          type: string
+          description: The given name (first name) of the account holder
+          example: Juan
+        accountHolderSurname:
+          type: string
+          description: The surname (last name) of the account holder
+          example: Pérez
+        country:
+          type: string
+          description: The country for the transfer (ISO 3166-1 alpha-2 code)
+          example: MX
+        bankName:
+          type: string
+          description: The name of the bank
+          example: Banco Nacional de México
+        beneficiaryRfc:
+          type: string
+          description: The RFC (Registro Federal de Contribuyentes) of the beneficiary
+          example: PERJ800101ABC
+        senderDocumentId:
+          type: string
+          description: The document ID of the sender
+          example: CURP123456789
+        clabe:
+          type: string
+          description: The CLABE (Clave Bancaria Estandarizada) number
+          example: 012180001234567890
       required:
-      - address
+      - rail
+      - addressingSystem
+      - accountHolderGivenName
+      - accountHolderSurname
+      - country
+      - clabe
+    GetExternalWalletsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UnmanagedWallet'
+    PixPaymentInfo:
+      type: object
+      description: PIX payment information for Brazilian instant payments
+      properties:
+        rail:
+          type: string
+          enum:
+          - PIX
+          description: The payment rail type for PIX transfers
+          example: PIX
+        addressingSystem:
+          type: string
+          enum:
+          - PIX
+          description: The addressing system used for PIX transfers
+          example: PIX
+        accountHolderGivenName:
+          type: string
+          description: The given name (first name) of the account holder
+          example: João
+        accountHolderSurname:
+          type: string
+          description: The surname (last name) of the account holder
+          example: Silva
+        country:
+          type: string
+          description: The country for the transfer (ISO 3166-1 alpha-2 code)
+          example: BR
+        pixKey:
+          type: string
+          description: The PIX key used for the transfer
+          example: joao.silva@email.com
+        bankName:
+          type: string
+          description: The name of the bank
+          example: Banco do Brasil
+        bankCode:
+          type: string
+          description: The bank code (ISPB - Identificador do Sistema de Pagamentos Brasileiros)
+          example: '00000000'
+        keyType:
+          type: string
+          enum:
+          - CPF
+          - CNPJ
+          - EMAIL
+          - PHONE
+          - RANDOM
+          description: The type of PIX key being used
+          example: EMAIL
+      required:
+      - rail
+      - addressingSystem
+      - accountHolderGivenName
+      - accountHolderSurname
+      - country
+      - pixKey
+      - keyType
+    AbaPaymentInfo:
+      type: object
+      description: ABA payment information for US bank transfers
+      properties:
+        accountHolderGivenName:
+          type: string
+          description: The given name (first name) of the account holder
+          example: John
+        accountHolderSurname:
+          type: string
+          description: The surname (last name) of the account holder
+          example: Doe
+        accountHolderCity:
+          type: string
+          description: The city where the account holder resides
+          example: New York
+        accountHolderCountry:
+          type: string
+          description: The country where the account holder resides (ISO 3166-1 alpha-2 code)
+          example: US
+        accountHolderAddress1:
+          type: string
+          description: The primary address line of the account holder
+          example: 123 Wall Street
+        accountHolderAddress2:
+          type: string
+          description: The secondary address line of the account holder (optional)
+          example: Suite 100
+        accountHolderDistrict:
+          type: string
+          description: The district or region where the account holder resides
+          example: Manhattan
+        accountHolderPostalCode:
+          type: string
+          description: The postal code of the account holder's address
+          example: '10005'
+        abaRoutingNumber:
+          type: string
+          description: The ABA routing number for the bank
+          example: '021000021'
+        abaAccountNumber:
+          type: string
+          description: The account number at the bank
+          example: '1234567890'
+        abaCountry:
+          type: string
+          description: The country for the ABA transfer (ISO 3166-1 alpha-2 code)
+          example: US
+      required:
+      - accountHolderGivenName
+      - accountHolderCity
+      - accountHolderCountry
+      - accountHolderAddress1
+      - accountHolderPostalCode
+      - abaRoutingNumber
+      - abaAccountNumber
+      - abaCountry
+    CreateWalletRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: the wallet's display name
+        customerRefId:
+          description: Optional - Sets a customer reference ID
+          type: string
+    AdditionalInfoRequest:
+      type: object
+      description: External wallet request with additional payment information for various payment rails
+      properties:
+        additionalInfo:
+          type: object
+          description: Additional payment information based on the payment rail type
+          oneOf:
+          - $ref: '#/components/schemas/IbanPaymentInfo'
+          - $ref: '#/components/schemas/AbaPaymentInfo'
+          - $ref: '#/components/schemas/SpeiBasicPaymentInfo'
+          - $ref: '#/components/schemas/SpeiAdvancedPaymentInfo'
+          - $ref: '#/components/schemas/PixPaymentInfo'
+          - $ref: '#/components/schemas/SepaPaymentInfo'
+          - $ref: '#/components/schemas/AchPaymentInfo'
+          - $ref: '#/components/schemas/UsWirePaymentInfo'
+          - $ref: '#/components/schemas/MomoPaymentInfo'
+          - $ref: '#/components/schemas/LbtPaymentInfo'
+      required:
+      - additionalInfo
+    SpeiBasicPaymentInfo:
+      type: object
+      description: Basic SPEI payment information for Mexican bank transfers
+      properties:
+        speiClabe:
+          type: string
+          description: The CLABE (Clave Bancaria Estandarizada) number for SPEI transfers
+          example: 012180001234567890
+        speiName:
+          type: string
+          description: The name associated with the SPEI account
+          example: Juan Pérez
+      required:
+      - speiClabe
+    UnmanagedWallet:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        customerRefId:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletAsset'
+      required:
+      - id
+      - name
+      - assets
+    WalletAssetAdditionalInfo:
+      type: object
+      properties:
+        accountHolderGivenName:
+          type: string
+        accountHolderSurname:
+          type: string
+        accountHolderCity:
+          type: string
+        accountHolderCountry:
+          type: string
+        accountHolderAddress1:
+          type: string
+        accountHolderAddress2:
+          type: string
+        accountHolderDistrict:
+          type: string
+        accountHolderPostalCode:
+          type: string
+        abaRoutingNumber:
+          type: string
+        abaAccountNumber:
+          type: string
+        abaCountry:
+          type: string
+        iban:
+          type: string
+        ibanCity:
+          type: string
+        ibanCountry:
+          type: string
+        speiClabe:
+          type: string
+        speiName:
+          type: string
+    IbanPaymentInfo:
+      type: object
+      description: IBAN payment information for European bank transfers
+      properties:
+        accountHolderGivenName:
+          type: string
+          description: The given name (first name) of the account holder
+          example: John
+        accountHolderSurname:
+          type: string
+          description: The surname (last name) of the account holder
+          example: Doe
+        accountHolderCity:
+          type: string
+          description: The city where the account holder resides
+          example: London
+        accountHolderCountry:
+          type: string
+          description: The country where the account holder resides (ISO 3166-1 alpha-2 code)
+          example: GB
+        accountHolderAddress1:
+          type: string
+          description: The primary address line of the account holder
+          example: 123 Main Street
+        accountHolderAddress2:
+          type: string
+          description: The secondary address line of the account holder (optional)
+          example: Apartment 4B
+        accountHolderDistrict:
+          type: string
+          description: The district or region where the account holder resides
+          example: Westminster
+        accountHolderPostalCode:
+          type: string
+          description: The postal code of the account holder's address
+          example: SW1A 1AA
+        iban:
+          type: string
+          description: The International Bank Account Number (IBAN)
+          example: GB82WEST12345698765432
+        ibanCity:
+          type: string
+          description: The city associated with the IBAN
+          example: London
+        ibanCountry:
+          type: string
+          description: The country associated with the IBAN (ISO 3166-1 alpha-2 code)
+          example: GB
+      required:
+      - accountHolderGivenName
+      - accountHolderCity
+      - accountHolderCountry
+      - accountHolderAddress1
+      - accountHolderPostalCode
+      - iban
+      - ibanCity
+      - ibanCountry
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -1206,15 +1215,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

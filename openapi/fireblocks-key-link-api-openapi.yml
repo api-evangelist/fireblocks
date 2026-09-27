@@ -622,54 +622,37 @@ components:
       - vaultAccountId
       - agentUserId
       - createdAt
-    CreateValidationKeyResponseDto:
+    ValidationKeyDto:
       type: object
       properties:
-        validationKey:
-          description: Created validation key
-          allOf:
-          - $ref: '#/components/schemas/ValidationKeyDto'
-        admins:
-          description: Admins who have to approve the validation key addition
-          type: array
-          items:
-            type: string
-        approvalThreshold:
-          type: number
-          minimum: 0
-          example: 0
-          description: Minimal number of approvers required. 0 for all
-        requestId:
-          type: number
-          example: 1234
-          description: Approval request id. Can be cancelled
-      required:
-      - validationKey
-      - admins
-      - approvalThreshold
-      - requestId
-    GetSigningKeyResponseDto:
-      type: object
-      properties:
-        data:
-          description: Response object for getting external signing keys.
-          type: array
-          items:
-            $ref: '#/components/schemas/SigningKeyDto'
-        next:
+        keyId:
           type: string
-          description: The ID of the next page
-      required:
-      - data
-    ModifyValidationKeyDto:
-      type: object
-      properties:
+          minLength: 36
+          maxLength: 36
+          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
+          description: External validation key id set by Fireblocks.
+        publicKeyPem:
+          type: string
+          example: '-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----'
+          description: PEM encoded public key used for the validation.
+        daysTillExpired:
+          type: number
+          minimum: 1
+          example: 365
         enabled:
           type: boolean
           example: false
-          description: Disable validation key
+          description: True if the validation key is enabled.
+        createdAt:
+          type: number
+          example: 12345633
+          description: Creation date (timestamp) in milliseconds.
       required:
+      - keyId
+      - publicKeyPem
+      - daysTillExpired
       - enabled
+      - createdAt
     CreateSigningKeyDto:
       type: object
       properties:
@@ -709,37 +692,6 @@ components:
       - signingDeviceKeyId
       - signedCertPem
       - agentUserId
-    ValidationKeyDto:
-      type: object
-      properties:
-        keyId:
-          type: string
-          minLength: 36
-          maxLength: 36
-          example: 46a92767-5f93-4a46-9eed-f012196bb4fc
-          description: External validation key id set by Fireblocks.
-        publicKeyPem:
-          type: string
-          example: '-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----'
-          description: PEM encoded public key used for the validation.
-        daysTillExpired:
-          type: number
-          minimum: 1
-          example: 365
-        enabled:
-          type: boolean
-          example: false
-          description: True if the validation key is enabled.
-        createdAt:
-          type: number
-          example: 12345633
-          description: Creation date (timestamp) in milliseconds.
-      required:
-      - keyId
-      - publicKeyPem
-      - daysTillExpired
-      - enabled
-      - createdAt
     CreateValidationKeyDto:
       type: object
       properties:
@@ -755,15 +707,32 @@ components:
       required:
       - publicKeyPem
       - daysTillExpired
-    ModifySigningKeyDto:
+    CreateValidationKeyResponseDto:
       type: object
       properties:
-        vaultAccountId:
+        validationKey:
+          description: Created validation key
+          allOf:
+          - $ref: '#/components/schemas/ValidationKeyDto'
+        admins:
+          description: Admins who have to approve the validation key addition
+          type: array
+          items:
+            type: string
+        approvalThreshold:
           type: number
-          minimum: 1
-          example: 123
+          minimum: 0
+          example: 0
+          description: Minimal number of approvers required. 0 for all
+        requestId:
+          type: number
+          example: 1234
+          description: Approval request id. Can be cancelled
       required:
-      - vaultAccountId
+      - validationKey
+      - admins
+      - approvalThreshold
+      - requestId
     ModifySigningKeyAgentIdDto:
       type: object
       properties:
@@ -775,6 +744,24 @@ components:
           description: Id of user that represent agent servers which signs with the key
       required:
       - agentUserId
+    ModifyValidationKeyDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          example: false
+          description: Disable validation key
+      required:
+      - enabled
+    ModifySigningKeyDto:
+      type: object
+      properties:
+        vaultAccountId:
+          type: number
+          minimum: 1
+          example: 123
+      required:
+      - vaultAccountId
     GetValidationKeyResponseDto:
       type: object
       properties:
@@ -783,6 +770,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ValidationKeyDto'
+        next:
+          type: string
+          description: The ID of the next page
+      required:
+      - data
+    GetSigningKeyResponseDto:
+      type: object
+      properties:
+        data:
+          description: Response object for getting external signing keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/SigningKeyDto'
         next:
           type: string
           description: The ID of the next page

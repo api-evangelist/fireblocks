@@ -368,28 +368,32 @@ paths:
       - lang: Python
         source: response = fireblocks.contracts.delete_contract_asset(contract_id, asset_id);
 components:
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   schemas:
-    AddContractAssetRequest:
+    WalletAsset:
       type: object
       properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        status:
+          $ref: '#/components/schemas/ConfigChangeRequestStatus'
         address:
           type: string
-          description: The contract's address (or xpub) of the wallet
         tag:
           type: string
-          description: The destination tag, for XRP wallets
-      required:
-      - address
+        activationTime:
+          type: string
+    ConfigChangeRequestStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - APPROVED
+      - CANCELLED
+      - REJECTED
+      - FAILED
     ExternalWalletAsset:
       type: object
       properties:
@@ -411,6 +415,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WalletAssetAdditionalInfo'
+    UnmanagedWallet:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        customerRefId:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletAsset'
+      required:
+      - id
+      - name
+      - assets
     WalletAssetAdditionalInfo:
       type: object
       properties:
@@ -446,58 +467,37 @@ components:
           type: string
         speiName:
           type: string
-    UnmanagedWallet:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        customerRefId:
-          type: string
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/WalletAsset'
-      required:
-      - id
-      - name
-      - assets
-    ConfigChangeRequestStatus:
-      type: string
-      enum:
-      - WAITING_FOR_APPROVAL
-      - APPROVED
-      - CANCELLED
-      - REJECTED
-      - FAILED
+    GetContractsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UnmanagedWallet'
     CreateContractRequest:
       type: object
       properties:
         name:
           type: string
           description: the contract's display name
-    WalletAsset:
+    AddContractAssetRequest:
       type: object
       properties:
-        id:
-          type: string
-        balance:
-          type: string
-        lockedAmount:
-          type: string
-        status:
-          $ref: '#/components/schemas/ConfigChangeRequestStatus'
         address:
           type: string
+          description: The contract's address (or xpub) of the wallet
         tag:
           type: string
-        activationTime:
-          type: string
-    GetContractsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/UnmanagedWallet'
+          description: The destination tag, for XRP wallets
+      required:
+      - address
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

@@ -296,6 +296,176 @@ paths:
         source: response = fireblocks.deployed_contracts.add_contract_a_b_i(add_abi_request_dto, idempotency_key);
 components:
   schemas:
+    FetchAbiRequestDto:
+      type: object
+      properties:
+        baseAssetId:
+          type: string
+          description: The blockchain base assetId
+          example: ETH
+        contractAddress:
+          type: string
+          description: The contract's onchain address
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+      required:
+      - baseAssetId
+      - contractAddress
+    LeanDeployedContractResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The deployed contract data identifier
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        contractAddress:
+          type: string
+          description: The contract's onchain address
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        contractTemplateId:
+          type: string
+          description: The contract template identifier
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        blockchainId:
+          type: string
+          description: The blockchain's base assetId
+          example: ETH
+      required:
+      - id
+      - contractAddress
+      - contractTemplateId
+      - blockchainId
+    AbiFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: mint
+          description: The name of the contract function as it appears in the ABI
+        stateMutability:
+          type: string
+          example: pure
+          enum:
+          - pure
+          - view
+          - nonpayable
+          - payable
+          description: The state mutability of the contract function as it appears in the ABI
+        type:
+          type: string
+          example: constructor
+          description: The type if the function
+          enum:
+          - function
+          - constructor
+        inputs:
+          description: The parameters that this function/constructor posses
+          items:
+            $ref: '#/components/schemas/Parameter'
+          type: array
+        outputs:
+          description: The parameters that this 'read' function returns
+          items:
+            $ref: '#/components/schemas/Parameter'
+          type: array
+        description:
+          type: string
+          description: The documentation of this function (if has any)
+      required:
+      - type
+      - inputs
+    DeployedContractResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The deployed contract data identifier
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        contractAddress:
+          type: string
+          description: The contract's onchain address
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        contractTemplateId:
+          type: string
+          description: The contract template identifier
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        vaultAccountId:
+          type: string
+          example: '0'
+          description: The vault account id this contract was deploy from
+        baseAssetId:
+          type: string
+          description: The blockchain's base assetId
+          example: ETH
+      required:
+      - id
+      - contractAddress
+      - contractTemplateId
+      - baseAssetId
+    DeployedContractsPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/LeanDeployedContractResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+    ContractWithAbiDto:
+      type: object
+      properties:
+        contractAddress:
+          type: string
+          description: The address of the contract
+          example: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14'
+        baseAssetId:
+          type: string
+          description: The blockchain base assetId
+          example: ETH_TEST6
+        name:
+          type: string
+          description: The name of the contract
+          example: WETH9
+        abi:
+          description: The ABI of the contract
+          example:
+          - inputs:
+            - internalType: address
+              name: to
+              type: address
+            - internalType: uint256
+              name: amount
+              type: uint256
+            stateMutability: nonpayable
+            type: function
+            name: mint
+          type: array
+          items:
+            $ref: '#/components/schemas/AbiFunction'
+        isProxy:
+          type: boolean
+          description: Whether the contract is a proxy contract
+          example: true
+        implementation:
+          type: string
+          description: The implementation contract address
+          example: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14'
+        isPublic:
+          type: boolean
+          description: Whether the contract ABI is public
+          example: true
+      required:
+      - contractAddress
+      - baseAssetId
+      - name
+      - abi
+      - isPublic
     Parameter:
       type: object
       properties:
@@ -356,176 +526,6 @@ components:
       - contractAddress
       - baseAssetId
       - abi
-    DeployedContractsPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/LeanDeployedContractResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-      required:
-      - data
-    AbiFunction:
-      type: object
-      properties:
-        name:
-          type: string
-          example: mint
-          description: The name of the contract function as it appears in the ABI
-        stateMutability:
-          type: string
-          example: pure
-          enum:
-          - pure
-          - view
-          - nonpayable
-          - payable
-          description: The state mutability of the contract function as it appears in the ABI
-        type:
-          type: string
-          example: constructor
-          description: The type if the function
-          enum:
-          - function
-          - constructor
-        inputs:
-          description: The parameters that this function/constructor posses
-          items:
-            $ref: '#/components/schemas/Parameter'
-          type: array
-        outputs:
-          description: The parameters that this 'read' function returns
-          items:
-            $ref: '#/components/schemas/Parameter'
-          type: array
-        description:
-          type: string
-          description: The documentation of this function (if has any)
-      required:
-      - type
-      - inputs
-    FetchAbiRequestDto:
-      type: object
-      properties:
-        baseAssetId:
-          type: string
-          description: The blockchain base assetId
-          example: ETH
-        contractAddress:
-          type: string
-          description: The contract's onchain address
-          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
-      required:
-      - baseAssetId
-      - contractAddress
-    ContractWithAbiDto:
-      type: object
-      properties:
-        contractAddress:
-          type: string
-          description: The address of the contract
-          example: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14'
-        baseAssetId:
-          type: string
-          description: The blockchain base assetId
-          example: ETH_TEST6
-        name:
-          type: string
-          description: The name of the contract
-          example: WETH9
-        abi:
-          description: The ABI of the contract
-          example:
-          - inputs:
-            - internalType: address
-              name: to
-              type: address
-            - internalType: uint256
-              name: amount
-              type: uint256
-            stateMutability: nonpayable
-            type: function
-            name: mint
-          type: array
-          items:
-            $ref: '#/components/schemas/AbiFunction'
-        isProxy:
-          type: boolean
-          description: Whether the contract is a proxy contract
-          example: true
-        implementation:
-          type: string
-          description: The implementation contract address
-          example: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14'
-        isPublic:
-          type: boolean
-          description: Whether the contract ABI is public
-          example: true
-      required:
-      - contractAddress
-      - baseAssetId
-      - name
-      - abi
-      - isPublic
-    DeployedContractResponseDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The deployed contract data identifier
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-        contractAddress:
-          type: string
-          description: The contract's onchain address
-          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
-        contractTemplateId:
-          type: string
-          description: The contract template identifier
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-        vaultAccountId:
-          type: string
-          example: '0'
-          description: The vault account id this contract was deploy from
-        baseAssetId:
-          type: string
-          description: The blockchain's base assetId
-          example: ETH
-      required:
-      - id
-      - contractAddress
-      - contractTemplateId
-      - baseAssetId
-    LeanDeployedContractResponseDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The deployed contract data identifier
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-        contractAddress:
-          type: string
-          description: The contract's onchain address
-          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
-        contractTemplateId:
-          type: string
-          description: The contract template identifier
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-        blockchainId:
-          type: string
-          description: The blockchain's base assetId
-          example: ETH
-      required:
-      - id
-      - contractAddress
-      - contractTemplateId
-      - blockchainId
   responses:
     Error:
       description: Error Response

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Vaults…
+  title: Fireblocks Blockchains and Assets Approval Requests ……
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -1979,51 +1979,6 @@ paths:
         source: response = fireblocks.vaults.get_vault_balance_by_asset(asset_id);
 components:
   schemas:
-    VaultAccount:
-      type: object
-      required:
-      - id
-      - name
-      - assets
-      - hiddenOnUI
-      properties:
-        id:
-          type: string
-          example: '0'
-          description: Vault Account unique identifier
-        name:
-          type: string
-          example: MyVaultAccount
-          description: Vault Account name
-        assets:
-          type: array
-          description: An array of vault assets
-          minItems: 0
-          items:
-            $ref: '#/components/schemas/VaultAsset'
-        hiddenOnUI:
-          description: Whether the Vault Account is visible in the UI or not
-          type: boolean
-        customerRefId:
-          type: string
-          description: Customer reference ID for AML integrations
-          example: some-reference
-        autoFuel:
-          description: Whether the Vault Account is monitored by the Fireblocks Gas Station or not
-          type: boolean
-        tags:
-          type: array
-          description: List of tags attached to the vault account
-          items:
-            $ref: '#/components/schemas/Tag'
-    GetUnspentInputsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/UnspentInputsResponse'
-    GetVaultAssetsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/VaultAsset'
     ApprovalRequest:
       type: object
       description: Approval request details
@@ -2054,75 +2009,17 @@ components:
       - id
       - type
       - state
-    UnspentInput:
-      description: 'A representation of an Unspent Transaction Output (UTXO).
-
-        '
+    RenameVaultAccountResponse:
       type: object
       properties:
-        txHash:
-          description: Transaction Hash
+        name:
           type: string
-          example: 6b21446af4a5e3ec588960d2338ab52428a3eb729038146ea09905199723061f
-        index:
-          description: The UTXO index (vOut)
-          type: number
-          example: 0
-    PublicKeyInformation:
-      type: object
-      properties:
-        algorithm:
+          description: The new name of the vault account
+          example: MyVaultAccount
+        id:
           type: string
-          description: Elliptic Curve
-          enum:
-          - MPC_ECDSA_SECP256K1
-          - MPC_ECDSA_SECP256R1
-          - MPC_EDDSA_ED25519
-        derivationPath:
-          example:
-          - 44
-          - 0
-          - 0
-          - 0
-          - 0
-          description: BIP44 derivation path
-          type: array
-          items:
-            type: integer
-            minItems: 5
-            maxItems: 5
-        publicKey:
-          description: Compressed/Uncompressed public key value in hex representation
-          example: 1044c36403c1802818b472398f546a43a0d91569d5583a6e807c3825b155c7bd
-          type: string
-    VaultAccountsTagAttachmentsRequest:
-      type: object
-      properties:
-        tagIds:
-          description: The IDs of the tags to attach
-          example:
-          - df4c0987-30da-4976-8dcf-bc2dd41ae331
-          - a1b2c3d4-e5f6-7890-abcd-ef1234567890
-          type: array
-          minItems: 1
-          maxItems: 200
-          items:
-            type: string
-            format: uuid
-        vaultAccountIds:
-          description: The IDs of the vault accounts to attach tags to
-          example:
-          - '0'
-          - '1'
-          type: array
-          minItems: 1
-          maxItems: 200
-          items:
-            type: string
-            format: numeric
-      required:
-      - tagIds
-      - vaultAccountIds
+          description: The ID of the vault account
+          example: '0'
     SetCustomerRefIdRequest:
       type: object
       properties:
@@ -2130,197 +2027,6 @@ components:
           description: Customer reference ID
           type: string
           example: some-customer-reference
-    JobCreated:
-      type: object
-      properties:
-        jobId:
-          type: string
-    GetVaultAccountsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/VaultAccount'
-    CreateMultipleAccountsRequest:
-      type: object
-      properties:
-        count:
-          description: Count
-          type: integer
-          example: 1000
-        baseAssetIds:
-          description: Array of asset IDs
-          type: array
-          items:
-            type: string
-          example:
-          - ETH
-          - BTC
-          - SOL
-        names:
-          description: Names to assign to vault accounts. if vaultAccountNamesStartingIndex or prefix is used it'll fail
-          type: array
-          items:
-            type: string
-          example:
-          - first va
-          - client 65502e71-ecdf-48da-a074-c1753befc7fb
-        vaultAccountNamesStartingIndex:
-          description: Copy vault accounts names starting from this index. If names array is used it'll fail
-          type: integer
-          example: 0
-        prefix:
-          description: When copying from existing vault accounts (vaultAccountNamesStartingIndex) then adding a prefix to the names. If names array is used it'll fail
-          type: string
-          example: 'Copied from: '
-      required:
-      - baseAssetIds
-      - count
-    VaultWalletAddress:
-      type: object
-      properties:
-        assetId:
-          type: string
-          x-fb-entity: asset
-        address:
-          type: string
-        description:
-          type: string
-        tag:
-          type: string
-        type:
-          type: string
-        customerRefId:
-          type: string
-        addressFormat:
-          type: string
-          enum:
-          - SEGWIT
-          - LEGACY
-          - BASE
-          - PAYMENT
-        legacyAddress:
-          type: string
-        enterpriseAddress:
-          type: string
-        bip44AddressIndex:
-          type: integer
-        userDefined:
-          type: boolean
-    AssetWallet:
-      type: object
-      properties:
-        vaultId:
-          description: ID of the vault account. You can [get the vault account by this ID](https://developers.fireblocks.com/reference/get_vault-accounts-vaultaccountid) to retrieve vault properties such as its name, auto fueling, hidden on UI or customer reference ID.
-          type: string
-          example: '0'
-        assetId:
-          description: ID of the asset. You can get more information about this asset by using the [supported assets API](https://developers.fireblocks.com/reference/get_supported-assets)
-          type: string
-          example: ETH
-        available:
-          description: Available balance, available to use in a transaction.
-          type: string
-          example: '11'
-        total:
-          description: Total balance at the asset wallet, as seen at the blockchain explorers. This includes balance available, and any kind of unavailable balance such as locked, frozen, or others.
-          type: string
-        pending:
-          description: Pending balance (an incoming transaction that hasn't yet reached the necessary number of confirmations)
-          type: string
-          example: '0'
-        staked:
-          description: Staked balance (for DOT staking with Raw signing only)
-          type: string
-          example: '0'
-        frozen:
-          description: Funds frozen due to the anti-money laundering policy at this workspace.
-          type: string
-          example: '0'
-        lockedAmount:
-          description: Locked balance.
-          type: string
-          example: '0'
-        blockHeight:
-          description: The height (number) of the block of the balance. Can by empty.
-          type:
-          - string
-          - 'null'
-          example: '19953092'
-        blockHash:
-          description: The hash of the block of the balance. Can by empty.
-          type:
-          - string
-          - 'null'
-          example: '0x85fb70a1d600349666f4a8e79fd48f8911c02fa3ff702374cf9ec5e797c80603'
-        creationTimestamp:
-          description: Unix timestamp of the time the asset wallet was created.
-          type: string
-          example: '1618220338000'
-    UpdateVaultAccountAssetAddressRequest:
-      type: object
-      properties:
-        description:
-          description: The address description
-          type: string
-          example: some_description
-    Tag:
-      type: object
-      properties:
-        id:
-          description: The unique identifier of the tag
-          type: string
-          format: uuid
-          example: df4c0987-30da-4976-8dcf-bc2dd41ae331
-        label:
-          type: string
-          description: The tag label
-          example: VIP
-        description:
-          type: string
-          description: Description for the tag
-          example: Tag for VIP customers
-        color:
-          type: string
-          description: The tag color in hex format
-          example: '#FF5733'
-        isProtected:
-          type: boolean
-          description: Indication of whether the tag is a protected tag
-          default: false
-        updatedAt:
-          type: number
-          description: The date and time the tag was last updated
-          example: 1717084800000
-        pendingApprovalRequest:
-          $ref: '#/components/schemas/ApprovalRequest'
-      required:
-      - id
-      - label
-      - isProtected
-      - updatedAt
-    UnspentInputsResponse:
-      type: object
-      properties:
-        input:
-          $ref: '#/components/schemas/UnspentInput'
-        address:
-          type: string
-          description: The blockchain address associated with the UTXO
-          example: bc1qjhm0h7vhdyu0d0luv34dlz654rmsvg8twywk99
-        amount:
-          type: string
-          description: The quantity of the asset held in the UTXO, expressed in base asset units
-          example: '0.0009'
-        confirmations:
-          type: number
-          description: The count of confirmations on the blockchain for this UTXO
-          example: 4780
-        status:
-          type: string
-          description: UTXO Status
-          enum:
-          - AVAILABLE
-          - PENDING
-          - FROZEN
     VaultAccountTagAttachmentPendingOperation:
       type: object
       properties:
@@ -2345,178 +2051,6 @@ components:
       - tagId
       - action
       - approvalRequestId
-    CreateMultipleDepositAddressesJobStatus:
-      type: object
-      properties:
-        status:
-          type: string
-          example: Success
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/NewAddress'
-          example:
-          - address: addr_test1qp07k5kdwdfx4rpfqud8ry65acxgtgfgrxw0t35cwvl4uasjneqjdc868eqlex5p2f0nyekyyk4ze5xuanvj50ysrj3qqxqhsn
-            index: 0
-            description: Address one
-        errorMessage:
-          type: string
-          example: Asset not supported
-      required:
-      - status
-    CreateMultipleDepositAddressesRequest:
-      type: object
-      properties:
-        vaultAccountId:
-          description: Existing Vault account ID to add deposit addresses to
-          type: integer
-          example: 5
-        assetId:
-          description: asset ID
-          type: string
-          example: ADA
-        count:
-          description: Count of deposit addresses to issue
-          type: integer
-          example: 10
-        descriptions:
-          description: Desctiptions of the newly created addresses
-          type: array
-          items:
-            type: string
-          example:
-          - First address
-          - Second address
-          - df4c0987-30da-4976-8dcf-bc2dd41ae331
-        vaultAccountToCopyDescFrom:
-          description: Existing Vault Account ID to copy deposit addresses descriptions from in case no descriptions were provided
-          type: integer
-          example: 0
-        vaultAccountToCopyDescFromIndex:
-          description: Existing length within the vault account to copy deposit addresses descriptions from
-          type: integer
-          example: 1000
-      required:
-      - vaultAccountId
-      - assetId
-      - count
-    ErrorSchema:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: number
-    CreateVaultAccountRequest:
-      type: object
-      properties:
-        name:
-          description: Vault Account name
-          type: string
-          example: MyVaultAccount
-        hiddenOnUI:
-          description: Optional - if true, the created account and all related transactions will not be shown on Fireblocks console
-          type: boolean
-        customerRefId:
-          description: Optional - Sets a customer reference ID for AML integrations
-          type: string
-          example: some-reference
-        autoFuel:
-          description: Optional - Sets the autoFuel property of the vault account for the Fireblocks Gas Station
-          type: boolean
-        vaultType:
-          default: MPC
-          description: Type of vault account. The default type will be set to MPC.<br/>  If the workspace does not support the selected type, it will return an error.
-          type: string
-          enum:
-          - MPC
-          - KEY_LINK
-        autoAssign:
-          default: false
-          description: Applicable only when the vault account type is KEY_LINK. For MPC, this parameter will be ignored.<br/> If set to true and there are available keys, random keys will be assigned to the newly created vault account.<br/> If set to true and there are no available keys to be assigned, it will return an error.<br/> If set to false, the vault account will be created without any keys.
-          type: boolean
-    CreateVaultAssetResponse:
-      type: object
-      required:
-      - id
-      - address
-      properties:
-        id:
-          type: string
-          example: '0'
-        address:
-          type: string
-          example: bc1qzrclj9a6ljrkegggv047zk4gqrjxrznul3hf4p
-        legacyAddress:
-          description: For BTC and some BTC forked assets only
-          type: string
-          example: 12YbgefQANXKJZUCF1QrymUxCtKJR59e7g
-        enterpriseAddress:
-          description: For ADA (Cardano) only
-          type: string
-        tag:
-          description: For Tag/Memo based assets only
-          type: string
-          example: '247016305'
-        eosAccountName:
-          description: For EOS only
-          type: string
-        status:
-          type: string
-          example: PENDING_ACTIVATION
-        activationTxId:
-          type: string
-          example: 1fe6f159-fb00-4f2e-8907-051ba05a5880
-    GetMaxSpendableAmountResponse:
-      type: object
-      properties:
-        maxSpendableAmount:
-          type: string
-          description: The maximum amount that can be spent from the vault account
-          example: '0.009'
-    PaginatedAssetWalletResponse:
-      type: object
-      properties:
-        assetWallets:
-          type: array
-          items:
-            $ref: '#/components/schemas/AssetWallet'
-        paging:
-          type: object
-          properties:
-            before:
-              description: A string representing a cursor. Users can use this with a new request to this API endpoint as the “before” request parameter to fetch the previous page of results.
-              type: string
-            after:
-              description: A string representing a cursor. Users can use this with a new request to this API endpoint as the “before” request parameter to fetch the next page of results.
-              type: string
-    CreateAddressRequest:
-      type: object
-      properties:
-        description:
-          description: (Optional) Attach a description to the new address
-          type: string
-        customerRefId:
-          description: Optional - Sets a customer reference ID
-          type: string
-    VaultAccountsPagedResponse:
-      type: object
-      properties:
-        accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/VaultAccount'
-        paging:
-          type: object
-          properties:
-            before:
-              type: string
-            after:
-              type: string
-        previousUrl:
-          type: string
-        nextUrl:
-          type: string
     NewAddress:
       type: object
       properties:
@@ -2536,221 +2070,21 @@ components:
       - address
       - index
       - description
-    RewardsInfo:
+    CreateAddressRequest:
       type: object
       properties:
-        pendingRewards:
-          description: Amount that is pending for rewards
+        description:
+          description: (Optional) Attach a description to the new address
           type: string
-          example: '12'
-    VaultAccountTagAttachmentRejectedOperation:
-      type: object
-      properties:
-        vaultAccountId:
-          description: The ID of the vault account
-          example: '1'
-          type: string
-          format: numeric
-        tagId:
-          description: Tag ID
-          example: f0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
-          type: string
-          format: uuid
-        action:
-          $ref: '#/components/schemas/TagAttachmentOperationAction'
-        reason:
-          description: Reason for rejection
-          type: string
-          enum:
-          - CAPACITY_EXCEEDED
-          - ATTACHMENT_ALREADY_EXISTS
-          - ATTACHMENT_DOES_NOT_EXIST
-          - PENDING_REQUEST_EXISTS
-      required:
-      - vaultAccountId
-      - tagId
-      - action
-      - reason
-    PaginatedAddressResponse:
-      type: object
-      properties:
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/VaultWalletAddress'
-        paging:
-          type: object
-          properties:
-            before:
-              description: A string representing a cursor. Users can use this with a new request to this API endpoint as the “before” request parameter to fetch the previous page of results.
-              type: string
-              example: eyJhZGRyZXNzSWQiOiIzNjg4MzE5MiIsInZhdWx0QWNjb3VudElkIjoiMCIsImFzc2V0SWQiOiJCVEMifQ
-            after:
-              description: A string representing a cursor. Users can use this with a new request to this API endpoint as the “after” request parameter to fetch the next page of results.
-              type: string
-              example: eyJhZGRyZXNzSWQiOiIzNDU3MDM4MSIsInZhdWx0QWNjb3VudElkIjoiMCIsImFzc2V0SWQiOiJCVEMifQ
-    VaultAccountsTagAttachmentOperationsRequest:
-      type: object
-      properties:
-        vaultAccountIds:
-          description: The IDs of the vault accounts to attach tags to
-          example:
-          - '0'
-          - '1'
-          type: array
-          minItems: 1
-          maxItems: 100
-          items:
-            type: string
-            format: numeric
-        tagIdsToAttach:
-          description: The IDs of the tags to attach
-          example:
-          - df4c0987-30da-4976-8dcf-bc2dd41ae331
-          - a1b2c3d4-e5f6-7890-abcd-ef1234567890
-          type: array
-          minItems: 1
-          maxItems: 20
-          items:
-            type: string
-            format: uuid
-        tagIdsToDetach:
-          description: The IDs of the tags to detach
-          example:
-          - df4c0987-30da-4976-8dcf-bc2dd41ae331
-          - a1b2c3d4-e5f6-7890-abcd-ef1234567890
-          type: array
-          minItems: 1
-          maxItems: 20
-          items:
-            type: string
-            format: uuid
-      required:
-      - vaultAccountIds
-    VaultActionStatus:
-      type: object
-      properties:
-        success:
-          type: boolean
-    CreateAssetsRequest:
-      type: object
-      properties:
-        eosAccountName:
-          description: Optional - when creating an EOS wallet, the account name. If not provided, a random name will be generated
-          type: string
-    SetCustomerRefIdForAddressRequest:
-      type: object
-      properties:
         customerRefId:
-          description: Customer reference ID
+          description: Optional - Sets a customer reference ID
           type: string
-          example: customer_reference
-    GetVaultAccountAssetAddressesResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/VaultWalletAddress'
-    CreateAddressResponse:
-      type: object
-      properties:
-        address:
-          type: string
-        legacyAddress:
-          type: string
-        enterpriseAddress:
-          type: string
-        tag:
-          type: string
-        bip44AddressIndex:
-          type: integer
-    VaultAccountsTagAttachmentOperationsResponse:
-      type: object
-      properties:
-        appliedOperations:
-          description: The operations that were applied
-          type: array
-          items:
-            $ref: '#/components/schemas/VaultAccountTagAttachmentOperation'
-        pendingOperations:
-          description: The operations that are pending
-          type: array
-          items:
-            $ref: '#/components/schemas/VaultAccountTagAttachmentPendingOperation'
-        rejectedOperations:
-          description: The operations that were rejected
-          type: array
-          items:
-            $ref: '#/components/schemas/VaultAccountTagAttachmentRejectedOperation'
     SetAutoFuelRequest:
       type: object
       properties:
         autoFuel:
           description: Auto Fuel
           type: boolean
-    TagAttachmentOperationAction:
-      type: string
-      enum:
-      - ATTACH
-      - DETACH
-    UpdateVaultAccountRequest:
-      type: object
-      properties:
-        name:
-          description: Account Name
-          type: string
-          example: MyVaultAccount
-    CreateMultipleVaultAccountsJobStatus:
-      type: object
-      properties:
-        status:
-          type: string
-          example: Success
-        vaultAccounts:
-          type: object
-          description: Mapping between VaultAccountId to a mapping of asset to address
-          additionalProperties:
-            type: object
-            description: Mapping between asset (key) to address (value)
-            additionalProperties:
-              type: string
-          example:
-            '0':
-              BTC_TEST: bcrt1qs0zzqytuw49w2jqkmfhzgdh2lylzde2uw4zncz
-              ETH_TEST: '0x460395Edb2338023c6f137259C6e20B6C37dDE95'
-        errorMessage:
-          type: string
-          example: Asset not supported
-      required:
-      - status
-    VaultAccountTagAttachmentOperation:
-      type: object
-      properties:
-        vaultAccountId:
-          description: The ID of the Vault account
-          example: '1'
-          type: string
-          format: numeric
-        tagId:
-          description: The tag ID
-          example: f0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
-          type: string
-          format: uuid
-        action:
-          $ref: '#/components/schemas/TagAttachmentOperationAction'
-      required:
-      - vaultAccountId
-      - tagId
-      - action
-    RenameVaultAccountResponse:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The new name of the vault account
-          example: MyVaultAccount
-        id:
-          type: string
-          description: The ID of the vault account
-          example: '0'
     VaultAsset:
       type: object
       required:
@@ -2829,6 +2163,681 @@ components:
           example: '0xcc16c4ab5e018d1f05d3a18fcd122a3ef94276c10a4c89bbab10830f5c1ca742'
         rewardsInfo:
           $ref: '#/components/schemas/RewardsInfo'
+    UpdateVaultAccountRequest:
+      type: object
+      properties:
+        name:
+          description: Account Name
+          type: string
+          example: MyVaultAccount
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    RewardsInfo:
+      type: object
+      properties:
+        pendingRewards:
+          description: Amount that is pending for rewards
+          type: string
+          example: '12'
+    GetUnspentInputsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UnspentInputsResponse'
+    VaultAccountsPagedResponse:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/VaultAccount'
+        paging:
+          type: object
+          properties:
+            before:
+              type: string
+            after:
+              type: string
+        previousUrl:
+          type: string
+        nextUrl:
+          type: string
+    PublicKeyInformation:
+      type: object
+      properties:
+        algorithm:
+          type: string
+          description: Elliptic Curve
+          enum:
+          - MPC_ECDSA_SECP256K1
+          - MPC_ECDSA_SECP256R1
+          - MPC_EDDSA_ED25519
+        derivationPath:
+          example:
+          - 44
+          - 0
+          - 0
+          - 0
+          - 0
+          description: BIP44 derivation path
+          type: array
+          items:
+            type: integer
+            minItems: 5
+            maxItems: 5
+        publicKey:
+          description: Compressed/Uncompressed public key value in hex representation
+          example: 1044c36403c1802818b472398f546a43a0d91569d5583a6e807c3825b155c7bd
+          type: string
+    CreateMultipleDepositAddressesJobStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewAddress'
+          example:
+          - address: addr_test1qp07k5kdwdfx4rpfqud8ry65acxgtgfgrxw0t35cwvl4uasjneqjdc868eqlex5p2f0nyekyyk4ze5xuanvj50ysrj3qqxqhsn
+            index: 0
+            description: Address one
+        errorMessage:
+          type: string
+          example: Asset not supported
+      required:
+      - status
+    GetMaxSpendableAmountResponse:
+      type: object
+      properties:
+        maxSpendableAmount:
+          type: string
+          description: The maximum amount that can be spent from the vault account
+          example: '0.009'
+    UnspentInputsResponse:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/UnspentInput'
+        address:
+          type: string
+          description: The blockchain address associated with the UTXO
+          example: bc1qjhm0h7vhdyu0d0luv34dlz654rmsvg8twywk99
+        amount:
+          type: string
+          description: The quantity of the asset held in the UTXO, expressed in base asset units
+          example: '0.0009'
+        confirmations:
+          type: number
+          description: The count of confirmations on the blockchain for this UTXO
+          example: 4780
+        status:
+          type: string
+          description: UTXO Status
+          enum:
+          - AVAILABLE
+          - PENDING
+          - FROZEN
+    AssetWallet:
+      type: object
+      properties:
+        vaultId:
+          description: ID of the vault account. You can [get the vault account by this ID](https://developers.fireblocks.com/reference/get_vault-accounts-vaultaccountid) to retrieve vault properties such as its name, auto fueling, hidden on UI or customer reference ID.
+          type: string
+          example: '0'
+        assetId:
+          description: ID of the asset. You can get more information about this asset by using the [supported assets API](https://developers.fireblocks.com/reference/get_supported-assets)
+          type: string
+          example: ETH
+        available:
+          description: Available balance, available to use in a transaction.
+          type: string
+          example: '11'
+        total:
+          description: Total balance at the asset wallet, as seen at the blockchain explorers. This includes balance available, and any kind of unavailable balance such as locked, frozen, or others.
+          type: string
+        pending:
+          description: Pending balance (an incoming transaction that hasn't yet reached the necessary number of confirmations)
+          type: string
+          example: '0'
+        staked:
+          description: Staked balance (for DOT staking with Raw signing only)
+          type: string
+          example: '0'
+        frozen:
+          description: Funds frozen due to the anti-money laundering policy at this workspace.
+          type: string
+          example: '0'
+        lockedAmount:
+          description: Locked balance.
+          type: string
+          example: '0'
+        blockHeight:
+          description: The height (number) of the block of the balance. Can by empty.
+          type:
+          - string
+          - 'null'
+          example: '19953092'
+        blockHash:
+          description: The hash of the block of the balance. Can by empty.
+          type:
+          - string
+          - 'null'
+          example: '0x85fb70a1d600349666f4a8e79fd48f8911c02fa3ff702374cf9ec5e797c80603'
+        creationTimestamp:
+          description: Unix timestamp of the time the asset wallet was created.
+          type: string
+          example: '1618220338000'
+    VaultAccountTagAttachmentRejectedOperation:
+      type: object
+      properties:
+        vaultAccountId:
+          description: The ID of the vault account
+          example: '1'
+          type: string
+          format: numeric
+        tagId:
+          description: Tag ID
+          example: f0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
+          type: string
+          format: uuid
+        action:
+          $ref: '#/components/schemas/TagAttachmentOperationAction'
+        reason:
+          description: Reason for rejection
+          type: string
+          enum:
+          - CAPACITY_EXCEEDED
+          - ATTACHMENT_ALREADY_EXISTS
+          - ATTACHMENT_DOES_NOT_EXIST
+          - PENDING_REQUEST_EXISTS
+      required:
+      - vaultAccountId
+      - tagId
+      - action
+      - reason
+    TagAttachmentOperationAction:
+      type: string
+      enum:
+      - ATTACH
+      - DETACH
+    UnspentInput:
+      description: 'A representation of an Unspent Transaction Output (UTXO).
+
+        '
+      type: object
+      properties:
+        txHash:
+          description: Transaction Hash
+          type: string
+          example: 6b21446af4a5e3ec588960d2338ab52428a3eb729038146ea09905199723061f
+        index:
+          description: The UTXO index (vOut)
+          type: number
+          example: 0
+    CreateAddressResponse:
+      type: object
+      properties:
+        address:
+          type: string
+        legacyAddress:
+          type: string
+        enterpriseAddress:
+          type: string
+        tag:
+          type: string
+        bip44AddressIndex:
+          type: integer
+    JobCreated:
+      type: object
+      properties:
+        jobId:
+          type: string
+    VaultWalletAddress:
+      type: object
+      properties:
+        assetId:
+          type: string
+          x-fb-entity: asset
+        address:
+          type: string
+        description:
+          type: string
+        tag:
+          type: string
+        type:
+          type: string
+        customerRefId:
+          type: string
+        addressFormat:
+          type: string
+          enum:
+          - SEGWIT
+          - LEGACY
+          - BASE
+          - PAYMENT
+        legacyAddress:
+          type: string
+        enterpriseAddress:
+          type: string
+        bip44AddressIndex:
+          type: integer
+        userDefined:
+          type: boolean
+    UpdateVaultAccountAssetAddressRequest:
+      type: object
+      properties:
+        description:
+          description: The address description
+          type: string
+          example: some_description
+    VaultAccountsTagAttachmentsRequest:
+      type: object
+      properties:
+        tagIds:
+          description: The IDs of the tags to attach
+          example:
+          - df4c0987-30da-4976-8dcf-bc2dd41ae331
+          - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: array
+          minItems: 1
+          maxItems: 200
+          items:
+            type: string
+            format: uuid
+        vaultAccountIds:
+          description: The IDs of the vault accounts to attach tags to
+          example:
+          - '0'
+          - '1'
+          type: array
+          minItems: 1
+          maxItems: 200
+          items:
+            type: string
+            format: numeric
+      required:
+      - tagIds
+      - vaultAccountIds
+    CreateAssetsRequest:
+      type: object
+      properties:
+        eosAccountName:
+          description: Optional - when creating an EOS wallet, the account name. If not provided, a random name will be generated
+          type: string
+    CreateMultipleAccountsRequest:
+      type: object
+      properties:
+        count:
+          description: Count
+          type: integer
+          example: 1000
+        baseAssetIds:
+          description: Array of asset IDs
+          type: array
+          items:
+            type: string
+          example:
+          - ETH
+          - BTC
+          - SOL
+        names:
+          description: Names to assign to vault accounts. if vaultAccountNamesStartingIndex or prefix is used it'll fail
+          type: array
+          items:
+            type: string
+          example:
+          - first va
+          - client 65502e71-ecdf-48da-a074-c1753befc7fb
+        vaultAccountNamesStartingIndex:
+          description: Copy vault accounts names starting from this index. If names array is used it'll fail
+          type: integer
+          example: 0
+        prefix:
+          description: When copying from existing vault accounts (vaultAccountNamesStartingIndex) then adding a prefix to the names. If names array is used it'll fail
+          type: string
+          example: 'Copied from: '
+      required:
+      - baseAssetIds
+      - count
+    SetCustomerRefIdForAddressRequest:
+      type: object
+      properties:
+        customerRefId:
+          description: Customer reference ID
+          type: string
+          example: customer_reference
+    GetVaultAccountAssetAddressesResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/VaultWalletAddress'
+    Tag:
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the tag
+          type: string
+          format: uuid
+          example: df4c0987-30da-4976-8dcf-bc2dd41ae331
+        label:
+          type: string
+          description: The tag label
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          example: Tag for VIP customers
+        color:
+          type: string
+          description: The tag color in hex format
+          example: '#FF5733'
+        isProtected:
+          type: boolean
+          description: Indication of whether the tag is a protected tag
+          default: false
+        updatedAt:
+          type: number
+          description: The date and time the tag was last updated
+          example: 1717084800000
+        pendingApprovalRequest:
+          $ref: '#/components/schemas/ApprovalRequest'
+      required:
+      - id
+      - label
+      - isProtected
+      - updatedAt
+    VaultActionStatus:
+      type: object
+      properties:
+        success:
+          type: boolean
+    VaultAccountTagAttachmentOperation:
+      type: object
+      properties:
+        vaultAccountId:
+          description: The ID of the Vault account
+          example: '1'
+          type: string
+          format: numeric
+        tagId:
+          description: The tag ID
+          example: f0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
+          type: string
+          format: uuid
+        action:
+          $ref: '#/components/schemas/TagAttachmentOperationAction'
+      required:
+      - vaultAccountId
+      - tagId
+      - action
+    VaultAccountsTagAttachmentOperationsRequest:
+      type: object
+      properties:
+        vaultAccountIds:
+          description: The IDs of the vault accounts to attach tags to
+          example:
+          - '0'
+          - '1'
+          type: array
+          minItems: 1
+          maxItems: 100
+          items:
+            type: string
+            format: numeric
+        tagIdsToAttach:
+          description: The IDs of the tags to attach
+          example:
+          - df4c0987-30da-4976-8dcf-bc2dd41ae331
+          - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            type: string
+            format: uuid
+        tagIdsToDetach:
+          description: The IDs of the tags to detach
+          example:
+          - df4c0987-30da-4976-8dcf-bc2dd41ae331
+          - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            type: string
+            format: uuid
+      required:
+      - vaultAccountIds
+    CreateVaultAccountRequest:
+      type: object
+      properties:
+        name:
+          description: Vault Account name
+          type: string
+          example: MyVaultAccount
+        hiddenOnUI:
+          description: Optional - if true, the created account and all related transactions will not be shown on Fireblocks console
+          type: boolean
+        customerRefId:
+          description: Optional - Sets a customer reference ID for AML integrations
+          type: string
+          example: some-reference
+        autoFuel:
+          description: Optional - Sets the autoFuel property of the vault account for the Fireblocks Gas Station
+          type: boolean
+        vaultType:
+          default: MPC
+          description: Type of vault account. The default type will be set to MPC.<br/>  If the workspace does not support the selected type, it will return an error.
+          type: string
+          enum:
+          - MPC
+          - KEY_LINK
+        autoAssign:
+          default: false
+          description: Applicable only when the vault account type is KEY_LINK. For MPC, this parameter will be ignored.<br/> If set to true and there are available keys, random keys will be assigned to the newly created vault account.<br/> If set to true and there are no available keys to be assigned, it will return an error.<br/> If set to false, the vault account will be created without any keys.
+          type: boolean
+    CreateMultipleVaultAccountsJobStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        vaultAccounts:
+          type: object
+          description: Mapping between VaultAccountId to a mapping of asset to address
+          additionalProperties:
+            type: object
+            description: Mapping between asset (key) to address (value)
+            additionalProperties:
+              type: string
+          example:
+            '0':
+              BTC_TEST: bcrt1qs0zzqytuw49w2jqkmfhzgdh2lylzde2uw4zncz
+              ETH_TEST: '0x460395Edb2338023c6f137259C6e20B6C37dDE95'
+        errorMessage:
+          type: string
+          example: Asset not supported
+      required:
+      - status
+    VaultAccount:
+      type: object
+      required:
+      - id
+      - name
+      - assets
+      - hiddenOnUI
+      properties:
+        id:
+          type: string
+          example: '0'
+          description: Vault Account unique identifier
+        name:
+          type: string
+          example: MyVaultAccount
+          description: Vault Account name
+        assets:
+          type: array
+          description: An array of vault assets
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/VaultAsset'
+        hiddenOnUI:
+          description: Whether the Vault Account is visible in the UI or not
+          type: boolean
+        customerRefId:
+          type: string
+          description: Customer reference ID for AML integrations
+          example: some-reference
+        autoFuel:
+          description: Whether the Vault Account is monitored by the Fireblocks Gas Station or not
+          type: boolean
+        tags:
+          type: array
+          description: List of tags attached to the vault account
+          items:
+            $ref: '#/components/schemas/Tag'
+    GetVaultAssetsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/VaultAsset'
+    PaginatedAssetWalletResponse:
+      type: object
+      properties:
+        assetWallets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetWallet'
+        paging:
+          type: object
+          properties:
+            before:
+              description: A string representing a cursor. Users can use this with a new request to this API endpoint as the “before” request parameter to fetch the previous page of results.
+              type: string
+            after:
+              description: A string representing a cursor. Users can use this with a new request to this API endpoint as the “before” request parameter to fetch the next page of results.
+              type: string
+    CreateVaultAssetResponse:
+      type: object
+      required:
+      - id
+      - address
+      properties:
+        id:
+          type: string
+          example: '0'
+        address:
+          type: string
+          example: bc1qzrclj9a6ljrkegggv047zk4gqrjxrznul3hf4p
+        legacyAddress:
+          description: For BTC and some BTC forked assets only
+          type: string
+          example: 12YbgefQANXKJZUCF1QrymUxCtKJR59e7g
+        enterpriseAddress:
+          description: For ADA (Cardano) only
+          type: string
+        tag:
+          description: For Tag/Memo based assets only
+          type: string
+          example: '247016305'
+        eosAccountName:
+          description: For EOS only
+          type: string
+        status:
+          type: string
+          example: PENDING_ACTIVATION
+        activationTxId:
+          type: string
+          example: 1fe6f159-fb00-4f2e-8907-051ba05a5880
+    GetVaultAccountsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/VaultAccount'
+    VaultAccountsTagAttachmentOperationsResponse:
+      type: object
+      properties:
+        appliedOperations:
+          description: The operations that were applied
+          type: array
+          items:
+            $ref: '#/components/schemas/VaultAccountTagAttachmentOperation'
+        pendingOperations:
+          description: The operations that are pending
+          type: array
+          items:
+            $ref: '#/components/schemas/VaultAccountTagAttachmentPendingOperation'
+        rejectedOperations:
+          description: The operations that were rejected
+          type: array
+          items:
+            $ref: '#/components/schemas/VaultAccountTagAttachmentRejectedOperation'
+    CreateMultipleDepositAddressesRequest:
+      type: object
+      properties:
+        vaultAccountId:
+          description: Existing Vault account ID to add deposit addresses to
+          type: integer
+          example: 5
+        assetId:
+          description: asset ID
+          type: string
+          example: ADA
+        count:
+          description: Count of deposit addresses to issue
+          type: integer
+          example: 10
+        descriptions:
+          description: Desctiptions of the newly created addresses
+          type: array
+          items:
+            type: string
+          example:
+          - First address
+          - Second address
+          - df4c0987-30da-4976-8dcf-bc2dd41ae331
+        vaultAccountToCopyDescFrom:
+          description: Existing Vault Account ID to copy deposit addresses descriptions from in case no descriptions were provided
+          type: integer
+          example: 0
+        vaultAccountToCopyDescFromIndex:
+          description: Existing length within the vault account to copy deposit addresses descriptions from
+          type: integer
+          example: 1000
+      required:
+      - vaultAccountId
+      - assetId
+      - count
+    PaginatedAddressResponse:
+      type: object
+      properties:
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/VaultWalletAddress'
+        paging:
+          type: object
+          properties:
+            before:
+              description: A string representing a cursor. Users can use this with a new request to this API endpoint as the “before” request parameter to fetch the previous page of results.
+              type: string
+              example: eyJhZGRyZXNzSWQiOiIzNjg4MzE5MiIsInZhdWx0QWNjb3VudElkIjoiMCIsImFzc2V0SWQiOiJCVEMifQ
+            after:
+              description: A string representing a cursor. Users can use this with a new request to this API endpoint as the “after” request parameter to fetch the next page of results.
+              type: string
+              example: eyJhZGRyZXNzSWQiOiIzNDU3MDM4MSIsInZhdWx0QWNjb3VudElkIjoiMCIsImFzc2V0SWQiOiJCVEMifQ
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -2839,15 +2848,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

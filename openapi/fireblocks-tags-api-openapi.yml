@@ -205,68 +205,6 @@ paths:
       operationId: deleteTag
 components:
   schemas:
-    Tag:
-      type: object
-      properties:
-        id:
-          description: The unique identifier of the tag
-          type: string
-          format: uuid
-          example: df4c0987-30da-4976-8dcf-bc2dd41ae331
-        label:
-          type: string
-          description: The tag label
-          example: VIP
-        description:
-          type: string
-          description: Description for the tag
-          example: Tag for VIP customers
-        color:
-          type: string
-          description: The tag color in hex format
-          example: '#FF5733'
-        isProtected:
-          type: boolean
-          description: Indication of whether the tag is a protected tag
-          default: false
-        updatedAt:
-          type: number
-          description: The date and time the tag was last updated
-          example: 1717084800000
-        pendingApprovalRequest:
-          $ref: '#/components/schemas/ApprovalRequest'
-      required:
-      - id
-      - label
-      - isProtected
-      - updatedAt
-    UpdateTagRequest:
-      type: object
-      properties:
-        label:
-          type: string
-          description: The tag label
-          example: VIP
-        description:
-          type: string
-          description: Description for the tag
-          example: Tag for VIP customers
-    TagsPagedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-        next:
-          type:
-          - string
-          - 'null'
-          description: Cursor to the next page
-          example: MjAyNS0wNy0wOSAxMDo1MzoxMy40NTI=:NA==
-      required:
-      - data
-      - next
     ApprovalRequest:
       type: object
       description: Approval request details
@@ -321,6 +259,68 @@ components:
           default: false
       required:
       - label
+    UpdateTagRequest:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The tag label
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          example: Tag for VIP customers
+    TagsPagedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        next:
+          type:
+          - string
+          - 'null'
+          description: Cursor to the next page
+          example: MjAyNS0wNy0wOSAxMDo1MzoxMy40NTI=:NA==
+      required:
+      - data
+      - next
+    Tag:
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the tag
+          type: string
+          format: uuid
+          example: df4c0987-30da-4976-8dcf-bc2dd41ae331
+        label:
+          type: string
+          description: The tag label
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          example: Tag for VIP customers
+        color:
+          type: string
+          description: The tag color in hex format
+          example: '#FF5733'
+        isProtected:
+          type: boolean
+          description: Indication of whether the tag is a protected tag
+          default: false
+        updatedAt:
+          type: number
+          description: The date and time the tag was last updated
+          example: 1717084800000
+        pendingApprovalRequest:
+          $ref: '#/components/schemas/ApprovalRequest'
+      required:
+      - id
+      - label
+      - isProtected
+      - updatedAt
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

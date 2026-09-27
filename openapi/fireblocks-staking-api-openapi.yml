@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Staking…
+  title: Fireblocks Blockchains and Assets Approval Requests ……
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -721,90 +721,10 @@ paths:
         source: response = fireblocks.staking.approve_terms_of_service_by_provider_id(provider_id, idempotency_key);
 components:
   schemas:
-    SplitResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-          description: The unique identifier of the new staking position
-      required:
-      - id
-      example:
-        id: afedfd2e4-e3c9-4b70-90d6-eb0f74bfd4sd8
-    StakeResponse:
-      type: object
-      example:
-        id: afedfd2e4-e3c9-4b70-90d6-eb0f74bfd4sd8
-      properties:
-        id:
-          type: string
-          example: afedfd2e4-e3c9-4b70-90d6-eb0f74bfd4sd8
-          description: The unique identifier of the staking position
-      required:
-      - id
     StakingGetAllDelegationsResponse:
       type: array
       items:
         $ref: '#/components/schemas/Delegation'
-    StakingProvider:
-      description: The unique identifier of the staking provider
-      type: string
-      example: kiln
-      enum:
-      - kiln
-      - figment
-      - lido
-      - p2p
-      - pierTwo
-      - blockdaemon
-      - galaxy
-    AdditionalInfo:
-      type: object
-      description: Additional information related to the blockchain. This may include extra details about the blockchain network.
-      properties:
-        estimatedAnnualReward:
-          type: number
-          example: 6.48
-          description: The estimated annual reward rate for the blockchain, represented as a decimal percentage value.
-        lockupPeriod:
-          type: number
-          example: 172800000
-          description: The duration of the lockup period for certain actions on the blockchain, measured in milliseconds.
-        activationPeriod:
-          type: number
-          example: 172800000
-          description: The duration of the activation period for certain actions on the blockchain, measured in milliseconds.
-      required:
-      - estimatedAnnualReward
-      - lockupPeriod
-      - activationPeriod
-    MergeStakeAccountsRequest:
-      type: object
-      properties:
-        sourceId:
-          type: string
-          format: uuid
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850f
-          description: Id of the source position to merge from
-        destinationId:
-          type: string
-          format: uuid
-          example: f3432f4-34d1-43495-a8ee-jfdjnfj34i3
-          description: Id of the destination position to merge into
-        fee:
-          type: string
-          example: '7'
-          description: Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required.
-        feeLevel:
-          $ref: '#/components/schemas/FeeLevel'
-        txNote:
-          type: string
-          example: split 20 SOL out of 100 SOL, created on 02.04.23
-          description: The note to associate with the transactions.
-      required:
-      - sourceId
-      - destinationId
     RelatedRequest:
       type: object
       properties:
@@ -830,37 +750,185 @@ components:
       - status
       - inProgress
       - amount
-    ChainInfoResponse:
+    StakingGetProvidersResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Provider'
+    StakeRequest:
+      type: object
+      example:
+        vaultAccountId: '22'
+        providerId: kiln
+        stakeAmount: '100'
+        txNote: stake request id CcaHc2L43ZWjwCHART3oZoJvHLAe9hzT2DJNUpBzoTN1 of 100 SOL created on 02.04.23
+        feeLevel: MEDIUM
+      properties:
+        vaultAccountId:
+          type: string
+          example: '22'
+          description: The source vault account to stake from
+        providerId:
+          $ref: '#/components/schemas/StakingProvider'
+        stakeAmount:
+          type: string
+          example: '32'
+          description: Amount of tokens to stake
+        txNote:
+          type: string
+          example: stake request id CcaHc2L43ZWjwCHART3oZoJvHLAe9hzT2DJNUpBzoTN1 of 32ETH created on 02.04.23
+          description: The note to associate with the stake transactions.
+        fee:
+          type: string
+          example: '7'
+          description: Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required.
+        feeLevel:
+          $ref: '#/components/schemas/FeeLevel'
+      required:
+      - vaultAccountId
+      - providerId
+      - stakeAmount
+    DelegationSummary:
       type: object
       properties:
-        chainDescriptor:
-          type: string
-          example: SOL
-          description: The protocol identifier (e.g. "ETH"/"SOL").
-        currentEpoch:
-          type: number
-          example: 483
-          description: The current epoch number of the blockchain network.
-        epochElapsed:
-          type: number
-          example: 0.31
-          description: The percentage of time that has elapsed within the current epoch, represented as a decimal value between 0 and 1.
-        epochDuration:
-          type: number
-          example: 172800000
-          description: The total duration in milliseconds of a single epoch.
-        additionalInfo:
-          $ref: '#/components/schemas/AdditionalInfo'
+        active:
+          description: An array of objects containing chain descriptors and associated amounts, representing active positions.
+          type: array
+          items:
+            $ref: '#/components/schemas/AmountAndChainDescriptor'
+        inactive:
+          description: An array of objects containing chain descriptors and associated amounts, representing inactive positions.
+          type: array
+          items:
+            $ref: '#/components/schemas/AmountAndChainDescriptor'
+        rewardsAmount:
+          description: An array of objects containing chain descriptors and associated amounts, representing rewards positions.
+          type: array
+          items:
+            $ref: '#/components/schemas/AmountAndChainDescriptor'
+        totalStaked:
+          description: An array of objects with chain descriptors and total staked amounts, representing the combined staked totals of active and inactive positions.
+          type: array
+          items:
+            $ref: '#/components/schemas/AmountAndChainDescriptor'
       required:
-      - chainDescriptor
-      - currentEpoch
-      - epochElapsed
-      - epochDuration
-      - additionalInfo
+      - active
+      - inactive
+      - rewardsAmount
+      - totalStaked
+    StakingProvider:
+      description: The unique identifier of the staking provider
+      type: string
+      example: kiln
+      enum:
+      - kiln
+      - figment
+      - lido
+      - p2p
+      - pierTwo
+      - blockdaemon
+      - galaxy
+    WithdrawRequest:
+      type: object
+      example:
+        id: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        txNote: 'withdraw request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #SOL'
+        feeLevel: MEDIUM
+      properties:
+        id:
+          type: string
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850f
+          description: id of position to withdraw
+        fee:
+          type: string
+          example: '7'
+          description: Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required.
+        feeLevel:
+          $ref: '#/components/schemas/FeeLevel'
+        txNote:
+          type: string
+          example: 'withdraw request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #ETH'
+          description: The note to associate with the transactions.
+      required:
+      - id
+    Provider:
+      type: object
+      properties:
+        id:
+          type: string
+          example: kiln
+          description: The ID of the provider
+        providerName:
+          type: string
+          example: Kiln
+          description: Name of the provider
+        validators:
+          example:
+          - chainDescriptor: ETH
+            feePercent: 5
+          - chainDescriptor: SOL
+            feePercent: 7
+          description: An array of objects that includes chain descriptors and the corresponding fee percentages for validators supported by the provider
+          type: array
+          items:
+            $ref: '#/components/schemas/Validator'
+        iconUrl:
+          type: string
+          example: https://static.fireblocks.io/staking/validators/kiln_console.png
+          description: URL to the validator's icon
+        termsOfServiceUrl:
+          type: string
+          example: https://www.kiln.fi/terms-and-conditions-for-fireblocks-customers
+          description: URL to the terms of service
+        isTermsOfServiceApproved:
+          type: boolean
+          example: true
+          description: Indicates whether the terms of service are approved
+        isPrivate:
+          type: boolean
+          example: true
+          description: Is the provider private, i.e created by the user
+        isLiquidStaking:
+          type: boolean
+          example: true
+          description: Is the provider a liquid staking provider
+      required:
+      - id
+      - providerName
+      - validators
+      - isTermsOfServiceApproved
+      - isLiquidStaking
+    FeeLevel:
+      type: string
+      example: MEDIUM
+      description: Represents the fee level for a transaction, which can be set as slow, medium, or fast. Only one of fee/feeLevel is required.
+      enum:
+      - LOW
+      - MEDIUM
+      - HIGH
     StakingGetSummaryByVaultResponse:
       type: object
       additionalProperties:
         $ref: '#/components/schemas/DelegationSummary'
+    AdditionalInfo:
+      type: object
+      description: Additional information related to the blockchain. This may include extra details about the blockchain network.
+      properties:
+        estimatedAnnualReward:
+          type: number
+          example: 6.48
+          description: The estimated annual reward rate for the blockchain, represented as a decimal percentage value.
+        lockupPeriod:
+          type: number
+          example: 172800000
+          description: The duration of the lockup period for certain actions on the blockchain, measured in milliseconds.
+        activationPeriod:
+          type: number
+          example: 172800000
+          description: The duration of the activation period for certain actions on the blockchain, measured in milliseconds.
+      required:
+      - estimatedAnnualReward
+      - lockupPeriod
+      - activationPeriod
     Delegation:
       type: object
       properties:
@@ -966,53 +1034,20 @@ components:
       - availableActions
       - inProgress
       - blockchainPositionInfo
-    Provider:
+    RelatedTransaction:
       type: object
       properties:
-        id:
+        txId:
           type: string
-          example: kiln
-          description: The ID of the provider
-        providerName:
-          type: string
-          example: Kiln
-          description: Name of the provider
-        validators:
-          example:
-          - chainDescriptor: ETH
-            feePercent: 5
-          - chainDescriptor: SOL
-            feePercent: 7
-          description: An array of objects that includes chain descriptors and the corresponding fee percentages for validators supported by the provider
-          type: array
-          items:
-            $ref: '#/components/schemas/Validator'
-        iconUrl:
-          type: string
-          example: https://static.fireblocks.io/staking/validators/kiln_console.png
-          description: URL to the validator's icon
-        termsOfServiceUrl:
-          type: string
-          example: https://www.kiln.fi/terms-and-conditions-for-fireblocks-customers
-          description: URL to the terms of service
-        isTermsOfServiceApproved:
+          example: b70601f4-d7b1-4795-a8ee-b09cdb4r850d
+          description: The transaction ID
+        completed:
           type: boolean
           example: true
-          description: Indicates whether the terms of service are approved
-        isPrivate:
-          type: boolean
-          example: true
-          description: Is the provider private, i.e created by the user
-        isLiquidStaking:
-          type: boolean
-          example: true
-          description: Is the provider a liquid staking provider
+          description: Is the transaction completed or not
       required:
-      - id
-      - providerName
-      - validators
-      - isTermsOfServiceApproved
-      - isLiquidStaking
+      - txId
+      - completed
     Validator:
       type: object
       properties:
@@ -1031,39 +1066,55 @@ components:
       required:
       - chainDescriptor
       - feePercent
-    StakeRequest:
+    StakeResponse:
       type: object
       example:
-        vaultAccountId: '22'
-        providerId: kiln
-        stakeAmount: '100'
-        txNote: stake request id CcaHc2L43ZWjwCHART3oZoJvHLAe9hzT2DJNUpBzoTN1 of 100 SOL created on 02.04.23
-        feeLevel: MEDIUM
+        id: afedfd2e4-e3c9-4b70-90d6-eb0f74bfd4sd8
       properties:
-        vaultAccountId:
+        id:
           type: string
-          example: '22'
-          description: The source vault account to stake from
-        providerId:
-          $ref: '#/components/schemas/StakingProvider'
-        stakeAmount:
-          type: string
-          example: '32'
-          description: Amount of tokens to stake
-        txNote:
-          type: string
-          example: stake request id CcaHc2L43ZWjwCHART3oZoJvHLAe9hzT2DJNUpBzoTN1 of 32ETH created on 02.04.23
-          description: The note to associate with the stake transactions.
-        fee:
-          type: string
-          example: '7'
-          description: Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required.
-        feeLevel:
-          $ref: '#/components/schemas/FeeLevel'
+          example: afedfd2e4-e3c9-4b70-90d6-eb0f74bfd4sd8
+          description: The unique identifier of the staking position
       required:
-      - vaultAccountId
-      - providerId
-      - stakeAmount
+      - id
+    SplitResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+          description: The unique identifier of the new staking position
+      required:
+      - id
+      example:
+        id: afedfd2e4-e3c9-4b70-90d6-eb0f74bfd4sd8
+    ChainInfoResponse:
+      type: object
+      properties:
+        chainDescriptor:
+          type: string
+          example: SOL
+          description: The protocol identifier (e.g. "ETH"/"SOL").
+        currentEpoch:
+          type: number
+          example: 483
+          description: The current epoch number of the blockchain network.
+        epochElapsed:
+          type: number
+          example: 0.31
+          description: The percentage of time that has elapsed within the current epoch, represented as a decimal value between 0 and 1.
+        epochDuration:
+          type: number
+          example: 172800000
+          description: The total duration in milliseconds of a single epoch.
+        additionalInfo:
+          $ref: '#/components/schemas/AdditionalInfo'
+      required:
+      - chainDescriptor
+      - currentEpoch
+      - epochElapsed
+      - epochDuration
+      - additionalInfo
     AmountAndChainDescriptor:
       type: object
       properties:
@@ -1078,6 +1129,77 @@ components:
       required:
       - chainDescriptor
       - amount
+    StakingGetChainsResponse:
+      type: array
+      example:
+      - ETH
+      - ETH_TEST6
+      - SOL
+      - SOL_TEST
+      - MATIC
+      items:
+        $ref: '#/components/schemas/ChainDescriptor'
+    ChainDescriptor:
+      type: string
+      enum:
+      - ETH
+      - SOL
+      - MATIC
+      - ETH_TEST6
+      - SOL_TEST
+    MergeStakeAccountsRequest:
+      type: object
+      properties:
+        sourceId:
+          type: string
+          format: uuid
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850f
+          description: Id of the source position to merge from
+        destinationId:
+          type: string
+          format: uuid
+          example: f3432f4-34d1-43495-a8ee-jfdjnfj34i3
+          description: Id of the destination position to merge into
+        fee:
+          type: string
+          example: '7'
+          description: Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required.
+        feeLevel:
+          $ref: '#/components/schemas/FeeLevel'
+        txNote:
+          type: string
+          example: split 20 SOL out of 100 SOL, created on 02.04.23
+          description: The note to associate with the transactions.
+      required:
+      - sourceId
+      - destinationId
+    MergeStakeAccountsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: f3432f4-34d1-43495-a8ee-jfdjnfj34i3
+          description: The unique identifier of the merge position (the id of the destination position)
+      required:
+      - id
+    SolanaBlockchainData:
+      type: object
+      example:
+        stakeAccountAddress: 3Ru67FyzMTcdENmmRL4Eve4dtPd6AdpuypR21q5EQCdq
+      description: Additional fields per blockchain - can be empty or missing if not initialized or no additional info exists. The type depends on the chainDescriptor value. For Solana (SOL), stake account address. For Ethereum (ETH), an empty object is returned as no specific data is available.
+      properties:
+        stakeAccountAddress:
+          type: string
+          example: 3Ru67FyzMTcdENmmRL4Eve4dtPd6AdpuypR21q5EQCdq
+          description: The stake account address matching the stakeAccountId.
+        stakeAccountDerivationChangeValue:
+          type: number
+          example: 7
+          description: The value of the change level in the BIP44 path which was used to derive the stake account address
+      required:
+      - stakeAccountAddress
+      - stakeAccountDerivationChangeValue
     ClaimRewardsRequest:
       type: object
       properties:
@@ -1101,89 +1223,6 @@ components:
         id: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
         txNote: claim rewards request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d
         feeLevel: MEDIUM
-    MergeStakeAccountsResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: f3432f4-34d1-43495-a8ee-jfdjnfj34i3
-          description: The unique identifier of the merge position (the id of the destination position)
-      required:
-      - id
-    DelegationSummary:
-      type: object
-      properties:
-        active:
-          description: An array of objects containing chain descriptors and associated amounts, representing active positions.
-          type: array
-          items:
-            $ref: '#/components/schemas/AmountAndChainDescriptor'
-        inactive:
-          description: An array of objects containing chain descriptors and associated amounts, representing inactive positions.
-          type: array
-          items:
-            $ref: '#/components/schemas/AmountAndChainDescriptor'
-        rewardsAmount:
-          description: An array of objects containing chain descriptors and associated amounts, representing rewards positions.
-          type: array
-          items:
-            $ref: '#/components/schemas/AmountAndChainDescriptor'
-        totalStaked:
-          description: An array of objects with chain descriptors and total staked amounts, representing the combined staked totals of active and inactive positions.
-          type: array
-          items:
-            $ref: '#/components/schemas/AmountAndChainDescriptor'
-      required:
-      - active
-      - inactive
-      - rewardsAmount
-      - totalStaked
-    StakingGetProvidersResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/Provider'
-    ChainDescriptor:
-      type: string
-      enum:
-      - ETH
-      - SOL
-      - MATIC
-      - ETH_TEST6
-      - SOL_TEST
-    StakingGetChainsResponse:
-      type: array
-      example:
-      - ETH
-      - ETH_TEST6
-      - SOL
-      - SOL_TEST
-      - MATIC
-      items:
-        $ref: '#/components/schemas/ChainDescriptor'
-    WithdrawRequest:
-      type: object
-      example:
-        id: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-        txNote: 'withdraw request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #SOL'
-        feeLevel: MEDIUM
-      properties:
-        id:
-          type: string
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850f
-          description: id of position to withdraw
-        fee:
-          type: string
-          example: '7'
-          description: Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required.
-        feeLevel:
-          $ref: '#/components/schemas/FeeLevel'
-        txNote:
-          type: string
-          example: 'withdraw request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #ETH'
-          description: The note to associate with the transactions.
-      required:
-      - id
     UnstakeRequest:
       type: object
       properties:
@@ -1211,28 +1250,6 @@ components:
         id: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
         txNote: 'unstake request id b70701f4-d7b1-4795-a8ee-b09cdb5b850d #SOL'
         feeLevel: MEDIUM
-    FeeLevel:
-      type: string
-      example: MEDIUM
-      description: Represents the fee level for a transaction, which can be set as slow, medium, or fast. Only one of fee/feeLevel is required.
-      enum:
-      - LOW
-      - MEDIUM
-      - HIGH
-    RelatedTransaction:
-      type: object
-      properties:
-        txId:
-          type: string
-          example: b70601f4-d7b1-4795-a8ee-b09cdb4r850d
-          description: The transaction ID
-        completed:
-          type: boolean
-          example: true
-          description: Is the transaction completed or not
-      required:
-      - txId
-      - completed
     SplitRequest:
       type: object
       properties:
@@ -1262,23 +1279,15 @@ components:
         amount: '20'
         txNote: split 20 SOL out of 100 SOL, created on 02.04.23
         feeLevel: MEDIUM
-    SolanaBlockchainData:
-      type: object
-      example:
-        stakeAccountAddress: 3Ru67FyzMTcdENmmRL4Eve4dtPd6AdpuypR21q5EQCdq
-      description: Additional fields per blockchain - can be empty or missing if not initialized or no additional info exists. The type depends on the chainDescriptor value. For Solana (SOL), stake account address. For Ethereum (ETH), an empty object is returned as no specific data is available.
-      properties:
-        stakeAccountAddress:
-          type: string
-          example: 3Ru67FyzMTcdENmmRL4Eve4dtPd6AdpuypR21q5EQCdq
-          description: The stake account address matching the stakeAccountId.
-        stakeAccountDerivationChangeValue:
-          type: number
-          example: 7
-          description: The value of the change level in the BIP44 path which was used to derive the stake account address
-      required:
-      - stakeAccountAddress
-      - stakeAccountDerivationChangeValue
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -1289,15 +1298,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

@@ -1102,317 +1102,6 @@ paths:
         source: response = fireblocks.whitelist_ip_addresses.get_whitelist_ip_addresses(user_id);
 components:
   schemas:
-    SetOtaStatusResponse:
-      oneOf:
-      - type: object
-        properties:
-          message:
-            type: string
-            description: Message indicating the result of the operation for example when no config change is needed
-            example: No change needed. The current status is false
-      - type: string
-        description: Message indicating the result of the operation when config was successfully updated
-        example: Accepted
-    UserGroupCreateRequest:
-      type: object
-      properties:
-        groupName:
-          type: string
-          description: User Group Name
-          example: My User Group
-        memberIds:
-          type: array
-          items:
-            type: string
-            example:
-            - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
-            - 30e8a73a-6300-4b35-a11a-9c69341805fc
-    GetAuditLogsResponseDTO:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-        total:
-          type: number
-        cursor:
-          type:
-          - string
-          - 'null'
-    AuditLogsData:
-      type: array
-      items:
-        $ref: '#/components/schemas/AuditLogData'
-    UserType:
-      type: string
-      description: The type of the user (API or Console)
-      enum:
-      - API
-      - CONSOLE
-    ConsoleUsers:
-      type: array
-      items:
-        $ref: '#/components/schemas/ConsoleUser'
-    GetUsersResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/UserResponse'
-    GetWhitelistIpAddressesResponse:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: The ID of the user
-          example: ceb990eb-838d-4de0-accf-924e8132dd67
-        whitelistedIps:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            example:
-            - 246.59.202.145
-            - 170.198.11.101
-          description: List of whitelisted ip addresses
-    UserGroupResponse:
-      type: object
-      properties:
-        id:
-          description: User Group ID
-          type: string
-          example: f04402d0-00f1-48cb-acd0-352010f2e62f
-        name:
-          type: string
-          description: User Group Name
-          example: My Group Name
-        status:
-          type: string
-          description: Group Approval Status
-          enum:
-          - PENDING_APPROVAL
-          - ACTIVE
-        memberIds:
-          type: array
-          items:
-            type: string
-            example:
-            - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
-            - 30e8a73a-6300-4b35-a11a-9c69341805fc
-    CreateUserGroupResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: User group unique identifier
-          example: 4a7e7b16-c863-4b41-876f-c64f05c087d6
-        name:
-          type: string
-          description: User group name
-          example: My User Group
-        memberIds:
-          type: array
-          description: IDs of the users in the group
-          items:
-            type: string
-            example:
-            - 30e8a73a-6300-4b35-a11a-9c69341805fc
-            - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
-        status:
-          type: string
-          description: User group status
-          enum:
-          - PENDING_APPROVAL
-          - ACTIVE
-    ConsoleUser:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UserId'
-        firstName:
-          type: string
-          description: The first name of the user
-          example: Some First Name
-        lastName:
-          type: string
-          description: The last name of the user
-          example: Some Last Name
-        email:
-          type: string
-          description: The email address of the user
-          example: user@example.com
-        role:
-          $ref: '#/components/schemas/UserRole'
-        enabled:
-          $ref: '#/components/schemas/UserEnabled'
-        status:
-          $ref: '#/components/schemas/UserStatus'
-        userType:
-          $ref: '#/components/schemas/UserType'
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-              enum:
-              - INTERNAL
-              - AUTHENTICATION
-              - AUTHORIZATION
-              - VALIDATION
-              - NOT_FOUND
-              - UNPROCESSABLE_ENTITY
-              - FORBIDDEN
-            message:
-              type: string
-          required:
-          - type
-          - message
-      required:
-      - error
-    SetAdminQuorumThresholdResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message which indicates the result of the operation.
-          example: Admin quorum threshold request sent successfully.
-      required:
-      - message
-    SetOtaStatusRequest:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Set true or false to enable or disable OTA transactions
-    APIUserRole:
-      type: string
-      description: The role of the API Key
-      enum:
-      - ADMIN
-      - SIGNER
-      - COLLATERALS_SIGNER
-      - EDITOR
-      - APPROVER
-      - VIEWER
-      - NON_SIGNING_ADMIN
-      - AUDITOR
-      - NCW_ADMIN
-      - NCW_SIGNER
-    GetWorkspaceStatusResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          description: Current workspace status
-    SetAdminQuorumThresholdRequest:
-      type: object
-      properties:
-        adminQuorumThreshold:
-          type: number
-          description: The number of admins that will requires to approve an operation
-          example: 1
-    UserResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        role:
-          type: string
-        email:
-          type: string
-        enabled:
-          type: boolean
-    AuditLogData:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the audit log
-        timestamp:
-          type: number
-          description: The timestamp of the audit log
-        createdAt:
-          type: number
-          description: The timestamp of the audit log creation
-        user:
-          type: string
-          description: The user who performed the action
-        subject:
-          type: string
-          description: The subject of the action
-        event:
-          type: string
-          description: The event that was performed
-        tenantId:
-          type: string
-          description: The tenant ID of the audit log
-        userId:
-          type: string
-          description: The user ID of the audit log
-    UserGroupUpdateRequest:
-      type: object
-      properties:
-        groupName:
-          type: string
-          description: User Group Name
-          example: My User Group
-        memberIds:
-          type: array
-          items:
-            type: string
-          example:
-          - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
-          - 30e8a73a-6300-4b35-a11a-9c69341805fc
-    UserId:
-      type: string
-      description: The unique identifier of the user
-    GetOtaStatusResponse:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Current One Time Address feature status
-    UserStatus:
-      type: string
-      description: The status of the user
-      enum:
-      - PENDING_ACTIVATION
-      - PENDING_DEVICE_PAIRING
-      - PENDING_DEVICE_SETUP
-      - READY
-    GetConsoleUsersResponse:
-      type: object
-      properties:
-        users:
-          $ref: '#/components/schemas/ConsoleUsers'
-      required:
-      - users
-    UserGroupsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/UserGroupResponse'
-    GetAuditLogsResponse:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/AuditLogsData'
-        cursor:
-          type:
-          - string
-          - 'null'
-          description: The next id to start fetch audit logs from
-          example: next-page-cursor
-        total:
-          type: number
-          description: The total number of audit logs
-          example: 32
     CreateAPIUser:
       type: object
       properties:
@@ -1454,6 +1143,258 @@ components:
       - role
       - name
       - csrPem
+    GetOtaStatusResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Current One Time Address feature status
+    GetWhitelistIpAddressesResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The ID of the user
+          example: ceb990eb-838d-4de0-accf-924e8132dd67
+        whitelistedIps:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            example:
+            - 246.59.202.145
+            - 170.198.11.101
+          description: List of whitelisted ip addresses
+    UserGroupUpdateRequest:
+      type: object
+      properties:
+        groupName:
+          type: string
+          description: User Group Name
+          example: My User Group
+        memberIds:
+          type: array
+          items:
+            type: string
+          example:
+          - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
+          - 30e8a73a-6300-4b35-a11a-9c69341805fc
+    CreateUserGroupResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User group unique identifier
+          example: 4a7e7b16-c863-4b41-876f-c64f05c087d6
+        name:
+          type: string
+          description: User group name
+          example: My User Group
+        memberIds:
+          type: array
+          description: IDs of the users in the group
+          items:
+            type: string
+            example:
+            - 30e8a73a-6300-4b35-a11a-9c69341805fc
+            - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
+        status:
+          type: string
+          description: User group status
+          enum:
+          - PENDING_APPROVAL
+          - ACTIVE
+    GetAuditLogsResponseDTO:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        total:
+          type: number
+        cursor:
+          type:
+          - string
+          - 'null'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - INTERNAL
+              - AUTHENTICATION
+              - AUTHORIZATION
+              - VALIDATION
+              - NOT_FOUND
+              - UNPROCESSABLE_ENTITY
+              - FORBIDDEN
+            message:
+              type: string
+          required:
+          - type
+          - message
+      required:
+      - error
+    UserId:
+      type: string
+      description: The unique identifier of the user
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+        email:
+          type: string
+        enabled:
+          type: boolean
+    GetAuditLogsResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AuditLogsData'
+        cursor:
+          type:
+          - string
+          - 'null'
+          description: The next id to start fetch audit logs from
+          example: next-page-cursor
+        total:
+          type: number
+          description: The total number of audit logs
+          example: 32
+    UserGroupResponse:
+      type: object
+      properties:
+        id:
+          description: User Group ID
+          type: string
+          example: f04402d0-00f1-48cb-acd0-352010f2e62f
+        name:
+          type: string
+          description: User Group Name
+          example: My Group Name
+        status:
+          type: string
+          description: Group Approval Status
+          enum:
+          - PENDING_APPROVAL
+          - ACTIVE
+        memberIds:
+          type: array
+          items:
+            type: string
+            example:
+            - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
+            - 30e8a73a-6300-4b35-a11a-9c69341805fc
+    SetAdminQuorumThresholdRequest:
+      type: object
+      properties:
+        adminQuorumThreshold:
+          type: number
+          description: The number of admins that will requires to approve an operation
+          example: 1
+    UserRole:
+      type: string
+      description: The role of the user
+      enum:
+      - OWNER
+      - ADMIN
+      - SIGNER
+      - COLLATERALS_SIGNER
+      - EDITOR
+      - APPROVER
+      - VIEWER
+      - NON_SIGNING_ADMIN
+      - AUDITOR
+      - NCW_ADMIN
+      - NCW_SIGNER
+    ConsoleUser:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        firstName:
+          type: string
+          description: The first name of the user
+          example: Some First Name
+        lastName:
+          type: string
+          description: The last name of the user
+          example: Some Last Name
+        email:
+          type: string
+          description: The email address of the user
+          example: user@example.com
+        role:
+          $ref: '#/components/schemas/UserRole'
+        enabled:
+          $ref: '#/components/schemas/UserEnabled'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        userType:
+          $ref: '#/components/schemas/UserType'
+    APIUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/APIUser'
+    APIUserRole:
+      type: string
+      description: The role of the API Key
+      enum:
+      - ADMIN
+      - SIGNER
+      - COLLATERALS_SIGNER
+      - EDITOR
+      - APPROVER
+      - VIEWER
+      - NON_SIGNING_ADMIN
+      - AUDITOR
+      - NCW_ADMIN
+      - NCW_SIGNER
+    GetUsersResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserResponse'
+    APIUser:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        name:
+          type: string
+          description: The name of the API Key
+          example: My API Key
+        role:
+          $ref: '#/components/schemas/APIUserRole'
+        enabled:
+          $ref: '#/components/schemas/UserEnabled'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        userType:
+          $ref: '#/components/schemas/UserType'
+    UserStatus:
+      type: string
+      description: The status of the user
+      enum:
+      - PENDING_ACTIVATION
+      - PENDING_DEVICE_PAIRING
+      - PENDING_DEVICE_SETUP
+      - READY
+    UserEnabled:
+      type: boolean
+      description: Whether the user is enabled or not
     UserGroupCreateResponse:
       type: object
       properties:
@@ -1479,10 +1420,56 @@ components:
           enum:
           - PENDING_APPROVAL
           - ACTIVE
-    APIUsers:
+    ConsoleUsers:
       type: array
       items:
-        $ref: '#/components/schemas/APIUser'
+        $ref: '#/components/schemas/ConsoleUser'
+    SetAdminQuorumThresholdResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message which indicates the result of the operation.
+          example: Admin quorum threshold request sent successfully.
+      required:
+      - message
+    UserGroupsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserGroupResponse'
+    UserType:
+      type: string
+      description: The type of the user (API or Console)
+      enum:
+      - API
+      - CONSOLE
+    AuditLogData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the audit log
+        timestamp:
+          type: number
+          description: The timestamp of the audit log
+        createdAt:
+          type: number
+          description: The timestamp of the audit log creation
+        user:
+          type: string
+          description: The user who performed the action
+        subject:
+          type: string
+          description: The subject of the action
+        event:
+          type: string
+          description: The event that was performed
+        tenantId:
+          type: string
+          description: The tenant ID of the audit log
+        userId:
+          type: string
+          description: The user ID of the audit log
     CreateConsoleUser:
       type: object
       properties:
@@ -1512,41 +1499,63 @@ components:
           $ref: '#/components/schemas/APIUsers'
       required:
       - users
-    UserEnabled:
-      type: boolean
-      description: Whether the user is enabled or not
-    APIUser:
+    GetWorkspaceStatusResponse:
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/UserId'
-        name:
-          type: string
-          description: The name of the API Key
-          example: My API Key
-        role:
-          $ref: '#/components/schemas/APIUserRole'
-        enabled:
-          $ref: '#/components/schemas/UserEnabled'
         status:
-          $ref: '#/components/schemas/UserStatus'
-        userType:
-          $ref: '#/components/schemas/UserType'
-    UserRole:
-      type: string
-      description: The role of the user
-      enum:
-      - OWNER
-      - ADMIN
-      - SIGNER
-      - COLLATERALS_SIGNER
-      - EDITOR
-      - APPROVER
-      - VIEWER
-      - NON_SIGNING_ADMIN
-      - AUDITOR
-      - NCW_ADMIN
-      - NCW_SIGNER
+          type: string
+          description: Current workspace status
+    SetOtaStatusRequest:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Set true or false to enable or disable OTA transactions
+    AuditLogsData:
+      type: array
+      items:
+        $ref: '#/components/schemas/AuditLogData'
+    UserGroupCreateRequest:
+      type: object
+      properties:
+        groupName:
+          type: string
+          description: User Group Name
+          example: My User Group
+        memberIds:
+          type: array
+          items:
+            type: string
+            example:
+            - 1d8b04f3-f90b-406b-a4d8-71d5d16f6862
+            - 30e8a73a-6300-4b35-a11a-9c69341805fc
+    GetConsoleUsersResponse:
+      type: object
+      properties:
+        users:
+          $ref: '#/components/schemas/ConsoleUsers'
+      required:
+      - users
+    SetOtaStatusResponse:
+      oneOf:
+      - type: object
+        properties:
+          message:
+            type: string
+            description: Message indicating the result of the operation for example when no config change is needed
+            example: No change needed. The current status is false
+      - type: string
+        description: Message indicating the result of the operation when config was successfully updated
+        example: Accepted
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -1557,15 +1566,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http
