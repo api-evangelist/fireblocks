@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests……
+  title: Fireblocks Blockchains and Assets Approval Requests………
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -642,405 +642,6 @@ paths:
         source: response = fireblocks.tokenization.get_linked_token(id);
 components:
   schemas:
-    CollectionLinkDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The collection id
-          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
-        status:
-          enum:
-          - PENDING
-          - COMPLETED
-          type: string
-          description: The collection status
-          example: COMPLETED
-        type:
-          allOf:
-          - $ref: '#/components/schemas/CollectionType'
-          example: NON_FUNGIBLE_TOKEN
-        displayName:
-          type: string
-          description: The display name of the collection. If was not provided, would be taken from the contract template
-          example: My Simple ERC721 Collection
-        collectionMetadata:
-          description: The collection's metadata
-          allOf:
-          - $ref: '#/components/schemas/CollectionMetadataDto'
-      required:
-      - id
-      - status
-      - type
-    GetLinkedCollectionsPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/CollectionLinkDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-    CreateTokenRequestDto:
-      type: object
-      properties:
-        blockchainId:
-          type: string
-          example: B7QG017M
-          description: The id of the blockchain the request was initiated on
-        assetId:
-          type: string
-          example: ETH_TEST5
-          description: The base asset identifier of the blockchain you want to deploy to
-        vaultAccountId:
-          type: string
-          example: '0'
-          description: The id of the vault account that initiated the request to issue the token
-        createParams:
-          oneOf:
-          - $ref: '#/components/schemas/EVMTokenCreateParamsDto'
-          - $ref: '#/components/schemas/StellarRippleCreateParamsDto'
-          - $ref: '#/components/schemas/SolanaSimpleCreateParams'
-        displayName:
-          type: string
-        useGasless:
-          type: boolean
-          example: false
-          description: Indicates whether the token should be created in a gasless manner, utilizing the ERC-2771 standard. When set to true, the transaction will be relayed by a designated relayer. The workspace must be configured to use Fireblocks gasless relay.
-        fee:
-          type: string
-          description: Max fee amount for the write function transaction. interchangeable with the 'feeLevel' field
-          example: '2000'
-        feeLevel:
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          type: string
-          description: Fee level for the write function transaction. interchangeable with the 'fee' field
-          example: MEDIUM
-      required:
-      - vaultAccountId
-      - createParams
-    ParameterWithValue:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Some Name
-          description: The name of the parameter as it appears in the ABI
-        description:
-          type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
-          type: string
-          example: string
-          description: The  internal type of the parameter as it appears in the ABI
-        type:
-          type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
-          type: array
-          items:
-            $ref: '#/components/schemas/Parameter'
-        value:
-          example: 'true'
-          description: The value of the parameter. can also be ParameterWithValue
-          type: string
-        functionValue:
-          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
-          allOf:
-          - $ref: '#/components/schemas/LeanAbiFunction'
-      required:
-      - name
-      - type
-    CollectionTokenMetadataAttributeDto:
-      type: object
-      properties:
-        trait_type:
-          type: string
-          description: Name of the trait
-          example: project_start
-        value:
-          type: string
-          description: Value of the trait
-          example: 30102000
-        display_type:
-          type: string
-          description: A field indicating how you would like trait to be displayed
-          example: date
-      required:
-      - trait_type
-      - value
-    TokenLinkDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The token link id
-          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
-        status:
-          enum:
-          - PENDING
-          - COMPLETED
-          type: string
-          description: The token status
-          example: COMPLETED
-        type:
-          enum:
-          - FUNGIBLE_TOKEN
-          - NON_FUNGIBLE_TOKEN
-          - TOKEN_UTILITY
-          - TOKEN_EXTENSION
-          type: string
-          description: The type of token
-          example: NON_FUNGIBLE_TOKEN
-        refId:
-          type: string
-          description: The Fireblocks' reference id
-          example: BQ5R_MY_TOKEN
-        displayName:
-          type: string
-          description: The token display name. If was not provided, would be taken from the contract template
-          example: My Simple ERC20 Token
-        tokenMetadata:
-          description: The token's metadata
-          oneOf:
-          - $ref: '#/components/schemas/AssetMetadataDto'
-          - $ref: '#/components/schemas/CollectionMetadataDto'
-          - $ref: '#/components/schemas/ContractMetadataDto'
-      required:
-      - id
-      - status
-    TokenLinkExistsHttpError:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 409
-        message:
-          type: string
-          description: Error message
-        error:
-          type: string
-          description: Short description of the HTTP error
-          example: Conflict
-    CollectionType:
-      type: string
-      description: The type of collection
-      enum:
-      - NON_FUNGIBLE_TOKEN
-      - SEMI_FUNGIBLE_TOKEN
-    CollectionBurnRequestDto:
-      type: object
-      properties:
-        vaultAccountId:
-          type: string
-          description: The id of the vault account that initiates the burn function
-          example: '0'
-        tokenId:
-          type: string
-          description: The token id
-          example: '1'
-        amount:
-          type: string
-          description: For ERC721, amount is optional or should always be 1 and for ERC1155, amount should be 1 or greater
-          example: '1'
-      required:
-      - vaultAccountId
-      - tokenId
-    CollectionMintRequestDto:
-      type: object
-      properties:
-        vaultAccountId:
-          type: string
-          description: The id of the vault account that initiates the mint function.
-          example: '0'
-        to:
-          type: string
-          example: '0x5503766D27d1ED4525f5053222E18b29C38eDdB2'
-          description: 'The EVM address to mint to '
-        tokenId:
-          type: string
-          description: The token id, recommended to have numerical format and in sequential order
-          example: '1'
-        amount:
-          type: string
-          description: For ERC721, amount is optional or should always be 1 and for ERC1155, amount should be 1 or greater
-          example: '1'
-        metadataURI:
-          type: string
-          description: URL of metadata uploaded, skip uploading to IPFS if this field is provided with any value
-          example: ipfs://QmP4P6f7mDHzikhdwLBVSCxCPEgmjwcWSVBHbtSyfBYzBC
-        metadata:
-          description: Metadata to upload
-          example:
-            name: MYTOKEN
-            description: description of MYTOKEN
-          allOf:
-          - $ref: '#/components/schemas/CollectionTokenMetadataDto'
-      required:
-      - vaultAccountId
-      - to
-      - tokenId
-    CollectionTokenMetadataDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Token's name
-          example: DigitalArtTokens
-        description:
-          type: string
-          description: Token's description
-          example: Digital representation of a piece of art
-        image:
-          type: string
-          description: Token's image URL
-          example: https://some_domain.com/image_filepath
-        animation_url:
-          type: string
-          description: Token's animation URL
-          example: https://some_domain.com/gif_filepath
-        external_url:
-          type: string
-          description: Token's external URL
-          example: https://some_domain.com/blob_filepath
-        attributes:
-          description: Token's metadata attributes
-          type: array
-          items:
-            $ref: '#/components/schemas/CollectionTokenMetadataAttributeDto'
-      required:
-      - name
-      - description
-    CollectionMintResponseDto:
-      type: object
-      properties:
-        txId:
-          type: string
-          description: Transaction Id for the mint operation
-          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
-      required:
-      - txId
-    LeanAbiFunction:
-      type: object
-      properties:
-        name:
-          type: string
-          example: initialize
-          description: The function name
-        inputs:
-          description: The function inputs
-          type: array
-          items:
-            $ref: '#/components/schemas/ParameterWithValue'
-      required:
-      - inputs
-    TokensPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/TokenLinkDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-      required:
-      - data
-    EVMTokenCreateParamsDto:
-      type: object
-      properties:
-        contractId:
-          type: string
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-          description: The id of the contract template that will be used to create the token
-        deployFunctionParams:
-          example:
-          - internalType: string
-            name: name
-            type: string
-            value: name
-          - internalType: string
-            name: symbol
-            type: string
-            value: symbol
-          - components:
-            - internalType: bool
-              name: _isMintable
-              type: bool
-            internalType: struct MyStruct
-            name: customConfigProps
-            type: tuple
-            value:
-            - internalType: bool
-              name: _isMintable
-              type: bool
-              value: false
-          description: The deploy function parameters and values of the contract template
-          type: array
-          items:
-            $ref: '#/components/schemas/ParameterWithValue'
-      required:
-      - contractId
-    TokenLinkRequestDto:
-      type: object
-      properties:
-        type:
-          enum:
-          - FUNGIBLE_TOKEN
-          - NON_FUNGIBLE_TOKEN
-          - TOKEN_UTILITY
-          - TOKEN_EXTENSION
-          type: string
-          description: The type of token being linked
-        refId:
-          type: string
-          description: "The Fireblocks' token link reference id. For example, 'BQ5R_BDESC_ABC' if it's a fungible \n\t\t\t\t\tasset"
-          example: USDC_ETH_TEST5_1XF5
-        displayName:
-          type: string
-          description: The token display name
-          example: My Simple ERC20 Token
-        baseAssetId:
-          type: string
-          description: The blockchain base assetId
-          example: ETH_TEST5
-        contractAddress:
-          type: string
-          description: The contract's onchain address
-          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
-      required:
-      - type
-    NotFoundException:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 404
-        message:
-          type: string
-          description: Error message
-        error:
-          type: string
-          description: Short description of the HTTP error
-          example: Not Found
     SolanaSimpleCreateParams:
       type: object
       properties:
@@ -1060,83 +661,6 @@ components:
       - name
       - symbol
       - decimals
-    CollectionBurnResponseDto:
-      type: object
-      properties:
-        txId:
-          type: string
-          description: Transaction Id for the burn operation
-          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
-      required:
-      - txId
-    Parameter:
-      type: object
-      properties:
-        name:
-          type: string
-          example: _name
-          description: The name of the parameter as it appears in the ABI
-        description:
-          type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
-          type: string
-          example: string
-          description: The internal type of the parameter as it appears in the ABI
-        type:
-          type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
-          type: array
-          description: In case it’s a struct, it will hold the struct data
-      required:
-      - name
-      - type
-    ContractMetadataDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The deployed contract ID
-          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
-        baseAssetId:
-          type: string
-          description: The blockchain base asset ID
-          example: ETH
-        contractAddress:
-          type: string
-          description: The address of the token contract
-          example: '0x1234567890abcdef1234567890abcdef12345678'
-        contractTemplateId:
-          type: string
-          description: The contract template ID
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-        vaultAccountId:
-          type: string
-          description: The vault account ID that initiated the request to issue the token
-          example: '0'
-      required:
-      - id
-      - baseAssetId
-      - contractAddress
-      - contractTemplateId
-    AssetAlreadyExistHttpError:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 409
-        message:
-          type: string
-          description: Error message
-        error:
-          type: string
-          description: Short description of the HTTP error
-          example: Conflict
     CollectionDeployRequestDto:
       type: object
       properties:
@@ -1175,55 +699,214 @@ components:
       - name
       - symbol
       - adminAddress
-    CollectionMetadataDto:
+    TokenLinkRequestDto:
       type: object
       properties:
-        fbCollectionId:
+        type:
+          enum:
+          - FUNGIBLE_TOKEN
+          - NON_FUNGIBLE_TOKEN
+          - TOKEN_UTILITY
+          - TOKEN_EXTENSION
           type: string
-          description: Fireblocks collection id
-          example: 911fe739f0d4d123c98fd366c3bed35c6e30c00e
-        name:
+          description: The type of token being linked
+        refId:
           type: string
-          description: Collection name
-          example: Rarible
-        symbol:
+          description: "The Fireblocks' token link reference id. For example, 'BQ5R_BDESC_ABC' if it's a fungible \n\t\t\t\t\tasset"
+          example: USDC_ETH_TEST5_1XF5
+        displayName:
           type: string
-          description: Collection symbol
-          example: RARI
-        standard:
+          description: The token display name
+          example: My Simple ERC20 Token
+        baseAssetId:
           type: string
-          description: Collection contract standard
-          example: ERC721
-        blockchainDescriptor:
-          type: string
-          description: Collection's blockchain
+          description: The blockchain base assetId
           example: ETH_TEST5
         contractAddress:
           type: string
-          description: Collection contract address
-          example: '0x1723017329a804564bC8d215496C89eaBf1F3211'
+          description: The contract's onchain address
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
       required:
-      - fbCollectionId
-      - blockchainDescriptor
-    StellarRippleCreateParamsDto:
+      - type
+    CollectionType:
+      type: string
+      description: The type of collection
+      enum:
+      - NON_FUNGIBLE_TOKEN
+      - SEMI_FUNGIBLE_TOKEN
+    CollectionBurnResponseDto:
       type: object
       properties:
-        symbol:
+        txId:
           type: string
-          example: MyUSDT
-          description: The symbol of the token
-        name:
-          type: string
-          example: My USD Tether
-          description: The name of the token
-        issuerAddress:
-          type: string
-          example: rnDV4JiwgRNhudPY2sm65AzECpRXaasL4r
-          description: The address of the issuer of this token. Will be part of the identifier of this token on chain.
+          description: Transaction Id for the burn operation
+          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
       required:
-      - symbol
-      - name
-      - issuerAddress
+      - txId
+    CollectionLinkDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The collection id
+          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
+        status:
+          enum:
+          - PENDING
+          - COMPLETED
+          type: string
+          description: The collection status
+          example: COMPLETED
+        type:
+          allOf:
+          - $ref: '#/components/schemas/CollectionType'
+          example: NON_FUNGIBLE_TOKEN
+        displayName:
+          type: string
+          description: The display name of the collection. If was not provided, would be taken from the contract template
+          example: My Simple ERC721 Collection
+        collectionMetadata:
+          description: The collection's metadata
+          allOf:
+          - $ref: '#/components/schemas/CollectionMetadataDto'
+      required:
+      - id
+      - status
+      - type
+    CollectionMintRequestDto:
+      type: object
+      properties:
+        vaultAccountId:
+          type: string
+          description: The id of the vault account that initiates the mint function.
+          example: '0'
+        to:
+          type: string
+          example: '0x5503766D27d1ED4525f5053222E18b29C38eDdB2'
+          description: 'The EVM address to mint to '
+        tokenId:
+          type: string
+          description: The token id, recommended to have numerical format and in sequential order
+          example: '1'
+        amount:
+          type: string
+          description: For ERC721, amount is optional or should always be 1 and for ERC1155, amount should be 1 or greater
+          example: '1'
+        metadataURI:
+          type: string
+          description: URL of metadata uploaded, skip uploading to IPFS if this field is provided with any value
+          example: ipfs://QmP4P6f7mDHzikhdwLBVSCxCPEgmjwcWSVBHbtSyfBYzBC
+        metadata:
+          description: Metadata to upload
+          example:
+            name: MYTOKEN
+            description: description of MYTOKEN
+          allOf:
+          - $ref: '#/components/schemas/CollectionTokenMetadataDto'
+      required:
+      - vaultAccountId
+      - to
+      - tokenId
+    TokensPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/TokenLinkDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+    CollectionMintResponseDto:
+      type: object
+      properties:
+        txId:
+          type: string
+          description: Transaction Id for the mint operation
+          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
+      required:
+      - txId
+    GetLinkedCollectionsPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/CollectionLinkDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+    NotFoundException:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 404
+        message:
+          type: string
+          description: Error message
+        error:
+          type: string
+          description: Short description of the HTTP error
+          example: Not Found
+    CollectionBurnRequestDto:
+      type: object
+      properties:
+        vaultAccountId:
+          type: string
+          description: The id of the vault account that initiates the burn function
+          example: '0'
+        tokenId:
+          type: string
+          description: The token id
+          example: '1'
+        amount:
+          type: string
+          description: For ERC721, amount is optional or should always be 1 and for ERC1155, amount should be 1 or greater
+          example: '1'
+      required:
+      - vaultAccountId
+      - tokenId
+    ContractMetadataDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The deployed contract ID
+          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
+        baseAssetId:
+          type: string
+          description: The blockchain base asset ID
+          example: ETH
+        contractAddress:
+          type: string
+          description: The address of the token contract
+          example: '0x1234567890abcdef1234567890abcdef12345678'
+        contractTemplateId:
+          type: string
+          description: The contract template ID
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        vaultAccountId:
+          type: string
+          description: The vault account ID that initiated the request to issue the token
+          example: '0'
+      required:
+      - id
+      - baseAssetId
+      - contractAddress
+      - contractTemplateId
     AssetMetadataDto:
       type: object
       properties:
@@ -1281,6 +964,323 @@ components:
           example: '0'
       required:
       - assetId
+    ParameterWithValue:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Some Name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The  internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+        value:
+          example: 'true'
+          description: The value of the parameter. can also be ParameterWithValue
+          type: string
+        functionValue:
+          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
+          allOf:
+          - $ref: '#/components/schemas/LeanAbiFunction'
+      required:
+      - name
+      - type
+    CollectionTokenMetadataAttributeDto:
+      type: object
+      properties:
+        trait_type:
+          type: string
+          description: Name of the trait
+          example: project_start
+        value:
+          type: string
+          description: Value of the trait
+          example: 30102000
+        display_type:
+          type: string
+          description: A field indicating how you would like trait to be displayed
+          example: date
+      required:
+      - trait_type
+      - value
+    CollectionMetadataDto:
+      type: object
+      properties:
+        fbCollectionId:
+          type: string
+          description: Fireblocks collection id
+          example: 911fe739f0d4d123c98fd366c3bed35c6e30c00e
+        name:
+          type: string
+          description: Collection name
+          example: Rarible
+        symbol:
+          type: string
+          description: Collection symbol
+          example: RARI
+        standard:
+          type: string
+          description: Collection contract standard
+          example: ERC721
+        blockchainDescriptor:
+          type: string
+          description: Collection's blockchain
+          example: ETH_TEST5
+        contractAddress:
+          type: string
+          description: Collection contract address
+          example: '0x1723017329a804564bC8d215496C89eaBf1F3211'
+      required:
+      - fbCollectionId
+      - blockchainDescriptor
+    CollectionTokenMetadataDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Token's name
+          example: DigitalArtTokens
+        description:
+          type: string
+          description: Token's description
+          example: Digital representation of a piece of art
+        image:
+          type: string
+          description: Token's image URL
+          example: https://some_domain.com/image_filepath
+        animation_url:
+          type: string
+          description: Token's animation URL
+          example: https://some_domain.com/gif_filepath
+        external_url:
+          type: string
+          description: Token's external URL
+          example: https://some_domain.com/blob_filepath
+        attributes:
+          description: Token's metadata attributes
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionTokenMetadataAttributeDto'
+      required:
+      - name
+      - description
+    AssetAlreadyExistHttpError:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 409
+        message:
+          type: string
+          description: Error message
+        error:
+          type: string
+          description: Short description of the HTTP error
+          example: Conflict
+    StellarRippleCreateParamsDto:
+      type: object
+      properties:
+        symbol:
+          type: string
+          example: MyUSDT
+          description: The symbol of the token
+        name:
+          type: string
+          example: My USD Tether
+          description: The name of the token
+        issuerAddress:
+          type: string
+          example: rnDV4JiwgRNhudPY2sm65AzECpRXaasL4r
+          description: The address of the issuer of this token. Will be part of the identifier of this token on chain.
+      required:
+      - symbol
+      - name
+      - issuerAddress
+    CreateTokenRequestDto:
+      type: object
+      properties:
+        blockchainId:
+          type: string
+          example: B7QG017M
+          description: The id of the blockchain the request was initiated on
+        assetId:
+          type: string
+          example: ETH_TEST5
+          description: The base asset identifier of the blockchain you want to deploy to
+        vaultAccountId:
+          type: string
+          example: '0'
+          description: The id of the vault account that initiated the request to issue the token
+        createParams:
+          oneOf:
+          - $ref: '#/components/schemas/EVMTokenCreateParamsDto'
+          - $ref: '#/components/schemas/StellarRippleCreateParamsDto'
+          - $ref: '#/components/schemas/SolanaSimpleCreateParams'
+        displayName:
+          type: string
+        useGasless:
+          type: boolean
+          example: false
+          description: Indicates whether the token should be created in a gasless manner, utilizing the ERC-2771 standard. When set to true, the transaction will be relayed by a designated relayer. The workspace must be configured to use Fireblocks gasless relay.
+        fee:
+          type: string
+          description: Max fee amount for the write function transaction. interchangeable with the 'feeLevel' field
+          example: '2000'
+        feeLevel:
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          type: string
+          description: Fee level for the write function transaction. interchangeable with the 'fee' field
+          example: MEDIUM
+      required:
+      - vaultAccountId
+      - createParams
+    EVMTokenCreateParamsDto:
+      type: object
+      properties:
+        contractId:
+          type: string
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+          description: The id of the contract template that will be used to create the token
+        deployFunctionParams:
+          example:
+          - internalType: string
+            name: name
+            type: string
+            value: name
+          - internalType: string
+            name: symbol
+            type: string
+            value: symbol
+          - components:
+            - internalType: bool
+              name: _isMintable
+              type: bool
+            internalType: struct MyStruct
+            name: customConfigProps
+            type: tuple
+            value:
+            - internalType: bool
+              name: _isMintable
+              type: bool
+              value: false
+          description: The deploy function parameters and values of the contract template
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
+      required:
+      - contractId
+    LeanAbiFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: initialize
+          description: The function name
+        inputs:
+          description: The function inputs
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
+      required:
+      - inputs
+    TokenLinkDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The token link id
+          example: fbfbfbfb-fbfb-fbfb-fbfb-fbfbfbfbfbfb
+        status:
+          enum:
+          - PENDING
+          - COMPLETED
+          type: string
+          description: The token status
+          example: COMPLETED
+        type:
+          enum:
+          - FUNGIBLE_TOKEN
+          - NON_FUNGIBLE_TOKEN
+          - TOKEN_UTILITY
+          - TOKEN_EXTENSION
+          type: string
+          description: The type of token
+          example: NON_FUNGIBLE_TOKEN
+        refId:
+          type: string
+          description: The Fireblocks' reference id
+          example: BQ5R_MY_TOKEN
+        displayName:
+          type: string
+          description: The token display name. If was not provided, would be taken from the contract template
+          example: My Simple ERC20 Token
+        tokenMetadata:
+          description: The token's metadata
+          oneOf:
+          - $ref: '#/components/schemas/AssetMetadataDto'
+          - $ref: '#/components/schemas/CollectionMetadataDto'
+          - $ref: '#/components/schemas/ContractMetadataDto'
+      required:
+      - id
+      - status
+    TokenLinkExistsHttpError:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 409
+        message:
+          type: string
+          description: Error message
+        error:
+          type: string
+          description: Short description of the HTTP error
+          example: Conflict
+    Parameter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: _name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          description: In case it’s a struct, it will hold the struct data
+      required:
+      - name
+      - type
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

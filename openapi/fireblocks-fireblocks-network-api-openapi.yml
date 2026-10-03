@@ -1145,46 +1145,26 @@ paths:
         source: response = fireblocks.network_connections.set_network_id_name(set_network_id_name_request, network_id);
 components:
   schemas:
+    DeleteNetworkConnectionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    NetworkConnectionStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - WAITING_FOR_PEER_APPROVAL
+      - APPROVED
+      - CANCELLED
+      - FAILED
+      - REJECTED
+      - REJECTED_BY_PEER
+      - REMOVED
+      - REMOVED_BY_PEER
     SetRoutingPolicyResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-      required:
-      - success
-    NetworkChannel:
-      deprecated: true
-      description: Deprecated in the only used reference - NetworkConnectionResponse
-      type: object
-      properties:
-        networkId:
-          type: string
-        name:
-          type: string
-    GetNetworkIdsResponse:
-      type: array
-      items:
-        allOf:
-        - $ref: '#/components/schemas/NetworkIdResponse'
-    SetNetworkIdResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-      required:
-      - success
-    GetRoutingPolicyAssetGroupsResponse:
-      type: array
-      items:
-        type: string
-    SetRoutingPolicyRequest:
-      type: object
-      properties:
-        routingPolicy:
-          $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
-      required:
-      - routingPolicy
-    DeleteNetworkIdResponse:
       type: object
       properties:
         success:
@@ -1205,6 +1185,70 @@ components:
       required:
       - id
       - name
+    NetworkConnection:
+      type: object
+      properties:
+        localNetworkId:
+          type: string
+          description: The network ID of the profile trying to create the connection.
+          example: 494ae5f7-7807-4bc5-863b-2963aa94398f
+        remoteNetworkId:
+          type: string
+          description: The network ID the profile is attempting to connect to.
+          example: ebde71be-30d6-4498-95c4-a151effdb377
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
+      required:
+      - localNetworkId
+      - remoteNetworkId
+    GetNetworkConnectionsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/NetworkConnectionResponse'
+    DefaultNetworkRoutingDest:
+      type: object
+      properties:
+        scheme:
+          type: string
+          description: The network routing logic.
+          enum:
+          - DEFAULT
+      required:
+      - scheme
+    CreateNetworkIdRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Network ID Name
+          example: My Network ID name
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkIdRoutingPolicy'
+      required:
+      - name
+    NetworkConnectionRoutingPolicy:
+      type: object
+      additionalProperties:
+        oneOf:
+        - $ref: '#/components/schemas/CustomRoutingDest'
+        - $ref: '#/components/schemas/DefaultNetworkRoutingDest'
+        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
+    SearchNetworkIdsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkIdResponse'
+        next:
+          type: string
+    SetNetworkIdRoutingPolicyRequest:
+      type: object
+      properties:
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkIdRoutingPolicy'
+      required:
+      - routingPolicy
     NetworkConnectionResponse:
       type: object
       properties:
@@ -1234,6 +1278,39 @@ components:
       - remoteNetworkId
       - routingPolicy
       - status
+    NetworkChannel:
+      deprecated: true
+      description: Deprecated in the only used reference - NetworkConnectionResponse
+      type: object
+      properties:
+        networkId:
+          type: string
+        name:
+          type: string
+    SetNetworkIdDiscoverabilityRequest:
+      type: object
+      properties:
+        isDiscoverable:
+          type: boolean
+      required:
+      - isDiscoverable
+    ThirdPartyRouting:
+      type: object
+      properties:
+        isThirdPartyRouting:
+          type: boolean
+        description:
+          type: string
+    NetworkIdRoutingPolicy:
+      type: object
+      additionalProperties:
+        oneOf:
+        - $ref: '#/components/schemas/CustomRoutingDest'
+        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
+    GetRoutingPolicyAssetGroupsResponse:
+      type: array
+      items:
+        type: string
     NetworkIdResponse:
       allOf:
       - $ref: '#/components/schemas/NetworkId'
@@ -1244,29 +1321,27 @@ components:
           isDiscoverable:
             type: boolean
             description: The specific network is discoverable.
-    SetNetworkIdDiscoverabilityRequest:
+    SetRoutingPolicyRequest:
       type: object
       properties:
-        isDiscoverable:
-          type: boolean
-      required:
-      - isDiscoverable
-    NetworkConnection:
-      type: object
-      properties:
-        localNetworkId:
-          type: string
-          description: The network ID of the profile trying to create the connection.
-          example: 494ae5f7-7807-4bc5-863b-2963aa94398f
-        remoteNetworkId:
-          type: string
-          description: The network ID the profile is attempting to connect to.
-          example: ebde71be-30d6-4498-95c4-a151effdb377
         routingPolicy:
           $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
       required:
-      - localNetworkId
-      - remoteNetworkId
+      - routingPolicy
+    SetNetworkIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    DeleteNetworkIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
     NoneNetworkRoutingDest:
       type: object
       properties:
@@ -1277,40 +1352,6 @@ components:
           - NONE
       required:
       - scheme
-    SetNetworkIdRoutingPolicyRequest:
-      type: object
-      properties:
-        routingPolicy:
-          $ref: '#/components/schemas/NetworkIdRoutingPolicy'
-      required:
-      - routingPolicy
-    GetNetworkConnectionsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/NetworkConnectionResponse'
-    SearchNetworkIdsResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/NetworkIdResponse'
-        next:
-          type: string
-    NetworkConnectionRoutingPolicy:
-      type: object
-      additionalProperties:
-        oneOf:
-        - $ref: '#/components/schemas/CustomRoutingDest'
-        - $ref: '#/components/schemas/DefaultNetworkRoutingDest'
-        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
-    ThirdPartyRouting:
-      type: object
-      properties:
-        isThirdPartyRouting:
-          type: boolean
-        description:
-          type: string
     SetNetworkIdNameRequest:
       type: object
       properties:
@@ -1320,18 +1361,11 @@ components:
           example: My Network ID name
       required:
       - name
-    NetworkConnectionStatus:
-      type: string
-      enum:
-      - WAITING_FOR_APPROVAL
-      - WAITING_FOR_PEER_APPROVAL
-      - APPROVED
-      - CANCELLED
-      - FAILED
-      - REJECTED
-      - REJECTED_BY_PEER
-      - REMOVED
-      - REMOVED_BY_PEER
+    GetNetworkIdsResponse:
+      type: array
+      items:
+        allOf:
+        - $ref: '#/components/schemas/NetworkIdResponse'
     CustomRoutingDest:
       type: object
       properties:
@@ -1355,40 +1389,6 @@ components:
       - scheme
       - dstType
       - dstId
-    CreateNetworkIdRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Network ID Name
-          example: My Network ID name
-        routingPolicy:
-          $ref: '#/components/schemas/NetworkIdRoutingPolicy'
-      required:
-      - name
-    NetworkIdRoutingPolicy:
-      type: object
-      additionalProperties:
-        oneOf:
-        - $ref: '#/components/schemas/CustomRoutingDest'
-        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
-    DefaultNetworkRoutingDest:
-      type: object
-      properties:
-        scheme:
-          type: string
-          description: The network routing logic.
-          enum:
-          - DEFAULT
-      required:
-      - scheme
-    DeleteNetworkConnectionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-      required:
-      - success
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

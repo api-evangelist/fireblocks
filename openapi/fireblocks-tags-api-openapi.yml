@@ -205,6 +205,33 @@ paths:
       operationId: deleteTag
 components:
   schemas:
+    UpdateTagRequest:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The tag label
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          example: Tag for VIP customers
+    TagsPagedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        next:
+          type:
+          - string
+          - 'null'
+          description: Cursor to the next page
+          example: MjAyNS0wNy0wOSAxMDo1MzoxMy40NTI=:NA==
+      required:
+      - data
+      - next
     ApprovalRequest:
       type: object
       description: Approval request details
@@ -235,57 +262,6 @@ components:
       - id
       - type
       - state
-    CreateTagRequest:
-      type: object
-      properties:
-        label:
-          type: string
-          description: The tag label
-          minLength: 2
-          maxLength: 30
-          example: VIP
-        description:
-          type: string
-          description: Description for the tag
-          maxLength: 250
-          example: Tag for VIP customers
-        color:
-          type: string
-          description: The tag color in hex format
-          example: '#FF5733'
-        isProtected:
-          type: boolean
-          description: Indication of whether the tag is protected
-          default: false
-      required:
-      - label
-    UpdateTagRequest:
-      type: object
-      properties:
-        label:
-          type: string
-          description: The tag label
-          example: VIP
-        description:
-          type: string
-          description: Description for the tag
-          example: Tag for VIP customers
-    TagsPagedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-        next:
-          type:
-          - string
-          - 'null'
-          description: Cursor to the next page
-          example: MjAyNS0wNy0wOSAxMDo1MzoxMy40NTI=:NA==
-      required:
-      - data
-      - next
     Tag:
       type: object
       properties:
@@ -321,6 +297,30 @@ components:
       - label
       - isProtected
       - updatedAt
+    CreateTagRequest:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The tag label
+          minLength: 2
+          maxLength: 30
+          example: VIP
+        description:
+          type: string
+          description: Description for the tag
+          maxLength: 250
+          example: Tag for VIP customers
+        color:
+          type: string
+          description: The tag color in hex format
+          example: '#FF5733'
+        isProtected:
+          type: boolean
+          description: Indication of whether the tag is protected
+          default: false
+      required:
+      - label
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

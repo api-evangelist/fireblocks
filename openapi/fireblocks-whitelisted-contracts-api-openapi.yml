@@ -369,23 +369,23 @@ paths:
         source: response = fireblocks.contracts.delete_contract_asset(contract_id, asset_id);
 components:
   schemas:
-    WalletAsset:
+    CreateContractRequest:
       type: object
       properties:
-        id:
+        name:
           type: string
-        balance:
-          type: string
-        lockedAmount:
-          type: string
-        status:
-          $ref: '#/components/schemas/ConfigChangeRequestStatus'
+          description: the contract's display name
+    AddContractAssetRequest:
+      type: object
+      properties:
         address:
           type: string
+          description: The contract's address (or xpub) of the wallet
         tag:
           type: string
-        activationTime:
-          type: string
+          description: The destination tag, for XRP wallets
+      required:
+      - address
     ConfigChangeRequestStatus:
       type: string
       enum:
@@ -394,27 +394,6 @@ components:
       - CANCELLED
       - REJECTED
       - FAILED
-    ExternalWalletAsset:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          $ref: '#/components/schemas/ConfigChangeRequestStatus'
-        address:
-          type: string
-        balance:
-          type: string
-        lockedAmount:
-          type: string
-        tag:
-          type: string
-        activationTime:
-          type: string
-        additionalInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/WalletAssetAdditionalInfo'
     UnmanagedWallet:
       type: object
       properties:
@@ -432,6 +411,23 @@ components:
       - id
       - name
       - assets
+    WalletAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        status:
+          $ref: '#/components/schemas/ConfigChangeRequestStatus'
+        address:
+          type: string
+        tag:
+          type: string
+        activationTime:
+          type: string
     WalletAssetAdditionalInfo:
       type: object
       properties:
@@ -471,23 +467,36 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/UnmanagedWallet'
-    CreateContractRequest:
+    ExternalWalletAsset:
       type: object
       properties:
-        name:
+        id:
           type: string
-          description: the contract's display name
-    AddContractAssetRequest:
-      type: object
-      properties:
+        status:
+          $ref: '#/components/schemas/ConfigChangeRequestStatus'
         address:
           type: string
-          description: The contract's address (or xpub) of the wallet
+        balance:
+          type: string
+        lockedAmount:
+          type: string
         tag:
           type: string
-          description: The destination tag, for XRP wallets
-      required:
-      - address
+        activationTime:
+          type: string
+        additionalInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletAssetAdditionalInfo'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -498,15 +507,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

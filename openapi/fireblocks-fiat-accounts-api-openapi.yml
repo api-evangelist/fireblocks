@@ -229,21 +229,7 @@ paths:
       - lang: Python
         source: response = fireblocks.fiat_accounts.deposit_funds_from_linked_d_d_a(account_id, funds, idempotency_key);
 components:
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   schemas:
-    FiatAccountType:
-      type: string
-      enum:
-      - BLINC
     RedeemFundsToLinkedDDAResponse:
       type: object
       properties:
@@ -252,6 +238,15 @@ components:
           description: Indicates whether the funds were successfully redeemed to the linked DDA
       required:
       - success
+    FiatAccountType:
+      type: string
+      enum:
+      - BLINC
+    Funds:
+      type: object
+      properties:
+        amount:
+          type: number
     DepositFundsFromLinkedDDAResponse:
       type: object
       properties:
@@ -260,15 +255,13 @@ components:
           description: Indicates whether the funds were successfully deposited from the linked DDA
       required:
       - success
-    Funds:
+    FiatAsset:
       type: object
       properties:
-        amount:
-          type: number
-    GetFiatAccountsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/FiatAccount'
+        id:
+          type: string
+        balance:
+          type: string
     FiatAccount:
       type: object
       properties:
@@ -287,13 +280,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FiatAsset'
-    FiatAsset:
-      type: object
-      properties:
-        id:
-          type: string
-        balance:
-          type: string
+    GetFiatAccountsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/FiatAccount'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key
@@ -303,6 +293,16 @@ components:
       schema:
         type: string
         example: some-unique-id
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   securitySchemes:
     bearerTokenAuth:
       type: http

@@ -233,21 +233,65 @@ paths:
           $ref: '#/components/responses/Error'
 components:
   schemas:
-    ConnectedSingleAccount:
-      type: object
-      properties:
-        subAccountsIds:
-          type: array
-          description: IDs of sub-accounts associated with this connected account.
-          items:
-            type: string
-          example:
-          - acc-sub-001
-          - acc-sub-002
     ConnectedSingleAccountResponse:
       allOf:
       - $ref: '#/components/schemas/ConnectedAccount'
       - $ref: '#/components/schemas/ConnectedSingleAccount'
+    ConnectedAccountManifest:
+      type: object
+      properties:
+        assetTypes:
+          type: array
+          description: Asset types supported by the connected account.
+          items:
+            $ref: '#/components/schemas/ConnectedAccountAssetType'
+          example: []
+        capabilities:
+          type: array
+          description: "Features supported for the connected account. Logic:\n  - If account capabilities include ramp -> TRADING\n  - If account capabilities include transfers -> DEPOSITS\n  - If account capabilities include transfersBlockchain / transfersFiat / transfersPeerAccounts / transfersInternal -> WITHDRAWALS\n"
+          items:
+            $ref: '#/components/schemas/ConnectedAccountCapability'
+          example:
+          - WITHDRAWALS
+      required:
+      - assetTypes
+      - capabilities
+    ConnectedAccountBalances:
+      type: object
+      properties:
+        assetId:
+          type: string
+          description: Asset identifier (e.g., BTC, ETH, USDC).
+          example: BTC
+        availableAmount:
+          type: string
+          description: Amount available for use.
+          example: '100.00'
+        totalAmount:
+          type: string
+          description: Total amount including locked/held balances.
+          example: '120.00'
+        lockedAmount:
+          type: string
+          description: Amount currently locked/held.
+          example: '20.00'
+        creditAmount:
+          type: string
+          description: Credit line amount, if applicable (0 when not used).
+          example: '0'
+        balanceType:
+          type: string
+          description: Wallet type/category (e.g., SPOT, MARGIN, FUNDING).
+          example: FUNDING
+        balanceName:
+          type: string
+          description: Display name for the balance type (at the provider)
+          example: Trader1 Wallet
+      required:
+      - assetId
+      - availableAmount
+      - totalAmount
+      - balanceType
     ConnectedAccountTradingPair:
       type: object
       properties:
@@ -272,37 +316,41 @@ components:
       - baseAssetId
       - quoteAssetId
       - supportedTypes
-    ConnectedAccountManifest:
+    ConnectedAccountBalancesResponse:
       type: object
       properties:
-        assetTypes:
+        data:
           type: array
-          description: Asset types supported by the connected account.
+          description: Flat balance row for a single asset within an account and wallet type. One row per (assetId, balanceType).
           items:
-            $ref: '#/components/schemas/ConnectedAccountAssetType'
-          example: []
-        capabilities:
-          type: array
-          description: "Features supported for the connected account. Logic:\n  - If account capabilities include ramp -> TRADING\n  - If account capabilities include transfers -> DEPOSITS\n  - If account capabilities include transfersBlockchain / transfersFiat / transfersPeerAccounts / transfersInternal -> WITHDRAWALS\n"
-          items:
-            $ref: '#/components/schemas/ConnectedAccountCapability'
+            $ref: '#/components/schemas/ConnectedAccountBalances'
           example:
-          - WITHDRAWALS
+          - assetId: BTC
+            availableAmount: '100.00'
+            totalAmount: '120.00'
+            balanceType: FUNDING
+            balanceName: Trader1 Wallet
+        total:
+          type: integer
+          description: Total number of balance rows by query.
+          example: 2
+        next:
+          type: string
+          description: A cursor for the next page of results, if available.
+          example: eyJwYWdlIjoyfQ==
       required:
-      - assetTypes
-      - capabilities
-    ConnectedAccountTradingPairSupportedType:
-      type: string
-      enum:
-      - QUOTE
-      - MARKET
-      - LIMIT
-    ConnectedAccountCapability:
-      type: string
-      enum:
-      - WITHDRAWALS
-      - DEPOSITS
-      - TRADING
+      - data
+    ConnectedSingleAccount:
+      type: object
+      properties:
+        subAccountsIds:
+          type: array
+          description: IDs of sub-accounts associated with this connected account.
+          items:
+            type: string
+          example:
+          - acc-sub-001
+          - acc-sub-002
     ConnectedAccountApprovalStatus:
       type: string
       enum:
@@ -311,35 +359,52 @@ components:
       - REJECTED
       - CANCELLED
       - FAILED
-    ConnectedAccountRateResponse:
+    ConnectedAccountTradingPairSupportedType:
+      type: string
+      enum:
+      - QUOTE
+      - MARKET
+      - LIMIT
+    ConnectedAccount:
       type: object
       properties:
-        accountId:
+        id:
           type: string
-          description: The ID of the account that generated the quote.
-          example: ea6c3cb7-355a-4ee3-82ff-267c69970210
-        baseAssetId:
+          description: Unique identifier of the connected account.
+          example: acc-123456
+        name:
           type: string
-          description: The source asset identifier
-          example: BTC
-        quoteAssetId:
+          description: Human-readable name of the connected account.
+          example: Main Venue Account
+        providerId:
           type: string
-          description: The target asset identifier
-          example: USD
-        rate:
+          description: The ID of the venue the account belongs to.
+          example: BRIDGE
+        status:
+          $ref: '#/components/schemas/ConnectedAccountApprovalStatus'
+        manifest:
+          $ref: '#/components/schemas/ConnectedAccountManifest'
+        parentId:
           type: string
-          description: The exchange rate value
-          example: '1.2345'
+          description: The ID of the parent main account, if this is a sub account.
+          example: acc-parent-001
       required:
-      - accountId
-      - baseAssetId
-      - quoteAssetId
-      - rate
+      - id
+      - name
+      - providerId
+      - status
+      - manifest
     ConnectedAccountAssetType:
       type: string
       enum:
       - DIGITAL
       - FIAT
+    ConnectedAccountCapability:
+      type: string
+      enum:
+      - WITHDRAWALS
+      - DEPOSITS
+      - TRADING
     ConnectedAccountTradingPairsResponse:
       type: object
       properties:
@@ -407,95 +472,30 @@ components:
           example: eyJwYWdlIjoyfQ==
       required:
       - data
-    ConnectedAccount:
+    ConnectedAccountRateResponse:
       type: object
       properties:
-        id:
+        accountId:
           type: string
-          description: Unique identifier of the connected account.
-          example: acc-123456
-        name:
+          description: The ID of the account that generated the quote.
+          example: ea6c3cb7-355a-4ee3-82ff-267c69970210
+        baseAssetId:
           type: string
-          description: Human-readable name of the connected account.
-          example: Main Venue Account
-        providerId:
-          type: string
-          description: The ID of the venue the account belongs to.
-          example: BRIDGE
-        status:
-          $ref: '#/components/schemas/ConnectedAccountApprovalStatus'
-        manifest:
-          $ref: '#/components/schemas/ConnectedAccountManifest'
-        parentId:
-          type: string
-          description: The ID of the parent main account, if this is a sub account.
-          example: acc-parent-001
-      required:
-      - id
-      - name
-      - providerId
-      - status
-      - manifest
-    ConnectedAccountBalancesResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: Flat balance row for a single asset within an account and wallet type. One row per (assetId, balanceType).
-          items:
-            $ref: '#/components/schemas/ConnectedAccountBalances'
-          example:
-          - assetId: BTC
-            availableAmount: '100.00'
-            totalAmount: '120.00'
-            balanceType: FUNDING
-            balanceName: Trader1 Wallet
-        total:
-          type: integer
-          description: Total number of balance rows by query.
-          example: 2
-        next:
-          type: string
-          description: A cursor for the next page of results, if available.
-          example: eyJwYWdlIjoyfQ==
-      required:
-      - data
-    ConnectedAccountBalances:
-      type: object
-      properties:
-        assetId:
-          type: string
-          description: Asset identifier (e.g., BTC, ETH, USDC).
+          description: The source asset identifier
           example: BTC
-        availableAmount:
+        quoteAssetId:
           type: string
-          description: Amount available for use.
-          example: '100.00'
-        totalAmount:
+          description: The target asset identifier
+          example: USD
+        rate:
           type: string
-          description: Total amount including locked/held balances.
-          example: '120.00'
-        lockedAmount:
-          type: string
-          description: Amount currently locked/held.
-          example: '20.00'
-        creditAmount:
-          type: string
-          description: Credit line amount, if applicable (0 when not used).
-          example: '0'
-        balanceType:
-          type: string
-          description: Wallet type/category (e.g., SPOT, MARGIN, FUNDING).
-          example: FUNDING
-        balanceName:
-          type: string
-          description: Display name for the balance type (at the provider)
-          example: Trader1 Wallet
+          description: The exchange rate value
+          example: '1.2345'
       required:
-      - assetId
-      - availableAmount
-      - totalAmount
-      - balanceType
+      - accountId
+      - baseAssetId
+      - quoteAssetId
+      - rate
   responses:
     Error:
       description: Error Response

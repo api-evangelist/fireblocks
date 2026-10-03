@@ -625,17 +625,117 @@ paths:
       - lang: Python
         source: response = fireblocks.cosigners_beta.get_request_status(cosigner_id, api_key_id, request_id);
 components:
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   schemas:
+    Cosigner:
+      type: object
+      properties:
+        archived:
+          type: boolean
+          description: Whether the cosigner is archived
+          example: false
+        id:
+          type: string
+          description: The unique identifier of the cosigner
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the cosigner
+          example: My Cosigner 1
+      required:
+      - archived
+      - id
+    CallbackHandlerRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The callback handler's URL
+          example: https://example.com/callback-handler
+        publicKey:
+          type: string
+          description: The callback handler's public key
+          example: '-----BEGIN PUBLIC KEY-----
+
+            ... truncated ...-----END PUBLIC KEY-----'
+        cert:
+          type: string
+          description: The callback handler's certificate
+          example: '-----BEGIN CERTIFICATE-----
+
+            ... truncated ...
+
+            -----END CERTIFICATE-----'
+      required:
+      - url
+    RenameCosigner:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The new name of the cosigner
+          example: My Cosigner 1
+    Status:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of the command
+          enum:
+          - WAITING_FOR_APPROVAL
+          - APPROVED
+          - CANCELLED
+          - REJECTED
+          - COMPLETED
+          example: COMPLETED
+        type:
+          type: string
+          description: The type of the command
+          enum:
+          - PAIR_API_KEY
+          - UPDATE_CALLBACK_HANDLER
+          - UNPAIR_API_KEY
+          example: PAIR_API_KEY
+      required:
+      - status
+      - type
+    AddCosignerRequest:
+      type: object
+      properties:
+        apiKeyId:
+          type: string
+          description: The id of the API key to be paired with the cosigner
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+        name:
+          type: string
+          description: The name of the cosigner
+          example: My Cosigner 1
+          minLength: 1
+        existingCosigner:
+          type: boolean
+          description: Whether the cosigner already exists in another workspace
+          default: false
+          example: false
+      required:
+      - apiKeyId
+      - name
+    PairApiKeyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the API key
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+      required:
+      - id
     ApiKey:
       type: object
       properties:
@@ -652,7 +752,12 @@ components:
       required:
       - id
       - lastSeen
-    PairApiKeyResponse:
+    UpdateCallbackHandlerRequest:
+      type: object
+      properties:
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+    UpdateCallbackHandlerResponse:
       type: object
       properties:
         id:
@@ -664,15 +769,43 @@ components:
           $ref: '#/components/schemas/CallbackHandlerRequest'
       required:
       - id
-    RenameCosigner:
+    PairApiKeyRequest:
       type: object
       properties:
-        name:
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+    ApiKeysPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/ApiKey'
+        next:
           type:
           - string
           - 'null'
-          description: The new name of the cosigner
-          example: My Cosigner 1
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+    CosignersPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/Cosigner'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
     AddCosignerResponse:
       type: object
       properties:
@@ -700,149 +833,6 @@ components:
       - apiKeyId
       - name
       - pendingCosignerId
-    Status:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The status of the command
-          enum:
-          - WAITING_FOR_APPROVAL
-          - APPROVED
-          - CANCELLED
-          - REJECTED
-          - COMPLETED
-          example: COMPLETED
-        type:
-          type: string
-          description: The type of the command
-          enum:
-          - PAIR_API_KEY
-          - UPDATE_CALLBACK_HANDLER
-          - UNPAIR_API_KEY
-          example: PAIR_API_KEY
-      required:
-      - status
-      - type
-    CallbackHandlerRequest:
-      type: object
-      properties:
-        url:
-          type: string
-          description: The callback handler's URL
-          example: https://example.com/callback-handler
-        publicKey:
-          type: string
-          description: The callback handler's public key
-          example: '-----BEGIN PUBLIC KEY-----
-
-            ... truncated ...-----END PUBLIC KEY-----'
-        cert:
-          type: string
-          description: The callback handler's certificate
-          example: '-----BEGIN CERTIFICATE-----
-
-            ... truncated ...
-
-            -----END CERTIFICATE-----'
-      required:
-      - url
-    ApiKeysPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/ApiKey'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-      required:
-      - data
-    AddCosignerRequest:
-      type: object
-      properties:
-        apiKeyId:
-          type: string
-          description: The id of the API key to be paired with the cosigner
-          example: 123e4567-e89b-12d3-a456-426614174000
-          format: uuid
-        name:
-          type: string
-          description: The name of the cosigner
-          example: My Cosigner 1
-          minLength: 1
-        existingCosigner:
-          type: boolean
-          description: Whether the cosigner already exists in another workspace
-          default: false
-          example: false
-      required:
-      - apiKeyId
-      - name
-    UpdateCallbackHandlerResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the API key
-          example: 44fcead0-7053-4831-a53a-df7fb90d440f
-          format: uuid
-        callbackHandler:
-          $ref: '#/components/schemas/CallbackHandlerRequest'
-      required:
-      - id
-    Cosigner:
-      type: object
-      properties:
-        archived:
-          type: boolean
-          description: Whether the cosigner is archived
-          example: false
-        id:
-          type: string
-          description: The unique identifier of the cosigner
-          example: 44fcead0-7053-4831-a53a-df7fb90d440f
-          format: uuid
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name of the cosigner
-          example: My Cosigner 1
-      required:
-      - archived
-      - id
-    UpdateCallbackHandlerRequest:
-      type: object
-      properties:
-        callbackHandler:
-          $ref: '#/components/schemas/CallbackHandlerRequest'
-    CosignersPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/Cosigner'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-      required:
-      - data
-    PairApiKeyRequest:
-      type: object
-      properties:
-        callbackHandler:
-          $ref: '#/components/schemas/CallbackHandlerRequest'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key
@@ -852,6 +842,16 @@ components:
       schema:
         type: string
         example: some-unique-id
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   securitySchemes:
     bearerTokenAuth:
       type: http

@@ -350,29 +350,39 @@ paths:
         source: response = fireblocks.web3_connections.remove(id);
 components:
   schemas:
-    RespondToConnectionRequest:
+    CreateVaultAccountConnectionRequest:
       type: object
       properties:
-        approve:
-          type: boolean
-          description: Approval of the initiated dApp connection.
-          example: true
-      required:
-      - approve
-    CreateConnectionResponse:
-      type: object
-      properties:
-        id:
+        vaultAccountId:
+          type: number
+          description: The ID of the vault to connect to the dApp.
+          example: 1
+        feeLevel:
           type: string
-          description: The ID of the Web3 connection initiated.
-          example: 4e9e7051-f3b2-48e9-8ee6-b12492552657
-        sessionMetadata:
-          description: Metadata of the Web3 connection (provided by the dApp).
-          allOf:
-          - $ref: '#/components/schemas/SessionMetadata'
+          description: The default fee level. Valid values are `MEDIUM` and `HIGH`.
+          example: MEDIUM
+          enum:
+          - MEDIUM
+          - HIGH
+        uri:
+          type: string
+          description: The WalletConnect uri provided by the dapp.
+          example: '"wc:77752975-906f-48f5-b59f-047826ee947e@1?bridge=https%3A%2F%2F0.bridge.walletconnect.org&key=64be99adc6086b7a729b0ec8c7e1f174927ab92e84f5c6f9527050225344a637"'
+        chainIds:
+          description: The IDs of the blockchain networks used in the dApp connection.
+          example:
+          - ETH
+          type: array
+          items:
+            type: string
       required:
-      - id
-      - sessionMetadata
+      - vaultAccountId
+      - feeLevel
+      - uri
+    CreateConnectionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateVaultAccountConnectionRequest'
+      - $ref: '#/components/schemas/CreateNcwConnectionRequest'
     SessionDTO:
       type: object
       properties:
@@ -435,39 +445,27 @@ components:
       - connectionType
       - connectionMethod
       - creationDate
-    CreateConnectionRequest:
-      oneOf:
-      - $ref: '#/components/schemas/CreateVaultAccountConnectionRequest'
-      - $ref: '#/components/schemas/CreateNcwConnectionRequest'
-    CreateVaultAccountConnectionRequest:
+    GetConnectionsResponse:
       type: object
       properties:
-        vaultAccountId:
-          type: number
-          description: The ID of the vault to connect to the dApp.
-          example: 1
-        feeLevel:
-          type: string
-          description: The default fee level. Valid values are `MEDIUM` and `HIGH`.
-          example: MEDIUM
-          enum:
-          - MEDIUM
-          - HIGH
-        uri:
-          type: string
-          description: The WalletConnect uri provided by the dapp.
-          example: '"wc:77752975-906f-48f5-b59f-047826ee947e@1?bridge=https%3A%2F%2F0.bridge.walletconnect.org&key=64be99adc6086b7a729b0ec8c7e1f174927ab92e84f5c6f9527050225344a637"'
-        chainIds:
-          description: The IDs of the blockchain networks used in the dApp connection.
-          example:
-          - ETH
+        data:
+          description: Array with the requested dApp connection's data
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/SessionDTO'
+        paging:
+          $ref: '#/components/schemas/Paging'
       required:
-      - vaultAccountId
-      - feeLevel
-      - uri
+      - data
+    RespondToConnectionRequest:
+      type: object
+      properties:
+        approve:
+          type: boolean
+          description: Approval of the initiated dApp connection.
+          example: true
+      required:
+      - approve
     SessionMetadata:
       type: object
       properties:
@@ -489,18 +487,14 @@ components:
           example: https://static.fireblocks.io/wcs/dappIcon/f16fbab26bad5aa296073f682cf6ff32dfe262e333a1b32f6a481b100c8a144b
       required:
       - appUrl
-    GetConnectionsResponse:
+    Paging:
       type: object
       properties:
-        data:
-          description: Array with the requested dApp connection's data
-          type: array
-          items:
-            $ref: '#/components/schemas/SessionDTO'
-        paging:
-          $ref: '#/components/schemas/Paging'
+        next:
+          type: string
+          description: Cursor to the next page
       required:
-      - data
+      - next
     CreateNcwConnectionRequest:
       type: object
       properties:
@@ -535,14 +529,20 @@ components:
       - ncwAccountId
       - feeLevel
       - uri
-    Paging:
+    CreateConnectionResponse:
       type: object
       properties:
-        next:
+        id:
           type: string
-          description: Cursor to the next page
+          description: The ID of the Web3 connection initiated.
+          example: 4e9e7051-f3b2-48e9-8ee6-b12492552657
+        sessionMetadata:
+          description: Metadata of the Web3 connection (provided by the dApp).
+          allOf:
+          - $ref: '#/components/schemas/SessionMetadata'
       required:
-      - next
+      - id
+      - sessionMetadata
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

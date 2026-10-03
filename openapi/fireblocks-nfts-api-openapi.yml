@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests NF Ts……
+  title: Fireblocks Blockchains and Assets Approval Requests NF Ts………
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -822,38 +822,6 @@ paths:
         source: response = fireblocks.n_f_ts.update_tokens_ownership_spam(token_ownership_spam_update_payload, idempotency_key);
 components:
   schemas:
-    TokenOwnershipSpamUpdatePayload:
-      type: object
-      properties:
-        assetId:
-          type: string
-          description: Token's asset id
-          example: NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd
-          x-fb-entity: asset
-        spam:
-          type: boolean
-          description: Token's ownership new spam value
-          example: true
-      required:
-      - assetId
-      - spam
-    TokenCollectionResponse:
-      type: object
-      properties:
-        id:
-          description: Collection's ID
-          type: string
-          example: '0x2953399124F0cBB46d2CbACD8A89cF0599974963'
-        name:
-          description: Collection's Name
-          type: string
-          example: OpenSea Collections
-        symbol:
-          description: Collection's Symbol
-          type: string
-          example: OPENSTORE
-      required:
-      - id
     TokenOwnershipStatusUpdatePayload:
       type: object
       properties:
@@ -872,82 +840,21 @@ components:
       required:
       - assetId
       - status
-    CollectionOwnershipResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Fireblocks collection id
-          example: 0b7baa6a62b00c565fd027e91927d610872e0bd5
-        name:
-          type: string
-          description: Collection name
-          example: OpenSea Collections
-        symbol:
-          type: string
-          description: Collection symbol
-          example: OPENSTORE
-        standard:
-          type: string
-          description: Collection contract standard
-          example: ERC1155
-        blockchainDescriptor:
-          enum:
-          - ETH
-          - ETH_TEST3
-          - ETH_TEST5
-          - ETH_TEST6
-          - POLYGON
-          - POLYGON_TEST_MUMBAI
-          - AMOY_POLYGON_TEST
-          - XTZ
-          - XTZ_TEST
-          - BASECHAIN_ETH
-          - BASECHAIN_ETH_TEST3
-          - BASECHAIN_ETH_TEST5
-          - ETHERLINK
-          - ETHERLINK_TEST
-          - MANTLE
-          - MANTLE_TEST
-          - GUN_GUNZILLA_TEST
-          - ETH_SONEIUM
-          - SONEIUM_MINATO_TEST
-          - IOTX_IOTEX
-          type: string
-          description: Collection's blockchain
-        contractAddress:
-          type: string
-          description: Collection contract standard
-          example: '0x2953399124F0cBB46d2CbACD8A89cF0599974963'
-      required:
-      - id
-      - blockchainDescriptor
-    UpdateTokensOwnershipSpamRequest:
-      type: array
-      items:
-        $ref: '#/components/schemas/TokenOwnershipSpamUpdatePayload'
-    UpdateTokensOwnershipStatusRequest:
-      type: array
-      items:
-        $ref: '#/components/schemas/TokenOwnershipStatusUpdatePayload'
-    SpamTokenResponse:
+    SpamOwnershipResponse:
       type: object
       properties:
         result:
           type: boolean
           description: Token spam result
-          example: true
+        source:
+          type: string
+          description: Source of Token's Spam status value
+          enum:
+          - OWNER
+          - SYSTEM
       required:
       - result
-    GetNFTsResponse:
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TokenResponse'
+      - source
     TokenResponse:
       type: object
       properties:
@@ -1020,7 +927,75 @@ components:
       - tokenId
       - standard
       - blockchainDescriptor
-    GetOwnershipTokensResponse:
+    TokenCollectionResponse:
+      type: object
+      properties:
+        id:
+          description: Collection's ID
+          type: string
+          example: '0x2953399124F0cBB46d2CbACD8A89cF0599974963'
+        name:
+          description: Collection's Name
+          type: string
+          example: OpenSea Collections
+        symbol:
+          description: Collection's Symbol
+          type: string
+          example: OPENSTORE
+      required:
+      - id
+    TokenOwnershipSpamUpdatePayload:
+      type: object
+      properties:
+        assetId:
+          type: string
+          description: Token's asset id
+          example: NFT-abcdefabcdefabcdefabcdefabcdefabcdefabcd
+          x-fb-entity: asset
+        spam:
+          type: boolean
+          description: Token's ownership new spam value
+          example: true
+      required:
+      - assetId
+      - spam
+    MediaEntityResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Cached accessible URL
+          example: https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0
+        contentType:
+          type: string
+          enum:
+          - IMAGE
+          - VIDEO
+          - ANIMATION
+          - THREE_D
+          - TEXT
+          - GIF
+          - UNKNOWN_TYPE
+          - SVG
+          - AUDIO
+          description: Media type
+      required:
+      - url
+      - contentType
+    SpamTokenResponse:
+      type: object
+      properties:
+        result:
+          type: boolean
+          description: Token spam result
+          example: true
+      required:
+      - result
+    UpdateTokensOwnershipSpamRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/TokenOwnershipSpamUpdatePayload'
+    ListOwnedCollectionsResponse:
       type: object
       properties:
         paging:
@@ -1028,7 +1003,24 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/TokenOwnershipResponse'
+            $ref: '#/components/schemas/CollectionOwnershipResponse'
+    Paging:
+      type: object
+      properties:
+        next:
+          type: string
+          description: Cursor to the next page
+      required:
+      - next
+    GetNFTsResponse:
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenResponse'
     ListOwnedTokensResponse:
       type: object
       properties:
@@ -1038,6 +1030,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TokenResponse'
+    GetOwnershipTokensResponse:
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenOwnershipResponse'
     TokenOwnershipResponse:
       type: object
       properties:
@@ -1145,38 +1146,10 @@ components:
       - ownershipLastUpdateTime
       - blockchainDescriptor
       - status
-    ListOwnedCollectionsResponse:
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/CollectionOwnershipResponse'
-    MediaEntityResponse:
-      type: object
-      properties:
-        url:
-          type: string
-          description: Cached accessible URL
-          example: https://static.fireblocks.io/nft/media/aHR0cHM6Ly9pLnNlYWRuLmlvL2djcy9maWxlcy9kYjg4NDIyMDYxODUyZWE2YTZkZWVkMDY2NjI5ODY4Ny5wbmc_dz0
-        contentType:
-          type: string
-          enum:
-          - IMAGE
-          - VIDEO
-          - ANIMATION
-          - THREE_D
-          - TEXT
-          - GIF
-          - UNKNOWN_TYPE
-          - SVG
-          - AUDIO
-          description: Media type
-      required:
-      - url
-      - contentType
+    UpdateTokensOwnershipStatusRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/TokenOwnershipStatusUpdatePayload'
     UpdateTokenOwnershipStatusDto:
       type: object
       properties:
@@ -1188,29 +1161,56 @@ components:
           - ARCHIVED
       required:
       - status
-    SpamOwnershipResponse:
+    CollectionOwnershipResponse:
       type: object
       properties:
-        result:
-          type: boolean
-          description: Token spam result
-        source:
+        id:
           type: string
-          description: Source of Token's Spam status value
+          description: Fireblocks collection id
+          example: 0b7baa6a62b00c565fd027e91927d610872e0bd5
+        name:
+          type: string
+          description: Collection name
+          example: OpenSea Collections
+        symbol:
+          type: string
+          description: Collection symbol
+          example: OPENSTORE
+        standard:
+          type: string
+          description: Collection contract standard
+          example: ERC1155
+        blockchainDescriptor:
           enum:
-          - OWNER
-          - SYSTEM
-      required:
-      - result
-      - source
-    Paging:
-      type: object
-      properties:
-        next:
+          - ETH
+          - ETH_TEST3
+          - ETH_TEST5
+          - ETH_TEST6
+          - POLYGON
+          - POLYGON_TEST_MUMBAI
+          - AMOY_POLYGON_TEST
+          - XTZ
+          - XTZ_TEST
+          - BASECHAIN_ETH
+          - BASECHAIN_ETH_TEST3
+          - BASECHAIN_ETH_TEST5
+          - ETHERLINK
+          - ETHERLINK_TEST
+          - MANTLE
+          - MANTLE_TEST
+          - GUN_GUNZILLA_TEST
+          - ETH_SONEIUM
+          - SONEIUM_MINATO_TEST
+          - IOTX_IOTEX
           type: string
-          description: Cursor to the next page
+          description: Collection's blockchain
+        contractAddress:
+          type: string
+          description: Collection contract standard
+          example: '0x2953399124F0cBB46d2CbACD8A89cF0599974963'
       required:
-      - next
+      - id
+      - blockchainDescriptor
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests……
+  title: Fireblocks Blockchains and Assets Approval Requests………
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -770,6 +770,237 @@ paths:
         source: response = fireblocks.transactions.set_confirmation_threshold_by_transaction_hash(tx_hash, set_confirmations_threshold_request, idempotency_key);
 components:
   schemas:
+    FeePayerInfo:
+      type: object
+      properties:
+        feePayerAccountId:
+          type: string
+          description: The account ID of the fee payer
+          example: '123'
+    TravelRuleLegalPerson:
+      type: object
+      properties:
+        name:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleLegalPersonNameIdentifier'
+          description: The structured name of the legal person, referencing name identifiers.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: The array of geographic addresses associated with the legal person.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleNationalIdentification'
+        customerIdentification:
+          type: string
+          description: A unique identifier that identifies the customer in the organization's context. The value must be encrypted.
+          example: QmRY9AA4Uit2JRTxDzfzshrJdTK86Kf5HriA3dXDnihDmy
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
+          example: QmXvyML3AJUFpBbJqL5NVp7Vn7xNkuedTsSMk93duLCNW8
+        countryOfRegistration:
+          type: string
+          description: The ISO-3166 Alpha-2 country code where the legal person is registered. The value must be encrypted.
+          example: QmeoTk6UPruEAYNbJEAHdQYc53ap9BXmpnPMcuvs8wutdr
+    TransactionStatus:
+      type: string
+      description: "The primary status of the transaction. \nFor details, see [Primary transaction statuses](https://developers.fireblocks.com/reference/primary-transaction-statuses)\n"
+      enum:
+      - SUBMITTED
+      - PENDING_AML_SCREENING
+      - PENDING_ENRICHMENT
+      - PENDING_AUTHORIZATION
+      - QUEUED
+      - PENDING_SIGNATURE
+      - PENDING_3RD_PARTY_MANUAL_APPROVAL
+      - PENDING_3RD_PARTY
+      - BROADCASTING
+      - COMPLETED
+      - CONFIRMING
+      - CANCELLING
+      - CANCELLED
+      - BLOCKED
+      - REJECTED
+      - FAILED
+    UnsignedMessage:
+      type: object
+      properties:
+        preHash:
+          $ref: '#/components/schemas/PreHash'
+        content:
+          description: 'Content to sign on.
+
+            - EIP-191: Requires a 32 byte-long string for ECDSA (hash of the actual message to sign) or any length for EdDSA, as prehashing is not required.
+
+            - EIP-712: Requires an object specifying the structured data format, including `types`, `domain`, `primaryType`, and `message`.
+
+            '
+          type: string
+          example: ababababababababababababababababababbababababababbababababababab
+        bip44addressIndex:
+          description: BIP44 address index
+          type: integer
+          example: 0
+        bip44change:
+          description: BIP44 change index
+          type: number
+          example: 0
+        derivationPath:
+          type: array
+          description: BIP44 full derivation path
+          items:
+            type: number
+            example:
+            - 44
+            - 60
+            - 0
+            - 0
+            - 0
+        type:
+          type: string
+          description: 'Typed Message Signing - message type.
+
+
+            - EIP191 & EIP712: for ETH and all EVM based assets typed message signing
+
+            - TIP191: For Tron (TRX) typed message signing
+
+            - BTC_MESSAGE: For Bitcoin (BTC) typed message signing
+
+            '
+          enum:
+          - EIP191
+          - EIP712
+          - TIP191
+          - BTC_MESSAGE
+      required:
+      - content
+    DropTransactionRequest:
+      type: object
+      properties:
+        txId:
+          type: string
+          description: Fireblocks Transaction ID
+          example: cfe5be48-9307-4aa3-8ead-b959fca35dd6
+        feeLevel:
+          type: string
+          description: Transcation Fee Level
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+        gasPrice:
+          type: string
+          description: Transaction Gas Price in gwei
+          example: '10'
+    EstimatedFeeDetails:
+      type: object
+      description: Optional detailed fee breakdown for high/medium/low estimates
+      properties:
+        low:
+          $ref: '#/components/schemas/FeeBreakdown'
+        medium:
+          $ref: '#/components/schemas/FeeBreakdown'
+        high:
+          $ref: '#/components/schemas/FeeBreakdown'
+    UnspentInput:
+      description: 'A representation of an Unspent Transaction Output (UTXO).
+
+        '
+      type: object
+      properties:
+        txHash:
+          description: Transaction Hash
+          type: string
+          example: 6b21446af4a5e3ec588960d2338ab52428a3eb729038146ea09905199723061f
+        index:
+          description: The UTXO index (vOut)
+          type: number
+          example: 0
+    GetTransactionOperation:
+      type: string
+      enum:
+      - TRANSFER
+      - BURN
+      - CONTRACT_CALL
+      - MINT
+      - RAW
+      - TYPED_MESSAGE
+      - PROGRAM_CALL
+      - ENABLE_ASSET
+      - STAKE
+      - UNSTAKE
+      - WITHDRAW
+      - REDEEM_FROM_COMPOUND
+      - SUPPLY_TO_COMPOUND
+      - APPROVE
+      description: "* `TRANSFER` - Transfers funds from one account to another. UTXO blockchains allow multi-input and multi-output transfers. All other blockchains allow transfers with one source address and one destination address.\n* `MINT` - Mints new tokens. Supported for Stellar, Ripple, and EVM-based blockchains.\n* `BURN` - Burns tokens. Supported for Stellar, Ripple, and EVM-based blockchains.\n* `CONTRACT_CALL` - Calls a smart contract method for web3 operations on any EVM blockchain. The Fireblocks [development libraries](https://developers.fireblocks.com/docs/ethereum-development#convenience-libraries) are recommended for building contract call transactions.\n* `TYPED_MESSAGE` - An off-chain message in either Ethereum Personal Message or EIP712 format. Use it to sign specific readable messages that are not actual transactions. [Learn more about typed messages](https://developers.fireblocks.com/docs/typed-message-signing).\n* `RAW` - An off-chain message with no predefined format. Use it to sign any message with your private key, including protocols such as blockchains and custom transaction types that Fireblocks do not natively support. [Learn more about raw signing transactions.](https://developers.fireblocks.com/docs/raw-message-signing)\n* `PROGRAM_CALL` - Calls a smart contract for web3 operations on the Solana blockchain. Read more in the [Solana Programs Interactions guide](https://developers.fireblocks.com/reference/interact-with-solana-programs)\n* `ENABLE_ASSET` - Algorand, DigitalBits, Solana, and Stellar require an on-chain transaction to create an asset wallet and enable the deposit address. This transaction is automatically created when adding assets on these blockchains at a vault account.\n* `STAKE` - Assign assets to a staking pool managed by a staking validator. Supported for Stellar and EVM-based blockchains. This transaction is automatically created when performing staking operations.\n* `UNSTAKE` - Remove assets from a staking pool managed by a staking validator. Supported for Stellar and EVM-based blockchains. This transaction is automatically created when performing staking operations.\n* `WITHDRAW` - Transfer assets from a dedicated staking vault account to another address. Supported for Stellar and EVM-based blockchains. This transaction is automatically created when performing staking operations.\n\n    **Note:** Fireblocks will rename this type from `WITHDRAW` to a different type name soon. There will be a 7-day notice regarding the new type name.\n\n* `SUPPLY_TO_COMPOUND` - Deprecated since April 1st, 2023. Older transactions may have this as their operation, in case users in the workspace have used the direct integration between Fireblocks and the Compound DeFI protocol.\n* `REDEEM_FROM_COMPOUND` - Deprecated since April 1st, 2023. Older transactions may have this as their operation, in case users in the workspace have used the direct integration between Fireblocks and the Compound DeFI protocol.\n* `APPROVE` - Enables the approve function for a smart contract to withdraw from a designated wallet. [Learn more](https://support.fireblocks.io/hc/en-us/articles/4404616097426-Approve-Transaction-Amount-Cap).\n"
+    SignedMessages:
+      type: array
+      description: An array of signed messages
+      items:
+        $ref: '#/components/schemas/SignedMessage'
+    DestinationTransferPeerPathResponse:
+      type: object
+      description: 'Destination of the transaction.
+
+
+        **Note:** In case the transaction is sent to multiple destinations, the `destinations` parameter is be used instead of this.'
+      properties:
+        type:
+          $ref: '#/components/schemas/TransferPeerPathType'
+        subType:
+          type: string
+          example: External
+          description: In case the type is set to `EXCHANGE_ACCOUNT` or `FIAT_ACCOUNT`, the specific exchange vendor name or fiat vendor name.In case the type is set to `INTERNAL_WALLET` or `EXTERNAL_WALLET`, the subType is set to `Internal` or `External`.
+        id:
+          type:
+          - string
+          - 'null'
+          example: 713153a5-42b8-4865-b871-10aee308e7ac
+          description: The ID of the peer. You can retrieve the ID of each venue object using the endpoints for [listing vault accounts](https://developers.fireblocks.com/reference/getpagedvaultaccounts), [listing exchange account](https://developers.fireblocks.com/reference/getexchangeaccounts), [listing fiat accounts](https://developers.fireblocks.com/reference/getfiataccounts), [listing internal wallets](https://developers.fireblocks.com/reference/getinternalwallets), [listing external wallets](https://developers.fireblocks.com/reference/getexternalwallets), [listing network connections](https://developers.fireblocks.com/reference/getnetworkconnections). For the other types, this parameter is not needed.
+        name:
+          type: string
+          description: The name of the peer
+          example: Some Peer Name
+        walletId:
+          type: string
+          format: uuid
+          example: d5a6453c-c8b8-4ae1-84f5-4002164e711e
+        tradingAccount:
+          type:
+          - string
+          - 'null'
+          description: If this transaction is an exchange internal transfer, this field will be populated with the type of that trading account.
+      required:
+      - type
+    TransactionResponseDestination:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: The amount to be sent to this destination.
+          example: '0.2'
+        amountUSD:
+          type: string
+          description: The USD value of the requested amount.
+          example: '158'
+        amlScreeningResult:
+          $ref: '#/components/schemas/AmlScreeningResult'
+        destination:
+          $ref: '#/components/schemas/DestinationTransferPeerPathResponse'
+        authorizationInfo:
+          $ref: '#/components/schemas/AuthorizationInfo'
+    AmlScreeningResult:
+      type: object
+      description: The result of the AML screening.
+      properties:
+        provider:
+          type: string
+        payload:
+          type: object
     ExtraParameters:
       type: object
       properties:
@@ -836,18 +1067,667 @@ components:
         **Note:** `rawMessageData`, `contractCallData`, and `inputsSelection` cannot be used together in the same call.
 
         '
-    BlockInfo:
+    NetworkRecord:
       type: object
-      description: "The block hash and height of the block that this transaction was mined in.\n     **Note**: If an outgoing transaction uses the destinations object with more than one value in the array, blockHash is set to null."
       properties:
-        blockHeight:
+        source:
+          $ref: '#/components/schemas/SourceTransferPeerPathResponse'
+        destination:
+          $ref: '#/components/schemas/DestinationTransferPeerPathResponse'
+        txHash:
           type: string
-          example: '19953257'
-        blockHash:
+        networkFee:
+          type: string
+        assetId:
+          type: string
+          x-fb-entity: asset
+        netAmount:
+          description: The net amount of the transaction, after fee deduction
+          type: string
+        isDropped:
+          type: boolean
+        type:
+          type: string
+        destinationAddress:
+          type: string
+        amountUSD:
+          type: string
+        rewardInfo:
+          $ref: '#/components/schemas/RewardInfo'
+    TravelRuleDateAndPlaceOfBirth:
+      type: object
+      description: Represents the date and place of birth for a natural person
+      properties:
+        dateOfBirth:
+          type: string
+          description: Date of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+        placeOfBirth:
+          type: string
+          description: Place of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    DestinationTransferPeerPath:
+      type: object
+      description: The destination of the transaction.
+      properties:
+        type:
+          $ref: '#/components/schemas/TransferPeerPathType'
+        subType:
+          $ref: '#/components/schemas/TransferPeerPathSubType'
+        id:
+          type: string
+        name:
+          type: string
+        walletId:
+          type: string
+          format: uuid
+        oneTimeAddress:
+          $ref: '#/components/schemas/OneTimeAddress'
+        isCollateral:
+          type: boolean
+          description: Indicates whether the destination is a collateral account
+          example: true
+      required:
+      - type
+    TravelRuleCreateTransactionRequest:
+      type: object
+      properties:
+        originatorVASPdid:
+          type: string
+          description: The Decentralized Identifier (DID) of the exchange (VASP) that is sending the virtual assets. This identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene network.
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+        beneficiaryVASPdid:
+          type: string
+          description: The Decentralized Identifier (DID) of the exchange (VASP) that is receiving the virtual assets. This identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene network.
+          example: did:ethr:0x17fe2dd11a2daa7f6c1fdf22532a4763f963aea6
+        originatorVASPname:
+          type: string
+          description: The name of the VASP acting as the transaction originator.
+          example: Originator VASP Ltd.
+        beneficiaryVASPname:
+          type: string
+          description: The name of the VASP acting as the transaction beneficiary.
+          example: Beneficiary VASP Inc.
+        beneficiaryVASPwebsite:
+          type: string
+          description: The website of the VASP acting as the transaction beneficiary.
+          example: https://www.beneficiaryvasp.com
+        transactionBlockchainInfo:
+          description: Information about the blockchain transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleTransactionBlockchainInfo'
+        originator:
+          description: Information about the originator of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRulePiiIVMS'
+        beneficiary:
+          description: Information about the beneficiary of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRulePiiIVMS'
+        encrypted:
+          type: string
+          description: Encrypted data related to the transaction.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        protocol:
+          type: string
+          description: The protocol used to perform the travel rule.
+          example: IVMS101
+        skipBeneficiaryDataValidation:
+          type: boolean
+          description: Whether to skip validation of beneficiary data.
+          example: false
+        travelRuleBehavior:
+          type: boolean
+          description: Whether to check if the transaction complies with the travel rule in the beneficiary VASP's jurisdiction.
+          example: true
+        originatorRef:
+          type: string
+          description: A reference ID related to the originator of the transaction.
+          example: ORG123456
+        beneficiaryRef:
+          type: string
+          description: A reference ID related to the beneficiary of the transaction.
+          example: BEN654321
+        travelRuleBehaviorRef:
+          type: string
+          description: A reference ID related to the travel rule behavior.
+          example: TRB987654
+        originatorProof:
+          description: Ownership proof related to the originator of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
+        beneficiaryProof:
+          description: Ownership proof related to the beneficiary of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
+        beneficiaryDid:
+          type: string
+          description: "The Decentralized Identifier (DID) of the person at the receiving exchange (VASP).  This identifier is generated when the customer is registered in the Notabene network,  or automatically created based on the `beneficiaryRef`.  - If neither `beneficiaryRef` nor `beneficiaryDid` is provided in the `txCreate` payload, \n  a new random DID is generated for every transaction."
+          example: did:key:z6Mkf67890Zghijkl67890
+        originatorDid:
+          type: string
+          description: "The Decentralized Identifier (DID) of the person at the exchange (VASP) who is requesting the withdrawal. This identifier is generated when the customer is registered in the Notabene network or automatically created based on the `originatorRef`.  - If neither `originatorRef` nor `originatorDid` is provided in the `txCreate` payload, \n  a new random DID is generated for every transaction."
+          example: did:key:z6Mkf12345Zabcdef12345
+        isNonCustodial:
+          type: boolean
+          description: Indicates if the transaction involves a non-custodial wallet.
+          example: true
+      required:
+      - originator
+      - beneficiary
+    FeeInfo:
+      type: object
+      description: Details of the transaction fees.
+      properties:
+        networkFee:
+          description: The fee paid to the network.
+          type: string
+        serviceFee:
+          description: The total fee deducted by the exchange from the actual requested amount (serviceFee = amount - netAmount).
+          type: string
+        gasPrice:
+          description: The amount of gas required by/paid to the network to process the transaction.
+          type: string
+        L1networkFee:
+          description: Layer 1 network fee for Layer 2 blockchain transactions
+          type: string
+        L2networkFee:
+          description: Layer 2 network fee (gas price component for Layer 2 transactions)
+          type: string
+        paidByRelay:
+          description: Indicates whether the relay paid the fee.
+          type: boolean
+        relayType:
+          description: Indicates whether the relay is the same tenant (`LOCAL`) or another tenant (`THIRD_PARTY`).
+          type: string
+        relayId:
+          description: The Vault account ID of the relay.
+          type: string
+        relayName:
+          description: The name of the tenant hosting the third-party relay.
+          type: string
+        feeUSD:
+          type: string
+          description: The USD equivalent value of the fee
+          example: '0.00013'
+    TransactionRequestDestination:
+      type: object
+      properties:
+        amount:
+          type: string
+        destination:
+          $ref: '#/components/schemas/DestinationTransferPeerPath'
+    TransactionFee:
+      type: object
+      properties:
+        gasLimit:
+          example: '21000'
+          description: Gas limit value for EVM based networks
+          type: string
+        feePerByte:
+          description: The fee per byte value for UTXO based assets
+          type: string
+          example: '21.6'
+        gasPrice:
+          description: Gas price in gwei units for EVM based networks
+          type: string
+          example: '32'
+        networkFee:
+          description: The full network fee price
+          type: string
+          example: '0.0001'
+        baseFee:
+          description: (optional) Base Fee according to EIP-1559 (ETH assets)
+          type: string
+          example: '10'
+        priorityFee:
+          description: (optional) Priority Fee according to EIP-1559 (ETH assets)
+          type: string
+          example: '22'
+        maxFeePerGasDelta:
+          description: Max Fee Per Gas Delta added only for EIP-1559 (ETH assets)
+          type: string
+          example: '31'
+        l1Fee:
+          description: Layer 1 fee for Layer 2 chains
+          type: string
+          example: '0'
+    TransactionRequest:
+      type: object
+      properties:
+        operation:
+          $ref: '#/components/schemas/TransactionOperation'
+        note:
+          type: string
+          description: Custom note, not sent to the blockchain, to describe the transaction at your Fireblocks workspace.
+          example: Ticket 123
+        externalTxId:
+          type: string
+          description: 'Allows you to add a unique ID to help prevent duplicate transactions. No specific format is required for this parameter. After you submit a transaction with an external ID, Fireblocks will automatically reject all future transactions with the same ID.
+
+            - Using an external ID primarily helps in situations where, even though a submitted transaction responds with an error due to an internet outage, the transaction was still sent to and processed on the blockchain.
+
+            - Use [Get a specific transaction by external transaction ID](https://developers.fireblocks.com/reference/gettransactionbyexternalid) to validate whether these transactions have been processed.
+
+            '
+          example: some_unique_external_tx_id
+        assetId:
+          type: string
+          description: The ID of the asset to transfer; used for `TRANSFER`, `MINT`, or `BURN` operations. See [the list of supported assets and their IDs](https://developers.fireblocks.com/reference/listassets).
+          x-fb-entity: asset
+          example: ETH
+        source:
+          $ref: '#/components/schemas/SourceTransferPeerPath'
+        destination:
+          $ref: '#/components/schemas/DestinationTransferPeerPath'
+        destinations:
+          type: array
+          description: For UTXO based blockchains, you can send a single transaction to multiple destinations.
+          items:
+            $ref: '#/components/schemas/TransactionRequestDestination'
+        amount:
+          description: For `TRANSFER` operations, the requested amount to transfer, in the asset’s unit. Fireblocks recommends using a numeric string for accurate precision. Although a number input exists, it is deprecated.
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+            example: '0.02'
+          - type: number
+            description: Number (deprecated)
+            example: 0.02
+        treatAsGrossAmount:
+          type: boolean
+          description: '"When set to `true`, the fee will be deducted from the requested amount."
+
+
+            **Note**: This parameter can only be considered if a transaction’s asset is a base asset, such as ETH or MATIC. If the asset can’t be used for transaction fees, like USDC, this parameter is ignored and the fee is deducted from the relevant base asset wallet in the source account.'
+          example: false
+        forceSweep:
+          type: boolean
+          description: "For Polkadot, TON, Kusama and Westend transactions only. When set to true, Fireblocks will empty the asset wallet.\n\n   **Note:** If set to true when the source account is exactly 1 DOT, the transaction will fail. Any amount more or less than 1 DOT succeeds. This is a Polkadot blockchain limitation."
+          example: false
+        feeLevel:
+          type: string
+          description: For UTXO or EVM-based blockchains only. Defines the blockchain fee level which will be payed for the transaction. Alternatively, specific fee estimation parameters exist below.
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          example: MEDIUM
+        fee:
+          description: '- **For UTXO-based blockchains**, the fee per bytes in the asset''s smallest unit (Satoshi, Latoshi, etc.).
+
+            - **For Ripple**, the fee for the transaction.
+
+
+            Note:
+
+            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
+
+            '
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        priorityFee:
+          description: '**For Ethereum-based blockchains only.** The fee (in Gwei) for EIP-1559 transaction pricing mechanism.
+
+
+            Note:
+
+            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
+
+            '
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+            example: '2'
+          - type: number
+            description: Number (deprecated)
+            example: 2
+        failOnLowFee:
+          type: boolean
+          description: When set to `true`, in case the current `MEDIUM` fee level is higher than the one specified in the transaction, the transaction will fail to avoid getting stuck with no confirmations.
+        maxFee:
+          description: The maximum fee (gas price or fee per byte) that should be paid for the transaction. In case the current value of the requested `feeLevel` is higher than this requested maximum fee. Represented by a numeric string for more precision.
+          type: string
+          example: '120'
+        gasLimit:
+          description: '**For EVM-based blockchains only.**  Units of gas required to process the transaction.
+
+
+            Notes:
+
+            - Only two of the three arguments can be specified in a single transaction: `gasLimit`, `gasPrice`, and/or `networkFee`.
+
+            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
+
+            '
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+            example: '21000'
+          - type: number
+            description: Number (deprecated)
+            example: 21000
+        gasPrice:
+          description: '**For non-EIP-1559, EVM-based transactions.** Price per gas unit. In Ethereum, this is specified in Gwei.
+
+
+            Notes:
+
+            - Only two of the three arguments can be specified in a single transaction: `gasLimit`, `gasPrice`, and/or `networkFee`.
+
+            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
+
+            '
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        networkFee:
+          description: 'The total transaction fee in the blockchain''s largest unit.
+
+
+            Notes:
+
+            - Only two of the three arguments can be specified in a single transaction: `gasLimit`, `gasPrice`, and/or `networkFee`.
+
+            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
+
+            '
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        replaceTxByHash:
+          type: string
+          description: '**For EVM-based blockchains only.**
+
+
+            Notes:
+
+            - To replace a transaction, create another transaction using the stuck transaction''s hash and specify a higher fee.
+
+            - To drop a transaction, create another transaction using the stuck transaction''s hash and change the `amount` field to 0.
+
+            '
+          example: 00000000-0000-0000-0000-000000000000
+        extraParameters:
+          $ref: '#/components/schemas/ExtraParameters'
+        customerRefId:
+          type: string
+          description: The ID for AML providers to associate the owner of funds with transactions.
+          example: abcdef
+        travelRuleMessage:
+          $ref: '#/components/schemas/TravelRuleCreateTransactionRequest'
+        autoStaking:
+          type: boolean
+          description: This feature is no longer supported.
+          deprecated: true
+        networkStaking:
+          deprecated: true
+          description: This feature is no longer supported.
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        cpuStaking:
+          deprecated: true
+          description: This feature is no longer supported.
+          oneOf:
+          - type: string
+            description: Numeric string (recommended)
+          - type: number
+            description: Number (deprecated)
+        useGasless:
+          type: boolean
+          description: '- Override the default gasless configuration by sending true\false'
+    TransferPeerPathSubType:
+      type: string
+      enum:
+      - BINANCE
+      - BINANCEUS
+      - BITFINEX
+      - BITHUMB
+      - BITMEX
+      - BITSO
+      - BITSTAMP
+      - BITTREX
+      - BLINC
+      - BULLISHEXCHANGE
+      - BYBIT
+      - CIRCLE
+      - COINBASEEXCHANGE
+      - COINBASEPRO
+      - COINMETRO
+      - COINSPRO
+      - CRYPTOCOM
+      - DERIBIT
+      - GEMINI
+      - HITBTC
+      - HUOBI
+      - INDEPENDENTRESERVE
+      - KORBIT
+      - KRAKEN
+      - KRAKENINTL
+      - KUCOIN
+      - LIQUID
+      - OKCOIN
+      - OKEX
+      - PAXOS
+      - POLONIEX
+      - External
+      - Internal
+    SourceTransferPeerPathResponse:
+      type: object
+      description: Source of the transaction.
+      properties:
+        type:
+          $ref: '#/components/schemas/TransferPeerPathType'
+        subType:
+          type: string
+          example: External
+          description: In case the type is set to `EXCHANGE_ACCOUNT` or `FIAT_ACCOUNT`, the specific exchange vendor name or fiat vendor name. In case the type is set to `INTERNAL_WALLET` or `EXTERNAL_WALLET`, the subType is set to `Internal` or `External`.
+        id:
           type:
           - string
           - 'null'
-          example: '0x1fdc0bc79a07387fa0de794142ead16f26edd9b5c66480139c2c37c422a3935e'
+          example: 713153a5-42b8-4865-b871-10aee308e7ac
+          description: The ID of the peer. You can retrieve the ID of each venue object using the endpoints for [listing vault accounts](https://developers.fireblocks.com/reference/getpagedvaultaccounts), [listing exchange account](https://developers.fireblocks.com/reference/getexchangeaccounts), [listing fiat accounts](https://developers.fireblocks.com/reference/getfiataccounts), [listing internal wallets](https://developers.fireblocks.com/reference/getinternalwallets), [listing external wallets](https://developers.fireblocks.com/reference/getexternalwallets), [listing network connections](https://developers.fireblocks.com/reference/getnetworkconnection). For the other types, this parameter is not needed.
+        name:
+          type: string
+          description: The name of the peer
+          example: Some Peer Name
+        walletId:
+          type: string
+          format: uuid
+          example: d5a6453c-c8b8-4ae1-84f5-4002164e711e
+        tradingAccount:
+          type:
+          - string
+          - 'null'
+          description: If this transaction is an exchange internal transfer, this field will be populated with the type of that trading account.
+      required:
+      - type
+    TravelRuleNaturalPerson:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalPersonNameIdentifier'
+          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier schema.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress schema.
+        nationalIdentification:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleNationalIdentification'
+          description: The national identification of the natural person, referencing the TravelRuleNationalIdentification schema.
+        dateAndPlaceOfBirth:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleDateAndPlaceOfBirth'
+          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
+        customerIdentification:
+          type: string
+          description: A unique identifier for the customer within the organization's context. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        countryOfResidence:
+          type: string
+          description: The ISO-3166 Alpha-2 country code of the natural person's residence. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+    TravelRulePerson:
+      type: object
+      properties:
+        naturalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleNaturalPerson'
+        legalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleLegalPerson'
+    TransactionSubStatus:
+      type: string
+      description: 'See [Transaction substatuses](https://developers.fireblocks.com/reference/transaction-substatuses) for the list of transaction sub statuses
+
+        '
+      enum:
+      - 3RD_PARTY_PROCESSING
+      - 3RD_PARTY_PENDING_SERVICE_MANUAL_APPROVAL
+      - PENDING_3RD_PARTY_MANUAL_APPROVAL
+      - 3RD_PARTY_CONFIRMING
+      - PENDING_BLOCKCHAIN_CONFIRMATIONS
+      - 3RD_PARTY_COMPLETED
+      - COMPLETED_BUT_3RD_PARTY_FAILED
+      - COMPLETED_BUT_3RD_PARTY_REJECTED
+      - CONFIRMED
+      - BLOCKED_BY_POLICY
+      - 3RD_PARTY_CANCELLED
+      - 3RD_PARTY_REJECTED
+      - CANCELLED_BY_USER
+      - CANCELLED_BY_USER_REQUEST
+      - REJECTED_BY_USER
+      - AUTO_FREEZE
+      - FROZEN_MANUALLY
+      - REJECTED_AML_SCREENING
+      - ACTUAL_FEE_TOO_HIGH
+      - ADDRESS_WHITELISTING_SUSPENDED
+      - AMOUNT_TOO_SMALL
+      - AUTHORIZATION_FAILED
+      - AUTHORIZER_NOT_FOUND
+      - ENV_UNSUPPORTED_ASSET
+      - ERROR_UNSUPPORTED_TRANSACTION_TYPE
+      - FAIL_ON_LOW_FEE
+      - GAS_LIMIT_TOO_LOW
+      - GAS_PRICE_TOO_LOW_FOR_RBF
+      - INCOMPLETE_USER_SETUP
+      - INSUFFICIENT_FUNDS
+      - INSUFFICIENT_FUNDS_FOR_FEE
+      - INTEGRATION_SUSPENDED
+      - INVALID_ADDRESS
+      - INVALID_CONTRACT_CALL_DATA
+      - INVALID_FEE_PARAMS
+      - INVALID_NONCE_FOR_RBF
+      - INVALID_TAG_OR_MEMO
+      - INVALID_UNMANAGED_WALLET
+      - MAX_FEE_EXCEEDED
+      - MISSING_TAG_OR_MEMO
+      - NEED_MORE_TO_CREATE_DESTINATION
+      - NO_MORE_PREPROCESSED_INDEXES
+      - NON_EXISTING_ACCOUNT_NAME
+      - RAW_MSG_EMPTY_OR_INVALID
+      - RAW_MSG_LEN_INVALID
+      - TOO_MANY_INPUTS
+      - TX_SIZE_EXCEEDED_MAX
+      - UNAUTHORISED_DEVICE
+      - UNAUTHORISED_USER
+      - UNALLOWED_RAW_PARAM_COMBINATION
+      - UNSUPPORTED_OPERATION
+      - UNSUPPORTED_TRANSACTION_TYPE
+      - ZERO_BALANCE_IN_PERMANENT_ADDRESS
+      - OUT_OF_DATE_SIGNING_KEYS
+      - CONNECTIVITY_ERROR
+      - ERROR_ASYNC_TX_IN_FLIGHT
+      - INTERNAL_ERROR
+      - INVALID_NONCE_TOO_HIGH
+      - INVALID_NONCE_TOO_LOW
+      - INVALID_ROUTING_DESTINATION
+      - LOCKING_NONCE_ACCOUNT_TIMEOUT
+      - NETWORK_ROUTING_MISMATCH
+      - NONCE_ALLOCATION_FAILED
+      - RESOURCE_ALREADY_EXISTS
+      - SIGNER_NOT_FOUND
+      - SIGNING_ERROR
+      - TIMEOUT
+      - TX_OUTDATED
+      - UNKNOWN_ERROR
+      - VAULT_WALLET_NOT_READY
+      - UNSUPPORTED_MEDIA_TYPE
+      - ADDRESS_NOT_WHITELISTED
+      - API_KEY_MISMATCH
+      - ASSET_NOT_ENABLED_ON_DESTINATION
+      - DEST_TYPE_NOT_SUPPORTED
+      - EXCEEDED_DECIMAL_PRECISION
+      - EXCHANGE_CONFIGURATION_MISMATCH
+      - EXCHANGE_VERSION_INCOMPATIBLE
+      - INVALID_EXCHANGE_ACCOUNT
+      - METHOD_NOT_ALLOWED
+      - NON_EXISTENT_AUTO_ACCOUNT
+      - ON_PREMISE_CONNECTIVITY_ERROR
+      - PEER_ACCOUNT_DOES_NOT_EXIST
+      - THIRD_PARTY_MISSING_ACCOUNT
+      - UNAUTHORISED_IP_WHITELISTING
+      - UNAUTHORISED_MISSING_CREDENTIALS
+      - UNAUTHORISED_MISSING_PERMISSION
+      - UNAUTHORISED_OTP_FAILED
+      - WITHDRAW_LIMIT
+      - 3RD_PARTY_FAILED
+      - API_CALL_LIMIT
+      - API_INVALID_SIGNATURE
+      - CANCELLED_EXTERNALLY
+      - FAILED_AML_SCREENING
+      - INVALID_FEE
+      - INVALID_THIRD_PARTY_RESPONSE
+      - MANUAL_DEPOSIT_ADDRESS_REQUIRED
+      - MISSING_DEPOSIT_ADDRESS
+      - NO_DEPOSIT_ADDRESS
+      - SUB_ACCOUNTS_NOT_SUPPORTED
+      - SPEND_COINBASE_TOO_EARLY
+      - THIRD_PARTY_INTERNAL_ERROR
+      - TX_ID_NOT_ACCEPTED_BY_THIRD_PARTY
+      - UNSUPPORTED_ASSET
+      - DOUBLE_SPENDING
+      - DROPPED_BY_BLOCKCHAIN
+      - INSUFFICIENT_RESERVED_FUNDING
+      - INVALID_SIGNATURE
+      - PARTIALLY_FAILED
+      - POWERUP_SUGGESTION_FAILURE
+      - REACHED_MEMPOOL_LIMIT_FOR_ACCOUNT
+      - REJECTED_BY_BLOCKCHAIN
+      - SMART_CONTRACT_EXECUTION_FAILED
+      - TOO_LONG_MEMPOOL_CHAIN
+      - ''
+    UnfreezeTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    FreezeTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
     TransactionResponse:
       type: object
       properties:
@@ -1074,17 +1954,125 @@ components:
         nonce:
           type: string
           description: Blockchain nonce for the transaction
-    CreateTransactionResponse:
+    SetConfirmationsThresholdRequest:
       type: object
       properties:
-        id:
+        numOfConfirmations:
+          type: number
+          example: 50
+    OneTimeAddress:
+      type: object
+      properties:
+        address:
           type: string
-          description: Unique Fireblocks identifier of the transaction
-        status:
+        tag:
           type: string
-          description: The primary status of the transaction. For details, see [Primary transaction statuses.] (https://developers.fireblocks.com/reference/primary-transaction-statuses)
-        systemMessages:
-          $ref: '#/components/schemas/SystemMessageInfo'
+      required:
+      - address
+    EstimatedTransactionFeeResponse:
+      type: object
+      properties:
+        low:
+          $ref: '#/components/schemas/TransactionFee'
+        medium:
+          $ref: '#/components/schemas/TransactionFee'
+        high:
+          $ref: '#/components/schemas/TransactionFee'
+        feeDetails:
+          $ref: '#/components/schemas/EstimatedFeeDetails'
+      required:
+      - low
+      - medium
+      - high
+    AuthorizationInfo:
+      type: object
+      description: The information about your [Transaction Authorization Policy (TAP).](https://developers.fireblocks.com/docs/capabilities#transaction-authorization-policy-tap)
+      properties:
+        allowOperatorAsAuthorizer:
+          type: boolean
+        logic:
+          type: string
+          enum:
+          - AND
+          - OR
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorizationGroups'
+    SignedMessage:
+      type: object
+      description: Signed Message Object (for RAW signing responses)
+      properties:
+        content:
+          type: string
+          example: some_content
+        algorithm:
+          type: string
+          enum:
+          - MPC_ECDSA_SECP256K1
+          - MPC_ECDSA_SECP256R1
+          - MPC_EDDSA_ED25519
+        derivationPath:
+          type: array
+          items:
+            minItems: 5
+            maxItems: 5
+            type: number
+          example:
+          - 44
+          - 0
+          - 60
+          - 0
+          - 0
+        signature:
+          type: object
+          properties:
+            fullSig:
+              description: R + S values concatenated
+              type: string
+              example: c8ab06c7c3447ac8f594a643d5942ceb2451b9434bb29c4b1a40da5cf32403002bfba73d825b240f2e2949df139c2f3e26e6cdd36579eb1a0cbd4abc4e6e348a
+            r:
+              type: string
+              example: c8ab06c7c3447ac8f594a643d5942ceb2451b9434bb29c4b1a40da5cf3240300
+            s:
+              type: string
+              example: 2bfba73d825b240f2e2949df139c2f3e26e6cdd36579eb1a0cbd4abc4e6e348a
+            v:
+              type: number
+              enum:
+              - 0
+              - 1
+        publicKey:
+          type: string
+          example: 03af66c4551559d54bfbfd14c84870a337b06bf2738ed6427480ec56ee551c7458
+    TravelRuleNationalIdentification:
+      type: object
+      description: Represents a national identifier for a person or entity
+      properties:
+        countryOfIssue:
+          type: string
+          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code). The value must be encrypted.
+          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
+        nationalIdentifier:
+          type: string
+          description: National identifier (max 35 characters). The value must be encrypted.
+          example: QmdR6qLnZ7Kwf5cBaXG8QFQenEvRg9JNZeoPranVuGd63z
+        nationalIdentifierType:
+          type: string
+          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'': National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security number The value must be encrypted.'
+          example: QmUKTg3aFJFhMz1o9gPqA3MgTRwd2LvDLwWTPHYUoMEYVi
+        registrationAuthority:
+          type: string
+          description: Registration authority (format -> RA followed by 6 digits). The value must be encrypted.
+          example: QmV9KJMyT9RJzpYfhME5xNCZ4G67fEkzTpRMyJzp9kTNYk
+    RewardInfo:
+      type: object
+      description: This field is relevant only for Algorand transactions. Both `srcRewards` and `destRewards` will appear only for Vault to Vault transactions, otherwise you will receive only the Fireblocks’ side of the transaction.
+      properties:
+        srcRewards:
+          type: string
+        destRewards:
+          type: string
     DropTransactionResponse:
       type: object
       properties:
@@ -1094,370 +2082,49 @@ components:
           type: string
         replacedTxHash:
           type: string
-    TravelRulePiiIVMS:
+    AmountInfo:
       type: object
+      description: The details of the requested amount to transfer.
       properties:
-        originatorPersons:
-          type: array
-          description: Information about the originator of the transaction
-          items:
-            $ref: '#/components/schemas/TravelRulePersons'
-        beneficiaryPersons:
-          type: array
-          description: Information about the beneficiary of the transaction
-          items:
-            $ref: '#/components/schemas/TravelRulePersons'
-        accountNumber:
-          type: array
-          description: Beneficiary account number. The value must be encrypted.
-          items:
-            type: string
-            example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
-    TransactionRequest:
-      type: object
-      properties:
-        operation:
-          $ref: '#/components/schemas/TransactionOperation'
-        note:
-          type: string
-          description: Custom note, not sent to the blockchain, to describe the transaction at your Fireblocks workspace.
-          example: Ticket 123
-        externalTxId:
-          type: string
-          description: 'Allows you to add a unique ID to help prevent duplicate transactions. No specific format is required for this parameter. After you submit a transaction with an external ID, Fireblocks will automatically reject all future transactions with the same ID.
-
-            - Using an external ID primarily helps in situations where, even though a submitted transaction responds with an error due to an internet outage, the transaction was still sent to and processed on the blockchain.
-
-            - Use [Get a specific transaction by external transaction ID](https://developers.fireblocks.com/reference/gettransactionbyexternalid) to validate whether these transactions have been processed.
-
-            '
-          example: some_unique_external_tx_id
-        assetId:
-          type: string
-          description: The ID of the asset to transfer; used for `TRANSFER`, `MINT`, or `BURN` operations. See [the list of supported assets and their IDs](https://developers.fireblocks.com/reference/listassets).
-          x-fb-entity: asset
-          example: ETH
-        source:
-          $ref: '#/components/schemas/SourceTransferPeerPath'
-        destination:
-          $ref: '#/components/schemas/DestinationTransferPeerPath'
-        destinations:
-          type: array
-          description: For UTXO based blockchains, you can send a single transaction to multiple destinations.
-          items:
-            $ref: '#/components/schemas/TransactionRequestDestination'
         amount:
-          description: For `TRANSFER` operations, the requested amount to transfer, in the asset’s unit. Fireblocks recommends using a numeric string for accurate precision. Although a number input exists, it is deprecated.
-          oneOf:
-          - type: string
-            description: Numeric string (recommended)
-            example: '0.02'
-          - type: number
-            description: Number (deprecated)
-            example: 0.02
-        treatAsGrossAmount:
-          type: boolean
-          description: '"When set to `true`, the fee will be deducted from the requested amount."
-
-
-            **Note**: This parameter can only be considered if a transaction’s asset is a base asset, such as ETH or MATIC. If the asset can’t be used for transaction fees, like USDC, this parameter is ignored and the fee is deducted from the relevant base asset wallet in the source account.'
-          example: false
-        forceSweep:
-          type: boolean
-          description: "For Polkadot, TON, Kusama and Westend transactions only. When set to true, Fireblocks will empty the asset wallet.\n\n   **Note:** If set to true when the source account is exactly 1 DOT, the transaction will fail. Any amount more or less than 1 DOT succeeds. This is a Polkadot blockchain limitation."
-          example: false
-        feeLevel:
+          description: If the transfer is a withdrawal from an exchange, the actual amount that was requested to be transferred. Otherwise, the requested amount.
           type: string
-          description: For UTXO or EVM-based blockchains only. Defines the blockchain fee level which will be payed for the transaction. Alternatively, specific fee estimation parameters exist below.
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          example: MEDIUM
-        fee:
-          description: '- **For UTXO-based blockchains**, the fee per bytes in the asset''s smallest unit (Satoshi, Latoshi, etc.).
-
-            - **For Ripple**, the fee for the transaction.
-
-
-            Note:
-
-            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
-
-            '
-          oneOf:
-          - type: string
-            description: Numeric string (recommended)
-          - type: number
-            description: Number (deprecated)
-        priorityFee:
-          description: '**For Ethereum-based blockchains only.** The fee (in Gwei) for EIP-1559 transaction pricing mechanism.
-
-
-            Note:
-
-            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
-
-            '
-          oneOf:
-          - type: string
-            description: Numeric string (recommended)
-            example: '2'
-          - type: number
-            description: Number (deprecated)
-            example: 2
-        failOnLowFee:
-          type: boolean
-          description: When set to `true`, in case the current `MEDIUM` fee level is higher than the one specified in the transaction, the transaction will fail to avoid getting stuck with no confirmations.
-        maxFee:
-          description: The maximum fee (gas price or fee per byte) that should be paid for the transaction. In case the current value of the requested `feeLevel` is higher than this requested maximum fee. Represented by a numeric string for more precision.
+        requestedAmount:
+          description: The amount requested by the user.
           type: string
-          example: '120'
-        gasLimit:
-          description: '**For EVM-based blockchains only.**  Units of gas required to process the transaction.
-
-
-            Notes:
-
-            - Only two of the three arguments can be specified in a single transaction: `gasLimit`, `gasPrice`, and/or `networkFee`.
-
-            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
-
-            '
-          oneOf:
-          - type: string
-            description: Numeric string (recommended)
-            example: '21000'
-          - type: number
-            description: Number (deprecated)
-            example: 21000
-        gasPrice:
-          description: '**For non-EIP-1559, EVM-based transactions.** Price per gas unit. In Ethereum, this is specified in Gwei.
-
-
-            Notes:
-
-            - Only two of the three arguments can be specified in a single transaction: `gasLimit`, `gasPrice`, and/or `networkFee`.
-
-            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
-
-            '
-          oneOf:
-          - type: string
-            description: Numeric string (recommended)
-          - type: number
-            description: Number (deprecated)
-        networkFee:
-          description: 'The total transaction fee in the blockchain''s largest unit.
-
-
-            Notes:
-
-            - Only two of the three arguments can be specified in a single transaction: `gasLimit`, `gasPrice`, and/or `networkFee`.
-
-            - Fireblocks recommends using a numeric string for more precision. Although a number input exists, it is deprecated.
-
-            '
-          oneOf:
-          - type: string
-            description: Numeric string (recommended)
-          - type: number
-            description: Number (deprecated)
-        replaceTxByHash:
+        netAmount:
+          description: The net amount of the transaction, after fee deduction.
           type: string
-          description: '**For EVM-based blockchains only.**
-
-
-            Notes:
-
-            - To replace a transaction, create another transaction using the stuck transaction''s hash and specify a higher fee.
-
-            - To drop a transaction, create another transaction using the stuck transaction''s hash and change the `amount` field to 0.
-
-            '
-          example: 00000000-0000-0000-0000-000000000000
-        extraParameters:
-          $ref: '#/components/schemas/ExtraParameters'
-        customerRefId:
+        amountUSD:
+          description: The USD value of the requested amount.
           type: string
-          description: The ID for AML providers to associate the owner of funds with transactions.
-          example: abcdef
-        travelRuleMessage:
-          $ref: '#/components/schemas/TravelRuleCreateTransactionRequest'
-        autoStaking:
-          type: boolean
-          description: This feature is no longer supported.
-          deprecated: true
-        networkStaking:
-          deprecated: true
-          description: This feature is no longer supported.
-          oneOf:
-          - type: string
-            description: Numeric string (recommended)
-          - type: number
-            description: Number (deprecated)
-        cpuStaking:
-          deprecated: true
-          description: This feature is no longer supported.
-          oneOf:
-          - type: string
-            description: Numeric string (recommended)
-          - type: number
-            description: Number (deprecated)
-        useGasless:
-          type: boolean
-          description: '- Override the default gasless configuration by sending true\false'
-    GetTransactionOperation:
-      type: string
-      enum:
-      - TRANSFER
-      - BURN
-      - CONTRACT_CALL
-      - MINT
-      - RAW
-      - TYPED_MESSAGE
-      - PROGRAM_CALL
-      - ENABLE_ASSET
-      - STAKE
-      - UNSTAKE
-      - WITHDRAW
-      - REDEEM_FROM_COMPOUND
-      - SUPPLY_TO_COMPOUND
-      - APPROVE
-      description: "* `TRANSFER` - Transfers funds from one account to another. UTXO blockchains allow multi-input and multi-output transfers. All other blockchains allow transfers with one source address and one destination address.\n* `MINT` - Mints new tokens. Supported for Stellar, Ripple, and EVM-based blockchains.\n* `BURN` - Burns tokens. Supported for Stellar, Ripple, and EVM-based blockchains.\n* `CONTRACT_CALL` - Calls a smart contract method for web3 operations on any EVM blockchain. The Fireblocks [development libraries](https://developers.fireblocks.com/docs/ethereum-development#convenience-libraries) are recommended for building contract call transactions.\n* `TYPED_MESSAGE` - An off-chain message in either Ethereum Personal Message or EIP712 format. Use it to sign specific readable messages that are not actual transactions. [Learn more about typed messages](https://developers.fireblocks.com/docs/typed-message-signing).\n* `RAW` - An off-chain message with no predefined format. Use it to sign any message with your private key, including protocols such as blockchains and custom transaction types that Fireblocks do not natively support. [Learn more about raw signing transactions.](https://developers.fireblocks.com/docs/raw-message-signing)\n* `PROGRAM_CALL` - Calls a smart contract for web3 operations on the Solana blockchain. Read more in the [Solana Programs Interactions guide](https://developers.fireblocks.com/reference/interact-with-solana-programs)\n* `ENABLE_ASSET` - Algorand, DigitalBits, Solana, and Stellar require an on-chain transaction to create an asset wallet and enable the deposit address. This transaction is automatically created when adding assets on these blockchains at a vault account.\n* `STAKE` - Assign assets to a staking pool managed by a staking validator. Supported for Stellar and EVM-based blockchains. This transaction is automatically created when performing staking operations.\n* `UNSTAKE` - Remove assets from a staking pool managed by a staking validator. Supported for Stellar and EVM-based blockchains. This transaction is automatically created when performing staking operations.\n* `WITHDRAW` - Transfer assets from a dedicated staking vault account to another address. Supported for Stellar and EVM-based blockchains. This transaction is automatically created when performing staking operations.\n\n    **Note:** Fireblocks will rename this type from `WITHDRAW` to a different type name soon. There will be a 7-day notice regarding the new type name.\n\n* `SUPPLY_TO_COMPOUND` - Deprecated since April 1st, 2023. Older transactions may have this as their operation, in case users in the workspace have used the direct integration between Fireblocks and the Compound DeFI protocol.\n* `REDEEM_FROM_COMPOUND` - Deprecated since April 1st, 2023. Older transactions may have this as their operation, in case users in the workspace have used the direct integration between Fireblocks and the Compound DeFI protocol.\n* `APPROVE` - Enables the approve function for a smart contract to withdraw from a designated wallet. [Learn more](https://support.fireblocks.io/hc/en-us/articles/4404616097426-Approve-Transaction-Amount-Cap).\n"
-    SignedMessages:
-      type: array
-      description: An array of signed messages
-      items:
-        $ref: '#/components/schemas/SignedMessage'
-    FreezeTransactionResponse:
+    TravelRuleTransactionBlockchainInfo:
       type: object
       properties:
-        success:
-          type: boolean
-    TravelRuleLegalPersonNameIdentifier:
+        txHash:
+          type: string
+          description: The hash of the transaction
+          example: 66857308435587568925907217391782424136140297125402684115258137778343590111402
+        origin:
+          type: string
+          description: The origin address of the transaction
+          example: 841132469470587054656177892491842814721854784787
+        destination:
+          type: string
+          description: The destination address of the transaction
+          example: 841132469470587054656177892491842814721854784787
+    BlockInfo:
       type: object
+      description: "The block hash and height of the block that this transaction was mined in.\n     **Note**: If an outgoing transaction uses the destinations object with more than one value in the array, blockHash is set to null."
       properties:
-        legalPersonName:
+        blockHeight:
           type: string
-          description: Name by which the legal person is known. The value must be encrypted.
-          example: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
-        legalPersonNameIdentifierType:
-          type: string
-          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name. The value must be encrypted.'
-          example: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
-    TravelRuleDateAndPlaceOfBirth:
-      type: object
-      description: Represents the date and place of birth for a natural person
-      properties:
-        dateOfBirth:
-          type: string
-          description: Date of birth. The value must be encrypted.
-          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
-        placeOfBirth:
-          type: string
-          description: Place of birth. The value must be encrypted.
-          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
-    TransactionFee:
-      type: object
-      properties:
-        gasLimit:
-          example: '21000'
-          description: Gas limit value for EVM based networks
-          type: string
-        feePerByte:
-          description: The fee per byte value for UTXO based assets
-          type: string
-          example: '21.6'
-        gasPrice:
-          description: Gas price in gwei units for EVM based networks
-          type: string
-          example: '32'
-        networkFee:
-          description: The full network fee price
-          type: string
-          example: '0.0001'
-        baseFee:
-          description: (optional) Base Fee according to EIP-1559 (ETH assets)
-          type: string
-          example: '10'
-        priorityFee:
-          description: (optional) Priority Fee according to EIP-1559 (ETH assets)
-          type: string
-          example: '22'
-        maxFeePerGasDelta:
-          description: Max Fee Per Gas Delta added only for EIP-1559 (ETH assets)
-          type: string
-          example: '31'
-        l1Fee:
-          description: Layer 1 fee for Layer 2 chains
-          type: string
-          example: '0'
-    SetConfirmationsThresholdResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        transactions:
-          type: array
-          description: An array of the affected Fireblocks Transaction IDs
-          items:
-            type: string
-            example: cfe5be48-9307-4aa3-8ead-b959fca35dd6
-    DestinationTransferPeerPath:
-      type: object
-      description: The destination of the transaction.
-      properties:
-        type:
-          $ref: '#/components/schemas/TransferPeerPathType'
-        subType:
-          $ref: '#/components/schemas/TransferPeerPathSubType'
-        id:
-          type: string
-        name:
-          type: string
-        walletId:
-          type: string
-          format: uuid
-        oneTimeAddress:
-          $ref: '#/components/schemas/OneTimeAddress'
-        isCollateral:
-          type: boolean
-          description: Indicates whether the destination is a collateral account
-          example: true
-      required:
-      - type
-    TransferPeerPathType:
-      type: string
-      enum:
-      - VAULT_ACCOUNT
-      - EXCHANGE_ACCOUNT
-      - INTERNAL_WALLET
-      - EXTERNAL_WALLET
-      - UNMANAGED_WALLET
-      - CONTRACT
-      - NETWORK_CONNECTION
-      - FIAT_ACCOUNT
-      - COMPOUND
-      - GAS_STATION
-      - ONE_TIME_ADDRESS
-      - UNKNOWN
-      - END_USER_WALLET
-      - PROGRAM_CALL
-      - MULTI_DESTINATION
-      - OEC_PARTNER
-    TransactionOperation:
-      type: string
-      default: TRANSFER
-      enum:
-      - TRANSFER
-      - BURN
-      - CONTRACT_CALL
-      - MINT
-      - RAW
-      - TYPED_MESSAGE
-      - PROGRAM_CALL
-      description: "* `TRANSFER` - The default value for an operation. Transfers funds from one account to another. UTXO blockchains allow multi-input and multi-output transfers. All other blockchains allow transfers with one source address and one destination address.\n* `MINT` - Mints new tokens. Supported for Stellar, Ripple and EVM-based blockchains.\n* `BURN` - Burns tokens. Supported for Stellar, Ripple and EVM-based blockchains.\n* `CONTRACT_CALL` - Calls a smart contract method for web3 operations on any EVM blockchain. The Fireblocks [development libraries](https://developers.fireblocks.com/docs/ethereum-development#convenience-libraries) are recommended for building contract call transactions.\n* `PROGRAM_CALL` - Calls a smart contract for web3 operations on the Solana blockchain.\n  Read more in the [Solana Programs Interactions guide](https://developers.fireblocks.com/reference/interact-with-solana-programs).\n\n* `TYPED_MESSAGE` - An off-chain message in either Ethereum Personal Message or EIP712 format. Use it to sign specific readable messages that are not actual transactions. [Learn more about typed messages](https://developers.fireblocks.com/docs/typed-message-signing-1).\n* `RAW` - An off-chain message with no predefined format. Use it to sign any message with your private key, including protocols such as blockchains and custom transaction types that are not natively supported by Fireblocks. [Learn more about raw signing transactions.](https://developers.fireblocks.com/docs/raw-signing)\n"
+          example: '19953257'
+        blockHash:
+          type:
+          - string
+          - 'null'
+          example: '0x1fdc0bc79a07387fa0de794142ead16f26edd9b5c66480139c2c37c422a3935e'
     TravelRuleGeographicAddress:
       type: object
       properties:
@@ -1528,436 +2195,18 @@ components:
           description: Information that locates and identifies a specific address, presented in free-format text. Each item must be encrypted.
           example:
           - QmNp9kMjfhGZ5kMJzpNYXZTy6NQmZYEMGZ4kZT9Y6pNYT
-    TravelRuleNaturalPerson:
-      type: object
-      properties:
-        name:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleNaturalPersonNameIdentifier'
-          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier schema.
-        geographicAddress:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleGeographicAddress'
-          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress schema.
-        nationalIdentification:
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleNationalIdentification'
-          description: The national identification of the natural person, referencing the TravelRuleNationalIdentification schema.
-        dateAndPlaceOfBirth:
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleDateAndPlaceOfBirth'
-          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
-        customerIdentification:
-          type: string
-          description: A unique identifier for the customer within the organization's context. The value must be encrypted.
-          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
-        countryOfResidence:
-          type: string
-          description: The ISO-3166 Alpha-2 country code of the natural person's residence. The value must be encrypted.
-          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
-        customerNumber:
-          type: string
-          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
-          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
-    TravelRuleOwnershipProof:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'The type of ownership proof. Example values: - `eip-191`: Ethereum signature proof - `eip-712`: Ethereum typed data signature proof - `bip-137`: Bitcoin signature proof - `microtransfer`: Microtransaction (Satoshi test) - `screenshot`: Uploaded screenshot of the wallet - `self-declaration`: Checkbox attestation of ownership'
-          example: eip-191
-        proof:
-          type: string
-          description: 'The cryptographic signature, transaction hash, or other proof depending on the type. Examples: - For `eip-191`: `0x3dd4a17a...ce4a2bcd1b` - For `microtransfer`: The transaction hash `H3V8GXBy39Dz...tr3TSTkY=`'
-          example: 0x3dd4a17a...ce4a2bcd1b
-        attestation:
-          type: string
-          description: 'A human-readable statement of wallet ownership. Required for signature proofs and self-declarations. Examples: - `I certify that ETH account 0x896B...0b9b belongs to me.` - `I hereby declare that the blockchain address 0xa437bEed902AF9338B7DEB23848e195d85019510 is under my control.`'
-          example: I certify that ETH account 0x896B...0b9b belongs to me.
-        address:
-          type: string
-          description: 'The wallet address being verified. Examples: - For Ethereum: `0x896B...0b9b` - For Bitcoin: `1442...dxhsQ`'
-          example: 0x896B...0b9b
-        wallet_provider:
-          type: string
-          description: 'The wallet provider or method used for verification. Examples: - For Metamask: `Metamask` - For manual signature: `manual`'
-          example: Metamask
-        url:
-          type: string
-          description: 'The URL for the uploaded screenshot (for `screenshot` proof types only). Example: `https://example.com/uploaded_image.png`'
-          example: https://example.com/uploaded_image.png
-        confirmed:
-          type: boolean
-          description: 'Whether the user confirmed ownership of the wallet (for `self-declaration` proofs). Example: `true`'
-          example: true
-    AmountInfo:
-      type: object
-      description: The details of the requested amount to transfer.
-      properties:
-        amount:
-          description: If the transfer is a withdrawal from an exchange, the actual amount that was requested to be transferred. Otherwise, the requested amount.
-          type: string
-        requestedAmount:
-          description: The amount requested by the user.
-          type: string
-        netAmount:
-          description: The net amount of the transaction, after fee deduction.
-          type: string
-        amountUSD:
-          description: The USD value of the requested amount.
-          type: string
-    AmlRegistrationResult:
-      type: object
-      properties:
-        provider:
-          type: string
-        success:
-          type: boolean
-        timestamp:
-          type: number
-    UnfreezeTransactionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-    TravelRulePersons:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/TravelRulePerson'
-    TransactionResponseDestination:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: The amount to be sent to this destination.
-          example: '0.2'
-        amountUSD:
-          type: string
-          description: The USD value of the requested amount.
-          example: '158'
-        amlScreeningResult:
-          $ref: '#/components/schemas/AmlScreeningResult'
-        destination:
-          $ref: '#/components/schemas/DestinationTransferPeerPathResponse'
-        authorizationInfo:
-          $ref: '#/components/schemas/AuthorizationInfo'
-    CancelTransactionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-    TravelRulePerson:
-      type: object
-      properties:
-        naturalPerson:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleNaturalPerson'
-        legalPerson:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleLegalPerson'
-    TransactionRequestDestination:
-      type: object
-      properties:
-        amount:
-          type: string
-        destination:
-          $ref: '#/components/schemas/DestinationTransferPeerPath'
-    DestinationTransferPeerPathResponse:
-      type: object
-      description: 'Destination of the transaction.
-
-
-        **Note:** In case the transaction is sent to multiple destinations, the `destinations` parameter is be used instead of this.'
-      properties:
-        type:
-          $ref: '#/components/schemas/TransferPeerPathType'
-        subType:
-          type: string
-          example: External
-          description: In case the type is set to `EXCHANGE_ACCOUNT` or `FIAT_ACCOUNT`, the specific exchange vendor name or fiat vendor name.In case the type is set to `INTERNAL_WALLET` or `EXTERNAL_WALLET`, the subType is set to `Internal` or `External`.
-        id:
-          type:
-          - string
-          - 'null'
-          example: 713153a5-42b8-4865-b871-10aee308e7ac
-          description: The ID of the peer. You can retrieve the ID of each venue object using the endpoints for [listing vault accounts](https://developers.fireblocks.com/reference/getpagedvaultaccounts), [listing exchange account](https://developers.fireblocks.com/reference/getexchangeaccounts), [listing fiat accounts](https://developers.fireblocks.com/reference/getfiataccounts), [listing internal wallets](https://developers.fireblocks.com/reference/getinternalwallets), [listing external wallets](https://developers.fireblocks.com/reference/getexternalwallets), [listing network connections](https://developers.fireblocks.com/reference/getnetworkconnections). For the other types, this parameter is not needed.
-        name:
-          type: string
-          description: The name of the peer
-          example: Some Peer Name
-        walletId:
-          type: string
-          format: uuid
-          example: d5a6453c-c8b8-4ae1-84f5-4002164e711e
-        tradingAccount:
-          type:
-          - string
-          - 'null'
-          description: If this transaction is an exchange internal transfer, this field will be populated with the type of that trading account.
-      required:
-      - type
-    UnspentInput:
-      description: 'A representation of an Unspent Transaction Output (UTXO).
-
-        '
-      type: object
-      properties:
-        txHash:
-          description: Transaction Hash
-          type: string
-          example: 6b21446af4a5e3ec588960d2338ab52428a3eb729038146ea09905199723061f
-        index:
-          description: The UTXO index (vOut)
-          type: number
-          example: 0
-    TravelRuleTransactionBlockchainInfo:
-      type: object
-      properties:
-        txHash:
-          type: string
-          description: The hash of the transaction
-          example: 66857308435587568925907217391782424136140297125402684115258137778343590111402
-        origin:
-          type: string
-          description: The origin address of the transaction
-          example: 841132469470587054656177892491842814721854784787
-        destination:
-          type: string
-          description: The destination address of the transaction
-          example: 841132469470587054656177892491842814721854784787
-    SystemMessageInfo:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - WARN
-          - BLOCK
-        message:
-          type: string
-          description: A response from Fireblocks that communicates a message about the health of the process being performed. If this object is returned with data, you should expect potential delays or incomplete transaction statuses.
-          example: Slow transaction processing. Outgoing transactions might be stuck.
-    EstimatedTransactionFeeResponse:
-      type: object
-      properties:
-        low:
-          $ref: '#/components/schemas/TransactionFee'
-        medium:
-          $ref: '#/components/schemas/TransactionFee'
-        high:
-          $ref: '#/components/schemas/TransactionFee'
-        feeDetails:
-          $ref: '#/components/schemas/EstimatedFeeDetails'
-      required:
-      - low
-      - medium
-      - high
-    TravelRuleNaturalNameIdentifier:
-      type: object
-      properties:
-        primaryIdentifier:
-          type: string
-          description: The primary identifier of the name. The value must be encrypted.
-          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
-        secondaryIdentifier:
-          type: string
-          description: The secondary identifier of the name. The value must be encrypted.
-          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
-        nameIdentifierType:
-          type: string
-          description: 'The type of the name identifier. The value must be encrypted. The value must be one of the following: [LEGL, DBA, TRAD, NICK, ALIA, MAID, FORM, PREV, BORN, OTHR].'
-          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
-    SetConfirmationsThresholdRequest:
-      type: object
-      properties:
-        numOfConfirmations:
-          type: number
-          example: 50
-    GetTransactionsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/TransactionResponse'
-    FeeInfo:
-      type: object
-      description: Details of the transaction fees.
-      properties:
-        networkFee:
-          description: The fee paid to the network.
-          type: string
-        serviceFee:
-          description: The total fee deducted by the exchange from the actual requested amount (serviceFee = amount - netAmount).
-          type: string
-        gasPrice:
-          description: The amount of gas required by/paid to the network to process the transaction.
-          type: string
-        L1networkFee:
-          description: Layer 1 network fee for Layer 2 blockchain transactions
-          type: string
-        L2networkFee:
-          description: Layer 2 network fee (gas price component for Layer 2 transactions)
-          type: string
-        paidByRelay:
-          description: Indicates whether the relay paid the fee.
-          type: boolean
-        relayType:
-          description: Indicates whether the relay is the same tenant (`LOCAL`) or another tenant (`THIRD_PARTY`).
-          type: string
-        relayId:
-          description: The Vault account ID of the relay.
-          type: string
-        relayName:
-          description: The name of the tenant hosting the third-party relay.
-          type: string
-        feeUSD:
-          type: string
-          description: The USD equivalent value of the fee
-          example: '0.00013'
-    FeeBreakdown:
-      oneOf:
-      - type: object
-        description: Solana-specific fee breakdown
-        properties:
-          baseFee:
-            type: string
-            description: Base fee for Solana transaction
-          priorityFee:
-            type: string
-            description: Priority fee for Solana transaction
-          rent:
-            type: string
-            description: Rent fee for Solana account creation/storage
-          totalFee:
-            type: string
-            description: Total fee amount
-      - type: object
-        description: Generic fee breakdown for other blockchains
-        properties:
-          baseFee:
-            type: string
-            description: Base fee component
-          priorityFee:
-            type: string
-            description: Priority fee component
-          totalFee:
-            type: string
-            description: Total fee amount
-    FeePayerInfo:
-      type: object
-      properties:
-        feePayerAccountId:
-          type: string
-          description: The account ID of the fee payer
-          example: '123'
-    TransferPeerPathSubType:
+    TransactionOperation:
       type: string
+      default: TRANSFER
       enum:
-      - BINANCE
-      - BINANCEUS
-      - BITFINEX
-      - BITHUMB
-      - BITMEX
-      - BITSO
-      - BITSTAMP
-      - BITTREX
-      - BLINC
-      - BULLISHEXCHANGE
-      - BYBIT
-      - CIRCLE
-      - COINBASEEXCHANGE
-      - COINBASEPRO
-      - COINMETRO
-      - COINSPRO
-      - CRYPTOCOM
-      - DERIBIT
-      - GEMINI
-      - HITBTC
-      - HUOBI
-      - INDEPENDENTRESERVE
-      - KORBIT
-      - KRAKEN
-      - KRAKENINTL
-      - KUCOIN
-      - LIQUID
-      - OKCOIN
-      - OKEX
-      - PAXOS
-      - POLONIEX
-      - External
-      - Internal
-    AuthorizationGroups:
-      type: object
-      properties:
-        th:
-          type: number
-          example: 1
-        users:
-          type: object
-          additionalProperties:
-            type: string
-            enum:
-            - PENDING_AUTHORIZATION
-            - APPROVED
-            - REJECTED
-            - NA
-    NetworkRecord:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/SourceTransferPeerPathResponse'
-        destination:
-          $ref: '#/components/schemas/DestinationTransferPeerPathResponse'
-        txHash:
-          type: string
-        networkFee:
-          type: string
-        assetId:
-          type: string
-          x-fb-entity: asset
-        netAmount:
-          description: The net amount of the transaction, after fee deduction
-          type: string
-        isDropped:
-          type: boolean
-        type:
-          type: string
-        destinationAddress:
-          type: string
-        amountUSD:
-          type: string
-        rewardInfo:
-          $ref: '#/components/schemas/RewardInfo'
-    AmlScreeningResult:
-      type: object
-      description: The result of the AML screening.
-      properties:
-        provider:
-          type: string
-        payload:
-          type: object
-    PreHash:
-      type: object
-      description: "The prehash object for ECDSA RAW signing requests. \nThe prehash object contains the content to sign (the actual message in hex representation) and the hashing algorithm to use before signing.\n"
-      properties:
-        content:
-          type: string
-          description: The prehashed content to sign on in hex representation.
-          example: 48656c6c6f2046697265626c6f636b73210a
-        hashAlgorithm:
-          type: string
-          description: The hashing algorithm to use in order to hash the content before the signature process
-          enum:
-          - SHA256
-          - KECCAK256
-          - SHA3
-          - BLAKE2
-          - DOUBLE_SHA256
-      required:
-      - content
-      - hashAlgorithm
+      - TRANSFER
+      - BURN
+      - CONTRACT_CALL
+      - MINT
+      - RAW
+      - TYPED_MESSAGE
+      - PROGRAM_CALL
+      description: "* `TRANSFER` - The default value for an operation. Transfers funds from one account to another. UTXO blockchains allow multi-input and multi-output transfers. All other blockchains allow transfers with one source address and one destination address.\n* `MINT` - Mints new tokens. Supported for Stellar, Ripple and EVM-based blockchains.\n* `BURN` - Burns tokens. Supported for Stellar, Ripple and EVM-based blockchains.\n* `CONTRACT_CALL` - Calls a smart contract method for web3 operations on any EVM blockchain. The Fireblocks [development libraries](https://developers.fireblocks.com/docs/ethereum-development#convenience-libraries) are recommended for building contract call transactions.\n* `PROGRAM_CALL` - Calls a smart contract for web3 operations on the Solana blockchain.\n  Read more in the [Solana Programs Interactions guide](https://developers.fireblocks.com/reference/interact-with-solana-programs).\n\n* `TYPED_MESSAGE` - An off-chain message in either Ethereum Personal Message or EIP712 format. Use it to sign specific readable messages that are not actual transactions. [Learn more about typed messages](https://developers.fireblocks.com/docs/typed-message-signing-1).\n* `RAW` - An off-chain message with no predefined format. Use it to sign any message with your private key, including protocols such as blockchains and custom transaction types that are not natively supported by Fireblocks. [Learn more about raw signing transactions.](https://developers.fireblocks.com/docs/raw-signing)\n"
     TravelRuleNaturalPersonNameIdentifier:
       type: object
       properties:
@@ -1973,356 +2222,63 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
-    NodeControls:
-      description: 'Configure special node requirements.
-
-        - For routing transactions to a custom node, set the `type` to `NODE_ROUTER` and the `tag` to the pre-configured tag value.
-
-        - For MEV protection, set only the `type` property to `MEV` (`tag` is not required at this stage).
-
-
-        **Note:** This is a premium feature that should be enabled in your workspace. Please contact your Customer Success Manager or Fireblocks Support for more information.
-
-        '
+    ComplianceScreeningResult:
       type: object
       properties:
-        type:
-          description: '`NODE_ROUTER` - used for transaction routing to a custom node
+        provider:
+          type: string
+          description: Screening Provider
+          enum:
+          - CHAINALYSIS
+          - ELLIPTIC
+          - CHAINALYSIS_V2
+          - ELLIPTIC_HOLISTIC
+          - NONE
+        payload:
+          type: object
+          description: 'The payload of the screening result.
 
-            `MEV` - used for transaction routing to a MEV protection provider
+            - The payload is a JSON object that contains the screening result.
+
+            - The payload is different for each screening provider.
 
             '
+        bypassReason:
+          type: string
+          description: Reason AML screening was bypassed
+          enum:
+          - MANUAL
+          - UNSUPPORTED_ASSET
+          - BYPASSED_FAILURE
+          - UNSUPPORTED_ROUTE
+          - PASSED_BY_POLICY
+          - TIMED_OUT
+          - BAD_CREDENTIALS
+          - CONFIGURATION_ERROR
+          - DROPPED_BY_BLOCKCHAIN
+          - PROCESS_DISMISSED
+        screeningStatus:
           type: string
           enum:
-          - MEV
-          - NODE_ROUTER
-        tag:
-          description: Should be used when type is `NODE_ROUTER` only
-          type: string
-          example: some_node_tag
-    SignedMessage:
-      type: object
-      description: Signed Message Object (for RAW signing responses)
-      properties:
-        content:
-          type: string
-          example: some_content
-        algorithm:
-          type: string
-          enum:
-          - MPC_ECDSA_SECP256K1
-          - MPC_ECDSA_SECP256R1
-          - MPC_EDDSA_ED25519
-        derivationPath:
-          type: array
-          items:
-            minItems: 5
-            maxItems: 5
-            type: number
-          example:
-          - 44
-          - 0
-          - 60
-          - 0
-          - 0
-        signature:
-          type: object
-          properties:
-            fullSig:
-              description: R + S values concatenated
-              type: string
-              example: c8ab06c7c3447ac8f594a643d5942ceb2451b9434bb29c4b1a40da5cf32403002bfba73d825b240f2e2949df139c2f3e26e6cdd36579eb1a0cbd4abc4e6e348a
-            r:
-              type: string
-              example: c8ab06c7c3447ac8f594a643d5942ceb2451b9434bb29c4b1a40da5cf3240300
-            s:
-              type: string
-              example: 2bfba73d825b240f2e2949df139c2f3e26e6cdd36579eb1a0cbd4abc4e6e348a
-            v:
-              type: number
-              enum:
-              - 0
-              - 1
-        publicKey:
-          type: string
-          example: 03af66c4551559d54bfbfd14c84870a337b06bf2738ed6427480ec56ee551c7458
-    TransactionSubStatus:
-      type: string
-      description: 'See [Transaction substatuses](https://developers.fireblocks.com/reference/transaction-substatuses) for the list of transaction sub statuses
-
-        '
-      enum:
-      - 3RD_PARTY_PROCESSING
-      - 3RD_PARTY_PENDING_SERVICE_MANUAL_APPROVAL
-      - PENDING_3RD_PARTY_MANUAL_APPROVAL
-      - 3RD_PARTY_CONFIRMING
-      - PENDING_BLOCKCHAIN_CONFIRMATIONS
-      - 3RD_PARTY_COMPLETED
-      - COMPLETED_BUT_3RD_PARTY_FAILED
-      - COMPLETED_BUT_3RD_PARTY_REJECTED
-      - CONFIRMED
-      - BLOCKED_BY_POLICY
-      - 3RD_PARTY_CANCELLED
-      - 3RD_PARTY_REJECTED
-      - CANCELLED_BY_USER
-      - CANCELLED_BY_USER_REQUEST
-      - REJECTED_BY_USER
-      - AUTO_FREEZE
-      - FROZEN_MANUALLY
-      - REJECTED_AML_SCREENING
-      - ACTUAL_FEE_TOO_HIGH
-      - ADDRESS_WHITELISTING_SUSPENDED
-      - AMOUNT_TOO_SMALL
-      - AUTHORIZATION_FAILED
-      - AUTHORIZER_NOT_FOUND
-      - ENV_UNSUPPORTED_ASSET
-      - ERROR_UNSUPPORTED_TRANSACTION_TYPE
-      - FAIL_ON_LOW_FEE
-      - GAS_LIMIT_TOO_LOW
-      - GAS_PRICE_TOO_LOW_FOR_RBF
-      - INCOMPLETE_USER_SETUP
-      - INSUFFICIENT_FUNDS
-      - INSUFFICIENT_FUNDS_FOR_FEE
-      - INTEGRATION_SUSPENDED
-      - INVALID_ADDRESS
-      - INVALID_CONTRACT_CALL_DATA
-      - INVALID_FEE_PARAMS
-      - INVALID_NONCE_FOR_RBF
-      - INVALID_TAG_OR_MEMO
-      - INVALID_UNMANAGED_WALLET
-      - MAX_FEE_EXCEEDED
-      - MISSING_TAG_OR_MEMO
-      - NEED_MORE_TO_CREATE_DESTINATION
-      - NO_MORE_PREPROCESSED_INDEXES
-      - NON_EXISTING_ACCOUNT_NAME
-      - RAW_MSG_EMPTY_OR_INVALID
-      - RAW_MSG_LEN_INVALID
-      - TOO_MANY_INPUTS
-      - TX_SIZE_EXCEEDED_MAX
-      - UNAUTHORISED_DEVICE
-      - UNAUTHORISED_USER
-      - UNALLOWED_RAW_PARAM_COMBINATION
-      - UNSUPPORTED_OPERATION
-      - UNSUPPORTED_TRANSACTION_TYPE
-      - ZERO_BALANCE_IN_PERMANENT_ADDRESS
-      - OUT_OF_DATE_SIGNING_KEYS
-      - CONNECTIVITY_ERROR
-      - ERROR_ASYNC_TX_IN_FLIGHT
-      - INTERNAL_ERROR
-      - INVALID_NONCE_TOO_HIGH
-      - INVALID_NONCE_TOO_LOW
-      - INVALID_ROUTING_DESTINATION
-      - LOCKING_NONCE_ACCOUNT_TIMEOUT
-      - NETWORK_ROUTING_MISMATCH
-      - NONCE_ALLOCATION_FAILED
-      - RESOURCE_ALREADY_EXISTS
-      - SIGNER_NOT_FOUND
-      - SIGNING_ERROR
-      - TIMEOUT
-      - TX_OUTDATED
-      - UNKNOWN_ERROR
-      - VAULT_WALLET_NOT_READY
-      - UNSUPPORTED_MEDIA_TYPE
-      - ADDRESS_NOT_WHITELISTED
-      - API_KEY_MISMATCH
-      - ASSET_NOT_ENABLED_ON_DESTINATION
-      - DEST_TYPE_NOT_SUPPORTED
-      - EXCEEDED_DECIMAL_PRECISION
-      - EXCHANGE_CONFIGURATION_MISMATCH
-      - EXCHANGE_VERSION_INCOMPATIBLE
-      - INVALID_EXCHANGE_ACCOUNT
-      - METHOD_NOT_ALLOWED
-      - NON_EXISTENT_AUTO_ACCOUNT
-      - ON_PREMISE_CONNECTIVITY_ERROR
-      - PEER_ACCOUNT_DOES_NOT_EXIST
-      - THIRD_PARTY_MISSING_ACCOUNT
-      - UNAUTHORISED_IP_WHITELISTING
-      - UNAUTHORISED_MISSING_CREDENTIALS
-      - UNAUTHORISED_MISSING_PERMISSION
-      - UNAUTHORISED_OTP_FAILED
-      - WITHDRAW_LIMIT
-      - 3RD_PARTY_FAILED
-      - API_CALL_LIMIT
-      - API_INVALID_SIGNATURE
-      - CANCELLED_EXTERNALLY
-      - FAILED_AML_SCREENING
-      - INVALID_FEE
-      - INVALID_THIRD_PARTY_RESPONSE
-      - MANUAL_DEPOSIT_ADDRESS_REQUIRED
-      - MISSING_DEPOSIT_ADDRESS
-      - NO_DEPOSIT_ADDRESS
-      - SUB_ACCOUNTS_NOT_SUPPORTED
-      - SPEND_COINBASE_TOO_EARLY
-      - THIRD_PARTY_INTERNAL_ERROR
-      - TX_ID_NOT_ACCEPTED_BY_THIRD_PARTY
-      - UNSUPPORTED_ASSET
-      - DOUBLE_SPENDING
-      - DROPPED_BY_BLOCKCHAIN
-      - INSUFFICIENT_RESERVED_FUNDING
-      - INVALID_SIGNATURE
-      - PARTIALLY_FAILED
-      - POWERUP_SUGGESTION_FAILURE
-      - REACHED_MEMPOOL_LIMIT_FOR_ACCOUNT
-      - REJECTED_BY_BLOCKCHAIN
-      - SMART_CONTRACT_EXECUTION_FAILED
-      - TOO_LONG_MEMPOOL_CHAIN
-      - ''
-    TravelRuleCreateTransactionRequest:
+          - COMPLETED
+          - PENDING
+          - BYPASSED
+          - FAILED
+          - FROZEN
+        timestamp:
+          type: number
+          format: date-time
+    CreateTransactionResponse:
       type: object
       properties:
-        originatorVASPdid:
-          type: string
-          description: The Decentralized Identifier (DID) of the exchange (VASP) that is sending the virtual assets. This identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene network.
-          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
-        beneficiaryVASPdid:
-          type: string
-          description: The Decentralized Identifier (DID) of the exchange (VASP) that is receiving the virtual assets. This identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene network.
-          example: did:ethr:0x17fe2dd11a2daa7f6c1fdf22532a4763f963aea6
-        originatorVASPname:
-          type: string
-          description: The name of the VASP acting as the transaction originator.
-          example: Originator VASP Ltd.
-        beneficiaryVASPname:
-          type: string
-          description: The name of the VASP acting as the transaction beneficiary.
-          example: Beneficiary VASP Inc.
-        beneficiaryVASPwebsite:
-          type: string
-          description: The website of the VASP acting as the transaction beneficiary.
-          example: https://www.beneficiaryvasp.com
-        transactionBlockchainInfo:
-          description: Information about the blockchain transaction.
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleTransactionBlockchainInfo'
-        originator:
-          description: Information about the originator of the transaction.
-          allOf:
-          - $ref: '#/components/schemas/TravelRulePiiIVMS'
-        beneficiary:
-          description: Information about the beneficiary of the transaction.
-          allOf:
-          - $ref: '#/components/schemas/TravelRulePiiIVMS'
-        encrypted:
-          type: string
-          description: Encrypted data related to the transaction.
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        protocol:
-          type: string
-          description: The protocol used to perform the travel rule.
-          example: IVMS101
-        skipBeneficiaryDataValidation:
-          type: boolean
-          description: Whether to skip validation of beneficiary data.
-          example: false
-        travelRuleBehavior:
-          type: boolean
-          description: Whether to check if the transaction complies with the travel rule in the beneficiary VASP's jurisdiction.
-          example: true
-        originatorRef:
-          type: string
-          description: A reference ID related to the originator of the transaction.
-          example: ORG123456
-        beneficiaryRef:
-          type: string
-          description: A reference ID related to the beneficiary of the transaction.
-          example: BEN654321
-        travelRuleBehaviorRef:
-          type: string
-          description: A reference ID related to the travel rule behavior.
-          example: TRB987654
-        originatorProof:
-          description: Ownership proof related to the originator of the transaction.
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
-        beneficiaryProof:
-          description: Ownership proof related to the beneficiary of the transaction.
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
-        beneficiaryDid:
-          type: string
-          description: "The Decentralized Identifier (DID) of the person at the receiving exchange (VASP).  This identifier is generated when the customer is registered in the Notabene network,  or automatically created based on the `beneficiaryRef`.  - If neither `beneficiaryRef` nor `beneficiaryDid` is provided in the `txCreate` payload, \n  a new random DID is generated for every transaction."
-          example: did:key:z6Mkf67890Zghijkl67890
-        originatorDid:
-          type: string
-          description: "The Decentralized Identifier (DID) of the person at the exchange (VASP) who is requesting the withdrawal. This identifier is generated when the customer is registered in the Notabene network or automatically created based on the `originatorRef`.  - If neither `originatorRef` nor `originatorDid` is provided in the `txCreate` payload, \n  a new random DID is generated for every transaction."
-          example: did:key:z6Mkf12345Zabcdef12345
-        isNonCustodial:
-          type: boolean
-          description: Indicates if the transaction involves a non-custodial wallet.
-          example: true
-      required:
-      - originator
-      - beneficiary
-    SourceTransferPeerPathResponse:
-      type: object
-      description: Source of the transaction.
-      properties:
-        type:
-          $ref: '#/components/schemas/TransferPeerPathType'
-        subType:
-          type: string
-          example: External
-          description: In case the type is set to `EXCHANGE_ACCOUNT` or `FIAT_ACCOUNT`, the specific exchange vendor name or fiat vendor name. In case the type is set to `INTERNAL_WALLET` or `EXTERNAL_WALLET`, the subType is set to `Internal` or `External`.
-        id:
-          type:
-          - string
-          - 'null'
-          example: 713153a5-42b8-4865-b871-10aee308e7ac
-          description: The ID of the peer. You can retrieve the ID of each venue object using the endpoints for [listing vault accounts](https://developers.fireblocks.com/reference/getpagedvaultaccounts), [listing exchange account](https://developers.fireblocks.com/reference/getexchangeaccounts), [listing fiat accounts](https://developers.fireblocks.com/reference/getfiataccounts), [listing internal wallets](https://developers.fireblocks.com/reference/getinternalwallets), [listing external wallets](https://developers.fireblocks.com/reference/getexternalwallets), [listing network connections](https://developers.fireblocks.com/reference/getnetworkconnection). For the other types, this parameter is not needed.
-        name:
-          type: string
-          description: The name of the peer
-          example: Some Peer Name
-        walletId:
-          type: string
-          format: uuid
-          example: d5a6453c-c8b8-4ae1-84f5-4002164e711e
-        tradingAccount:
-          type:
-          - string
-          - 'null'
-          description: If this transaction is an exchange internal transfer, this field will be populated with the type of that trading account.
-      required:
-      - type
-    SourceTransferPeerPath:
-      type: object
-      description: The source of the transaction.
-      properties:
-        type:
-          $ref: '#/components/schemas/TransferPeerPathType'
-        subType:
-          $ref: '#/components/schemas/TransferPeerPathSubType'
         id:
           type: string
-        name:
+          description: Unique Fireblocks identifier of the transaction
+        status:
           type: string
-        walletId:
-          type: string
-          format: uuid
-        isCollateral:
-          type: boolean
-          description: Indicates whether the source is a collateral account
-          example: true
-      required:
-      - type
-    DropTransactionRequest:
-      type: object
-      properties:
-        txId:
-          type: string
-          description: Fireblocks Transaction ID
-          example: cfe5be48-9307-4aa3-8ead-b959fca35dd6
-        feeLevel:
-          type: string
-          description: Transcation Fee Level
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-        gasPrice:
-          type: string
-          description: Transaction Gas Price in gwei
-          example: '10'
+          description: The primary status of the transaction. For details, see [Primary transaction statuses.] (https://developers.fireblocks.com/reference/primary-transaction-statuses)
+        systemMessages:
+          $ref: '#/components/schemas/SystemMessageInfo'
     ComplianceResult:
       type: object
       description: The result of the Compliance AML/Travel Rule screening.
@@ -2375,215 +2331,267 @@ components:
           description: The results of the AML address registration.
           items:
             $ref: '#/components/schemas/AmlRegistrationResult'
-    EstimatedFeeDetails:
+    TransferPeerPathType:
+      type: string
+      enum:
+      - VAULT_ACCOUNT
+      - EXCHANGE_ACCOUNT
+      - INTERNAL_WALLET
+      - EXTERNAL_WALLET
+      - UNMANAGED_WALLET
+      - CONTRACT
+      - NETWORK_CONNECTION
+      - FIAT_ACCOUNT
+      - COMPOUND
+      - GAS_STATION
+      - ONE_TIME_ADDRESS
+      - UNKNOWN
+      - END_USER_WALLET
+      - PROGRAM_CALL
+      - MULTI_DESTINATION
+      - OEC_PARTNER
+    SourceTransferPeerPath:
       type: object
-      description: Optional detailed fee breakdown for high/medium/low estimates
+      description: The source of the transaction.
       properties:
-        low:
-          $ref: '#/components/schemas/FeeBreakdown'
-        medium:
-          $ref: '#/components/schemas/FeeBreakdown'
-        high:
-          $ref: '#/components/schemas/FeeBreakdown'
-    TravelRuleNationalIdentification:
-      type: object
-      description: Represents a national identifier for a person or entity
-      properties:
-        countryOfIssue:
+        type:
+          $ref: '#/components/schemas/TransferPeerPathType'
+        subType:
+          $ref: '#/components/schemas/TransferPeerPathSubType'
+        id:
           type: string
-          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code). The value must be encrypted.
-          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
-        nationalIdentifier:
+        name:
           type: string
-          description: National identifier (max 35 characters). The value must be encrypted.
-          example: QmdR6qLnZ7Kwf5cBaXG8QFQenEvRg9JNZeoPranVuGd63z
-        nationalIdentifierType:
+        walletId:
           type: string
-          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'': National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security number The value must be encrypted.'
-          example: QmUKTg3aFJFhMz1o9gPqA3MgTRwd2LvDLwWTPHYUoMEYVi
-        registrationAuthority:
-          type: string
-          description: Registration authority (format -> RA followed by 6 digits). The value must be encrypted.
-          example: QmV9KJMyT9RJzpYfhME5xNCZ4G67fEkzTpRMyJzp9kTNYk
-    AuthorizationInfo:
-      type: object
-      description: The information about your [Transaction Authorization Policy (TAP).](https://developers.fireblocks.com/docs/capabilities#transaction-authorization-policy-tap)
-      properties:
-        allowOperatorAsAuthorizer:
+          format: uuid
+        isCollateral:
           type: boolean
-        logic:
-          type: string
-          enum:
-          - AND
-          - OR
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuthorizationGroups'
-    RewardInfo:
-      type: object
-      description: This field is relevant only for Algorand transactions. Both `srcRewards` and `destRewards` will appear only for Vault to Vault transactions, otherwise you will receive only the Fireblocks’ side of the transaction.
-      properties:
-        srcRewards:
-          type: string
-        destRewards:
-          type: string
-    ComplianceScreeningResult:
+          description: Indicates whether the source is a collateral account
+          example: true
+      required:
+      - type
+    AmlRegistrationResult:
       type: object
       properties:
         provider:
           type: string
-          description: Screening Provider
-          enum:
-          - CHAINALYSIS
-          - ELLIPTIC
-          - CHAINALYSIS_V2
-          - ELLIPTIC_HOLISTIC
-          - NONE
-        payload:
-          type: object
-          description: 'The payload of the screening result.
-
-            - The payload is a JSON object that contains the screening result.
-
-            - The payload is different for each screening provider.
-
-            '
-        bypassReason:
-          type: string
-          description: Reason AML screening was bypassed
-          enum:
-          - MANUAL
-          - UNSUPPORTED_ASSET
-          - BYPASSED_FAILURE
-          - UNSUPPORTED_ROUTE
-          - PASSED_BY_POLICY
-          - TIMED_OUT
-          - BAD_CREDENTIALS
-          - CONFIGURATION_ERROR
-          - DROPPED_BY_BLOCKCHAIN
-          - PROCESS_DISMISSED
-        screeningStatus:
-          type: string
-          enum:
-          - COMPLETED
-          - PENDING
-          - BYPASSED
-          - FAILED
-          - FROZEN
+        success:
+          type: boolean
         timestamp:
           type: number
-          format: date-time
-    UnsignedMessage:
+    PreHash:
       type: object
+      description: "The prehash object for ECDSA RAW signing requests. \nThe prehash object contains the content to sign (the actual message in hex representation) and the hashing algorithm to use before signing.\n"
       properties:
-        preHash:
-          $ref: '#/components/schemas/PreHash'
         content:
-          description: 'Content to sign on.
-
-            - EIP-191: Requires a 32 byte-long string for ECDSA (hash of the actual message to sign) or any length for EdDSA, as prehashing is not required.
-
-            - EIP-712: Requires an object specifying the structured data format, including `types`, `domain`, `primaryType`, and `message`.
-
-            '
           type: string
-          example: ababababababababababababababababababbababababababbababababababab
-        bip44addressIndex:
-          description: BIP44 address index
-          type: integer
-          example: 0
-        bip44change:
-          description: BIP44 change index
-          type: number
-          example: 0
-        derivationPath:
-          type: array
-          description: BIP44 full derivation path
-          items:
-            type: number
-            example:
-            - 44
-            - 60
-            - 0
-            - 0
-            - 0
-        type:
+          description: The prehashed content to sign on in hex representation.
+          example: 48656c6c6f2046697265626c6f636b73210a
+        hashAlgorithm:
           type: string
-          description: 'Typed Message Signing - message type.
-
-
-            - EIP191 & EIP712: for ETH and all EVM based assets typed message signing
-
-            - TIP191: For Tron (TRX) typed message signing
-
-            - BTC_MESSAGE: For Bitcoin (BTC) typed message signing
-
-            '
+          description: The hashing algorithm to use in order to hash the content before the signature process
           enum:
-          - EIP191
-          - EIP712
-          - TIP191
-          - BTC_MESSAGE
+          - SHA256
+          - KECCAK256
+          - SHA3
+          - BLAKE2
+          - DOUBLE_SHA256
       required:
       - content
-    TravelRuleLegalPerson:
+      - hashAlgorithm
+    CancelTransactionResponse:
       type: object
       properties:
-        name:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleLegalPersonNameIdentifier'
-          description: The structured name of the legal person, referencing name identifiers.
-        geographicAddress:
+        success:
+          type: boolean
+    SystemMessageInfo:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - WARN
+          - BLOCK
+        message:
+          type: string
+          description: A response from Fireblocks that communicates a message about the health of the process being performed. If this object is returned with data, you should expect potential delays or incomplete transaction statuses.
+          example: Slow transaction processing. Outgoing transactions might be stuck.
+    TravelRulePiiIVMS:
+      type: object
+      properties:
+        originatorPersons:
           type: array
+          description: Information about the originator of the transaction
           items:
-            $ref: '#/components/schemas/TravelRuleGeographicAddress'
-          description: The array of geographic addresses associated with the legal person.
-        nationalIdentification:
-          $ref: '#/components/schemas/TravelRuleNationalIdentification'
-        customerIdentification:
-          type: string
-          description: A unique identifier that identifies the customer in the organization's context. The value must be encrypted.
-          example: QmRY9AA4Uit2JRTxDzfzshrJdTK86Kf5HriA3dXDnihDmy
-        customerNumber:
-          type: string
-          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
-          example: QmXvyML3AJUFpBbJqL5NVp7Vn7xNkuedTsSMk93duLCNW8
-        countryOfRegistration:
-          type: string
-          description: The ISO-3166 Alpha-2 country code where the legal person is registered. The value must be encrypted.
-          example: QmeoTk6UPruEAYNbJEAHdQYc53ap9BXmpnPMcuvs8wutdr
-    OneTimeAddress:
+            $ref: '#/components/schemas/TravelRulePersons'
+        beneficiaryPersons:
+          type: array
+          description: Information about the beneficiary of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePersons'
+        accountNumber:
+          type: array
+          description: Beneficiary account number. The value must be encrypted.
+          items:
+            type: string
+            example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    TravelRuleNaturalNameIdentifier:
       type: object
       properties:
+        primaryIdentifier:
+          type: string
+          description: The primary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+        secondaryIdentifier:
+          type: string
+          description: The secondary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+        nameIdentifierType:
+          type: string
+          description: 'The type of the name identifier. The value must be encrypted. The value must be one of the following: [LEGL, DBA, TRAD, NICK, ALIA, MAID, FORM, PREV, BORN, OTHR].'
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+    GetTransactionsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/TransactionResponse'
+    AuthorizationGroups:
+      type: object
+      properties:
+        th:
+          type: number
+          example: 1
+        users:
+          type: object
+          additionalProperties:
+            type: string
+            enum:
+            - PENDING_AUTHORIZATION
+            - APPROVED
+            - REJECTED
+            - NA
+    TravelRuleOwnershipProof:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'The type of ownership proof. Example values: - `eip-191`: Ethereum signature proof - `eip-712`: Ethereum typed data signature proof - `bip-137`: Bitcoin signature proof - `microtransfer`: Microtransaction (Satoshi test) - `screenshot`: Uploaded screenshot of the wallet - `self-declaration`: Checkbox attestation of ownership'
+          example: eip-191
+        proof:
+          type: string
+          description: 'The cryptographic signature, transaction hash, or other proof depending on the type. Examples: - For `eip-191`: `0x3dd4a17a...ce4a2bcd1b` - For `microtransfer`: The transaction hash `H3V8GXBy39Dz...tr3TSTkY=`'
+          example: 0x3dd4a17a...ce4a2bcd1b
+        attestation:
+          type: string
+          description: 'A human-readable statement of wallet ownership. Required for signature proofs and self-declarations. Examples: - `I certify that ETH account 0x896B...0b9b belongs to me.` - `I hereby declare that the blockchain address 0xa437bEed902AF9338B7DEB23848e195d85019510 is under my control.`'
+          example: I certify that ETH account 0x896B...0b9b belongs to me.
         address:
           type: string
-        tag:
+          description: 'The wallet address being verified. Examples: - For Ethereum: `0x896B...0b9b` - For Bitcoin: `1442...dxhsQ`'
+          example: 0x896B...0b9b
+        wallet_provider:
           type: string
-      required:
-      - address
-    TransactionStatus:
-      type: string
-      description: "The primary status of the transaction. \nFor details, see [Primary transaction statuses](https://developers.fireblocks.com/reference/primary-transaction-statuses)\n"
-      enum:
-      - SUBMITTED
-      - PENDING_AML_SCREENING
-      - PENDING_ENRICHMENT
-      - PENDING_AUTHORIZATION
-      - QUEUED
-      - PENDING_SIGNATURE
-      - PENDING_3RD_PARTY_MANUAL_APPROVAL
-      - PENDING_3RD_PARTY
-      - BROADCASTING
-      - COMPLETED
-      - CONFIRMING
-      - CANCELLING
-      - CANCELLED
-      - BLOCKED
-      - REJECTED
-      - FAILED
+          description: 'The wallet provider or method used for verification. Examples: - For Metamask: `Metamask` - For manual signature: `manual`'
+          example: Metamask
+        url:
+          type: string
+          description: 'The URL for the uploaded screenshot (for `screenshot` proof types only). Example: `https://example.com/uploaded_image.png`'
+          example: https://example.com/uploaded_image.png
+        confirmed:
+          type: boolean
+          description: 'Whether the user confirmed ownership of the wallet (for `self-declaration` proofs). Example: `true`'
+          example: true
+    SetConfirmationsThresholdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        transactions:
+          type: array
+          description: An array of the affected Fireblocks Transaction IDs
+          items:
+            type: string
+            example: cfe5be48-9307-4aa3-8ead-b959fca35dd6
+    TravelRulePersons:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TravelRulePerson'
+    TravelRuleLegalPersonNameIdentifier:
+      type: object
+      properties:
+        legalPersonName:
+          type: string
+          description: Name by which the legal person is known. The value must be encrypted.
+          example: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
+        legalPersonNameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name. The value must be encrypted.'
+          example: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
+    FeeBreakdown:
+      oneOf:
+      - type: object
+        description: Solana-specific fee breakdown
+        properties:
+          baseFee:
+            type: string
+            description: Base fee for Solana transaction
+          priorityFee:
+            type: string
+            description: Priority fee for Solana transaction
+          rent:
+            type: string
+            description: Rent fee for Solana account creation/storage
+          totalFee:
+            type: string
+            description: Total fee amount
+      - type: object
+        description: Generic fee breakdown for other blockchains
+        properties:
+          baseFee:
+            type: string
+            description: Base fee component
+          priorityFee:
+            type: string
+            description: Priority fee component
+          totalFee:
+            type: string
+            description: Total fee amount
+    NodeControls:
+      description: 'Configure special node requirements.
+
+        - For routing transactions to a custom node, set the `type` to `NODE_ROUTER` and the `tag` to the pre-configured tag value.
+
+        - For MEV protection, set only the `type` property to `MEV` (`tag` is not required at this stage).
+
+
+        **Note:** This is a premium feature that should be enabled in your workspace. Please contact your Customer Success Manager or Fireblocks Support for more information.
+
+        '
+      type: object
+      properties:
+        type:
+          description: '`NODE_ROUTER` - used for transaction routing to a custom node
+
+            `MEV` - used for transaction routing to a MEV protection provider
+
+            '
+          type: string
+          enum:
+          - MEV
+          - NODE_ROUTER
+        tag:
+          description: Should be used when type is `NODE_ROUTER` only
+          type: string
+          example: some_node_tag
   parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
     X-End-User-Wallet-Id:
       name: X-End-User-Wallet-Id
       in: header
@@ -2593,14 +2601,6 @@ components:
         type: string
         format: uuid
         example: bd53b580-f69d-4ff9-ba9b-71ef02aaee13
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   responses:
     Error:
       description: Error Response

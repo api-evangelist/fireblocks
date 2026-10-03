@@ -111,6 +111,16 @@ paths:
       - lang: Python
         source: response = fireblocks.keys_beta.get_mpc_keys_list_by_user(user_id);
 components:
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   schemas:
     MpcKey:
       type: object
@@ -181,16 +191,6 @@ components:
       required:
       - id
       - type
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   securitySchemes:
     bearerTokenAuth:
       type: http

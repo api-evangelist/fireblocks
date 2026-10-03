@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests……
+  title: Fireblocks Blockchains and Assets Approval Requests………
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -665,6 +665,49 @@ paths:
       x-rate-limit-category: read
 components:
   schemas:
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the webhook
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+        url:
+          type: string
+          description: The url of the webhook where notifications will be sent. Must be a valid URL and https.
+          example: https://example.com/webhook
+          minLength: 1
+        description:
+          type: string
+          description: description of the webhook of what it is used for
+          example: This webhook is used for transactions notifications
+          minLength: 1
+        events:
+          type: array
+          description: The events that the webhook will be subscribed to
+          example:
+          - transaction.created
+          - transaction.status.updated
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+        status:
+          enum:
+          - DISABLED
+          - ENABLED
+          type: string
+          description: The status of the webhook
+          example: ENABLED
+        createdAt:
+          type: string
+          description: The date and time the webhook was created
+          example: '2021-09-01T12:00:00Z'
+          format: date-time
+        updatedAt:
+          type: string
+          description: The date and time the webhook was last updated
+          example: '2021-09-05T15:00:00Z'
+          format: date-time
     NotificationStatus:
       type: string
       description: The status of the Notification
@@ -674,22 +717,6 @@ components:
       - FAILED
       - IN_PROGRESS
       - ON_HOLD
-    WebhookPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/Webhook'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-      required:
-      - data
     ResendFailedNotificationsJobStatusResponse:
       type: object
       properties:
@@ -719,25 +746,60 @@ components:
       - status
       - processed
       - total
-    ResendFailedNotificationsRequest:
+    Notification:
       type: object
       properties:
-        startTime:
-          type: number
-          description: '(optional) Start time for the resend window in milliseconds since epoch up to 24 hours before the current time - Default if missing means 24 hours before the current time in milliseconds since epoch - Maximum value is current time in milliseconds since epoch - Minimum value is 24 hours before the current time in milliseconds since epoch
-
-            '
-          example: 1625097600000
-        events:
-          type: array
-          description: '(optional) Event types to resend, default is all event types - Default if missing means all events will be included - Empty array means all events will be included
-
-            '
-          example:
-          - transaction.created
-          - transaction.status.updated
-        items:
+        id:
+          type: string
+          description: The id of the Notification
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        createdAt:
+          type: string
+          description: The creation date of the notification
+          example: '2021-07-01T00:00:00.000Z'
+          format: date-time
+        updatedAt:
+          type: string
+          description: The date when the notification was updated
+          example: '2021-07-01T00:00:00.000Z'
+          format: date-time
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+        eventType:
           $ref: '#/components/schemas/WebhookEvent'
+        eventVersion:
+          type: number
+          description: The event version of the Notification
+          example: 1
+        resourceId:
+          type:
+          - string
+          - 'null'
+          default: null
+          description: The resource id of the event which the Notification is listen to
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        attempts:
+          default: []
+          description: The attempts related to Notification
+          type: array
+          items:
+            type: string
+      required:
+      - id
+      - createdAt
+      - updatedAt
+      - status
+      - eventType
+      - eventVersion
+    ResendFailedNotificationsResponse:
+      type: object
+      properties:
+        total:
+          type: number
+          description: The total number of failed notifications that are scheduled to be resent.
+          example: 10
     WebhookEvent:
       type: string
       enum:
@@ -787,6 +849,103 @@ components:
       - ticket.term.funding_failed
       - ticket.term.funding_completed
       - ticket.term.transaction_status_changed
+    ResendFailedNotificationsRequest:
+      type: object
+      properties:
+        startTime:
+          type: number
+          description: '(optional) Start time for the resend window in milliseconds since epoch up to 24 hours before the current time - Default if missing means 24 hours before the current time in milliseconds since epoch - Maximum value is current time in milliseconds since epoch - Minimum value is 24 hours before the current time in milliseconds since epoch
+
+            '
+          example: 1625097600000
+        events:
+          type: array
+          description: '(optional) Event types to resend, default is all event types - Default if missing means all events will be included - Empty array means all events will be included
+
+            '
+          example:
+          - transaction.created
+          - transaction.status.updated
+        items:
+          $ref: '#/components/schemas/WebhookEvent'
+    NotificationAttemptsPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/NotificationAttempt'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The ID of the next Page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+    WebhookPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/Webhook'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+    NotificationPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/Notification'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+    CreateWebhookRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The url of the webhook where notifications will be sent. URL must be valid, unique and https.
+          example: https://example.com/webhook
+          minLength: 1
+        description:
+          type: string
+          description: description of the webhook. should not contain special characters.
+          example: This webhook is used for transactions notifications
+          minLength: 1
+        events:
+          type: array
+          description: event types the webhook will subscribe to
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+          example:
+          - transaction.created
+          - transaction.status.updated
+        enabled:
+          type: boolean
+          description: The status of the webhook. If false, the webhook will not receive notifications.
+          example: false
+          default: true
+      required:
+      - url
+      - description
+      - events
     NotificationWithData:
       type: object
       properties:
@@ -837,22 +996,6 @@ components:
       - eventType
       - eventVersion
       - attempts
-    NotificationAttemptsPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/NotificationAttempt'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next Page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-      required:
-      - data
     UpdateWebhookRequest:
       type: object
       properties:
@@ -878,112 +1021,6 @@ components:
           type: boolean
           description: The status of the webhook
           example: false
-    NotificationPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/Notification'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-      required:
-      - data
-    Webhook:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the webhook
-          example: 123e4567-e89b-12d3-a456-426614174000
-          format: uuid
-        url:
-          type: string
-          description: The url of the webhook where notifications will be sent. Must be a valid URL and https.
-          example: https://example.com/webhook
-          minLength: 1
-        description:
-          type: string
-          description: description of the webhook of what it is used for
-          example: This webhook is used for transactions notifications
-          minLength: 1
-        events:
-          type: array
-          description: The events that the webhook will be subscribed to
-          example:
-          - transaction.created
-          - transaction.status.updated
-          items:
-            $ref: '#/components/schemas/WebhookEvent'
-        status:
-          enum:
-          - DISABLED
-          - ENABLED
-          type: string
-          description: The status of the webhook
-          example: ENABLED
-        createdAt:
-          type: string
-          description: The date and time the webhook was created
-          example: '2021-09-01T12:00:00Z'
-          format: date-time
-        updatedAt:
-          type: string
-          description: The date and time the webhook was last updated
-          example: '2021-09-05T15:00:00Z'
-          format: date-time
-    Notification:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the Notification
-          example: 44fcead0-7053-4831-a53a-df7fb90d440f
-          format: uuid
-        createdAt:
-          type: string
-          description: The creation date of the notification
-          example: '2021-07-01T00:00:00.000Z'
-          format: date-time
-        updatedAt:
-          type: string
-          description: The date when the notification was updated
-          example: '2021-07-01T00:00:00.000Z'
-          format: date-time
-        status:
-          $ref: '#/components/schemas/NotificationStatus'
-        eventType:
-          $ref: '#/components/schemas/WebhookEvent'
-        eventVersion:
-          type: number
-          description: The event version of the Notification
-          example: 1
-        resourceId:
-          type:
-          - string
-          - 'null'
-          default: null
-          description: The resource id of the event which the Notification is listen to
-          example: 44fcead0-7053-4831-a53a-df7fb90d440f
-          format: uuid
-        attempts:
-          default: []
-          description: The attempts related to Notification
-          type: array
-          items:
-            type: string
-      required:
-      - id
-      - createdAt
-      - updatedAt
-      - status
-      - eventType
-      - eventVersion
     ResendNotificationsByResourceIdRequest:
       type: object
       properties:
@@ -1002,43 +1039,6 @@ components:
             $ref: '#/components/schemas/NotificationStatus'
       required:
       - resourceId
-    ResendFailedNotificationsResponse:
-      type: object
-      properties:
-        total:
-          type: number
-          description: The total number of failed notifications that are scheduled to be resent.
-          example: 10
-    CreateWebhookRequest:
-      type: object
-      properties:
-        url:
-          type: string
-          description: The url of the webhook where notifications will be sent. URL must be valid, unique and https.
-          example: https://example.com/webhook
-          minLength: 1
-        description:
-          type: string
-          description: description of the webhook. should not contain special characters.
-          example: This webhook is used for transactions notifications
-          minLength: 1
-        events:
-          type: array
-          description: event types the webhook will subscribe to
-          items:
-            $ref: '#/components/schemas/WebhookEvent'
-          example:
-          - transaction.created
-          - transaction.status.updated
-        enabled:
-          type: boolean
-          description: The status of the webhook. If false, the webhook will not receive notifications.
-          example: false
-          default: true
-      required:
-      - url
-      - description
-      - events
     NotificationAttempt:
       type: object
       properties:
@@ -1065,6 +1065,15 @@ components:
       required:
       - sentTime
       - duration
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -1075,15 +1084,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

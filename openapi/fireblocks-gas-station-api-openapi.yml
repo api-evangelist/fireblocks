@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Gas……
+  title: Fireblocks Blockchains and Assets Approval Requests Gas………
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -226,17 +226,14 @@ paths:
       - lang: Python
         source: response = fireblocks.gas_stations.update_gas_station_configuration_by_asset_id(gas_station_configuration, asset_id, idempotency_key);
 components:
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   schemas:
+    GasStationPropertiesResponse:
+      type: object
+      properties:
+        balance:
+          type: object
+        configuration:
+          $ref: '#/components/schemas/GasStationConfigurationResponse'
     EditGasStationConfigurationResponse:
       type: object
       properties:
@@ -265,13 +262,6 @@ components:
           type:
           - string
           - 'null'
-    GasStationPropertiesResponse:
-      type: object
-      properties:
-        balance:
-          type: object
-        configuration:
-          $ref: '#/components/schemas/GasStationConfigurationResponse'
     GasStationConfigurationResponse:
       type: object
       properties:
@@ -301,6 +291,16 @@ components:
       schema:
         type: string
         example: some-unique-id
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   securitySchemes:
     bearerTokenAuth:
       type: http

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Job……
+  title: Fireblocks Blockchains and Assets Approval Requests Job………
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -271,16 +271,6 @@ paths:
       - lang: Python
         source: response = fireblocks.job_management.get_job_tasks(job_id);
 components:
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   schemas:
     Job:
       type: object
@@ -307,6 +297,10 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Job'
+    Tasks:
+      type: array
+      items:
+        $ref: '#/components/schemas/Task'
     Task:
       type: object
       properties:
@@ -324,10 +318,6 @@ components:
           type: number
         state:
           type: string
-    Tasks:
-      type: array
-      items:
-        $ref: '#/components/schemas/Task'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key
@@ -337,6 +327,16 @@ components:
       schema:
         type: string
         example: some-unique-id
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   securitySchemes:
     bearerTokenAuth:
       type: http
