@@ -230,38 +230,15 @@ paths:
         source: response = fireblocks.fiat_accounts.deposit_funds_from_linked_d_d_a(account_id, funds, idempotency_key);
 components:
   schemas:
-    RedeemFundsToLinkedDDAResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates whether the funds were successfully redeemed to the linked DDA
-      required:
-      - success
-    FiatAccountType:
-      type: string
-      enum:
-      - BLINC
     Funds:
       type: object
       properties:
         amount:
           type: number
-    DepositFundsFromLinkedDDAResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates whether the funds were successfully deposited from the linked DDA
-      required:
-      - success
-    FiatAsset:
-      type: object
-      properties:
-        id:
-          type: string
-        balance:
-          type: string
+    FiatAccountType:
+      type: string
+      enum:
+      - BLINC
     FiatAccount:
       type: object
       properties:
@@ -284,15 +261,29 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/FiatAccount'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
+    FiatAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+    RedeemFundsToLinkedDDAResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the funds were successfully redeemed to the linked DDA
+      required:
+      - success
+    DepositFundsFromLinkedDDAResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the funds were successfully deposited from the linked DDA
+      required:
+      - success
   responses:
     Error:
       description: Error Response
@@ -303,6 +294,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

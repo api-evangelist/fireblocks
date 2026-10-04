@@ -406,179 +406,6 @@ paths:
       operationId: getExchangeAccountsCredentialsPublicKey
 components:
   schemas:
-    AddExchangeAccountRequest:
-      type: object
-      properties:
-        exchangeType:
-          $ref: '#/components/schemas/ExchangeType'
-        name:
-          description: Display name of the exchange account
-          type: string
-        creds:
-          description: Encrypted credentials
-          type: string
-        key:
-          description: Api key of the exchange
-          type: string
-        mainAccountId:
-          description: Optional - main account id of the exchange
-          type: string
-      required:
-      - exchangeType
-      - name
-    ConvertAssetsRequest:
-      type: object
-      properties:
-        srcAsset:
-          type: string
-          description: Name of the source asset (must be in a currency that is supported for conversions in the selected exchange type that corresponds to your exchange ID)
-        destAsset:
-          type: string
-          description: Name of the destination asset (must be in a currency that is supported for conversions in the selected exchange type that corresponds to your exchange ID)
-        amount:
-          type: number
-          description: The amount to transfer (in the currency of the source asset)
-      required:
-      - srcAsset
-      - destAsset
-      - amount
-    GetExchangeAccountsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/ExchangeAccount'
-    GetExchangeAccountsCredentialsPublicKeyResponse:
-      type: object
-      properties:
-        publicKey:
-          type: string
-          description: Public key string
-        tenantId:
-          type: string
-          description: Tenant identifier
-      required:
-      - publicKey
-      - tenantId
-    ConvertAssetsResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates whether the conversion was successful
-      required:
-      - success
-    InternalTransferResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates whether the transfer was successful
-        id:
-          type:
-          - string
-          - 'null'
-          description: The transaction ID of the internal transfer
-          example: 993c89c5-6405-47e5-9407-1a77f0de801f
-      required:
-      - success
-    CreateInternalTransferRequest:
-      type: object
-      properties:
-        asset:
-          type: string
-        amount:
-          type: string
-        sourceType:
-          $ref: '#/components/schemas/TradingAccountType'
-        destType:
-          $ref: '#/components/schemas/TradingAccountType'
-      required:
-      - asset
-      - amount
-      - sourceType
-      - destType
-    ExchangeType:
-      description: Exchange account's type
-      type: string
-      enum:
-      - INDEPENDENT_RESERVE
-      - ENCLAVE_MARKETS
-      - BIT
-      - COINFLEX
-      - KUCOIN
-      - PXS
-      - LIQUID
-      - BITHUMB
-      - BITFINEX
-      - BITSO
-      - BITSTAMP
-      - KRAKEN
-      - KRAKENINTL
-      - BINANCE
-      - BINANCEUS
-      - CRYPTOCOM
-      - BYBIT_V2
-      - COINBASEPRO
-      - COINBASEPRIME
-      - COINBASEINTERNATIONAL
-      - WHITEBIT
-      - COINBASEEXCHANGE
-      - KORBIT
-      - HITBTC
-      - GEMINI
-      - CIRCLE
-      - BITMEX
-      - HUOBI
-      - DERIBIT
-      - OKCOIN_V5
-      - OKEX
-      - COINMETRO
-      - GATEIO
-      - SCRYPT
-      - COINHAKO
-      - LIGHTBIT
-      - BULLISH
-      - CANVAS_CONNECT
-      - BITGET
-      - LUNO
-      - BIT_GENERA
-      - TRANSFERO
-    ExchangeAsset:
-      type: object
-      properties:
-        id:
-          type: string
-        balance:
-          type: string
-        lockedAmount:
-          type: string
-        total:
-          type: string
-        available:
-          type: string
-        credit:
-          type: string
-    AddExchangeAccountResponse:
-      type: object
-      properties:
-        id:
-          description: Exchange account's identifier
-          type: string
-        name:
-          description: Display name of the exchange account
-          type: string
-        exchangeType:
-          $ref: '#/components/schemas/ExchangeType'
-    ExchangeTradingAccount:
-      type: object
-      properties:
-        type:
-          type: string
-        name:
-          type: string
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeAsset'
     ExchangeAccountsPaged:
       type: object
       properties:
@@ -628,10 +455,163 @@ components:
         mainAccountId:
           description: if the account is a sub-account, the ID of the main account
           type: string
+    CreateInternalTransferRequest:
+      type: object
+      properties:
+        asset:
+          type: string
+        amount:
+          type: string
+        sourceType:
+          $ref: '#/components/schemas/TradingAccountType'
+        destType:
+          $ref: '#/components/schemas/TradingAccountType'
+      required:
+      - asset
+      - amount
+      - sourceType
+      - destType
+    AddExchangeAccountResponse:
+      type: object
+      properties:
+        id:
+          description: Exchange account's identifier
+          type: string
+        name:
+          description: Display name of the exchange account
+          type: string
+        exchangeType:
+          $ref: '#/components/schemas/ExchangeType'
+    ExchangeTradingAccount:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeAsset'
+    ConvertAssetsRequest:
+      type: object
+      properties:
+        srcAsset:
+          type: string
+          description: Name of the source asset (must be in a currency that is supported for conversions in the selected exchange type that corresponds to your exchange ID)
+        destAsset:
+          type: string
+          description: Name of the destination asset (must be in a currency that is supported for conversions in the selected exchange type that corresponds to your exchange ID)
+        amount:
+          type: number
+          description: The amount to transfer (in the currency of the source asset)
+      required:
+      - srcAsset
+      - destAsset
+      - amount
+    GetExchangeAccountsCredentialsPublicKeyResponse:
+      type: object
+      properties:
+        publicKey:
+          type: string
+          description: Public key string
+        tenantId:
+          type: string
+          description: Tenant identifier
+      required:
+      - publicKey
+      - tenantId
+    GetExchangeAccountsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/ExchangeAccount'
     GetPagedExchangeAccountsResponse:
       type: array
       items:
         $ref: '#/components/schemas/ExchangeAccountsPaged'
+    ExchangeAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        total:
+          type: string
+        available:
+          type: string
+        credit:
+          type: string
+    InternalTransferResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the transfer was successful
+        id:
+          type:
+          - string
+          - 'null'
+          description: The transaction ID of the internal transfer
+          example: 993c89c5-6405-47e5-9407-1a77f0de801f
+      required:
+      - success
+    ConvertAssetsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the conversion was successful
+      required:
+      - success
+    ExchangeType:
+      description: Exchange account's type
+      type: string
+      enum:
+      - INDEPENDENT_RESERVE
+      - ENCLAVE_MARKETS
+      - BIT
+      - COINFLEX
+      - KUCOIN
+      - PXS
+      - LIQUID
+      - BITHUMB
+      - BITFINEX
+      - BITSO
+      - BITSTAMP
+      - KRAKEN
+      - KRAKENINTL
+      - BINANCE
+      - BINANCEUS
+      - CRYPTOCOM
+      - BYBIT_V2
+      - COINBASEPRO
+      - COINBASEPRIME
+      - COINBASEINTERNATIONAL
+      - WHITEBIT
+      - COINBASEEXCHANGE
+      - KORBIT
+      - HITBTC
+      - GEMINI
+      - CIRCLE
+      - BITMEX
+      - HUOBI
+      - DERIBIT
+      - OKCOIN_V5
+      - OKEX
+      - COINMETRO
+      - GATEIO
+      - SCRYPT
+      - COINHAKO
+      - LIGHTBIT
+      - BULLISH
+      - CANVAS_CONNECT
+      - BITGET
+      - LUNO
+      - BIT_GENERA
+      - TRANSFERO
     TradingAccountType:
       type: string
       enum:
@@ -649,15 +629,26 @@ components:
       - USDT_MARGINED_SWAP_CROSS
       - USDT_FUTURES
       - UNIFIED
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
+    AddExchangeAccountRequest:
+      type: object
+      properties:
+        exchangeType:
+          $ref: '#/components/schemas/ExchangeType'
+        name:
+          description: Display name of the exchange account
+          type: string
+        creds:
+          description: Encrypted credentials
+          type: string
+        key:
+          description: Api key of the exchange
+          type: string
+        mainAccountId:
+          description: Optional - main account id of the exchange
+          type: string
+      required:
+      - exchangeType
+      - name
   responses:
     Error:
       description: Error Response
@@ -668,6 +659,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

@@ -571,45 +571,15 @@ paths:
         source: response = fireblocks.key_link_beta.disable_validation_key(modify_validation_key_dto, key_id);
 components:
   schemas:
-    CreateValidationKeyResponseDto:
+    ModifySigningKeyDto:
       type: object
       properties:
-        validationKey:
-          description: Created validation key
-          allOf:
-          - $ref: '#/components/schemas/ValidationKeyDto'
-        admins:
-          description: Admins who have to approve the validation key addition
-          type: array
-          items:
-            type: string
-        approvalThreshold:
+        vaultAccountId:
           type: number
-          minimum: 0
-          example: 0
-          description: Minimal number of approvers required. 0 for all
-        requestId:
-          type: number
-          example: 1234
-          description: Approval request id. Can be cancelled
+          minimum: 1
+          example: 123
       required:
-      - validationKey
-      - admins
-      - approvalThreshold
-      - requestId
-    GetSigningKeyResponseDto:
-      type: object
-      properties:
-        data:
-          description: Response object for getting external signing keys.
-          type: array
-          items:
-            $ref: '#/components/schemas/SigningKeyDto'
-        next:
-          type: string
-          description: The ID of the next page
-      required:
-      - data
+      - vaultAccountId
     SigningKeyDto:
       type: object
       properties:
@@ -661,35 +631,6 @@ components:
       - vaultAccountId
       - agentUserId
       - createdAt
-    ModifySigningKeyDto:
-      type: object
-      properties:
-        vaultAccountId:
-          type: number
-          minimum: 1
-          example: 123
-      required:
-      - vaultAccountId
-    ModifySigningKeyAgentIdDto:
-      type: object
-      properties:
-        agentUserId:
-          type: string
-          minLength: 36
-          maxLength: 36
-          example: d18847b5-1df6-4c46-8f99-5cce47284529
-          description: Id of user that represent agent servers which signs with the key
-      required:
-      - agentUserId
-    ModifyValidationKeyDto:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          example: false
-          description: Disable validation key
-      required:
-      - enabled
     CreateSigningKeyDto:
       type: object
       properties:
@@ -729,21 +670,69 @@ components:
       - signingDeviceKeyId
       - signedCertPem
       - agentUserId
-    CreateValidationKeyDto:
+    GetValidationKeyResponseDto:
       type: object
       properties:
-        publicKeyPem:
+        data:
+          description: Response object for getting external validation keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationKeyDto'
+        next:
           type: string
-          example: '-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----'
-          description: The PEM encoded public key of the validation key being added
-        daysTillExpired:
-          type: number
-          minimum: 1
-          example: 365
-          description: The number of days from the date the validation key was added until it expires
+          description: The ID of the next page
       required:
-      - publicKeyPem
-      - daysTillExpired
+      - data
+    GetSigningKeyResponseDto:
+      type: object
+      properties:
+        data:
+          description: Response object for getting external signing keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/SigningKeyDto'
+        next:
+          type: string
+          description: The ID of the next page
+      required:
+      - data
+    CreateValidationKeyResponseDto:
+      type: object
+      properties:
+        validationKey:
+          description: Created validation key
+          allOf:
+          - $ref: '#/components/schemas/ValidationKeyDto'
+        admins:
+          description: Admins who have to approve the validation key addition
+          type: array
+          items:
+            type: string
+        approvalThreshold:
+          type: number
+          minimum: 0
+          example: 0
+          description: Minimal number of approvers required. 0 for all
+        requestId:
+          type: number
+          example: 1234
+          description: Approval request id. Can be cancelled
+      required:
+      - validationKey
+      - admins
+      - approvalThreshold
+      - requestId
+    ModifySigningKeyAgentIdDto:
+      type: object
+      properties:
+        agentUserId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: d18847b5-1df6-4c46-8f99-5cce47284529
+          description: Id of user that represent agent servers which signs with the key
+      required:
+      - agentUserId
     ValidationKeyDto:
       type: object
       properties:
@@ -775,28 +764,30 @@ components:
       - daysTillExpired
       - enabled
       - createdAt
-    GetValidationKeyResponseDto:
+    CreateValidationKeyDto:
       type: object
       properties:
-        data:
-          description: Response object for getting external validation keys.
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationKeyDto'
-        next:
+        publicKeyPem:
           type: string
-          description: The ID of the next page
+          example: '-----BEGIN PUBLIC KEY ...  END PUBLIC KEY-----'
+          description: The PEM encoded public key of the validation key being added
+        daysTillExpired:
+          type: number
+          minimum: 1
+          example: 365
+          description: The number of days from the date the validation key was added until it expires
       required:
-      - data
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
+      - publicKeyPem
+      - daysTillExpired
+    ModifyValidationKeyDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          example: false
+          description: Disable validation key
+      required:
+      - enabled
   responses:
     Error:
       description: Error Response
@@ -807,6 +798,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

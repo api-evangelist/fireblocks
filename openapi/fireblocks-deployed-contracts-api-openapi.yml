@@ -296,6 +296,110 @@ paths:
         source: response = fireblocks.deployed_contracts.add_contract_a_b_i(add_abi_request_dto, idempotency_key);
 components:
   schemas:
+    DeployedContractsPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/LeanDeployedContractResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+    AddAbiRequestDto:
+      type: object
+      properties:
+        contractAddress:
+          type: string
+          description: The address of deployed contract
+          example: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14'
+        baseAssetId:
+          type: string
+          description: The blockchain base assetId
+          example: ETH
+        abi:
+          example:
+          - inputs:
+            - internalType: address
+              name: to
+              type: address
+            - internalType: uint256
+              name: amount
+              type: uint256
+            stateMutability: nonpayable
+            type: function
+            name: mint
+          description: The ABI of the contract
+          type: array
+          items:
+            $ref: '#/components/schemas/AbiFunction'
+        name:
+          type: string
+          description: The name of the contract
+          example: MyContract
+      required:
+      - contractAddress
+      - baseAssetId
+      - abi
+    DeployedContractResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The deployed contract data identifier
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        contractAddress:
+          type: string
+          description: The contract's onchain address
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        contractTemplateId:
+          type: string
+          description: The contract template identifier
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        vaultAccountId:
+          type: string
+          example: '0'
+          description: The vault account id this contract was deploy from
+        baseAssetId:
+          type: string
+          description: The blockchain's base assetId
+          example: ETH
+      required:
+      - id
+      - contractAddress
+      - contractTemplateId
+      - baseAssetId
+    Parameter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: _name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          description: In case it’s a struct, it will hold the struct data
+      required:
+      - name
+      - type
     AbiFunction:
       type: object
       properties:
@@ -349,41 +453,6 @@ components:
       required:
       - baseAssetId
       - contractAddress
-    AddAbiRequestDto:
-      type: object
-      properties:
-        contractAddress:
-          type: string
-          description: The address of deployed contract
-          example: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14'
-        baseAssetId:
-          type: string
-          description: The blockchain base assetId
-          example: ETH
-        abi:
-          example:
-          - inputs:
-            - internalType: address
-              name: to
-              type: address
-            - internalType: uint256
-              name: amount
-              type: uint256
-            stateMutability: nonpayable
-            type: function
-            name: mint
-          description: The ABI of the contract
-          type: array
-          items:
-            $ref: '#/components/schemas/AbiFunction'
-        name:
-          type: string
-          description: The name of the contract
-          example: MyContract
-      required:
-      - contractAddress
-      - baseAssetId
-      - abi
     ContractWithAbiDto:
       type: object
       properties:
@@ -433,50 +502,6 @@ components:
       - name
       - abi
       - isPublic
-    DeployedContractResponseDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The deployed contract data identifier
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-        contractAddress:
-          type: string
-          description: The contract's onchain address
-          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
-        contractTemplateId:
-          type: string
-          description: The contract template identifier
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-        vaultAccountId:
-          type: string
-          example: '0'
-          description: The vault account id this contract was deploy from
-        baseAssetId:
-          type: string
-          description: The blockchain's base assetId
-          example: ETH
-      required:
-      - id
-      - contractAddress
-      - contractTemplateId
-      - baseAssetId
-    DeployedContractsPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/LeanDeployedContractResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-      required:
-      - data
     LeanDeployedContractResponseDto:
       type: object
       properties:
@@ -501,40 +526,6 @@ components:
       - contractAddress
       - contractTemplateId
       - blockchainId
-    Parameter:
-      type: object
-      properties:
-        name:
-          type: string
-          example: _name
-          description: The name of the parameter as it appears in the ABI
-        description:
-          type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
-          type: string
-          example: string
-          description: The internal type of the parameter as it appears in the ABI
-        type:
-          type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
-          type: array
-          description: In case it’s a struct, it will hold the struct data
-      required:
-      - name
-      - type
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -545,6 +536,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

@@ -445,299 +445,6 @@ paths:
         source: response = fireblocks.contract_templates.deploy_contract(contract_deploy_request, contract_template_id, idempotency_key);
 components:
   schemas:
-    FunctionDoc:
-      type: object
-      properties:
-        details:
-          type: string
-          description: A description of the function
-        params:
-          type: object
-          additionalProperties:
-            type: string
-          description: A description of the function parameters
-        returns:
-          type: object
-          additionalProperties:
-            type: string
-          description: A description of the function return values. only for read functions
-    AbiFunction:
-      type: object
-      properties:
-        name:
-          type: string
-          example: mint
-          description: The name of the contract function as it appears in the ABI
-        stateMutability:
-          type: string
-          example: pure
-          enum:
-          - pure
-          - view
-          - nonpayable
-          - payable
-          description: The state mutability of the contract function as it appears in the ABI
-        type:
-          type: string
-          example: constructor
-          description: The type if the function
-          enum:
-          - function
-          - constructor
-        inputs:
-          description: The parameters that this function/constructor posses
-          items:
-            $ref: '#/components/schemas/Parameter'
-          type: array
-        outputs:
-          description: The parameters that this 'read' function returns
-          items:
-            $ref: '#/components/schemas/Parameter'
-          type: array
-        description:
-          type: string
-          description: The documentation of this function (if has any)
-      required:
-      - type
-      - inputs
-    ContractDoc:
-      type: object
-      properties:
-        details:
-          type: string
-          example: A token that can be minted and burned
-          description: A description of the contract
-        events:
-          type: string
-          example: 'Upgraded(address): {"details": "Emitted when the implementation is upgraded."}'
-          description: A description of the contract`s events
-        kind:
-          type: string
-          example: dev
-          description: Is it devdoc or userdoc
-        methods:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/FunctionDoc'
-          example:
-            constructor:
-              details: Initializes the contract
-          description: The description of the contract functions
-        version:
-          type: string
-          example: '1'
-          description: The version of the contract
-      required:
-      - kind
-      - methods
-      - version
-    HttpContractDoesNotExistError:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Not Found error code
-          example: Contract does not exist
-        code:
-          type: string
-          description: Error code
-          example: 404
-    ContractDeployResponse:
-      type: object
-      properties:
-        txId:
-          type: string
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-          description: The transaction id of the deployment request
-      required:
-      - txId
-    LeanAbiFunction:
-      type: object
-      properties:
-        name:
-          type: string
-          example: initialize
-          description: The function name
-        inputs:
-          description: The function inputs
-          type: array
-          items:
-            $ref: '#/components/schemas/ParameterWithValue'
-      required:
-      - inputs
-    ContractUploadRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          example: My Contract
-          description: The name of the contract template
-        description:
-          type: string
-          example: an ERC20 implementation
-          description: A short description of the contract template
-        longDescription:
-          type: string
-          example: "a full ERC20 implementation, containing the following:\n\n - mint\n - burn\n"
-          description: "A full description of the contract template. May contain \n to break the lines"
-        bytecode:
-          type: string
-          description: The compiled artifact of this smart contract. Used for deployment of this contract template
-        sourcecode:
-          type: string
-          description: The source code of the contract. Optional.
-        type:
-          enum:
-          - FUNGIBLE_TOKEN
-          - NON_FUNGIBLE_TOKEN
-          - TOKEN_UTILITY
-          type: string
-          example: FUNGIBLE_TOKEN
-          description: The type of the contract template
-        docs:
-          example:
-            details: This contract implements an upgradeable proxy. It is upgradeable because calls are delegated to an implementation address that can be changed. This address is stored in storage in the location specified by https://eips.ethereum.org/EIPS/eip-1967[EIP1967], so that it doesn't conflict with the storage layout of the implementation behind the proxy.
-            errors:
-              ERC1967NonPayable():
-              - details: An upgrade function sees `msg.value > 0` that may be lost.
-            events:
-              Upgraded(address):
-                details: Emitted when the implementation is upgraded.
-            kind: dev
-            methods:
-              constructor:
-                details: 'Initializes the upgradeable proxy with an initial implementation specified by `implementation`. If `_data` is nonempty, it''s used as data in a delegate call to `implementation`. This will typically be an encoded function call, and allows initializing the storage of the proxy like a Solidity constructor. Requirements: - If `data` is empty, `msg.value` must be zero.'
-            version: 1
-          description: A `natspec` compliant documentation json. Can be retrieved from the output json after compilation
-          allOf:
-          - $ref: '#/components/schemas/ContractDoc'
-        abi:
-          type: array
-          items:
-            example:
-            - inputs:
-              - internalType: address
-                name: implementation
-                type: address
-              - internalType: bytes
-                name: _data
-                type: bytes
-              stateMutability: payable
-              type: constructor
-            description: The abi of the contract template. Necessary for displaying and for after deployment encoding
-            type: array
-            items:
-              $ref: '#/components/schemas/AbiFunction'
-        attributes:
-          example:
-            useCases:
-            - Stablecoin
-            - CBDC
-            standards:
-            - ERC-20
-            - ERC-1400
-            auditor:
-              name: MyAuditor
-              imageURL: https://my-images.com/my-image.jpg
-              link: https://my-auditor.com/my-audit-report
-          description: The attributes related to this contract template. It will be displayed in the tokenization page
-          allOf:
-          - $ref: '#/components/schemas/ContractAttributes'
-      required:
-      - name
-      - description
-      - bytecode
-      - abi
-    Parameter:
-      type: object
-      properties:
-        name:
-          type: string
-          example: _name
-          description: The name of the parameter as it appears in the ABI
-        description:
-          type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
-          type: string
-          example: string
-          description: The internal type of the parameter as it appears in the ABI
-        type:
-          type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
-          type: array
-          description: In case it’s a struct, it will hold the struct data
-      required:
-      - name
-      - type
-    ContractAttributes:
-      type: object
-      properties:
-        useCases:
-          type: array
-          items:
-            type: string
-        standards:
-          type: array
-          items:
-            type: string
-        auditor:
-          $ref: '#/components/schemas/AuditorData'
-      required:
-      - useCases
-      - standards
-      - auditor
-    VendorDto:
-      type: object
-      properties:
-        id:
-          type: string
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b4453
-          description: The unique identifier of the vendor of this contract template
-        name:
-          type: string
-          example: Fireblocks
-          description: The name of the vendor of this contract template
-      required:
-      - id
-      - name
-    ParameterWithValue:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Some Name
-          description: The name of the parameter as it appears in the ABI
-        description:
-          type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
-          type: string
-          example: string
-          description: The  internal type of the parameter as it appears in the ABI
-        type:
-          type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
-          type: array
-          items:
-            $ref: '#/components/schemas/Parameter'
-        value:
-          example: 'true'
-          description: The value of the parameter. can also be ParameterWithValue
-          type: string
-        functionValue:
-          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
-          allOf:
-          - $ref: '#/components/schemas/LeanAbiFunction'
-      required:
-      - name
-      - type
     ContractDeployRequest:
       type: object
       properties:
@@ -779,6 +486,91 @@ components:
       - name
       - imageURL
       - link
+    LeanContractDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+          description: The unique identifier of the contract template
+        name:
+          type: string
+          example: My Contract
+          description: The name of the contract template
+        description:
+          type: string
+          example: an ERC20 implementation
+          description: A short description of the contract template
+        attributes:
+          example:
+            useCases:
+            - Stablecoin
+            - CBDC
+            standards:
+            - ERC-20
+            - ERC-1400
+            auditor:
+              name: MyAuditor
+              imageURL: https://my-images.com/my-image.jpg
+              link: https://my-auditor.com/my-audit-report
+          description: The attributes related to this contract template. It will be displayed in the tokenization page
+          allOf:
+          - $ref: '#/components/schemas/ContractAttributes'
+        isPublic:
+          type: boolean
+          example: true
+          description: Is this a contract that is viewable by all fireblocks's users or is it visible only for this workspace
+        canDeploy:
+          type: boolean
+          example: true
+          description: True if the workspace allowed to deploy this contract, false otherwise
+        owner:
+          type: string
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+          description: The workspace id of the owner of this contract template. If it's a private contract, only this workspace will be allowed to deploy it
+        vendor:
+          description: The details of the vendor of this contract template. Applicable only for public contract templates
+          allOf:
+          - $ref: '#/components/schemas/VendorDto'
+        type:
+          type: string
+          enum:
+          - FUNGIBLE_TOKEN
+          - NON_FUNGIBLE_TOKEN
+          - TOKEN_UTILITY
+      required:
+      - id
+      - name
+      - description
+      - isPublic
+    HttpContractDoesNotExistError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not Found error code
+          example: Contract does not exist
+        code:
+          type: string
+          description: Error code
+          example: 404
+    ContractAttributes:
+      type: object
+      properties:
+        useCases:
+          type: array
+          items:
+            type: string
+        standards:
+          type: array
+          items:
+            type: string
+        auditor:
+          $ref: '#/components/schemas/AuditorData'
+      required:
+      - useCases
+      - standards
+      - auditor
     ContractTemplateDto:
       type: object
       properties:
@@ -886,6 +678,172 @@ components:
       - abi
       - isPublic
       - initializationPhase
+    ContractDeployResponse:
+      type: object
+      properties:
+        txId:
+          type: string
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+          description: The transaction id of the deployment request
+      required:
+      - txId
+    Parameter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: _name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          description: In case it’s a struct, it will hold the struct data
+      required:
+      - name
+      - type
+    ContractDoc:
+      type: object
+      properties:
+        details:
+          type: string
+          example: A token that can be minted and burned
+          description: A description of the contract
+        events:
+          type: string
+          example: 'Upgraded(address): {"details": "Emitted when the implementation is upgraded."}'
+          description: A description of the contract`s events
+        kind:
+          type: string
+          example: dev
+          description: Is it devdoc or userdoc
+        methods:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/FunctionDoc'
+          example:
+            constructor:
+              details: Initializes the contract
+          description: The description of the contract functions
+        version:
+          type: string
+          example: '1'
+          description: The version of the contract
+      required:
+      - kind
+      - methods
+      - version
+    AbiFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: mint
+          description: The name of the contract function as it appears in the ABI
+        stateMutability:
+          type: string
+          example: pure
+          enum:
+          - pure
+          - view
+          - nonpayable
+          - payable
+          description: The state mutability of the contract function as it appears in the ABI
+        type:
+          type: string
+          example: constructor
+          description: The type if the function
+          enum:
+          - function
+          - constructor
+        inputs:
+          description: The parameters that this function/constructor posses
+          items:
+            $ref: '#/components/schemas/Parameter'
+          type: array
+        outputs:
+          description: The parameters that this 'read' function returns
+          items:
+            $ref: '#/components/schemas/Parameter'
+          type: array
+        description:
+          type: string
+          description: The documentation of this function (if has any)
+      required:
+      - type
+      - inputs
+    VendorDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b4453
+          description: The unique identifier of the vendor of this contract template
+        name:
+          type: string
+          example: Fireblocks
+          description: The name of the vendor of this contract template
+      required:
+      - id
+      - name
+    ParameterWithValue:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Some Name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The  internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+        value:
+          example: 'true'
+          description: The value of the parameter. can also be ParameterWithValue
+          type: string
+        functionValue:
+          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
+          allOf:
+          - $ref: '#/components/schemas/LeanAbiFunction'
+      required:
+      - name
+      - type
+    LeanAbiFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: initialize
+          description: The function name
+        inputs:
+          description: The function inputs
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
+      required:
+      - inputs
     TemplatesPaginatedResponse:
       type: object
       properties:
@@ -902,13 +860,9 @@ components:
           example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
       required:
       - data
-    LeanContractDto:
+    ContractUploadRequest:
       type: object
       properties:
-        id:
-          type: string
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-          description: The unique identifier of the contract template
         name:
           type: string
           example: My Contract
@@ -917,6 +871,58 @@ components:
           type: string
           example: an ERC20 implementation
           description: A short description of the contract template
+        longDescription:
+          type: string
+          example: "a full ERC20 implementation, containing the following:\n\n - mint\n - burn\n"
+          description: "A full description of the contract template. May contain \n to break the lines"
+        bytecode:
+          type: string
+          description: The compiled artifact of this smart contract. Used for deployment of this contract template
+        sourcecode:
+          type: string
+          description: The source code of the contract. Optional.
+        type:
+          enum:
+          - FUNGIBLE_TOKEN
+          - NON_FUNGIBLE_TOKEN
+          - TOKEN_UTILITY
+          type: string
+          example: FUNGIBLE_TOKEN
+          description: The type of the contract template
+        docs:
+          example:
+            details: This contract implements an upgradeable proxy. It is upgradeable because calls are delegated to an implementation address that can be changed. This address is stored in storage in the location specified by https://eips.ethereum.org/EIPS/eip-1967[EIP1967], so that it doesn't conflict with the storage layout of the implementation behind the proxy.
+            errors:
+              ERC1967NonPayable():
+              - details: An upgrade function sees `msg.value > 0` that may be lost.
+            events:
+              Upgraded(address):
+                details: Emitted when the implementation is upgraded.
+            kind: dev
+            methods:
+              constructor:
+                details: 'Initializes the upgradeable proxy with an initial implementation specified by `implementation`. If `_data` is nonempty, it''s used as data in a delegate call to `implementation`. This will typically be an encoded function call, and allows initializing the storage of the proxy like a Solidity constructor. Requirements: - If `data` is empty, `msg.value` must be zero.'
+            version: 1
+          description: A `natspec` compliant documentation json. Can be retrieved from the output json after compilation
+          allOf:
+          - $ref: '#/components/schemas/ContractDoc'
+        abi:
+          type: array
+          items:
+            example:
+            - inputs:
+              - internalType: address
+                name: implementation
+                type: address
+              - internalType: bytes
+                name: _data
+                type: bytes
+              stateMutability: payable
+              type: constructor
+            description: The abi of the contract template. Necessary for displaying and for after deployment encoding
+            type: array
+            items:
+              $ref: '#/components/schemas/AbiFunction'
         attributes:
           example:
             useCases:
@@ -932,42 +938,27 @@ components:
           description: The attributes related to this contract template. It will be displayed in the tokenization page
           allOf:
           - $ref: '#/components/schemas/ContractAttributes'
-        isPublic:
-          type: boolean
-          example: true
-          description: Is this a contract that is viewable by all fireblocks's users or is it visible only for this workspace
-        canDeploy:
-          type: boolean
-          example: true
-          description: True if the workspace allowed to deploy this contract, false otherwise
-        owner:
-          type: string
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-          description: The workspace id of the owner of this contract template. If it's a private contract, only this workspace will be allowed to deploy it
-        vendor:
-          description: The details of the vendor of this contract template. Applicable only for public contract templates
-          allOf:
-          - $ref: '#/components/schemas/VendorDto'
-        type:
-          type: string
-          enum:
-          - FUNGIBLE_TOKEN
-          - NON_FUNGIBLE_TOKEN
-          - TOKEN_UTILITY
       required:
-      - id
       - name
       - description
-      - isPublic
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
+      - bytecode
+      - abi
+    FunctionDoc:
+      type: object
+      properties:
+        details:
+          type: string
+          description: A description of the function
+        params:
+          type: object
+          additionalProperties:
+            type: string
+          description: A description of the function parameters
+        returns:
+          type: object
+          additionalProperties:
+            type: string
+          description: A description of the function return values. only for read functions
   responses:
     Error:
       description: Error Response
@@ -978,6 +969,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

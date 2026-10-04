@@ -626,27 +626,6 @@ paths:
         source: response = fireblocks.cosigners_beta.get_request_status(cosigner_id, api_key_id, request_id);
 components:
   schemas:
-    Cosigner:
-      type: object
-      properties:
-        archived:
-          type: boolean
-          description: Whether the cosigner is archived
-          example: false
-        id:
-          type: string
-          description: The unique identifier of the cosigner
-          example: 44fcead0-7053-4831-a53a-df7fb90d440f
-          format: uuid
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name of the cosigner
-          example: My Cosigner 1
-      required:
-      - archived
-      - id
     CallbackHandlerRequest:
       type: object
       properties:
@@ -670,15 +649,44 @@ components:
             -----END CERTIFICATE-----'
       required:
       - url
-    RenameCosigner:
+    UpdateCallbackHandlerRequest:
       type: object
       properties:
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+    PairApiKeyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the API key
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+      required:
+      - id
+    AddCosignerRequest:
+      type: object
+      properties:
+        apiKeyId:
+          type: string
+          description: The id of the API key to be paired with the cosigner
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
         name:
-          type:
-          - string
-          - 'null'
-          description: The new name of the cosigner
+          type: string
+          description: The name of the cosigner
           example: My Cosigner 1
+          minLength: 1
+        existingCosigner:
+          type: boolean
+          description: Whether the cosigner already exists in another workspace
+          default: false
+          example: false
+      required:
+      - apiKeyId
+      - name
     Status:
       type: object
       properties:
@@ -703,77 +711,6 @@ components:
       required:
       - status
       - type
-    AddCosignerRequest:
-      type: object
-      properties:
-        apiKeyId:
-          type: string
-          description: The id of the API key to be paired with the cosigner
-          example: 123e4567-e89b-12d3-a456-426614174000
-          format: uuid
-        name:
-          type: string
-          description: The name of the cosigner
-          example: My Cosigner 1
-          minLength: 1
-        existingCosigner:
-          type: boolean
-          description: Whether the cosigner already exists in another workspace
-          default: false
-          example: false
-      required:
-      - apiKeyId
-      - name
-    PairApiKeyResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the API key
-          example: 44fcead0-7053-4831-a53a-df7fb90d440f
-          format: uuid
-        callbackHandler:
-          $ref: '#/components/schemas/CallbackHandlerRequest'
-      required:
-      - id
-    ApiKey:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the API key
-          example: 44fcead0-7053-4831-a53a-df7fb90d440f
-          format: uuid
-        lastSeen:
-          format: date-time
-          type: string
-          description: The date the API key was last seen
-          example: '2021-07-01T00:00:00.000Z'
-      required:
-      - id
-      - lastSeen
-    UpdateCallbackHandlerRequest:
-      type: object
-      properties:
-        callbackHandler:
-          $ref: '#/components/schemas/CallbackHandlerRequest'
-    UpdateCallbackHandlerResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the API key
-          example: 44fcead0-7053-4831-a53a-df7fb90d440f
-          format: uuid
-        callbackHandler:
-          $ref: '#/components/schemas/CallbackHandlerRequest'
-      required:
-      - id
-    PairApiKeyRequest:
-      type: object
-      properties:
-        callbackHandler:
-          $ref: '#/components/schemas/CallbackHandlerRequest'
     ApiKeysPaginatedResponse:
       type: object
       properties:
@@ -790,6 +727,39 @@ components:
           example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
       required:
       - data
+    Cosigner:
+      type: object
+      properties:
+        archived:
+          type: boolean
+          description: Whether the cosigner is archived
+          example: false
+        id:
+          type: string
+          description: The unique identifier of the cosigner
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the cosigner
+          example: My Cosigner 1
+      required:
+      - archived
+      - id
+    UpdateCallbackHandlerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the API key
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
+      required:
+      - id
     CosignersPaginatedResponse:
       type: object
       properties:
@@ -833,15 +803,36 @@ components:
       - apiKeyId
       - name
       - pendingCosignerId
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
+    RenameCosigner:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The new name of the cosigner
+          example: My Cosigner 1
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the API key
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        lastSeen:
+          format: date-time
+          type: string
+          description: The date the API key was last seen
+          example: '2021-07-01T00:00:00.000Z'
+      required:
+      - id
+      - lastSeen
+    PairApiKeyRequest:
+      type: object
+      properties:
+        callbackHandler:
+          $ref: '#/components/schemas/CallbackHandlerRequest'
   responses:
     Error:
       description: Error Response
@@ -852,6 +843,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

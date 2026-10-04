@@ -111,16 +111,6 @@ paths:
       - lang: Python
         source: response = fireblocks.keys_beta.get_mpc_keys_list_by_user(user_id);
 components:
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   schemas:
     MpcKey:
       type: object
@@ -155,23 +145,6 @@ components:
       - userId
       - algorithm
       - players
-    GetMpcKeysResponse:
-      type: object
-      properties:
-        tenantId:
-          type: string
-          example: bdb57751-921d-45d5-99fd-344cffb364f6
-          description: The workspace id of the keys
-          maxLength: 36
-          minLength: 36
-        keys:
-          description: The keys that are associated with the workspace
-          type: array
-          items:
-            $ref: '#/components/schemas/MpcKey'
-      required:
-      - tenantId
-      - keys
     Players:
       type: object
       properties:
@@ -191,6 +164,33 @@ components:
       required:
       - id
       - type
+    GetMpcKeysResponse:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          example: bdb57751-921d-45d5-99fd-344cffb364f6
+          description: The workspace id of the keys
+          maxLength: 36
+          minLength: 36
+        keys:
+          description: The keys that are associated with the workspace
+          type: array
+          items:
+            $ref: '#/components/schemas/MpcKey'
+      required:
+      - tenantId
+      - keys
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   securitySchemes:
     bearerTokenAuth:
       type: http

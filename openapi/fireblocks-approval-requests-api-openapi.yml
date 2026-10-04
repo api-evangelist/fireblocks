@@ -113,30 +113,16 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       operationId: cancelApprovalRequest
 components:
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-              enum:
-              - INTERNAL
-              - AUTHENTICATION
-              - AUTHORIZATION
-              - VALIDATION
-              - NOT_FOUND
-              - UNPROCESSABLE_ENTITY
-              - FORBIDDEN
-            message:
-              type: string
-          required:
-          - type
-          - message
-      required:
-      - error
     ApprovalRequest:
       type: object
       description: Approval request details
@@ -167,15 +153,29 @@ components:
       - id
       - type
       - state
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - INTERNAL
+              - AUTHENTICATION
+              - AUTHORIZATION
+              - VALIDATION
+              - NOT_FOUND
+              - UNPROCESSABLE_ENTITY
+              - FORBIDDEN
+            message:
+              type: string
+          required:
+          - type
+          - message
+      required:
+      - error
   securitySchemes:
     bearerTokenAuth:
       type: http

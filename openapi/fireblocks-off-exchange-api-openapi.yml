@@ -248,33 +248,33 @@ paths:
         source: response = fireblocks.off_exchanges.get_off_exchange_collateral_accounts(main_exchange_account_id);
 components:
   schemas:
-    TravelRuleLegalPerson:
+    SettlementRequestBody:
       type: object
       properties:
+        mainExchangeAccountId:
+          type: string
+    CreateTransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique Fireblocks identifier of the transaction
+        status:
+          type: string
+          description: The primary status of the transaction. For details, see [Primary transaction statuses.] (https://developers.fireblocks.com/reference/primary-transaction-statuses)
+        systemMessages:
+          $ref: '#/components/schemas/SystemMessageInfo'
+    ExchangeTradingAccount:
+      type: object
+      properties:
+        type:
+          type: string
         name:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleLegalPersonNameIdentifier'
-          description: The structured name of the legal person, referencing name identifiers.
-        geographicAddress:
+          type: string
+        assets:
           type: array
           items:
-            $ref: '#/components/schemas/TravelRuleGeographicAddress'
-          description: The array of geographic addresses associated with the legal person.
-        nationalIdentification:
-          $ref: '#/components/schemas/TravelRuleNationalIdentification'
-        customerIdentification:
-          type: string
-          description: A unique identifier that identifies the customer in the organization's context. The value must be encrypted.
-          example: QmRY9AA4Uit2JRTxDzfzshrJdTK86Kf5HriA3dXDnihDmy
-        customerNumber:
-          type: string
-          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
-          example: QmXvyML3AJUFpBbJqL5NVp7Vn7xNkuedTsSMk93duLCNW8
-        countryOfRegistration:
-          type: string
-          description: The ISO-3166 Alpha-2 country code where the legal person is registered. The value must be encrypted.
-          example: QmeoTk6UPruEAYNbJEAHdQYc53ap9BXmpnPMcuvs8wutdr
+            $ref: '#/components/schemas/ExchangeAsset'
     ToExchangeTransaction:
       type: object
       properties:
@@ -287,105 +287,25 @@ components:
         dstTag:
           type: string
           description: optional
-    NodeControls:
-      description: 'Configure special node requirements.
-
-        - For routing transactions to a custom node, set the `type` to `NODE_ROUTER` and the `tag` to the pre-configured tag value.
-
-        - For MEV protection, set only the `type` property to `MEV` (`tag` is not required at this stage).
-
-
-        **Note:** This is a premium feature that should be enabled in your workspace. Please contact your Customer Success Manager or Fireblocks Support for more information.
-
-        '
+    ExchangeSettlementTransactionsResponse:
       type: object
       properties:
-        type:
-          description: '`NODE_ROUTER` - used for transaction routing to a custom node
-
-            `MEV` - used for transaction routing to a MEV protection provider
-
-            '
-          type: string
-          enum:
-          - MEV
-          - NODE_ROUTER
-        tag:
-          description: Should be used when type is `NODE_ROUTER` only
-          type: string
-          example: some_node_tag
-    UnsignedMessage:
-      type: object
-      properties:
-        preHash:
-          $ref: '#/components/schemas/PreHash'
-        content:
-          description: 'Content to sign on.
-
-            - EIP-191: Requires a 32 byte-long string for ECDSA (hash of the actual message to sign) or any length for EdDSA, as prehashing is not required.
-
-            - EIP-712: Requires an object specifying the structured data format, including `types`, `domain`, `primaryType`, and `message`.
-
-            '
-          type: string
-          example: ababababababababababababababababababbababababababbababababababab
-        bip44addressIndex:
-          description: BIP44 address index
-          type: integer
-          example: 0
-        bip44change:
-          description: BIP44 change index
-          type: number
-          example: 0
-        derivationPath:
+        toExchange:
           type: array
-          description: BIP44 full derivation path
           items:
-            type: number
-            example:
-            - 44
-            - 60
-            - 0
-            - 0
-            - 0
-        type:
-          type: string
-          description: 'Typed Message Signing - message type.
-
-
-            - EIP191 & EIP712: for ETH and all EVM based assets typed message signing
-
-            - TIP191: For Tron (TRX) typed message signing
-
-            - BTC_MESSAGE: For Bitcoin (BTC) typed message signing
-
-            '
-          enum:
-          - EIP191
-          - EIP712
-          - TIP191
-          - BTC_MESSAGE
-      required:
-      - content
-    SettlementRequestBody:
+            $ref: '#/components/schemas/ToExchangeTransaction'
+        toCollateral:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToCollateralTransaction'
+    RemoveCollateralRequestBody:
       type: object
       properties:
-        mainExchangeAccountId:
-          type: string
-    UnspentInput:
-      description: 'A representation of an Unspent Transaction Output (UTXO).
-
-        '
-      type: object
-      properties:
-        txHash:
-          description: Transaction Hash
-          type: string
-          example: 6b21446af4a5e3ec588960d2338ab52428a3eb729038146ea09905199723061f
-        index:
-          description: The UTXO index (vOut)
-          type: number
-          example: 0
+        transactionRequest:
+          $ref: '#/components/schemas/TransactionRequest'
+        isDstCollateral:
+          type: boolean
+          description: optional
     SettlementResponse:
       type: object
       properties:
@@ -399,6 +319,75 @@ components:
           type: object
         exchangeRequestedTransactions:
           $ref: '#/components/schemas/ExchangeSettlementTransactionsResponse'
+    TransferPeerPathSubType:
+      type: string
+      enum:
+      - BINANCE
+      - BINANCEUS
+      - BITFINEX
+      - BITHUMB
+      - BITMEX
+      - BITSO
+      - BITSTAMP
+      - BITTREX
+      - BLINC
+      - BULLISHEXCHANGE
+      - BYBIT
+      - CIRCLE
+      - COINBASEEXCHANGE
+      - COINBASEPRO
+      - COINMETRO
+      - COINSPRO
+      - CRYPTOCOM
+      - DERIBIT
+      - GEMINI
+      - HITBTC
+      - HUOBI
+      - INDEPENDENTRESERVE
+      - KORBIT
+      - KRAKEN
+      - KRAKENINTL
+      - KUCOIN
+      - LIQUID
+      - OKCOIN
+      - OKEX
+      - PAXOS
+      - POLONIEX
+      - External
+      - Internal
+    ExchangeAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/ExchangeType'
+        name:
+          type: string
+          description: Display name of the exchange account
+        status:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeAsset'
+        success:
+          type: boolean
+          description: Did succeed in retrieve balance data
+        tradingAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeTradingAccount'
+        isSubaccount:
+          description: True if the account is a subaccount in an exchange
+          type: boolean
+        mainAccountId:
+          description: if the account is a sub-account, the ID of the main account
+          type: string
+    TravelRulePersons:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TravelRulePerson'
     ExtraParameters:
       type: object
       properties:
@@ -465,167 +454,6 @@ components:
         **Note:** `rawMessageData`, `contractCallData`, and `inputsSelection` cannot be used together in the same call.
 
         '
-    TravelRuleDateAndPlaceOfBirth:
-      type: object
-      description: Represents the date and place of birth for a natural person
-      properties:
-        dateOfBirth:
-          type: string
-          description: Date of birth. The value must be encrypted.
-          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
-        placeOfBirth:
-          type: string
-          description: Place of birth. The value must be encrypted.
-          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
-    DestinationTransferPeerPath:
-      type: object
-      description: The destination of the transaction.
-      properties:
-        type:
-          $ref: '#/components/schemas/TransferPeerPathType'
-        subType:
-          $ref: '#/components/schemas/TransferPeerPathSubType'
-        id:
-          type: string
-        name:
-          type: string
-        walletId:
-          type: string
-          format: uuid
-        oneTimeAddress:
-          $ref: '#/components/schemas/OneTimeAddress'
-        isCollateral:
-          type: boolean
-          description: Indicates whether the destination is a collateral account
-          example: true
-      required:
-      - type
-    TravelRuleCreateTransactionRequest:
-      type: object
-      properties:
-        originatorVASPdid:
-          type: string
-          description: The Decentralized Identifier (DID) of the exchange (VASP) that is sending the virtual assets. This identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene network.
-          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
-        beneficiaryVASPdid:
-          type: string
-          description: The Decentralized Identifier (DID) of the exchange (VASP) that is receiving the virtual assets. This identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene network.
-          example: did:ethr:0x17fe2dd11a2daa7f6c1fdf22532a4763f963aea6
-        originatorVASPname:
-          type: string
-          description: The name of the VASP acting as the transaction originator.
-          example: Originator VASP Ltd.
-        beneficiaryVASPname:
-          type: string
-          description: The name of the VASP acting as the transaction beneficiary.
-          example: Beneficiary VASP Inc.
-        beneficiaryVASPwebsite:
-          type: string
-          description: The website of the VASP acting as the transaction beneficiary.
-          example: https://www.beneficiaryvasp.com
-        transactionBlockchainInfo:
-          description: Information about the blockchain transaction.
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleTransactionBlockchainInfo'
-        originator:
-          description: Information about the originator of the transaction.
-          allOf:
-          - $ref: '#/components/schemas/TravelRulePiiIVMS'
-        beneficiary:
-          description: Information about the beneficiary of the transaction.
-          allOf:
-          - $ref: '#/components/schemas/TravelRulePiiIVMS'
-        encrypted:
-          type: string
-          description: Encrypted data related to the transaction.
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        protocol:
-          type: string
-          description: The protocol used to perform the travel rule.
-          example: IVMS101
-        skipBeneficiaryDataValidation:
-          type: boolean
-          description: Whether to skip validation of beneficiary data.
-          example: false
-        travelRuleBehavior:
-          type: boolean
-          description: Whether to check if the transaction complies with the travel rule in the beneficiary VASP's jurisdiction.
-          example: true
-        originatorRef:
-          type: string
-          description: A reference ID related to the originator of the transaction.
-          example: ORG123456
-        beneficiaryRef:
-          type: string
-          description: A reference ID related to the beneficiary of the transaction.
-          example: BEN654321
-        travelRuleBehaviorRef:
-          type: string
-          description: A reference ID related to the travel rule behavior.
-          example: TRB987654
-        originatorProof:
-          description: Ownership proof related to the originator of the transaction.
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
-        beneficiaryProof:
-          description: Ownership proof related to the beneficiary of the transaction.
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
-        beneficiaryDid:
-          type: string
-          description: "The Decentralized Identifier (DID) of the person at the receiving exchange (VASP).  This identifier is generated when the customer is registered in the Notabene network,  or automatically created based on the `beneficiaryRef`.  - If neither `beneficiaryRef` nor `beneficiaryDid` is provided in the `txCreate` payload, \n  a new random DID is generated for every transaction."
-          example: did:key:z6Mkf67890Zghijkl67890
-        originatorDid:
-          type: string
-          description: "The Decentralized Identifier (DID) of the person at the exchange (VASP) who is requesting the withdrawal. This identifier is generated when the customer is registered in the Notabene network or automatically created based on the `originatorRef`.  - If neither `originatorRef` nor `originatorDid` is provided in the `txCreate` payload, \n  a new random DID is generated for every transaction."
-          example: did:key:z6Mkf12345Zabcdef12345
-        isNonCustodial:
-          type: boolean
-          description: Indicates if the transaction involves a non-custodial wallet.
-          example: true
-      required:
-      - originator
-      - beneficiary
-    TransactionRequestDestination:
-      type: object
-      properties:
-        amount:
-          type: string
-        destination:
-          $ref: '#/components/schemas/DestinationTransferPeerPath'
-    TravelRuleNaturalPerson:
-      type: object
-      properties:
-        name:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleNaturalPersonNameIdentifier'
-          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier schema.
-        geographicAddress:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleGeographicAddress'
-          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress schema.
-        nationalIdentification:
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleNationalIdentification'
-          description: The national identification of the natural person, referencing the TravelRuleNationalIdentification schema.
-        dateAndPlaceOfBirth:
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleDateAndPlaceOfBirth'
-          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
-        customerIdentification:
-          type: string
-          description: A unique identifier for the customer within the organization's context. The value must be encrypted.
-          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
-        countryOfResidence:
-          type: string
-          description: The ISO-3166 Alpha-2 country code of the natural person's residence. The value must be encrypted.
-          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
-        customerNumber:
-          type: string
-          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
-          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
     TransactionRequest:
       type: object
       properties:
@@ -820,53 +648,152 @@ components:
         useGasless:
           type: boolean
           description: '- Override the default gasless configuration by sending true\false'
-    TransferPeerPathSubType:
-      type: string
-      enum:
-      - BINANCE
-      - BINANCEUS
-      - BITFINEX
-      - BITHUMB
-      - BITMEX
-      - BITSO
-      - BITSTAMP
-      - BITTREX
-      - BLINC
-      - BULLISHEXCHANGE
-      - BYBIT
-      - CIRCLE
-      - COINBASEEXCHANGE
-      - COINBASEPRO
-      - COINMETRO
-      - COINSPRO
-      - CRYPTOCOM
-      - DERIBIT
-      - GEMINI
-      - HITBTC
-      - HUOBI
-      - INDEPENDENTRESERVE
-      - KORBIT
-      - KRAKEN
-      - KRAKENINTL
-      - KUCOIN
-      - LIQUID
-      - OKCOIN
-      - OKEX
-      - PAXOS
-      - POLONIEX
-      - External
-      - Internal
-    ExchangeTradingAccount:
+    TravelRuleNaturalNameIdentifier:
       type: object
       properties:
+        primaryIdentifier:
+          type: string
+          description: The primary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+        secondaryIdentifier:
+          type: string
+          description: The secondary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+        nameIdentifierType:
+          type: string
+          description: 'The type of the name identifier. The value must be encrypted. The value must be one of the following: [LEGL, DBA, TRAD, NICK, ALIA, MAID, FORM, PREV, BORN, OTHR].'
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+    TravelRuleDateAndPlaceOfBirth:
+      type: object
+      description: Represents the date and place of birth for a natural person
+      properties:
+        dateOfBirth:
+          type: string
+          description: Date of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+        placeOfBirth:
+          type: string
+          description: Place of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    TransactionOperation:
+      type: string
+      default: TRANSFER
+      enum:
+      - TRANSFER
+      - BURN
+      - CONTRACT_CALL
+      - MINT
+      - RAW
+      - TYPED_MESSAGE
+      - PROGRAM_CALL
+      description: "* `TRANSFER` - The default value for an operation. Transfers funds from one account to another. UTXO blockchains allow multi-input and multi-output transfers. All other blockchains allow transfers with one source address and one destination address.\n* `MINT` - Mints new tokens. Supported for Stellar, Ripple and EVM-based blockchains.\n* `BURN` - Burns tokens. Supported for Stellar, Ripple and EVM-based blockchains.\n* `CONTRACT_CALL` - Calls a smart contract method for web3 operations on any EVM blockchain. The Fireblocks [development libraries](https://developers.fireblocks.com/docs/ethereum-development#convenience-libraries) are recommended for building contract call transactions.\n* `PROGRAM_CALL` - Calls a smart contract for web3 operations on the Solana blockchain.\n  Read more in the [Solana Programs Interactions guide](https://developers.fireblocks.com/reference/interact-with-solana-programs).\n\n* `TYPED_MESSAGE` - An off-chain message in either Ethereum Personal Message or EIP712 format. Use it to sign specific readable messages that are not actual transactions. [Learn more about typed messages](https://developers.fireblocks.com/docs/typed-message-signing-1).\n* `RAW` - An off-chain message with no predefined format. Use it to sign any message with your private key, including protocols such as blockchains and custom transaction types that are not natively supported by Fireblocks. [Learn more about raw signing transactions.](https://developers.fireblocks.com/docs/raw-signing)\n"
+    TravelRuleCreateTransactionRequest:
+      type: object
+      properties:
+        originatorVASPdid:
+          type: string
+          description: The Decentralized Identifier (DID) of the exchange (VASP) that is sending the virtual assets. This identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene network.
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+        beneficiaryVASPdid:
+          type: string
+          description: The Decentralized Identifier (DID) of the exchange (VASP) that is receiving the virtual assets. This identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene network.
+          example: did:ethr:0x17fe2dd11a2daa7f6c1fdf22532a4763f963aea6
+        originatorVASPname:
+          type: string
+          description: The name of the VASP acting as the transaction originator.
+          example: Originator VASP Ltd.
+        beneficiaryVASPname:
+          type: string
+          description: The name of the VASP acting as the transaction beneficiary.
+          example: Beneficiary VASP Inc.
+        beneficiaryVASPwebsite:
+          type: string
+          description: The website of the VASP acting as the transaction beneficiary.
+          example: https://www.beneficiaryvasp.com
+        transactionBlockchainInfo:
+          description: Information about the blockchain transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleTransactionBlockchainInfo'
+        originator:
+          description: Information about the originator of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRulePiiIVMS'
+        beneficiary:
+          description: Information about the beneficiary of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRulePiiIVMS'
+        encrypted:
+          type: string
+          description: Encrypted data related to the transaction.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        protocol:
+          type: string
+          description: The protocol used to perform the travel rule.
+          example: IVMS101
+        skipBeneficiaryDataValidation:
+          type: boolean
+          description: Whether to skip validation of beneficiary data.
+          example: false
+        travelRuleBehavior:
+          type: boolean
+          description: Whether to check if the transaction complies with the travel rule in the beneficiary VASP's jurisdiction.
+          example: true
+        originatorRef:
+          type: string
+          description: A reference ID related to the originator of the transaction.
+          example: ORG123456
+        beneficiaryRef:
+          type: string
+          description: A reference ID related to the beneficiary of the transaction.
+          example: BEN654321
+        travelRuleBehaviorRef:
+          type: string
+          description: A reference ID related to the travel rule behavior.
+          example: TRB987654
+        originatorProof:
+          description: Ownership proof related to the originator of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
+        beneficiaryProof:
+          description: Ownership proof related to the beneficiary of the transaction.
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleOwnershipProof'
+        beneficiaryDid:
+          type: string
+          description: "The Decentralized Identifier (DID) of the person at the receiving exchange (VASP).  This identifier is generated when the customer is registered in the Notabene network,  or automatically created based on the `beneficiaryRef`.  - If neither `beneficiaryRef` nor `beneficiaryDid` is provided in the `txCreate` payload, \n  a new random DID is generated for every transaction."
+          example: did:key:z6Mkf67890Zghijkl67890
+        originatorDid:
+          type: string
+          description: "The Decentralized Identifier (DID) of the person at the exchange (VASP) who is requesting the withdrawal. This identifier is generated when the customer is registered in the Notabene network or automatically created based on the `originatorRef`.  - If neither `originatorRef` nor `originatorDid` is provided in the `txCreate` payload, \n  a new random DID is generated for every transaction."
+          example: did:key:z6Mkf12345Zabcdef12345
+        isNonCustodial:
+          type: boolean
+          description: Indicates if the transaction involves a non-custodial wallet.
+          example: true
+      required:
+      - originator
+      - beneficiary
+    SourceTransferPeerPath:
+      type: object
+      description: The source of the transaction.
+      properties:
         type:
+          $ref: '#/components/schemas/TransferPeerPathType'
+        subType:
+          $ref: '#/components/schemas/TransferPeerPathSubType'
+        id:
           type: string
         name:
           type: string
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeAsset'
+        walletId:
+          type: string
+          format: uuid
+        isCollateral:
+          type: boolean
+          description: Indicates whether the source is a collateral account
+          example: true
+      required:
+      - type
     OneTimeAddress:
       type: object
       properties:
@@ -876,6 +803,386 @@ components:
           type: string
       required:
       - address
+    TravelRuleNationalIdentification:
+      type: object
+      description: Represents a national identifier for a person or entity
+      properties:
+        countryOfIssue:
+          type: string
+          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code). The value must be encrypted.
+          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
+        nationalIdentifier:
+          type: string
+          description: National identifier (max 35 characters). The value must be encrypted.
+          example: QmdR6qLnZ7Kwf5cBaXG8QFQenEvRg9JNZeoPranVuGd63z
+        nationalIdentifierType:
+          type: string
+          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'': National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security number The value must be encrypted.'
+          example: QmUKTg3aFJFhMz1o9gPqA3MgTRwd2LvDLwWTPHYUoMEYVi
+        registrationAuthority:
+          type: string
+          description: Registration authority (format -> RA followed by 6 digits). The value must be encrypted.
+          example: QmV9KJMyT9RJzpYfhME5xNCZ4G67fEkzTpRMyJzp9kTNYk
+    TransactionRequestDestination:
+      type: object
+      properties:
+        amount:
+          type: string
+        destination:
+          $ref: '#/components/schemas/DestinationTransferPeerPath'
+    TravelRuleNaturalPersonNameIdentifier:
+      type: object
+      properties:
+        nameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+        localNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+        phoneticNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+    TravelRulePerson:
+      type: object
+      properties:
+        naturalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleNaturalPerson'
+        legalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleLegalPerson'
+    TravelRuleLegalPerson:
+      type: object
+      properties:
+        name:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleLegalPersonNameIdentifier'
+          description: The structured name of the legal person, referencing name identifiers.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: The array of geographic addresses associated with the legal person.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleNationalIdentification'
+        customerIdentification:
+          type: string
+          description: A unique identifier that identifies the customer in the organization's context. The value must be encrypted.
+          example: QmRY9AA4Uit2JRTxDzfzshrJdTK86Kf5HriA3dXDnihDmy
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
+          example: QmXvyML3AJUFpBbJqL5NVp7Vn7xNkuedTsSMk93duLCNW8
+        countryOfRegistration:
+          type: string
+          description: The ISO-3166 Alpha-2 country code where the legal person is registered. The value must be encrypted.
+          example: QmeoTk6UPruEAYNbJEAHdQYc53ap9BXmpnPMcuvs8wutdr
+    TravelRuleNaturalPerson:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalPersonNameIdentifier'
+          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier schema.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress schema.
+        nationalIdentification:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleNationalIdentification'
+          description: The national identification of the natural person, referencing the TravelRuleNationalIdentification schema.
+        dateAndPlaceOfBirth:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleDateAndPlaceOfBirth'
+          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
+        customerIdentification:
+          type: string
+          description: A unique identifier for the customer within the organization's context. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        countryOfResidence:
+          type: string
+          description: The ISO-3166 Alpha-2 country code of the natural person's residence. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+    TravelRuleOwnershipProof:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'The type of ownership proof. Example values: - `eip-191`: Ethereum signature proof - `eip-712`: Ethereum typed data signature proof - `bip-137`: Bitcoin signature proof - `microtransfer`: Microtransaction (Satoshi test) - `screenshot`: Uploaded screenshot of the wallet - `self-declaration`: Checkbox attestation of ownership'
+          example: eip-191
+        proof:
+          type: string
+          description: 'The cryptographic signature, transaction hash, or other proof depending on the type. Examples: - For `eip-191`: `0x3dd4a17a...ce4a2bcd1b` - For `microtransfer`: The transaction hash `H3V8GXBy39Dz...tr3TSTkY=`'
+          example: 0x3dd4a17a...ce4a2bcd1b
+        attestation:
+          type: string
+          description: 'A human-readable statement of wallet ownership. Required for signature proofs and self-declarations. Examples: - `I certify that ETH account 0x896B...0b9b belongs to me.` - `I hereby declare that the blockchain address 0xa437bEed902AF9338B7DEB23848e195d85019510 is under my control.`'
+          example: I certify that ETH account 0x896B...0b9b belongs to me.
+        address:
+          type: string
+          description: 'The wallet address being verified. Examples: - For Ethereum: `0x896B...0b9b` - For Bitcoin: `1442...dxhsQ`'
+          example: 0x896B...0b9b
+        wallet_provider:
+          type: string
+          description: 'The wallet provider or method used for verification. Examples: - For Metamask: `Metamask` - For manual signature: `manual`'
+          example: Metamask
+        url:
+          type: string
+          description: 'The URL for the uploaded screenshot (for `screenshot` proof types only). Example: `https://example.com/uploaded_image.png`'
+          example: https://example.com/uploaded_image.png
+        confirmed:
+          type: boolean
+          description: 'Whether the user confirmed ownership of the wallet (for `self-declaration` proofs). Example: `true`'
+          example: true
+    UnsignedMessage:
+      type: object
+      properties:
+        preHash:
+          $ref: '#/components/schemas/PreHash'
+        content:
+          description: 'Content to sign on.
+
+            - EIP-191: Requires a 32 byte-long string for ECDSA (hash of the actual message to sign) or any length for EdDSA, as prehashing is not required.
+
+            - EIP-712: Requires an object specifying the structured data format, including `types`, `domain`, `primaryType`, and `message`.
+
+            '
+          type: string
+          example: ababababababababababababababababababbababababababbababababababab
+        bip44addressIndex:
+          description: BIP44 address index
+          type: integer
+          example: 0
+        bip44change:
+          description: BIP44 change index
+          type: number
+          example: 0
+        derivationPath:
+          type: array
+          description: BIP44 full derivation path
+          items:
+            type: number
+            example:
+            - 44
+            - 60
+            - 0
+            - 0
+            - 0
+        type:
+          type: string
+          description: 'Typed Message Signing - message type.
+
+
+            - EIP191 & EIP712: for ETH and all EVM based assets typed message signing
+
+            - TIP191: For Tron (TRX) typed message signing
+
+            - BTC_MESSAGE: For Bitcoin (BTC) typed message signing
+
+            '
+          enum:
+          - EIP191
+          - EIP712
+          - TIP191
+          - BTC_MESSAGE
+      required:
+      - content
+    AddCollateralRequestBody:
+      type: object
+      properties:
+        transactionRequest:
+          $ref: '#/components/schemas/TransactionRequest'
+        isSrcCollateral:
+          type: boolean
+          description: optional
+    UnspentInput:
+      description: 'A representation of an Unspent Transaction Output (UTXO).
+
+        '
+      type: object
+      properties:
+        txHash:
+          description: Transaction Hash
+          type: string
+          example: 6b21446af4a5e3ec588960d2338ab52428a3eb729038146ea09905199723061f
+        index:
+          description: The UTXO index (vOut)
+          type: number
+          example: 0
+    PreHash:
+      type: object
+      description: "The prehash object for ECDSA RAW signing requests. \nThe prehash object contains the content to sign (the actual message in hex representation) and the hashing algorithm to use before signing.\n"
+      properties:
+        content:
+          type: string
+          description: The prehashed content to sign on in hex representation.
+          example: 48656c6c6f2046697265626c6f636b73210a
+        hashAlgorithm:
+          type: string
+          description: The hashing algorithm to use in order to hash the content before the signature process
+          enum:
+          - SHA256
+          - KECCAK256
+          - SHA3
+          - BLAKE2
+          - DOUBLE_SHA256
+      required:
+      - content
+      - hashAlgorithm
+    NodeControls:
+      description: 'Configure special node requirements.
+
+        - For routing transactions to a custom node, set the `type` to `NODE_ROUTER` and the `tag` to the pre-configured tag value.
+
+        - For MEV protection, set only the `type` property to `MEV` (`tag` is not required at this stage).
+
+
+        **Note:** This is a premium feature that should be enabled in your workspace. Please contact your Customer Success Manager or Fireblocks Support for more information.
+
+        '
+      type: object
+      properties:
+        type:
+          description: '`NODE_ROUTER` - used for transaction routing to a custom node
+
+            `MEV` - used for transaction routing to a MEV protection provider
+
+            '
+          type: string
+          enum:
+          - MEV
+          - NODE_ROUTER
+        tag:
+          description: Should be used when type is `NODE_ROUTER` only
+          type: string
+          example: some_node_tag
+    TravelRuleLegalPersonNameIdentifier:
+      type: object
+      properties:
+        legalPersonName:
+          type: string
+          description: Name by which the legal person is known. The value must be encrypted.
+          example: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
+        legalPersonNameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name. The value must be encrypted.'
+          example: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
+    ToCollateralTransaction:
+      type: object
+      properties:
+        asset:
+          type: string
+        amount:
+          type: string
+        srcAddress:
+          type: string
+        srcTag:
+          type: string
+          description: optional
+        fee:
+          type: string
+          description: optional
+    DestinationTransferPeerPath:
+      type: object
+      description: The destination of the transaction.
+      properties:
+        type:
+          $ref: '#/components/schemas/TransferPeerPathType'
+        subType:
+          $ref: '#/components/schemas/TransferPeerPathSubType'
+        id:
+          type: string
+        name:
+          type: string
+        walletId:
+          type: string
+          format: uuid
+        oneTimeAddress:
+          $ref: '#/components/schemas/OneTimeAddress'
+        isCollateral:
+          type: boolean
+          description: Indicates whether the destination is a collateral account
+          example: true
+      required:
+      - type
+    TravelRulePiiIVMS:
+      type: object
+      properties:
+        originatorPersons:
+          type: array
+          description: Information about the originator of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePersons'
+        beneficiaryPersons:
+          type: array
+          description: Information about the beneficiary of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePersons'
+        accountNumber:
+          type: array
+          description: Beneficiary account number. The value must be encrypted.
+          items:
+            type: string
+            example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    ExchangeAsset:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        lockedAmount:
+          type: string
+        total:
+          type: string
+        available:
+          type: string
+        credit:
+          type: string
+    SystemMessageInfo:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - WARN
+          - BLOCK
+        message:
+          type: string
+          description: A response from Fireblocks that communicates a message about the health of the process being performed. If this object is returned with data, you should expect potential delays or incomplete transaction statuses.
+          example: Slow transaction processing. Outgoing transactions might be stuck.
+    TransferPeerPathType:
+      type: string
+      enum:
+      - VAULT_ACCOUNT
+      - EXCHANGE_ACCOUNT
+      - INTERNAL_WALLET
+      - EXTERNAL_WALLET
+      - UNMANAGED_WALLET
+      - CONTRACT
+      - NETWORK_CONNECTION
+      - FIAT_ACCOUNT
+      - COMPOUND
+      - GAS_STATION
+      - ONE_TIME_ADDRESS
+      - UNKNOWN
+      - END_USER_WALLET
+      - PROGRAM_CALL
+      - MULTI_DESTINATION
+      - OEC_PARTNER
     ExchangeType:
       description: Exchange account's type
       type: string
@@ -922,37 +1229,6 @@ components:
       - LUNO
       - BIT_GENERA
       - TRANSFERO
-    TravelRuleNationalIdentification:
-      type: object
-      description: Represents a national identifier for a person or entity
-      properties:
-        countryOfIssue:
-          type: string
-          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code). The value must be encrypted.
-          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
-        nationalIdentifier:
-          type: string
-          description: National identifier (max 35 characters). The value must be encrypted.
-          example: QmdR6qLnZ7Kwf5cBaXG8QFQenEvRg9JNZeoPranVuGd63z
-        nationalIdentifierType:
-          type: string
-          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'': National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security number The value must be encrypted.'
-          example: QmUKTg3aFJFhMz1o9gPqA3MgTRwd2LvDLwWTPHYUoMEYVi
-        registrationAuthority:
-          type: string
-          description: Registration authority (format -> RA followed by 6 digits). The value must be encrypted.
-          example: QmV9KJMyT9RJzpYfhME5xNCZ4G67fEkzTpRMyJzp9kTNYk
-    ExchangeSettlementTransactionsResponse:
-      type: object
-      properties:
-        toExchange:
-          type: array
-          items:
-            $ref: '#/components/schemas/ToExchangeTransaction'
-        toCollateral:
-          type: array
-          items:
-            $ref: '#/components/schemas/ToCollateralTransaction'
     TravelRuleTransactionBlockchainInfo:
       type: object
       properties:
@@ -968,14 +1244,6 @@ components:
           type: string
           description: The destination address of the transaction
           example: 841132469470587054656177892491842814721854784787
-    RemoveCollateralRequestBody:
-      type: object
-      properties:
-        transactionRequest:
-          $ref: '#/components/schemas/TransactionRequest'
-        isDstCollateral:
-          type: boolean
-          description: optional
     TravelRuleGeographicAddress:
       type: object
       properties:
@@ -1046,283 +1314,6 @@ components:
           description: Information that locates and identifies a specific address, presented in free-format text. Each item must be encrypted.
           example:
           - QmNp9kMjfhGZ5kMJzpNYXZTy6NQmZYEMGZ4kZT9Y6pNYT
-    ExchangeAccount:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/ExchangeType'
-        name:
-          type: string
-          description: Display name of the exchange account
-        status:
-          type: string
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeAsset'
-        success:
-          type: boolean
-          description: Did succeed in retrieve balance data
-        tradingAccounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeTradingAccount'
-        isSubaccount:
-          description: True if the account is a subaccount in an exchange
-          type: boolean
-        mainAccountId:
-          description: if the account is a sub-account, the ID of the main account
-          type: string
-    TransactionOperation:
-      type: string
-      default: TRANSFER
-      enum:
-      - TRANSFER
-      - BURN
-      - CONTRACT_CALL
-      - MINT
-      - RAW
-      - TYPED_MESSAGE
-      - PROGRAM_CALL
-      description: "* `TRANSFER` - The default value for an operation. Transfers funds from one account to another. UTXO blockchains allow multi-input and multi-output transfers. All other blockchains allow transfers with one source address and one destination address.\n* `MINT` - Mints new tokens. Supported for Stellar, Ripple and EVM-based blockchains.\n* `BURN` - Burns tokens. Supported for Stellar, Ripple and EVM-based blockchains.\n* `CONTRACT_CALL` - Calls a smart contract method for web3 operations on any EVM blockchain. The Fireblocks [development libraries](https://developers.fireblocks.com/docs/ethereum-development#convenience-libraries) are recommended for building contract call transactions.\n* `PROGRAM_CALL` - Calls a smart contract for web3 operations on the Solana blockchain.\n  Read more in the [Solana Programs Interactions guide](https://developers.fireblocks.com/reference/interact-with-solana-programs).\n\n* `TYPED_MESSAGE` - An off-chain message in either Ethereum Personal Message or EIP712 format. Use it to sign specific readable messages that are not actual transactions. [Learn more about typed messages](https://developers.fireblocks.com/docs/typed-message-signing-1).\n* `RAW` - An off-chain message with no predefined format. Use it to sign any message with your private key, including protocols such as blockchains and custom transaction types that are not natively supported by Fireblocks. [Learn more about raw signing transactions.](https://developers.fireblocks.com/docs/raw-signing)\n"
-    TravelRuleNaturalPersonNameIdentifier:
-      type: object
-      properties:
-        nameIdentifier:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
-        localNameIdentifier:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
-        phoneticNameIdentifier:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
-    CreateTransactionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique Fireblocks identifier of the transaction
-        status:
-          type: string
-          description: The primary status of the transaction. For details, see [Primary transaction statuses.] (https://developers.fireblocks.com/reference/primary-transaction-statuses)
-        systemMessages:
-          $ref: '#/components/schemas/SystemMessageInfo'
-    TransferPeerPathType:
-      type: string
-      enum:
-      - VAULT_ACCOUNT
-      - EXCHANGE_ACCOUNT
-      - INTERNAL_WALLET
-      - EXTERNAL_WALLET
-      - UNMANAGED_WALLET
-      - CONTRACT
-      - NETWORK_CONNECTION
-      - FIAT_ACCOUNT
-      - COMPOUND
-      - GAS_STATION
-      - ONE_TIME_ADDRESS
-      - UNKNOWN
-      - END_USER_WALLET
-      - PROGRAM_CALL
-      - MULTI_DESTINATION
-      - OEC_PARTNER
-    TravelRulePiiIVMS:
-      type: object
-      properties:
-        originatorPersons:
-          type: array
-          description: Information about the originator of the transaction
-          items:
-            $ref: '#/components/schemas/TravelRulePersons'
-        beneficiaryPersons:
-          type: array
-          description: Information about the beneficiary of the transaction
-          items:
-            $ref: '#/components/schemas/TravelRulePersons'
-        accountNumber:
-          type: array
-          description: Beneficiary account number. The value must be encrypted.
-          items:
-            type: string
-            example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
-    PreHash:
-      type: object
-      description: "The prehash object for ECDSA RAW signing requests. \nThe prehash object contains the content to sign (the actual message in hex representation) and the hashing algorithm to use before signing.\n"
-      properties:
-        content:
-          type: string
-          description: The prehashed content to sign on in hex representation.
-          example: 48656c6c6f2046697265626c6f636b73210a
-        hashAlgorithm:
-          type: string
-          description: The hashing algorithm to use in order to hash the content before the signature process
-          enum:
-          - SHA256
-          - KECCAK256
-          - SHA3
-          - BLAKE2
-          - DOUBLE_SHA256
-      required:
-      - content
-      - hashAlgorithm
-    TravelRuleNaturalNameIdentifier:
-      type: object
-      properties:
-        primaryIdentifier:
-          type: string
-          description: The primary identifier of the name. The value must be encrypted.
-          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
-        secondaryIdentifier:
-          type: string
-          description: The secondary identifier of the name. The value must be encrypted.
-          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
-        nameIdentifierType:
-          type: string
-          description: 'The type of the name identifier. The value must be encrypted. The value must be one of the following: [LEGL, DBA, TRAD, NICK, ALIA, MAID, FORM, PREV, BORN, OTHR].'
-          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
-    AddCollateralRequestBody:
-      type: object
-      properties:
-        transactionRequest:
-          $ref: '#/components/schemas/TransactionRequest'
-        isSrcCollateral:
-          type: boolean
-          description: optional
-    ExchangeAsset:
-      type: object
-      properties:
-        id:
-          type: string
-        balance:
-          type: string
-        lockedAmount:
-          type: string
-        total:
-          type: string
-        available:
-          type: string
-        credit:
-          type: string
-    SystemMessageInfo:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - WARN
-          - BLOCK
-        message:
-          type: string
-          description: A response from Fireblocks that communicates a message about the health of the process being performed. If this object is returned with data, you should expect potential delays or incomplete transaction statuses.
-          example: Slow transaction processing. Outgoing transactions might be stuck.
-    ToCollateralTransaction:
-      type: object
-      properties:
-        asset:
-          type: string
-        amount:
-          type: string
-        srcAddress:
-          type: string
-        srcTag:
-          type: string
-          description: optional
-        fee:
-          type: string
-          description: optional
-    TravelRuleOwnershipProof:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'The type of ownership proof. Example values: - `eip-191`: Ethereum signature proof - `eip-712`: Ethereum typed data signature proof - `bip-137`: Bitcoin signature proof - `microtransfer`: Microtransaction (Satoshi test) - `screenshot`: Uploaded screenshot of the wallet - `self-declaration`: Checkbox attestation of ownership'
-          example: eip-191
-        proof:
-          type: string
-          description: 'The cryptographic signature, transaction hash, or other proof depending on the type. Examples: - For `eip-191`: `0x3dd4a17a...ce4a2bcd1b` - For `microtransfer`: The transaction hash `H3V8GXBy39Dz...tr3TSTkY=`'
-          example: 0x3dd4a17a...ce4a2bcd1b
-        attestation:
-          type: string
-          description: 'A human-readable statement of wallet ownership. Required for signature proofs and self-declarations. Examples: - `I certify that ETH account 0x896B...0b9b belongs to me.` - `I hereby declare that the blockchain address 0xa437bEed902AF9338B7DEB23848e195d85019510 is under my control.`'
-          example: I certify that ETH account 0x896B...0b9b belongs to me.
-        address:
-          type: string
-          description: 'The wallet address being verified. Examples: - For Ethereum: `0x896B...0b9b` - For Bitcoin: `1442...dxhsQ`'
-          example: 0x896B...0b9b
-        wallet_provider:
-          type: string
-          description: 'The wallet provider or method used for verification. Examples: - For Metamask: `Metamask` - For manual signature: `manual`'
-          example: Metamask
-        url:
-          type: string
-          description: 'The URL for the uploaded screenshot (for `screenshot` proof types only). Example: `https://example.com/uploaded_image.png`'
-          example: https://example.com/uploaded_image.png
-        confirmed:
-          type: boolean
-          description: 'Whether the user confirmed ownership of the wallet (for `self-declaration` proofs). Example: `true`'
-          example: true
-    TravelRulePersons:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/TravelRulePerson'
-    TravelRuleLegalPersonNameIdentifier:
-      type: object
-      properties:
-        legalPersonName:
-          type: string
-          description: Name by which the legal person is known. The value must be encrypted.
-          example: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
-        legalPersonNameIdentifierType:
-          type: string
-          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name. The value must be encrypted.'
-          example: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
-    SourceTransferPeerPath:
-      type: object
-      description: The source of the transaction.
-      properties:
-        type:
-          $ref: '#/components/schemas/TransferPeerPathType'
-        subType:
-          $ref: '#/components/schemas/TransferPeerPathSubType'
-        id:
-          type: string
-        name:
-          type: string
-        walletId:
-          type: string
-          format: uuid
-        isCollateral:
-          type: boolean
-          description: Indicates whether the source is a collateral account
-          example: true
-      required:
-      - type
-    TravelRulePerson:
-      type: object
-      properties:
-        naturalPerson:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleNaturalPerson'
-        legalPerson:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleLegalPerson'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -1333,6 +1324,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

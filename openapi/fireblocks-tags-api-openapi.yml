@@ -205,17 +205,30 @@ paths:
       operationId: deleteTag
 components:
   schemas:
-    UpdateTagRequest:
+    CreateTagRequest:
       type: object
       properties:
         label:
           type: string
           description: The tag label
+          minLength: 2
+          maxLength: 30
           example: VIP
         description:
           type: string
           description: Description for the tag
+          maxLength: 250
           example: Tag for VIP customers
+        color:
+          type: string
+          description: The tag color in hex format
+          example: '#FF5733'
+        isProtected:
+          type: boolean
+          description: Indication of whether the tag is protected
+          default: false
+      required:
+      - label
     TagsPagedResponse:
       type: object
       properties:
@@ -232,36 +245,6 @@ components:
       required:
       - data
       - next
-    ApprovalRequest:
-      type: object
-      description: Approval request details
-      properties:
-        id:
-          type: string
-          format: numeric
-          description: The approval request identifier
-          example: '12345'
-        type:
-          type: string
-          description: The approval request type
-          enum:
-          - TAG_UPDATE
-          - TAG_DELETE
-          - TAG_ATTACH_DETACH
-        state:
-          type: string
-          description: The approval request state
-          enum:
-          - PENDING
-          - APPROVED
-          - REJECTED
-          - FAILED
-          - CANCELLED
-          - EXPIRED
-      required:
-      - id
-      - type
-      - state
     Tag:
       type: object
       properties:
@@ -297,30 +280,47 @@ components:
       - label
       - isProtected
       - updatedAt
-    CreateTagRequest:
+    UpdateTagRequest:
       type: object
       properties:
         label:
           type: string
           description: The tag label
-          minLength: 2
-          maxLength: 30
           example: VIP
         description:
           type: string
           description: Description for the tag
-          maxLength: 250
           example: Tag for VIP customers
-        color:
+    ApprovalRequest:
+      type: object
+      description: Approval request details
+      properties:
+        id:
           type: string
-          description: The tag color in hex format
-          example: '#FF5733'
-        isProtected:
-          type: boolean
-          description: Indication of whether the tag is protected
-          default: false
+          format: numeric
+          description: The approval request identifier
+          example: '12345'
+        type:
+          type: string
+          description: The approval request type
+          enum:
+          - TAG_UPDATE
+          - TAG_DELETE
+          - TAG_ATTACH_DETACH
+        state:
+          type: string
+          description: The approval request state
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          - FAILED
+          - CANCELLED
+          - EXPIRED
       required:
-      - label
+      - id
+      - type
+      - state
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key
