@@ -350,18 +350,48 @@ paths:
         source: response = fireblocks.web3_connections.remove(id);
 components:
   schemas:
-    CreateConnectionRequest:
-      oneOf:
-      - $ref: '#/components/schemas/CreateVaultAccountConnectionRequest'
-      - $ref: '#/components/schemas/CreateNcwConnectionRequest'
-    Paging:
+    RespondToConnectionRequest:
       type: object
       properties:
-        next:
-          type: string
-          description: Cursor to the next page
+        approve:
+          type: boolean
+          description: Approval of the initiated dApp connection.
+          example: true
       required:
-      - next
+      - approve
+    GetConnectionsResponse:
+      type: object
+      properties:
+        data:
+          description: Array with the requested dApp connection's data
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionDTO'
+        paging:
+          $ref: '#/components/schemas/Paging'
+      required:
+      - data
+    SessionMetadata:
+      type: object
+      properties:
+        appUrl:
+          type: string
+          description: dApp URL
+          example: https://app.uniswap.org
+        appName:
+          type: string
+          description: dApp Name
+          example: Uniswap
+        appDescription:
+          type: string
+          description: dApp Description (provided by the dApp developers)
+          example: Uniswap Interface
+        appIcon:
+          type: string
+          description: dApp icon URL
+          example: https://static.fireblocks.io/wcs/dappIcon/f16fbab26bad5aa296073f682cf6ff32dfe262e333a1b32f6a481b100c8a144b
+      required:
+      - appUrl
     CreateNcwConnectionRequest:
       type: object
       properties:
@@ -396,6 +426,28 @@ components:
       - ncwAccountId
       - feeLevel
       - uri
+    CreateConnectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the Web3 connection initiated.
+          example: 4e9e7051-f3b2-48e9-8ee6-b12492552657
+        sessionMetadata:
+          description: Metadata of the Web3 connection (provided by the dApp).
+          allOf:
+          - $ref: '#/components/schemas/SessionMetadata'
+      required:
+      - id
+      - sessionMetadata
+    Paging:
+      type: object
+      properties:
+        next:
+          type: string
+          description: Cursor to the next page
+      required:
+      - next
     CreateVaultAccountConnectionRequest:
       type: object
       properties:
@@ -425,41 +477,6 @@ components:
       - vaultAccountId
       - feeLevel
       - uri
-    CreateConnectionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the Web3 connection initiated.
-          example: 4e9e7051-f3b2-48e9-8ee6-b12492552657
-        sessionMetadata:
-          description: Metadata of the Web3 connection (provided by the dApp).
-          allOf:
-          - $ref: '#/components/schemas/SessionMetadata'
-      required:
-      - id
-      - sessionMetadata
-    GetConnectionsResponse:
-      type: object
-      properties:
-        data:
-          description: Array with the requested dApp connection's data
-          type: array
-          items:
-            $ref: '#/components/schemas/SessionDTO'
-        paging:
-          $ref: '#/components/schemas/Paging'
-      required:
-      - data
-    RespondToConnectionRequest:
-      type: object
-      properties:
-        approve:
-          type: boolean
-          description: Approval of the initiated dApp connection.
-          example: true
-      required:
-      - approve
     SessionDTO:
       type: object
       properties:
@@ -522,27 +539,10 @@ components:
       - connectionType
       - connectionMethod
       - creationDate
-    SessionMetadata:
-      type: object
-      properties:
-        appUrl:
-          type: string
-          description: dApp URL
-          example: https://app.uniswap.org
-        appName:
-          type: string
-          description: dApp Name
-          example: Uniswap
-        appDescription:
-          type: string
-          description: dApp Description (provided by the dApp developers)
-          example: Uniswap Interface
-        appIcon:
-          type: string
-          description: dApp icon URL
-          example: https://static.fireblocks.io/wcs/dappIcon/f16fbab26bad5aa296073f682cf6ff32dfe262e333a1b32f6a481b100c8a144b
-      required:
-      - appUrl
+    CreateConnectionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateVaultAccountConnectionRequest'
+      - $ref: '#/components/schemas/CreateNcwConnectionRequest'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

@@ -341,60 +341,6 @@ paths:
         source: response = fireblocks.payments_payout.get_payout(payout_id);
 components:
   schemas:
-    PayoutInstructionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        payeeAccount:
-          $ref: '#/components/schemas/PayeeAccountResponse'
-        amount:
-          $ref: '#/components/schemas/InstructionAmount'
-        state:
-          $ref: '#/components/schemas/PayoutInstructionState'
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
-      required:
-      - amount
-      - payeeAccount
-      - state
-      - transactions
-    PayoutInitMethod:
-      type: string
-      enum:
-      - FILE
-      - API
-    PaymentAccountResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/PaymentAccountType'
-    PayoutInstruction:
-      type: object
-      properties:
-        id:
-          type: string
-        payeeAccount:
-          $ref: '#/components/schemas/PayeeAccount'
-        amount:
-          $ref: '#/components/schemas/InstructionAmount'
-      required:
-      - amount
-      - payeeAccount
-    PayeeAccount:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/PayeeAccountType'
-      required:
-      - id
-      - type
     InstructionAmount:
       type: object
       properties:
@@ -409,36 +355,33 @@ components:
       required:
       - amount
       - assetId
-    PaymentAccount:
+    PayoutInitMethod:
+      type: string
+      enum:
+      - FILE
+      - API
+    PayoutInstructionState:
+      type: string
+      enum:
+      - NOT_STARTED
+      - TRANSACTION_SENT
+      - COMPLETED
+      - FAILED
+      - TRANSLATION_ERROR
+      - SKIPPED
+      description: "- NOT_STARTED\t- waiting to start\n- TRANSACTION_SENT - an underlying transaction was sent\n- COMPLETED\t- completed successfully\n- FAILED - failed\n- TRANSLATION_ERROR -lookup of the destination failed (due to changes in the underlying whitelisted external wallet or similar)\n- SKIPPED- no transaction(s) created for this instruction\n"
+    CreatePayoutRequest:
       type: object
       properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/PaymentAccountType'
+        paymentAccount:
+          $ref: '#/components/schemas/PaymentAccount'
+        instructionSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayoutInstruction'
       required:
-      - id
-      - type
-    PayoutStatus:
-      type: string
-      enum:
-      - REGISTERED
-      - VERIFYING
-      - IN_PROGRESS
-      - DONE
-      - INSUFFICIENT_BALANCE
-      - FAILED
-      description: "- REQUESTED\tpayout requested with all its details\n- VERIFIED\tpayout instruction set details were verified\n- PROCESSING\tpayout instruction set executed and is processing\n- FINALIZED\tpayout done (all payout instructions completed successfully)\n- INSUFFICIENT_BALANCE\tinsufficient balance in the payment account (can be a temporary state)\n- FAILED\tone or more of the payout instructions failed\n"
-    PayeeAccountType:
-      type: string
-      enum:
-      - VAULT_ACCOUNT
-      - EXCHANGE_ACCOUNT
-      - INTERNAL_WALLET
-      - EXTERNAL_WALLET
-      - NETWORK_CONNECTION
-      - FIAT_ACCOUNT
-      description: "- VAULT_ACCOUNT  \ta native Fireblocks vault account\n- EXCHANGE_ACCOUNT \ta third-party exchange account\n- INTERNAL_WALLET \ta whitelisted address marked as internal to the workspace/organization\n- EXTERNAL_WALLET\ta whitelisted address marked as external\n- NETWORK_CONNECTION\ta member of the Fireblocks network\n- FIAT_ACCOUNT\ta third-party account of a fiat bank (Signature, BCB, etc)\n"
+      - paymentAccount
+      - instructionSet
     PayoutResponse:
       type: object
       properties:
@@ -470,16 +413,19 @@ components:
       - status
       - paymentAccount
       - instructionSet
-    PayoutInstructionState:
+    PaymentAccountType:
       type: string
       enum:
-      - NOT_STARTED
-      - TRANSACTION_SENT
-      - COMPLETED
-      - FAILED
-      - TRANSLATION_ERROR
-      - SKIPPED
-      description: "- NOT_STARTED\t- waiting to start\n- TRANSACTION_SENT - an underlying transaction was sent\n- COMPLETED\t- completed successfully\n- FAILED - failed\n- TRANSLATION_ERROR -lookup of the destination failed (due to changes in the underlying whitelisted external wallet or similar)\n- SKIPPED- no transaction(s) created for this instruction\n"
+      - VAULT_ACCOUNT
+      - EXCHANGE_ACCOUNT
+      - FIAT_ACCOUNT
+    DispatchPayoutResponse:
+      type: object
+      properties:
+        payoutId:
+          type: string
+      required:
+      - payoutId
     PayoutState:
       type: string
       enum:
@@ -511,55 +457,43 @@ components:
         - FAILED - one or more of the payout instructions failed
 
         '
-    DispatchPayoutResponse:
+    PaymentAccountResponse:
       type: object
       properties:
-        payoutId:
+        id:
           type: string
-      required:
-      - payoutId
-    PayeeAccountResponse:
+        type:
+          $ref: '#/components/schemas/PaymentAccountType'
+    PayeeAccount:
       type: object
       properties:
         id:
           type: string
         type:
           $ref: '#/components/schemas/PayeeAccountType'
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-              enum:
-              - INTERNAL
-              - AUTHENTICATION
-              - AUTHORIZATION
-              - VALIDATION
-              - NOT_FOUND
-              - UNPROCESSABLE_ENTITY
-              - FORBIDDEN
-            message:
-              type: string
-          required:
-          - type
-          - message
       required:
-      - error
-    CreatePayoutRequest:
+      - id
+      - type
+    PayoutInstructionResponse:
       type: object
       properties:
-        paymentAccount:
-          $ref: '#/components/schemas/PaymentAccount'
-        instructionSet:
+        id:
+          type: string
+        payeeAccount:
+          $ref: '#/components/schemas/PayeeAccountResponse'
+        amount:
+          $ref: '#/components/schemas/InstructionAmount'
+        state:
+          $ref: '#/components/schemas/PayoutInstructionState'
+        transactions:
           type: array
           items:
-            $ref: '#/components/schemas/PayoutInstruction'
+            $ref: '#/components/schemas/Transaction'
       required:
-      - paymentAccount
-      - instructionSet
+      - amount
+      - payeeAccount
+      - state
+      - transactions
     Transaction:
       type: object
       properties:
@@ -595,12 +529,78 @@ components:
       required:
       - id
       - state
-    PaymentAccountType:
+    PayeeAccountType:
       type: string
       enum:
       - VAULT_ACCOUNT
       - EXCHANGE_ACCOUNT
+      - INTERNAL_WALLET
+      - EXTERNAL_WALLET
+      - NETWORK_CONNECTION
       - FIAT_ACCOUNT
+      description: "- VAULT_ACCOUNT  \ta native Fireblocks vault account\n- EXCHANGE_ACCOUNT \ta third-party exchange account\n- INTERNAL_WALLET \ta whitelisted address marked as internal to the workspace/organization\n- EXTERNAL_WALLET\ta whitelisted address marked as external\n- NETWORK_CONNECTION\ta member of the Fireblocks network\n- FIAT_ACCOUNT\ta third-party account of a fiat bank (Signature, BCB, etc)\n"
+    PayoutInstruction:
+      type: object
+      properties:
+        id:
+          type: string
+        payeeAccount:
+          $ref: '#/components/schemas/PayeeAccount'
+        amount:
+          $ref: '#/components/schemas/InstructionAmount'
+      required:
+      - amount
+      - payeeAccount
+    PayoutStatus:
+      type: string
+      enum:
+      - REGISTERED
+      - VERIFYING
+      - IN_PROGRESS
+      - DONE
+      - INSUFFICIENT_BALANCE
+      - FAILED
+      description: "- REQUESTED\tpayout requested with all its details\n- VERIFIED\tpayout instruction set details were verified\n- PROCESSING\tpayout instruction set executed and is processing\n- FINALIZED\tpayout done (all payout instructions completed successfully)\n- INSUFFICIENT_BALANCE\tinsufficient balance in the payment account (can be a temporary state)\n- FAILED\tone or more of the payout instructions failed\n"
+    PaymentAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/PaymentAccountType'
+      required:
+      - id
+      - type
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - INTERNAL
+              - AUTHENTICATION
+              - AUTHORIZATION
+              - VALIDATION
+              - NOT_FOUND
+              - UNPROCESSABLE_ENTITY
+              - FORBIDDEN
+            message:
+              type: string
+          required:
+          - type
+          - message
+      required:
+      - error
+    PayeeAccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/PayeeAccountType'
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key

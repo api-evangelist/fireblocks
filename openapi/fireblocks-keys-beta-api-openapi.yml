@@ -112,39 +112,6 @@ paths:
         source: response = fireblocks.keys_beta.get_mpc_keys_list_by_user(user_id);
 components:
   schemas:
-    MpcKey:
-      type: object
-      properties:
-        keyId:
-          type: string
-          example: 743f82cf-b526-4148-afb1-cd71f1dfee10
-          maxLength: 36
-          minLength: 36
-        userId:
-          type: string
-          example: da084d02-d446-413e-b4ce-1e3256517dfd
-          description: The user id that owns the key
-          maxLength: 36
-          minLength: 36
-        algorithm:
-          type: number
-          example: 201
-          description: The algorithm of the key
-        players:
-          description: The players that are associated with the key
-          type: array
-          items:
-            $ref: '#/components/schemas/Players'
-        lastPreprocessedIndex:
-          type: number
-          minimum: 0
-          example: '6'
-          description: The last index used on this key
-      required:
-      - keyId
-      - userId
-      - algorithm
-      - players
     Players:
       type: object
       properties:
@@ -181,6 +148,39 @@ components:
       required:
       - tenantId
       - keys
+    MpcKey:
+      type: object
+      properties:
+        keyId:
+          type: string
+          example: 743f82cf-b526-4148-afb1-cd71f1dfee10
+          maxLength: 36
+          minLength: 36
+        userId:
+          type: string
+          example: da084d02-d446-413e-b4ce-1e3256517dfd
+          description: The user id that owns the key
+          maxLength: 36
+          minLength: 36
+        algorithm:
+          type: number
+          example: 201
+          description: The algorithm of the key
+        players:
+          description: The players that are associated with the key
+          type: array
+          items:
+            $ref: '#/components/schemas/Players'
+        lastPreprocessedIndex:
+          type: number
+          minimum: 0
+          example: '6'
+          description: The last index used on this key
+      required:
+      - keyId
+      - userId
+      - algorithm
+      - players
   responses:
     Error:
       description: Error Response

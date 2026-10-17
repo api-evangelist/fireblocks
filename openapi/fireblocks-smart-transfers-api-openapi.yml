@@ -1242,17 +1242,114 @@ paths:
       - lang: Python
         source: response = fireblocks.smart_transfer.get_smart_transfer_statistic();
 components:
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   schemas:
+    SmartTransferSetTicketExpiration:
+      type: object
+      properties:
+        expiresIn:
+          type: number
+          description: Sets ticket expiration time (in hours) after a ticket is submitted. If no funding source is set to any term, the ticket will automatically expire after given time.
+          minimum: 1
+          maximum: 48
+      required:
+      - expiresIn
+    SmartTransferStatistic:
+      type: object
+      description: Smart transfers statistic
+      properties:
+        inflow:
+          type: object
+          description: Inflow tickets data
+          properties:
+            coins:
+              type: array
+              items:
+                $ref: '#/components/schemas/SmartTransferCoinStatistic'
+            ticketCount:
+              type: integer
+              example: 4
+        outflow:
+          type: object
+          description: Outflow tickets data
+          properties:
+            coins:
+              type: array
+              items:
+                $ref: '#/components/schemas/SmartTransferCoinStatistic'
+            ticketCount:
+              type: integer
+              example: 4
+        totalActiveTickets:
+          description: Number of total active tickets
+          type: integer
+          example: 5
+        totalInactiveTickets:
+          description: Number of total inactive tickets (expired, canceled, completed)
+          type: integer
+          example: 5
+      required:
+      - inflow
+      - outflow
+      - totalActiveTickets
+      - totalInactiveTickets
+    SmartTransferManuallyFundTerm:
+      type: object
+      properties:
+        txHash:
+          type: string
+          maxLength: 64
+          example: 23bd90f86b9c65716b3929440c03dc19e5da0981632391e20a24d3057e4fa5e9
+      required:
+      - txHash
+    SmartTransferCoinStatistic:
+      type: object
+      description: Smart transfer coin statistic
+      properties:
+        asset:
+          type: string
+          example: BTC
+        amount:
+          type: string
+          example: 15
+    SmartTransferSubmitTicket:
+      type: object
+      properties:
+        expiresIn:
+          type: number
+          description: Sets the ticket expiration time (in hours) after the ticket is submitted. If no funding source is set for any term, the ticket will automatically expire after given time. If expiresIn is not sent ticket will not expire.
+          minimum: 1
+          maximum: 48
+          example: 24
+    SmartTransferFundDvpTicket:
+      type: object
+      properties:
+        fee:
+          type: string
+          description: Transaction fee
+          example: '0.001'
+        feeLevel:
+          type: string
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          description: Transaction fee level.
+          example: MEDIUM
+        note:
+          type: string
+          description: Transaction note
+          example: Transaction note
+    SmartTransferSetTicketExternalId:
+      type: object
+      properties:
+        externalRefId:
+          type: string
+          example: abcdefg
+          minLength: 5
+          maxLength: 64
+          description: Each workspace can set their own external id they want to refer to this Ticket
+      required:
+      - externalRefId
     SmartTransferFundTerm:
       type: object
       properties:
@@ -1295,6 +1392,28 @@ components:
       - networkConnectionId
       - srcId
       - srcType
+    SmartTransferTicketFilteredResponse:
+      type: object
+      properties:
+        message:
+          type:
+          - string
+          - 'null'
+          description: Result message
+          example: Success
+        after:
+          type: string
+          description: Unique id of next filtered result
+          example: 118320d2-761f-46c7-96cf-65e71a370b36
+        data:
+          description: Result that match given query criteria
+          type: array
+          items:
+            $ref: '#/components/schemas/SmartTransferTicket'
+      required:
+      - message
+      - after
+      - data
     SmartTransferCreateTicket:
       type: object
       properties:
@@ -1330,20 +1449,44 @@ components:
       required:
       - createdByNetworkId
       - type
-    SmartTransferForbiddenResponse:
+    SmartTransferUpdateTicketTerm:
+      type: object
+      properties:
+        asset:
+          type: string
+          description: Asset name
+          example: BTC
+          x-fb-entity: asset
+        amount:
+          type: number
+          description: Amount
+          example: '133.789161216184'
+        fromNetworkId:
+          type: string
+          description: Identifier of the origination Network Profile
+          example: 947c6115-1f5f-4fb4-9fd6-a1f9dee14670
+        toNetworkId:
+          type: string
+          description: Identifier of the destination Network Profile
+          example: 5d009697-c29b-48e0-aff8-1f4305d19dc2
+      required:
+      - asset
+      - amount
+      - fromNetworkId
+      - toNetworkId
+    SmartTransferTicketTermResponse:
       type: object
       properties:
         message:
-          type: string
-          description: Forbidden error code
-          example: You do not have permission to execute this action
-        code:
-          type: string
-          description: Error code
-          example: 3002
+          type:
+          - string
+          - 'null'
+          description: Result message
+          example: Success
+        data:
+          $ref: '#/components/schemas/SmartTransferTicketTerm'
       required:
       - message
-      - code
     SmartTransferTicketTerm:
       type:
       - object
@@ -1457,28 +1600,74 @@ components:
       - status
       - createdAt
       - updatedAt
-    SmartTransferTicketFilteredResponse:
+    SmartTransferForbiddenResponse:
       type: object
       properties:
         message:
-          type:
-          - string
-          - 'null'
-          description: Result message
-          example: Success
-        after:
           type: string
-          description: Unique id of next filtered result
-          example: 118320d2-761f-46c7-96cf-65e71a370b36
-        data:
-          description: Result that match given query criteria
-          type: array
-          items:
-            $ref: '#/components/schemas/SmartTransferTicket'
+          description: Forbidden error code
+          example: You do not have permission to execute this action
+        code:
+          type: string
+          description: Error code
+          example: 3002
       required:
       - message
-      - after
-      - data
+      - code
+    SmartTransferSetUserGroups:
+      type: object
+      properties:
+        userGroupIds:
+          type: array
+          items:
+            type: string
+            example: 1ad4e96c-b59b-4224-84d1-ade6932cacc4
+      required:
+      - userGroupIds
+    SmartTransferBadRequestResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Bad request error message
+          example: Your request contains invalid data
+        code:
+          type: string
+          description: Bad request error code
+          example: 2e7a7a5d-c85c-4ea5-9adf-668cba8b4eb4
+      required:
+      - message
+      - code
+    SmartTransferNotFoundResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not found error message
+          example: Requested entity not found
+        code:
+          type: string
+          description: Error code
+          example: c943bdb8-ada0-4ba6-8645-74fcf188a10f
+      required:
+      - message
+      - code
+    SmartTransferUserGroups:
+      type:
+      - object
+      - 'null'
+      description: Smart Transfers User Groups Object
+      properties:
+        userGroupIds:
+          description: Data object with result data
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            example: 1ad4e96c-b59b-4224-84d1-ade6932cacc4
+      required:
+      - userGroupIds
     SmartTransferApproveTerm:
       type: object
       properties:
@@ -1540,132 +1729,6 @@ components:
       - amount
       - fromNetworkId
       - toNetworkId
-    SmartTransferSetTicketExternalId:
-      type: object
-      properties:
-        externalRefId:
-          type: string
-          example: abcdefg
-          minLength: 5
-          maxLength: 64
-          description: Each workspace can set their own external id they want to refer to this Ticket
-      required:
-      - externalRefId
-    SmartTransferManuallyFundTerm:
-      type: object
-      properties:
-        txHash:
-          type: string
-          maxLength: 64
-          example: 23bd90f86b9c65716b3929440c03dc19e5da0981632391e20a24d3057e4fa5e9
-      required:
-      - txHash
-    SmartTransferTicketResponse:
-      type: object
-      properties:
-        message:
-          type:
-          - string
-          - 'null'
-          description: Result message
-          example: Success
-        data:
-          $ref: '#/components/schemas/SmartTransferTicket'
-      required:
-      - message
-    SmartTransferBadRequestResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Bad request error message
-          example: Your request contains invalid data
-        code:
-          type: string
-          description: Bad request error code
-          example: 2e7a7a5d-c85c-4ea5-9adf-668cba8b4eb4
-      required:
-      - message
-      - code
-    SmartTransferNotFoundResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Not found error message
-          example: Requested entity not found
-        code:
-          type: string
-          description: Error code
-          example: c943bdb8-ada0-4ba6-8645-74fcf188a10f
-      required:
-      - message
-      - code
-    SmartTransferStatistic:
-      type: object
-      description: Smart transfers statistic
-      properties:
-        inflow:
-          type: object
-          description: Inflow tickets data
-          properties:
-            coins:
-              type: array
-              items:
-                $ref: '#/components/schemas/SmartTransferCoinStatistic'
-            ticketCount:
-              type: integer
-              example: 4
-        outflow:
-          type: object
-          description: Outflow tickets data
-          properties:
-            coins:
-              type: array
-              items:
-                $ref: '#/components/schemas/SmartTransferCoinStatistic'
-            ticketCount:
-              type: integer
-              example: 4
-        totalActiveTickets:
-          description: Number of total active tickets
-          type: integer
-          example: 5
-        totalInactiveTickets:
-          description: Number of total inactive tickets (expired, canceled, completed)
-          type: integer
-          example: 5
-      required:
-      - inflow
-      - outflow
-      - totalActiveTickets
-      - totalInactiveTickets
-    SmartTransferSetUserGroups:
-      type: object
-      properties:
-        userGroupIds:
-          type: array
-          items:
-            type: string
-            example: 1ad4e96c-b59b-4224-84d1-ade6932cacc4
-      required:
-      - userGroupIds
-    SmartTransferUserGroups:
-      type:
-      - object
-      - 'null'
-      description: Smart Transfers User Groups Object
-      properties:
-        userGroupIds:
-          description: Data object with result data
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            example: 1ad4e96c-b59b-4224-84d1-ade6932cacc4
-      required:
-      - userGroupIds
     SmartTransferTicket:
       type:
       - object
@@ -1814,7 +1877,7 @@ components:
       - createdByNetworkIdName
       - createdAt
       - updatedAt
-    SmartTransferTicketTermResponse:
+    SmartTransferTicketResponse:
       type: object
       properties:
         message:
@@ -1824,38 +1887,9 @@ components:
           description: Result message
           example: Success
         data:
-          $ref: '#/components/schemas/SmartTransferTicketTerm'
+          $ref: '#/components/schemas/SmartTransferTicket'
       required:
       - message
-    SmartTransferSetTicketExpiration:
-      type: object
-      properties:
-        expiresIn:
-          type: number
-          description: Sets ticket expiration time (in hours) after a ticket is submitted. If no funding source is set to any term, the ticket will automatically expire after given time.
-          minimum: 1
-          maximum: 48
-      required:
-      - expiresIn
-    SmartTransferFundDvpTicket:
-      type: object
-      properties:
-        fee:
-          type: string
-          description: Transaction fee
-          example: '0.001'
-        feeLevel:
-          type: string
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          description: Transaction fee level.
-          example: MEDIUM
-        note:
-          type: string
-          description: Transaction note
-          example: Transaction note
     SmartTransferUserGroupsResponse:
       type: object
       properties:
@@ -1869,50 +1903,6 @@ components:
           $ref: '#/components/schemas/SmartTransferUserGroups'
       required:
       - message
-    SmartTransferUpdateTicketTerm:
-      type: object
-      properties:
-        asset:
-          type: string
-          description: Asset name
-          example: BTC
-          x-fb-entity: asset
-        amount:
-          type: number
-          description: Amount
-          example: '133.789161216184'
-        fromNetworkId:
-          type: string
-          description: Identifier of the origination Network Profile
-          example: 947c6115-1f5f-4fb4-9fd6-a1f9dee14670
-        toNetworkId:
-          type: string
-          description: Identifier of the destination Network Profile
-          example: 5d009697-c29b-48e0-aff8-1f4305d19dc2
-      required:
-      - asset
-      - amount
-      - fromNetworkId
-      - toNetworkId
-    SmartTransferSubmitTicket:
-      type: object
-      properties:
-        expiresIn:
-          type: number
-          description: Sets the ticket expiration time (in hours) after the ticket is submitted. If no funding source is set for any term, the ticket will automatically expire after given time. If expiresIn is not sent ticket will not expire.
-          minimum: 1
-          maximum: 48
-          example: 24
-    SmartTransferCoinStatistic:
-      type: object
-      description: Smart transfer coin statistic
-      properties:
-        asset:
-          type: string
-          example: BTC
-        amount:
-          type: string
-          example: 15
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key
@@ -1922,6 +1912,16 @@ components:
       schema:
         type: string
         example: some-unique-id
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   securitySchemes:
     bearerTokenAuth:
       type: http

@@ -1145,43 +1145,52 @@ paths:
         source: response = fireblocks.network_connections.set_network_id_name(set_network_id_name_request, network_id);
 components:
   schemas:
-    SearchNetworkIdsResponse:
+    NetworkConnectionRoutingPolicy:
+      type: object
+      additionalProperties:
+        oneOf:
+        - $ref: '#/components/schemas/CustomRoutingDest'
+        - $ref: '#/components/schemas/DefaultNetworkRoutingDest'
+        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
+    CustomRoutingDest:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/NetworkIdResponse'
-        next:
+        scheme:
+          description: The network routing logic.
           type: string
-    NetworkId:
-      type: object
-      properties:
-        id:
+          enum:
+          - CUSTOM
+        dstType:
           type: string
-          description: Network Connection ID
-          example: 494ae5f7-7807-4bc5-863b-2963aa94398f
-        name:
+          description: The account the funds are being sent to.
+          enum:
+          - FIAT_ACCOUNT
+          - VAULT
+          - EXCHANGE
+        dstId:
           type: string
-          description: Network Connection Name
-          example: My Network Connection Name
+          description: The ID of the account the funds are being sent to.
+          example: 29a425f4-f621-4c01-a888-27adec7d1dfa
       required:
-      - id
-      - name
-    DeleteNetworkIdResponse:
+      - scheme
+      - dstType
+      - dstId
+    SetNetworkIdRoutingPolicyRequest:
       type: object
       properties:
-        success:
-          type: boolean
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkIdRoutingPolicy'
       required:
-      - success
-    DeleteNetworkConnectionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-      required:
-      - success
+      - routingPolicy
+    GetNetworkIdsResponse:
+      type: array
+      items:
+        allOf:
+        - $ref: '#/components/schemas/NetworkIdResponse'
+    GetNetworkConnectionsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/NetworkConnectionResponse'
     NetworkConnectionResponse:
       type: object
       properties:
@@ -1211,43 +1220,6 @@ components:
       - remoteNetworkId
       - routingPolicy
       - status
-    CustomRoutingDest:
-      type: object
-      properties:
-        scheme:
-          description: The network routing logic.
-          type: string
-          enum:
-          - CUSTOM
-        dstType:
-          type: string
-          description: The account the funds are being sent to.
-          enum:
-          - FIAT_ACCOUNT
-          - VAULT
-          - EXCHANGE
-        dstId:
-          type: string
-          description: The ID of the account the funds are being sent to.
-          example: 29a425f4-f621-4c01-a888-27adec7d1dfa
-      required:
-      - scheme
-      - dstType
-      - dstId
-    DefaultNetworkRoutingDest:
-      type: object
-      properties:
-        scheme:
-          type: string
-          description: The network routing logic.
-          enum:
-          - DEFAULT
-      required:
-      - scheme
-    GetRoutingPolicyAssetGroupsResponse:
-      type: array
-      items:
-        type: string
     SetNetworkIdDiscoverabilityRequest:
       type: object
       properties:
@@ -1255,16 +1227,6 @@ components:
           type: boolean
       required:
       - isDiscoverable
-    NetworkIdRoutingPolicy:
-      type: object
-      additionalProperties:
-        oneOf:
-        - $ref: '#/components/schemas/CustomRoutingDest'
-        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
-    GetNetworkConnectionsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/NetworkConnectionResponse'
     CreateNetworkIdRequest:
       type: object
       properties:
@@ -1276,41 +1238,81 @@ components:
           $ref: '#/components/schemas/NetworkIdRoutingPolicy'
       required:
       - name
-    ThirdPartyRouting:
-      type: object
-      properties:
-        isThirdPartyRouting:
-          type: boolean
-        description:
-          type: string
-    NetworkConnectionRoutingPolicy:
-      type: object
-      additionalProperties:
-        oneOf:
-        - $ref: '#/components/schemas/CustomRoutingDest'
-        - $ref: '#/components/schemas/DefaultNetworkRoutingDest'
-        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
-    GetNetworkIdsResponse:
-      type: array
-      items:
-        allOf:
-        - $ref: '#/components/schemas/NetworkIdResponse'
-    SetRoutingPolicyResponse:
+    NetworkConnectionStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - WAITING_FOR_PEER_APPROVAL
+      - APPROVED
+      - CANCELLED
+      - FAILED
+      - REJECTED
+      - REJECTED_BY_PEER
+      - REMOVED
+      - REMOVED_BY_PEER
+    DeleteNetworkIdResponse:
       type: object
       properties:
         success:
           type: boolean
       required:
       - success
-    NetworkChannel:
-      deprecated: true
-      description: Deprecated in the only used reference - NetworkConnectionResponse
+    DefaultNetworkRoutingDest:
       type: object
       properties:
-        networkId:
+        scheme:
           type: string
+          description: The network routing logic.
+          enum:
+          - DEFAULT
+      required:
+      - scheme
+    SetNetworkIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    NetworkId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Network Connection ID
+          example: 494ae5f7-7807-4bc5-863b-2963aa94398f
         name:
           type: string
+          description: Network Connection Name
+          example: My Network Connection Name
+      required:
+      - id
+      - name
+    SearchNetworkIdsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkIdResponse'
+        next:
+          type: string
+    SetNetworkIdNameRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Network ID name
+          example: My Network ID name
+      required:
+      - name
+    DeleteNetworkConnectionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
     NetworkConnection:
       type: object
       properties:
@@ -1327,6 +1329,12 @@ components:
       required:
       - localNetworkId
       - remoteNetworkId
+    NetworkIdRoutingPolicy:
+      type: object
+      additionalProperties:
+        oneOf:
+        - $ref: '#/components/schemas/CustomRoutingDest'
+        - $ref: '#/components/schemas/NoneNetworkRoutingDest'
     NetworkIdResponse:
       allOf:
       - $ref: '#/components/schemas/NetworkId'
@@ -1337,48 +1345,6 @@ components:
           isDiscoverable:
             type: boolean
             description: The specific network is discoverable.
-    NetworkConnectionStatus:
-      type: string
-      enum:
-      - WAITING_FOR_APPROVAL
-      - WAITING_FOR_PEER_APPROVAL
-      - APPROVED
-      - CANCELLED
-      - FAILED
-      - REJECTED
-      - REJECTED_BY_PEER
-      - REMOVED
-      - REMOVED_BY_PEER
-    SetNetworkIdNameRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Network ID name
-          example: My Network ID name
-      required:
-      - name
-    SetNetworkIdResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-      required:
-      - success
-    SetRoutingPolicyRequest:
-      type: object
-      properties:
-        routingPolicy:
-          $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
-      required:
-      - routingPolicy
-    SetNetworkIdRoutingPolicyRequest:
-      type: object
-      properties:
-        routingPolicy:
-          $ref: '#/components/schemas/NetworkIdRoutingPolicy'
-      required:
-      - routingPolicy
     NoneNetworkRoutingDest:
       type: object
       properties:
@@ -1389,6 +1355,49 @@ components:
           - NONE
       required:
       - scheme
+    SetRoutingPolicyRequest:
+      type: object
+      properties:
+        routingPolicy:
+          $ref: '#/components/schemas/NetworkConnectionRoutingPolicy'
+      required:
+      - routingPolicy
+    SetRoutingPolicyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+    NetworkChannel:
+      deprecated: true
+      description: Deprecated in the only used reference - NetworkConnectionResponse
+      type: object
+      properties:
+        networkId:
+          type: string
+        name:
+          type: string
+    ThirdPartyRouting:
+      type: object
+      properties:
+        isThirdPartyRouting:
+          type: boolean
+        description:
+          type: string
+    GetRoutingPolicyAssetGroupsResponse:
+      type: array
+      items:
+        type: string
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -1399,15 +1408,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

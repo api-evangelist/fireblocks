@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests…………
+  title: Fireblocks Blockchains and Assets Approval Requests……………
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
@@ -921,58 +921,26 @@ paths:
       x-rate-limit-category: write
 components:
   schemas:
-    AmlVerdictManualRequest:
+    TravelRuleNationalIdentification:
       type: object
-      required:
-      - verdict
-      - txId
+      description: Represents a national identifier for a person or entity
       properties:
-        verdict:
+        countryOfIssue:
           type: string
-          enum:
-          - ACCEPT
-          - REJECT
-          description: The AML verdict to set for the transaction.
-          example: ACCEPT
-        txId:
+          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code). The value must be encrypted.
+          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
+        nationalIdentifier:
           type: string
-          format: uuid
-          description: The transaction ID to set the verdict for.
-          example: 550e8400-e29b-41d4-a716-446655440000
-    CreateTransactionResponse:
-      type: object
-      properties:
-        id:
+          description: National identifier (max 35 characters). The value must be encrypted.
+          example: QmdR6qLnZ7Kwf5cBaXG8QFQenEvRg9JNZeoPranVuGd63z
+        nationalIdentifierType:
           type: string
-          description: Unique Fireblocks identifier of the transaction
-        status:
+          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'': National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security number The value must be encrypted.'
+          example: QmUKTg3aFJFhMz1o9gPqA3MgTRwd2LvDLwWTPHYUoMEYVi
+        registrationAuthority:
           type: string
-          description: The primary status of the transaction. For details, see [Primary transaction statuses.] (https://developers.fireblocks.com/reference/primary-transaction-statuses)
-        systemMessages:
-          $ref: '#/components/schemas/SystemMessageInfo'
-    TravelRuleValidatePersons:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/TravelRuleValidatePerson'
-    ScreeningPolicyResponse:
-      type: object
-      properties:
-        policy:
-          $ref: '#/components/schemas/TravelRulePolicyRuleResponse'
-        policyStatus:
-          type: string
-        isDefault:
-          type: boolean
-        createDate:
-          format: date-time
-          type: string
-        lastUpdate:
-          format: date-time
-          type: string
-      required:
-      - policy
-      - isDefault
-      - lastUpdate
+          description: Registration authority (format -> RA followed by 6 digits). The value must be encrypted.
+          example: QmV9KJMyT9RJzpYfhME5xNCZ4G67fEkzTpRMyJzp9kTNYk
     TravelRuleAddress:
       type: object
       properties:
@@ -997,54 +965,194 @@ components:
       - city
       - state
       - postalCode
-    TravelRuleValidateNaturalNameIdentifier:
+    TravelRulePiiIVMS:
+      type: object
+      properties:
+        originatorPersons:
+          type: array
+          description: Information about the originator of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePersons'
+        beneficiaryPersons:
+          type: array
+          description: Information about the beneficiary of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePersons'
+        accountNumber:
+          type: array
+          description: Beneficiary account number. The value must be encrypted.
+          items:
+            type: string
+            example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    TravelRuleValidateDateAndPlaceOfBirth:
+      type: object
+      description: Represents the date and place of birth for a natural person
+      properties:
+        dateOfBirth:
+          type: string
+          description: Date of birth in ISO 8601 format (YYYY-MM-DD)
+          example: 1990-01-01
+        placeOfBirth:
+          type: string
+          description: Place of birth (max 70 characters)
+          maxLength: 70
+          example: New York, USA
+    TravelRuleNaturalNameIdentifier:
       type: object
       properties:
         primaryIdentifier:
           type: string
-          description: The primary identifier of the name
-          example: John
+          description: The primary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
         secondaryIdentifier:
           type: string
-          description: The secondary identifier of the name
-          example: Doe
+          description: The secondary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
         nameIdentifierType:
           type: string
-          description: 'Specifies the type of name for a natural person. Acceptable values are: - ''ALIA'': Alias name, a name other than the legal name by which a natural person is also known. - ''BIRT'': Name at birth, the name given to a natural person at birth. - ''MAID'': Maiden name, the original name of a natural person who has changed their name after marriage. - ''LEGL'': Legal name, the name that identifies a natural person for legal, official, or administrative purposes. - ''MISC'': Unspecified, a name by which a natural person may be known but cannot otherwise be categorized.'
-          enum:
-          - ALIA
-          - BIRT
-          - MAID
-          - LEGL
-          - MISC
-          example: LEGL
-    TravelRuleValidateNationalIdentification:
+          description: 'The type of the name identifier. The value must be encrypted. The value must be one of the following: [LEGL, DBA, TRAD, NICK, ALIA, MAID, FORM, PREV, BORN, OTHR].'
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+    TravelRulePersons:
       type: object
-      description: Represents a national identifier for a person or entity
+      allOf:
+      - $ref: '#/components/schemas/TravelRulePerson'
+    TravelRuleUpdateVASPDetails:
+      type: object
       properties:
-        countryOfIssue:
+        did:
           type: string
-          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code)
-          example: US
-        nationalIdentifier:
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+          description: The decentralized identifier of the VASP
+        pii_didkey:
           type: string
-          description: National identifier (max 35 characters)
-          maxLength: 35
-          example: 123456789
-        nationalIdentifierType:
+          example: did:key:z6Mks5CZRaiooKYhq5TwtXQC1gWhwiZnmiKfFrMnYY62MhYf
+          description: The PII DID key of the VASP
+      required:
+      - did
+      - pii_didkey
+    TravelRuleValidatePerson:
+      type: object
+      properties:
+        naturalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleValidateNaturalPerson'
+        legalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleValidateLegalPerson'
+    TravelRuleDateAndPlaceOfBirth:
+      type: object
+      description: Represents the date and place of birth for a natural person
+      properties:
+        dateOfBirth:
           type: string
-          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'': National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security number'
+          description: Date of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+        placeOfBirth:
+          type: string
+          description: Place of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    TravelRuleLegalPerson:
+      type: object
+      properties:
+        name:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleLegalPersonNameIdentifier'
+          description: The structured name of the legal person, referencing name identifiers.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: The array of geographic addresses associated with the legal person.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleNationalIdentification'
+        customerIdentification:
+          type: string
+          description: A unique identifier that identifies the customer in the organization's context. The value must be encrypted.
+          example: QmRY9AA4Uit2JRTxDzfzshrJdTK86Kf5HriA3dXDnihDmy
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
+          example: QmXvyML3AJUFpBbJqL5NVp7Vn7xNkuedTsSMk93duLCNW8
+        countryOfRegistration:
+          type: string
+          description: The ISO-3166 Alpha-2 country code where the legal person is registered. The value must be encrypted.
+          example: QmeoTk6UPruEAYNbJEAHdQYc53ap9BXmpnPMcuvs8wutdr
+    CreateTransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique Fireblocks identifier of the transaction
+        status:
+          type: string
+          description: The primary status of the transaction. For details, see [Primary transaction statuses.] (https://developers.fireblocks.com/reference/primary-transaction-statuses)
+        systemMessages:
+          $ref: '#/components/schemas/SystemMessageInfo'
+    ComplianceResultFullPayload:
+      type: object
+      description: The result of the Compliance AML/Travel Rule screening.
+      properties:
+        aml:
+          type: object
+          description: The end result of the AML screening.
+          items:
+            $ref: '#/components/schemas/ComplianceScreeningResultFullPayload'
+        tr:
+          type: object
+          description: The result of the Travel Rule screening.
+          items:
+            $ref: '#/components/schemas/ComplianceScreeningResultFullPayload'
+        amlList:
+          type: array
+          description: The list of all results of the AML screening.
+          items:
+            $ref: '#/components/schemas/ComplianceScreeningResultFullPayload'
+        status:
+          type: string
+          description: Status of compliance result screening.
           enum:
-          - PASSPORT
-          - NATIONAL_ID
-          - TAX_ID
-          - SOCIAL_SECURITY
-          example: NATIONAL_ID
-        registrationAuthority:
-          type: string
-          description: Registration authority (format -> RA followed by 6 digits)
-          pattern: ^RA\d{6}$
-          example: RA123456
+          - Started
+          - NetworkConnectionAddressResolve
+          - ScreeningPrepare
+          - AMLStarted
+          - AMLCompleted
+          - AMLFailed
+          - AMLInBackground
+          - TRPreconditionChecks
+          - TRStarted
+          - TRCompleted
+          - TRFailed
+          - Completed
+          - IncomingStarted
+          - IncomingScreeningPrepare
+          - IncomingWaitForFirstConfirmation
+          - AMLIncomingStarted
+          - AMLIncomingCompleted
+          - AMLIncomingFailed
+          - AMLIncomingInBackground
+          - TRIncomingStarted
+          - TRIncomingCompleted
+          - TRIncomingFailed
+          - IncomingCompleted
+        amlRegistration:
+          type: object
+          description: The results of the AML address registration.
+          items:
+            $ref: '#/components/schemas/AmlRegistrationResultFullPayload'
+    TravelRulePerson:
+      type: object
+      properties:
+        naturalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleNaturalPerson'
+        legalPerson:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleLegalPerson'
     TravelRuleIssuers:
       type: object
       properties:
@@ -1091,127 +1199,120 @@ components:
       - city
       - country
       - description
-    TravelRulePersons:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/TravelRulePerson'
-    TravelRuleIssuer:
+    ScreeningUpdateConfigurations:
       type: object
       properties:
-        issuerDid:
+        disableBypass:
+          type: boolean
+          description: Flag to enable or disable bypass screening on workspace configuration.
+        disableUnfreeze:
+          type: boolean
+          description: Flag to enable or disable unfreeze of transaction frozen by policy rule on workspace configuration.
+    TravelRuleGeographicAddress:
+      type: object
+      properties:
+        streetName:
           type: string
-      required:
-      - issuerDid
-    TravelRuleValidatePiiIVMS:
-      type: object
-      properties:
-        originatorPersons:
+          description: Name of a street or thoroughfare. The value must be encrypted.
+          example: QmZGXXsKPk5iPS97LLjXB5e8Qs555ocdzcpbPMXvt84Ji9
+        townName:
+          type: string
+          description: Name of a built-up area, with defined boundaries, and a local government. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+        country:
+          type: string
+          description: Nation with its own government (ISO-3166 Alpha-2 country code). The value must be encrypted.
+          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
+        buildingNumber:
+          type: string
+          description: Number that identifies the position of a building on a street. The value must be encrypted.
+          example: QmUFpNkxdsVtebDSUz5eP51kzoysXmqj2gBgeH11PD7SVP
+        postCode:
+          type: string
+          description: Identifier consisting of a group of letters and/or numbers added to a postal address to assist the sorting of mail. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        addressType:
+          type: string
+          description: 'Specifies the type of address. Acceptable values are: - ''HOME'': Residential, the home address - ''BIZZ'': Business, the business address - ''GEOG'': Geographic, an unspecified physical (geographical) address The value must be encrypted.'
+          example: Qmdr9LcChZsoivS6uAhe7Qk7cGLDAx73wBZTVvq4WoU71H
+        department:
+          type: string
+          description: Identification of a division of a large organisation or building. The value must be encrypted.
+          example: QmN7fb65x5MyA7RKyhbXaUKvJ7U4Y9eqpEZTmJYpNyEG8
+        subDepartment:
+          type: string
+          description: Identification of a sub-division of a large organisation or building. The value must be encrypted.
+          example: QmTkfyGh54tXNqFxyEGK9NyTJZYpQ6RZ9zpNykxykME8s
+        buildingName:
+          type: string
+          description: Name of the building or house. The value must be encrypted.
+          example: QmXJfGk85t6RKyhbXaEK9Nz4MEeMKypq6EY9zpJyC9nM9
+        floor:
+          type: string
+          description: Floor or storey within a building. The value must be encrypted.
+          example: QmZP5G7fhZpMyQxXnT9KyR6ybXaEM9zpJy4ME9MkTJGE1
+        postBox:
+          type: string
+          description: Numbered box in a post office. The value must be encrypted.
+          example: QmTkfYRGK54xFqXyJYNZyE9kY9zpMKytJnXy5z9EME9sJ
+        room:
+          type: string
+          description: Building room number. The value must be encrypted.
+          example: QmRYXnT9KyhbXaEMZpMyxMkZ9zpYNYTJ4ME5kCGE7fhMJ
+        townLocationName:
+          type: string
+          description: Specific location name within the town. The value must be encrypted.
+          example: QmNpZTyXJXnT9K6EYZpQxYNYMkC5p4kGEfhnkMJzpYT9Jm
+        districtName:
+          type: string
+          description: Identifies a subdivision within a country subdivision. The value must be encrypted.
+          example: QmT9p6ERKyNYXnTyhbpMYJ4zpYT9kMJZT9QmEMGZ5kMhCy
+        countrySubDivision:
+          type: string
+          description: Identifies a subdivision of a country, such as a state, region, or province. The value must be encrypted.
+          example: QmK9yTbXaZpMYJYTYp6NT9QmEMGZT9p9kMJfhyGE4Z7k5C
+        addressLine:
           type: array
-          description: Information about the originator of the transaction
-          items:
-            $ref: '#/components/schemas/TravelRuleValidatePersons'
-        beneficiaryPersons:
-          type: array
-          description: Information about the beneficiary of the transaction
-          items:
-            $ref: '#/components/schemas/TravelRuleValidatePersons'
-        accountNumber:
-          type: array
-          description: Beneficiary account number
           items:
             type: string
-    TravelRuleNaturalNameIdentifier:
+          description: Information that locates and identifies a specific address, presented in free-format text. Each item must be encrypted.
+          example:
+          - QmNp9kMjfhGZ5kMJzpNYXZTy6NQmZYEMGZ4kZT9Y6pNYT
+    TravelRuleValidateLegalPersonNameIdentifier:
       type: object
       properties:
-        primaryIdentifier:
+        legalPersonName:
           type: string
-          description: The primary identifier of the name. The value must be encrypted.
-          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
-        secondaryIdentifier:
+          description: Name by which the legal person is known.
+          maxLength: 100
+          example: Acme Corporation
+        legalPersonNameIdentifierType:
           type: string
-          description: The secondary identifier of the name. The value must be encrypted.
-          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
-        nameIdentifierType:
-          type: string
-          description: 'The type of the name identifier. The value must be encrypted. The value must be one of the following: [LEGL, DBA, TRAD, NICK, ALIA, MAID, FORM, PREV, BORN, OTHR].'
-          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
-    TravelRuleDateAndPlaceOfBirth:
-      type: object
-      description: Represents the date and place of birth for a natural person
-      properties:
-        dateOfBirth:
-          type: string
-          description: Date of birth. The value must be encrypted.
-          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
-        placeOfBirth:
-          type: string
-          description: Place of birth. The value must be encrypted.
-          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
-    TravelRuleVaspForVault:
+          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name.'
+          enum:
+          - REGISTERED
+          - TRADE
+          - OTHER
+          example: REGISTERED
+    ScreeningPolicyResponse:
       type: object
       properties:
-        vaspDid:
-          description: VASP DID
+        policy:
+          $ref: '#/components/schemas/TravelRulePolicyRuleResponse'
+        policyStatus:
           type: string
-          example: did:ethr:0x5dddec8dd669c49304ddbcba36ccc6e0798534dc
-    TravelRuleNationalIdentification:
-      type: object
-      description: Represents a national identifier for a person or entity
-      properties:
-        countryOfIssue:
+        isDefault:
+          type: boolean
+        createDate:
+          format: date-time
           type: string
-          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code). The value must be encrypted.
-          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
-        nationalIdentifier:
+        lastUpdate:
+          format: date-time
           type: string
-          description: National identifier (max 35 characters). The value must be encrypted.
-          example: QmdR6qLnZ7Kwf5cBaXG8QFQenEvRg9JNZeoPranVuGd63z
-        nationalIdentifierType:
-          type: string
-          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'': National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security number The value must be encrypted.'
-          example: QmUKTg3aFJFhMz1o9gPqA3MgTRwd2LvDLwWTPHYUoMEYVi
-        registrationAuthority:
-          type: string
-          description: Registration authority (format -> RA followed by 6 digits). The value must be encrypted.
-          example: QmV9KJMyT9RJzpYfhME5xNCZ4G67fEkzTpRMyJzp9kTNYk
-    TravelRuleValidateLegalPerson:
-      type: object
-      properties:
-        name:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleValidateLegalPersonNameIdentifier'
-          description: The structured name of the legal person, referencing name identifiers.
-        geographicAddress:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleValidateGeographicAddress'
-          description: The array of geographic addresses associated with the legal person.
-        nationalIdentification:
-          $ref: '#/components/schemas/TravelRuleValidateNationalIdentification'
-        customerIdentification:
-          type: string
-          description: A unique identifier that identifies the customer in the organization's context.
-          example: CUST987654
-        customerNumber:
-          type: string
-          description: A distinct identifier that uniquely identifies the customer within the organization.
-          example: 123456789
-        countryOfRegistration:
-          type: string
-          description: The ISO-3166 Alpha-2 country code where the legal person is registered.
-          example: US
-    TravelRuleValidatePerson:
-      type: object
-      properties:
-        naturalPerson:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleValidateNaturalPerson'
-        legalPerson:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleValidateLegalPerson'
+      required:
+      - policy
+      - isDefault
+      - lastUpdate
     ComplianceScreeningResultFullPayload:
       type: object
       properties:
@@ -1239,226 +1340,116 @@ components:
         timestamp:
           type: number
           format: date-time
-    TravelRuleNaturalPersonNameIdentifier:
+    TravelRuleValidateGeographicAddress:
       type: object
       properties:
-        nameIdentifier:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
-        localNameIdentifier:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
-        phoneticNameIdentifier:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
-    TravelRulePerson:
-      type: object
-      properties:
-        naturalPerson:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleNaturalPerson'
-        legalPerson:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleLegalPerson'
-    TravelRuleValidateNaturalPersonNameIdentifier:
-      type: object
-      properties:
-        nameIdentifier:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
-        localNameIdentifier:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
-        phoneticNameIdentifier:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
-    TravelRuleValidateLegalPersonNameIdentifier:
-      type: object
-      properties:
-        legalPersonName:
+        streetName:
           type: string
-          description: Name by which the legal person is known.
-          maxLength: 100
-          example: Acme Corporation
-        legalPersonNameIdentifierType:
+          description: Name of a street or thoroughfare
+          example: 123 Main St
+        townName:
           type: string
-          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name.'
-          enum:
-          - REGISTERED
-          - TRADE
-          - OTHER
-          example: REGISTERED
-    TravelRuleLegalPerson:
-      type: object
-      properties:
-        name:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleLegalPersonNameIdentifier'
-          description: The structured name of the legal person, referencing name identifiers.
-        geographicAddress:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleGeographicAddress'
-          description: The array of geographic addresses associated with the legal person.
-        nationalIdentification:
-          $ref: '#/components/schemas/TravelRuleNationalIdentification'
-        customerIdentification:
+          description: Name of a built-up area, with defined boundaries, and a local government
+          example: New York
+        country:
           type: string
-          description: A unique identifier that identifies the customer in the organization's context. The value must be encrypted.
-          example: QmRY9AA4Uit2JRTxDzfzshrJdTK86Kf5HriA3dXDnihDmy
-        customerNumber:
-          type: string
-          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
-          example: QmXvyML3AJUFpBbJqL5NVp7Vn7xNkuedTsSMk93duLCNW8
-        countryOfRegistration:
-          type: string
-          description: The ISO-3166 Alpha-2 country code where the legal person is registered. The value must be encrypted.
-          example: QmeoTk6UPruEAYNbJEAHdQYc53ap9BXmpnPMcuvs8wutdr
-    TravelRuleNaturalPerson:
-      type: object
-      properties:
-        name:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleNaturalPersonNameIdentifier'
-          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier schema.
-        geographicAddress:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleGeographicAddress'
-          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress schema.
-        nationalIdentification:
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleNationalIdentification'
-          description: The national identification of the natural person, referencing the TravelRuleNationalIdentification schema.
-        dateAndPlaceOfBirth:
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleDateAndPlaceOfBirth'
-          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
-        customerIdentification:
-          type: string
-          description: A unique identifier for the customer within the organization's context. The value must be encrypted.
-          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
-        countryOfResidence:
-          type: string
-          description: The ISO-3166 Alpha-2 country code of the natural person's residence. The value must be encrypted.
-          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
-        customerNumber:
-          type: string
-          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
-          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
-    TravelRuleOwnershipProof:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'The type of ownership proof. Example values: - `eip-191`: Ethereum signature proof - `eip-712`: Ethereum typed data signature proof - `bip-137`: Bitcoin signature proof - `microtransfer`: Microtransaction (Satoshi test) - `screenshot`: Uploaded screenshot of the wallet - `self-declaration`: Checkbox attestation of ownership'
-          example: eip-191
-        proof:
-          type: string
-          description: 'The cryptographic signature, transaction hash, or other proof depending on the type. Examples: - For `eip-191`: `0x3dd4a17a...ce4a2bcd1b` - For `microtransfer`: The transaction hash `H3V8GXBy39Dz...tr3TSTkY=`'
-          example: 0x3dd4a17a...ce4a2bcd1b
-        attestation:
-          type: string
-          description: 'A human-readable statement of wallet ownership. Required for signature proofs and self-declarations. Examples: - `I certify that ETH account 0x896B...0b9b belongs to me.` - `I hereby declare that the blockchain address 0xa437bEed902AF9338B7DEB23848e195d85019510 is under my control.`'
-          example: I certify that ETH account 0x896B...0b9b belongs to me.
-        address:
-          type: string
-          description: 'The wallet address being verified. Examples: - For Ethereum: `0x896B...0b9b` - For Bitcoin: `1442...dxhsQ`'
-          example: 0x896B...0b9b
-        wallet_provider:
-          type: string
-          description: 'The wallet provider or method used for verification. Examples: - For Metamask: `Metamask` - For manual signature: `manual`'
-          example: Metamask
-        url:
-          type: string
-          description: 'The URL for the uploaded screenshot (for `screenshot` proof types only). Example: `https://example.com/uploaded_image.png`'
-          example: https://example.com/uploaded_image.png
-        confirmed:
-          type: boolean
-          description: 'Whether the user confirmed ownership of the wallet (for `self-declaration` proofs). Example: `true`'
-          example: true
-    TravelRuleUpdateVASPDetails:
-      type: object
-      properties:
-        did:
-          type: string
-          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
-          description: The decentralized identifier of the VASP
-        pii_didkey:
-          type: string
-          example: did:key:z6Mks5CZRaiooKYhq5TwtXQC1gWhwiZnmiKfFrMnYY62MhYf
-          description: The PII DID key of the VASP
-      required:
-      - did
-      - pii_didkey
-    ErrorSchema:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: number
-    TravelRuleLegalPersonNameIdentifier:
-      type: object
-      properties:
-        legalPersonName:
-          type: string
-          description: Name by which the legal person is known. The value must be encrypted.
-          example: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
-        legalPersonNameIdentifierType:
-          type: string
-          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name. The value must be encrypted.'
-          example: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
-    TravelRuleValidateNaturalPerson:
-      type: object
-      properties:
-        name:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleValidateNaturalPersonNameIdentifier'
-          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier schema.
-        geographicAddress:
-          type: array
-          items:
-            $ref: '#/components/schemas/TravelRuleValidateGeographicAddress'
-          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress schema.
-        nationalIdentification:
-          $ref: '#/components/schemas/TravelRuleValidateNationalIdentification'
-        dateAndPlaceOfBirth:
-          allOf:
-          - $ref: '#/components/schemas/TravelRuleValidateDateAndPlaceOfBirth'
-          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
-        customerIdentification:
-          type: string
-          description: A unique identifier for the customer within the organization's context.
-          example: CUST123456
-        countryOfResidence:
-          type: string
-          description: The ISO-3166 Alpha-2 country code of the natural person's residence.
+          description: Nation with its own government (ISO-3166 Alpha-2 country code)
           example: US
-        customerNumber:
+        buildingNumber:
           type: string
-          description: A distinct identifier that uniquely identifies the customer within the organization.
-          example: 123456789
-    TravelRuleGetAllVASPsResponse:
-      type: object
-      properties:
-        vasps:
+          description: Number that identifies the position of a building on a street
+          example: 123
+        postCode:
+          type: string
+          description: Identifier consisting of a group of letters and/or numbers added to a postal address to assist the sorting of mail
+          example: 12345
+        addressType:
+          type: string
+          description: 'Specifies the type of address. Acceptable values are: - ''HOME'': Residential, the home address - ''BIZZ'': Business, the business address - ''GEOG'': Geographic, an unspecified physical (geographical) address'
+          enum:
+          - HOME
+          - BIZZ
+          - GEOG
+          example: HOME
+        department:
+          type: string
+          description: Identification of a division of a large organisation or building
+          example: IT
+        subDepartment:
+          type: string
+          description: Identification of a sub-division of a large organisation or building
+          example: Security
+        buildingName:
+          type: string
+          description: Name of the building or house
+          example: Acme Building
+        floor:
+          type: string
+          description: Floor or storey within a building
+          example: 1
+        postBox:
+          type: string
+          description: Numbered box in a post office
+          example: 123
+        room:
+          type: string
+          description: Building room number
+          example: 101
+        townLocationName:
+          type: string
+          description: Specific location name within the town
+          example: Downtown
+        districtName:
+          type: string
+          description: Identifies a subdivision within a country subdivision
+          example: Manhattan
+        countrySubDivision:
+          type: string
+          description: Identifies a subdivision of a country such as state, region, or province
+          example: New York
+        addressLine:
           type: array
           items:
-            $ref: '#/components/schemas/TravelRuleVASP'
+            type: string
+          description: Information that locates and identifies a specific address, presented in free format text
+          example:
+          - 123 Main St
+          - New York
+          - NY 12345
+    ScreeningProviderRulesConfigurationResponse:
+      type: object
+      properties:
+        direction:
+          type: string
+          enum:
+          - INBOUND
+          - OUTBOUND
+        status:
+          type: string
+          enum:
+          - COMPLETED
+          - PENDING
+          - REJECTED
+          - FAILED
+          - CANCELED
+          - BLOCKING_TIME_EXPIRED
+        amountUSD:
+          type: number
+        amount:
+          type: number
+        asset:
+          type: string
+        action:
+          type: string
+          enum:
+          - ACCEPT
+          - REJECT
+          - ALERT
+          - WAIT
+          - FREEZE
+          - CANCEL
       required:
-      - vasps
+      - action
     TravelRuleVASP:
       type: object
       properties:
@@ -1601,131 +1592,172 @@ components:
       - hasAdmin
       - isNotifiable
       - issuers
-    ScreeningUpdateConfigurations:
+    TravelRuleValidateTransactionResponse:
       type: object
       properties:
-        disableBypass:
+        isValid:
           type: boolean
-          description: Flag to enable or disable bypass screening on workspace configuration.
-        disableUnfreeze:
-          type: boolean
-          description: Flag to enable or disable unfreeze of transaction frozen by policy rule on workspace configuration.
-    ComplianceResultFullPayload:
-      type: object
-      description: The result of the Compliance AML/Travel Rule screening.
-      properties:
-        aml:
-          type: object
-          description: The end result of the AML screening.
-          items:
-            $ref: '#/components/schemas/ComplianceScreeningResultFullPayload'
-        tr:
-          type: object
-          description: The result of the Travel Rule screening.
-          items:
-            $ref: '#/components/schemas/ComplianceScreeningResultFullPayload'
-        amlList:
-          type: array
-          description: The list of all results of the AML screening.
-          items:
-            $ref: '#/components/schemas/ComplianceScreeningResultFullPayload'
-        status:
-          type: string
-          description: Status of compliance result screening.
-          enum:
-          - Started
-          - NetworkConnectionAddressResolve
-          - ScreeningPrepare
-          - AMLStarted
-          - AMLCompleted
-          - AMLFailed
-          - AMLInBackground
-          - TRPreconditionChecks
-          - TRStarted
-          - TRCompleted
-          - TRFailed
-          - Completed
-          - IncomingStarted
-          - IncomingScreeningPrepare
-          - IncomingWaitForFirstConfirmation
-          - AMLIncomingStarted
-          - AMLIncomingCompleted
-          - AMLIncomingFailed
-          - AMLIncomingInBackground
-          - TRIncomingStarted
-          - TRIncomingCompleted
-          - TRIncomingFailed
-          - IncomingCompleted
-        amlRegistration:
-          type: object
-          description: The results of the AML address registration.
-          items:
-            $ref: '#/components/schemas/AmlRegistrationResultFullPayload'
-    ScreeningProviderRulesConfigurationResponse:
-      type: object
-      properties:
-        direction:
-          type: string
-          enum:
-          - INBOUND
-          - OUTBOUND
-        status:
-          type: string
-          enum:
-          - COMPLETED
-          - PENDING
-          - REJECTED
-          - FAILED
-          - CANCELED
-          - BLOCKING_TIME_EXPIRED
-        amountUSD:
-          type: number
-        amount:
-          type: number
-        asset:
-          type: string
-        action:
-          type: string
-          enum:
-          - ACCEPT
-          - REJECT
-          - ALERT
-          - WAIT
-          - FREEZE
-          - CANCEL
-      required:
-      - action
-    AmlVerdictManualResponse:
-      type: object
-      required:
-      - success
-      - message
-      properties:
-        success:
-          type: boolean
+          description: '"isValid" will tell you if you have collected all the information needed for the travel rule data transfer. Once this field = "true", you can move on to the next step which is to transfer the front-end information to your back-end and perform Travel Rule Transaction create'
           example: true
-        message:
+        type:
           type: string
-          example: AML verdict set successfully
-    TravelRulePiiIVMS:
-      type: object
-      properties:
-        originatorPersons:
+          description: '"type" will tell you if the virtual asset value converted to FIAT value of the withdrawal request is above (=TRAVELRULE) or below (=BELOW_THRESHOLD) the threshold in your jurisdiction. If it is to an unhosted wallet which does not require travel rule information to be sent and only collected, it will say NON_CUSTODIAL.'
+          example: TRAVELRULE
+        beneficiaryAddressType:
+          type: string
+          description: '"beneficiaryAddressType" will tell you if your blockchain analytics provider or internal address book has been able to identify the wallet address.'
+          example: UNKNOWN
+        addressSource:
+          type: string
+          description: '"addressSource" will tell you if the address was found in your internal address book or identified by the blockchain analytics provider.'
+          example: UNKNOWN
+        beneficiaryVASPdid:
+          type: string
+          description: The VASP DID of the beneficiary VASP
+          example: did:ethr:0x46a7ed5813ce735387df2bfb245bd7722e0de992
+        beneficiaryVASPname:
+          type: string
+          description: '"beneficiaryVASPname" will tell you the name of the VASP that has been identified as the owner of the wallet address. This name is used in a subsequent call to get its DID.'
+          example: Fireblocks
+        warnings:
+          description: '"errors/warnings" will tell you what information about the beneficiary you need to collect from the sender.'
+          example:
+          - optional-beneficiaryAccountNumber
           type: array
-          description: Information about the originator of the transaction
-          items:
-            $ref: '#/components/schemas/TravelRulePersons'
-        beneficiaryPersons:
-          type: array
-          description: Information about the beneficiary of the transaction
-          items:
-            $ref: '#/components/schemas/TravelRulePersons'
-        accountNumber:
-          type: array
-          description: Beneficiary account number. The value must be encrypted.
           items:
             type: string
-            example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+      required:
+      - isValid
+      - type
+      - beneficiaryAddressType
+      - addressSource
+      - beneficiaryVASPdid
+      - beneficiaryVASPname
+      - warnings
+    TravelRuleValidatePersons:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TravelRuleValidatePerson'
+    TravelRuleLegalPersonNameIdentifier:
+      type: object
+      properties:
+        legalPersonName:
+          type: string
+          description: Name by which the legal person is known. The value must be encrypted.
+          example: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
+        legalPersonNameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a legal person. Acceptable values are: - ''REGISTERED'': The official registered name. - ''TRADE'': A trading name or DBA (Doing Business As) name. - ''OTHER'': Any other type of name. The value must be encrypted.'
+          example: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
+    TravelRuleTransactionBlockchainInfo:
+      type: object
+      properties:
+        txHash:
+          type: string
+          description: The hash of the transaction
+          example: 66857308435587568925907217391782424136140297125402684115258137778343590111402
+        origin:
+          type: string
+          description: The origin address of the transaction
+          example: 841132469470587054656177892491842814721854784787
+        destination:
+          type: string
+          description: The destination address of the transaction
+          example: 841132469470587054656177892491842814721854784787
+    TravelRuleGetAllVASPsResponse:
+      type: object
+      properties:
+        vasps:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleVASP'
+      required:
+      - vasps
+    TravelRuleValidateNationalIdentification:
+      type: object
+      description: Represents a national identifier for a person or entity
+      properties:
+        countryOfIssue:
+          type: string
+          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code)
+          example: US
+        nationalIdentifier:
+          type: string
+          description: National identifier (max 35 characters)
+          maxLength: 35
+          example: 123456789
+        nationalIdentifierType:
+          type: string
+          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'': National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security number'
+          enum:
+          - PASSPORT
+          - NATIONAL_ID
+          - TAX_ID
+          - SOCIAL_SECURITY
+          example: NATIONAL_ID
+        registrationAuthority:
+          type: string
+          description: Registration authority (format -> RA followed by 6 digits)
+          pattern: ^RA\d{6}$
+          example: RA123456
+    TravelRuleValidateLegalPerson:
+      type: object
+      properties:
+        name:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleValidateLegalPersonNameIdentifier'
+          description: The structured name of the legal person, referencing name identifiers.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateGeographicAddress'
+          description: The array of geographic addresses associated with the legal person.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleValidateNationalIdentification'
+        customerIdentification:
+          type: string
+          description: A unique identifier that identifies the customer in the organization's context.
+          example: CUST987654
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization.
+          example: 123456789
+        countryOfRegistration:
+          type: string
+          description: The ISO-3166 Alpha-2 country code where the legal person is registered.
+          example: US
+    TravelRuleOwnershipProof:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'The type of ownership proof. Example values: - `eip-191`: Ethereum signature proof - `eip-712`: Ethereum typed data signature proof - `bip-137`: Bitcoin signature proof - `microtransfer`: Microtransaction (Satoshi test) - `screenshot`: Uploaded screenshot of the wallet - `self-declaration`: Checkbox attestation of ownership'
+          example: eip-191
+        proof:
+          type: string
+          description: 'The cryptographic signature, transaction hash, or other proof depending on the type. Examples: - For `eip-191`: `0x3dd4a17a...ce4a2bcd1b` - For `microtransfer`: The transaction hash `H3V8GXBy39Dz...tr3TSTkY=`'
+          example: 0x3dd4a17a...ce4a2bcd1b
+        attestation:
+          type: string
+          description: 'A human-readable statement of wallet ownership. Required for signature proofs and self-declarations. Examples: - `I certify that ETH account 0x896B...0b9b belongs to me.` - `I hereby declare that the blockchain address 0xa437bEed902AF9338B7DEB23848e195d85019510 is under my control.`'
+          example: I certify that ETH account 0x896B...0b9b belongs to me.
+        address:
+          type: string
+          description: 'The wallet address being verified. Examples: - For Ethereum: `0x896B...0b9b` - For Bitcoin: `1442...dxhsQ`'
+          example: 0x896B...0b9b
+        wallet_provider:
+          type: string
+          description: 'The wallet provider or method used for verification. Examples: - For Metamask: `Metamask` - For manual signature: `manual`'
+          example: Metamask
+        url:
+          type: string
+          description: 'The URL for the uploaded screenshot (for `screenshot` proof types only). Example: `https://example.com/uploaded_image.png`'
+          example: https://example.com/uploaded_image.png
+        confirmed:
+          type: boolean
+          description: 'Whether the user confirmed ownership of the wallet (for `self-declaration` proofs). Example: `true`'
+          example: true
     TravelRuleValidateTransactionRequest:
       type: object
       properties:
@@ -1780,6 +1812,86 @@ components:
       - transactionAmount
       - originatorVASPdid
       - originatorEqualsBeneficiary
+    TravelRuleIssuer:
+      type: object
+      properties:
+        issuerDid:
+          type: string
+      required:
+      - issuerDid
+    TravelRuleValidateNaturalPersonNameIdentifier:
+      type: object
+      properties:
+        nameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
+        localNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
+        phoneticNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
+    TravelRuleNaturalPersonNameIdentifier:
+      type: object
+      properties:
+        nameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+        localNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+        phoneticNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+    SystemMessageInfo:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - WARN
+          - BLOCK
+        message:
+          type: string
+          description: A response from Fireblocks that communicates a message about the health of the process being performed. If this object is returned with data, you should expect potential delays or incomplete transaction statuses.
+          example: Slow transaction processing. Outgoing transactions might be stuck.
+    ScreeningConfigurationsRequest:
+      type: object
+      properties:
+        bypassScreeningDuringServiceOutages:
+          type: boolean
+          description: Flag to enable or disable bypass screening during service outages.
+        inboundTransactionDelay:
+          type: number
+          description: Inbound transaction delay in seconds.
+        outboundTransactionDelay:
+          type: number
+          description: Outbound transaction delay in seconds.
+    AmlVerdictManualResponse:
+      type: object
+      required:
+      - success
+      - message
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: AML verdict set successfully
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
     TravelRulePolicyRuleResponse:
       type: object
       properties:
@@ -1817,94 +1929,67 @@ components:
           - FREEZE
       required:
       - action
-    AmlRegistrationResultFullPayload:
+    TravelRuleVaspForVault:
       type: object
       properties:
-        provider:
+        vaspDid:
+          description: VASP DID
           type: string
-        success:
-          type: boolean
-        timestamp:
-          type: number
-    ScreeningConfigurationsRequest:
+          example: did:ethr:0x5dddec8dd669c49304ddbcba36ccc6e0798534dc
+    TravelRuleNaturalPerson:
       type: object
       properties:
-        bypassScreeningDuringServiceOutages:
-          type: boolean
-          description: Flag to enable or disable bypass screening during service outages.
-        inboundTransactionDelay:
-          type: number
-          description: Inbound transaction delay in seconds.
-        outboundTransactionDelay:
-          type: number
-          description: Outbound transaction delay in seconds.
-    TravelRuleValidateTransactionResponse:
-      type: object
-      properties:
-        isValid:
-          type: boolean
-          description: '"isValid" will tell you if you have collected all the information needed for the travel rule data transfer. Once this field = "true", you can move on to the next step which is to transfer the front-end information to your back-end and perform Travel Rule Transaction create'
-          example: true
-        type:
-          type: string
-          description: '"type" will tell you if the virtual asset value converted to FIAT value of the withdrawal request is above (=TRAVELRULE) or below (=BELOW_THRESHOLD) the threshold in your jurisdiction. If it is to an unhosted wallet which does not require travel rule information to be sent and only collected, it will say NON_CUSTODIAL.'
-          example: TRAVELRULE
-        beneficiaryAddressType:
-          type: string
-          description: '"beneficiaryAddressType" will tell you if your blockchain analytics provider or internal address book has been able to identify the wallet address.'
-          example: UNKNOWN
-        addressSource:
-          type: string
-          description: '"addressSource" will tell you if the address was found in your internal address book or identified by the blockchain analytics provider.'
-          example: UNKNOWN
-        beneficiaryVASPdid:
-          type: string
-          description: The VASP DID of the beneficiary VASP
-          example: did:ethr:0x46a7ed5813ce735387df2bfb245bd7722e0de992
-        beneficiaryVASPname:
-          type: string
-          description: '"beneficiaryVASPname" will tell you the name of the VASP that has been identified as the owner of the wallet address. This name is used in a subsequent call to get its DID.'
-          example: Fireblocks
-        warnings:
-          description: '"errors/warnings" will tell you what information about the beneficiary you need to collect from the sender.'
-          example:
-          - optional-beneficiaryAccountNumber
+        name:
           type: array
           items:
-            type: string
-      required:
-      - isValid
-      - type
-      - beneficiaryAddressType
-      - addressSource
-      - beneficiaryVASPdid
-      - beneficiaryVASPname
-      - warnings
-    SystemMessageInfo:
+            $ref: '#/components/schemas/TravelRuleNaturalPersonNameIdentifier'
+          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier schema.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress schema.
+        nationalIdentification:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleNationalIdentification'
+          description: The national identification of the natural person, referencing the TravelRuleNationalIdentification schema.
+        dateAndPlaceOfBirth:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleDateAndPlaceOfBirth'
+          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
+        customerIdentification:
+          type: string
+          description: A unique identifier for the customer within the organization's context. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        countryOfResidence:
+          type: string
+          description: The ISO-3166 Alpha-2 country code of the natural person's residence. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+    TravelRuleValidateNaturalNameIdentifier:
       type: object
       properties:
-        type:
+        primaryIdentifier:
           type: string
+          description: The primary identifier of the name
+          example: John
+        secondaryIdentifier:
+          type: string
+          description: The secondary identifier of the name
+          example: Doe
+        nameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a natural person. Acceptable values are: - ''ALIA'': Alias name, a name other than the legal name by which a natural person is also known. - ''BIRT'': Name at birth, the name given to a natural person at birth. - ''MAID'': Maiden name, the original name of a natural person who has changed their name after marriage. - ''LEGL'': Legal name, the name that identifies a natural person for legal, official, or administrative purposes. - ''MISC'': Unspecified, a name by which a natural person may be known but cannot otherwise be categorized.'
           enum:
-          - WARN
-          - BLOCK
-        message:
-          type: string
-          description: A response from Fireblocks that communicates a message about the health of the process being performed. If this object is returned with data, you should expect potential delays or incomplete transaction statuses.
-          example: Slow transaction processing. Outgoing transactions might be stuck.
-    TravelRuleValidateDateAndPlaceOfBirth:
-      type: object
-      description: Represents the date and place of birth for a natural person
-      properties:
-        dateOfBirth:
-          type: string
-          description: Date of birth in ISO 8601 format (YYYY-MM-DD)
-          example: 1990-01-01
-        placeOfBirth:
-          type: string
-          description: Place of birth (max 70 characters)
-          maxLength: 70
-          example: New York, USA
+          - ALIA
+          - BIRT
+          - MAID
+          - LEGL
+          - MISC
+          example: LEGL
     TravelRuleValidateFullTransactionRequest:
       type: object
       properties:
@@ -2005,167 +2090,91 @@ components:
       required:
       - originator
       - beneficiary
-    TravelRuleTransactionBlockchainInfo:
+    AmlRegistrationResultFullPayload:
       type: object
       properties:
-        txHash:
+        provider:
           type: string
-          description: The hash of the transaction
-          example: 66857308435587568925907217391782424136140297125402684115258137778343590111402
-        origin:
-          type: string
-          description: The origin address of the transaction
-          example: 841132469470587054656177892491842814721854784787
-        destination:
-          type: string
-          description: The destination address of the transaction
-          example: 841132469470587054656177892491842814721854784787
-    TravelRuleValidateGeographicAddress:
+        success:
+          type: boolean
+        timestamp:
+          type: number
+    TravelRuleValidatePiiIVMS:
       type: object
       properties:
-        streetName:
+        originatorPersons:
+          type: array
+          description: Information about the originator of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRuleValidatePersons'
+        beneficiaryPersons:
+          type: array
+          description: Information about the beneficiary of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRuleValidatePersons'
+        accountNumber:
+          type: array
+          description: Beneficiary account number
+          items:
+            type: string
+    AmlVerdictManualRequest:
+      type: object
+      required:
+      - verdict
+      - txId
+      properties:
+        verdict:
           type: string
-          description: Name of a street or thoroughfare
-          example: 123 Main St
-        townName:
-          type: string
-          description: Name of a built-up area, with defined boundaries, and a local government
-          example: New York
-        country:
-          type: string
-          description: Nation with its own government (ISO-3166 Alpha-2 country code)
-          example: US
-        buildingNumber:
-          type: string
-          description: Number that identifies the position of a building on a street
-          example: 123
-        postCode:
-          type: string
-          description: Identifier consisting of a group of letters and/or numbers added to a postal address to assist the sorting of mail
-          example: 12345
-        addressType:
-          type: string
-          description: 'Specifies the type of address. Acceptable values are: - ''HOME'': Residential, the home address - ''BIZZ'': Business, the business address - ''GEOG'': Geographic, an unspecified physical (geographical) address'
           enum:
-          - HOME
-          - BIZZ
-          - GEOG
-          example: HOME
-        department:
+          - ACCEPT
+          - REJECT
+          description: The AML verdict to set for the transaction.
+          example: ACCEPT
+        txId:
           type: string
-          description: Identification of a division of a large organisation or building
-          example: IT
-        subDepartment:
-          type: string
-          description: Identification of a sub-division of a large organisation or building
-          example: Security
-        buildingName:
-          type: string
-          description: Name of the building or house
-          example: Acme Building
-        floor:
-          type: string
-          description: Floor or storey within a building
-          example: 1
-        postBox:
-          type: string
-          description: Numbered box in a post office
-          example: 123
-        room:
-          type: string
-          description: Building room number
-          example: 101
-        townLocationName:
-          type: string
-          description: Specific location name within the town
-          example: Downtown
-        districtName:
-          type: string
-          description: Identifies a subdivision within a country subdivision
-          example: Manhattan
-        countrySubDivision:
-          type: string
-          description: Identifies a subdivision of a country such as state, region, or province
-          example: New York
-        addressLine:
-          type: array
-          items:
-            type: string
-          description: Information that locates and identifies a specific address, presented in free format text
-          example:
-          - 123 Main St
-          - New York
-          - NY 12345
-    TravelRuleGeographicAddress:
+          format: uuid
+          description: The transaction ID to set the verdict for.
+          example: 550e8400-e29b-41d4-a716-446655440000
+    TravelRuleValidateNaturalPerson:
       type: object
       properties:
-        streetName:
-          type: string
-          description: Name of a street or thoroughfare. The value must be encrypted.
-          example: QmZGXXsKPk5iPS97LLjXB5e8Qs555ocdzcpbPMXvt84Ji9
-        townName:
-          type: string
-          description: Name of a built-up area, with defined boundaries, and a local government. The value must be encrypted.
-          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
-        country:
-          type: string
-          description: Nation with its own government (ISO-3166 Alpha-2 country code). The value must be encrypted.
-          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
-        buildingNumber:
-          type: string
-          description: Number that identifies the position of a building on a street. The value must be encrypted.
-          example: QmUFpNkxdsVtebDSUz5eP51kzoysXmqj2gBgeH11PD7SVP
-        postCode:
-          type: string
-          description: Identifier consisting of a group of letters and/or numbers added to a postal address to assist the sorting of mail. The value must be encrypted.
-          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
-        addressType:
-          type: string
-          description: 'Specifies the type of address. Acceptable values are: - ''HOME'': Residential, the home address - ''BIZZ'': Business, the business address - ''GEOG'': Geographic, an unspecified physical (geographical) address The value must be encrypted.'
-          example: Qmdr9LcChZsoivS6uAhe7Qk7cGLDAx73wBZTVvq4WoU71H
-        department:
-          type: string
-          description: Identification of a division of a large organisation or building. The value must be encrypted.
-          example: QmN7fb65x5MyA7RKyhbXaUKvJ7U4Y9eqpEZTmJYpNyEG8
-        subDepartment:
-          type: string
-          description: Identification of a sub-division of a large organisation or building. The value must be encrypted.
-          example: QmTkfyGh54tXNqFxyEGK9NyTJZYpQ6RZ9zpNykxykME8s
-        buildingName:
-          type: string
-          description: Name of the building or house. The value must be encrypted.
-          example: QmXJfGk85t6RKyhbXaEK9Nz4MEeMKypq6EY9zpJyC9nM9
-        floor:
-          type: string
-          description: Floor or storey within a building. The value must be encrypted.
-          example: QmZP5G7fhZpMyQxXnT9KyR6ybXaEM9zpJy4ME9MkTJGE1
-        postBox:
-          type: string
-          description: Numbered box in a post office. The value must be encrypted.
-          example: QmTkfYRGK54xFqXyJYNZyE9kY9zpMKytJnXy5z9EME9sJ
-        room:
-          type: string
-          description: Building room number. The value must be encrypted.
-          example: QmRYXnT9KyhbXaEMZpMyxMkZ9zpYNYTJ4ME5kCGE7fhMJ
-        townLocationName:
-          type: string
-          description: Specific location name within the town. The value must be encrypted.
-          example: QmNpZTyXJXnT9K6EYZpQxYNYMkC5p4kGEfhnkMJzpYT9Jm
-        districtName:
-          type: string
-          description: Identifies a subdivision within a country subdivision. The value must be encrypted.
-          example: QmT9p6ERKyNYXnTyhbpMYJ4zpYT9kMJZT9QmEMGZ5kMhCy
-        countrySubDivision:
-          type: string
-          description: Identifies a subdivision of a country, such as a state, region, or province. The value must be encrypted.
-          example: QmK9yTbXaZpMYJYTYp6NT9QmEMGZT9p9kMJfhyGE4Z7k5C
-        addressLine:
+        name:
           type: array
           items:
-            type: string
-          description: Information that locates and identifies a specific address, presented in free-format text. Each item must be encrypted.
-          example:
-          - QmNp9kMjfhGZ5kMJzpNYXZTy6NQmZYEMGZ4kZT9Y6pNYT
+            $ref: '#/components/schemas/TravelRuleValidateNaturalPersonNameIdentifier'
+          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier schema.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateGeographicAddress'
+          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress schema.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleValidateNationalIdentification'
+        dateAndPlaceOfBirth:
+          allOf:
+          - $ref: '#/components/schemas/TravelRuleValidateDateAndPlaceOfBirth'
+          description: The date and place of birth of the natural person, referencing the TravelRuleDateAndPlaceOfBirth schema.
+        customerIdentification:
+          type: string
+          description: A unique identifier for the customer within the organization's context.
+          example: CUST123456
+        countryOfResidence:
+          type: string
+          description: The ISO-3166 Alpha-2 country code of the natural person's residence.
+          example: US
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization.
+          example: 123456789
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -2176,15 +2185,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

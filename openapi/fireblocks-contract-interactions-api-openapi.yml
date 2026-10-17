@@ -255,17 +255,92 @@ paths:
       - lang: Python
         source: response = fireblocks.contract_interactions.get_transaction_receipt(base_asset_id, tx_hash);
 components:
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
   schemas:
+    IdlType:
+      type: string
+      enum:
+      - bool
+      - u8
+      - i8
+      - u16
+      - i16
+      - u32
+      - i32
+      - f32
+      - u64
+      - i64
+      - f64
+      - u128
+      - i128
+      - u256
+      - i256
+      - bytes
+      - string
+      - pubkey
+      description: The type of the parameter
+      example: u8
+    ParameterWithValue:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Some Name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The  internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+        value:
+          example: 'true'
+          description: The value of the parameter. can also be ParameterWithValue
+          type: string
+        functionValue:
+          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
+          allOf:
+          - $ref: '#/components/schemas/LeanAbiFunction'
+      required:
+      - name
+      - type
+    SolanaInstructionWithValue:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the instruction
+          example: approve
+        discriminator:
+          type: array
+          items:
+            type: number
+          description: The discriminator for the instruction. Acts as a function selector
+          example:
+          - 13
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SOLAccountWithValue'
+        args:
+          type: array
+          description: The arguments of the instruction
+          items:
+            $ref: '#/components/schemas/SolParameterWithValue'
+      required:
+      - name
+      - discriminator
+      - accounts
+      - args
     SolParameterWithValue:
       type: object
       properties:
@@ -283,32 +358,6 @@ components:
       - name
       - type
       - value
-    ReadAbiFunction:
-      type: object
-      properties:
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParameterWithValue'
-        stateMutability:
-          type: string
-          enum:
-          - pure
-          - view
-        type:
-          type: string
-        name:
-          type: string
-        outputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Parameter'
-        description:
-          type: string
-      required:
-      - stateMutability
-      - type
-      - inputs
     TxLog:
       type: object
       properties:
@@ -363,118 +412,65 @@ components:
       - blockHash
       - logIndex
       - removed
-    SolanaInstructionWithValue:
+    ReadAbiFunction:
       type: object
       properties:
-        name:
-          type: string
-          description: The name of the instruction
-          example: approve
-        discriminator:
+        inputs:
           type: array
           items:
-            type: number
-          description: The discriminator for the instruction. Acts as a function selector
-          example:
-          - 13
-        accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/SOLAccountWithValue'
-        args:
-          type: array
-          description: The arguments of the instruction
-          items:
-            $ref: '#/components/schemas/SolParameterWithValue'
-      required:
-      - name
-      - discriminator
-      - accounts
-      - args
-    ReadCallFunctionDto:
-      type: object
-      properties:
-        abiFunction:
-          example:
-            inputs: []
-            stateMutability: view
-            type: function
-            name: decimals
-            outputs:
-            - name: ''
-              type: uint8
-              internalType: uint8
-          description: The abi of the read function you wish to call
-          type: object
-          $ref: '#/components/schemas/ReadAbiFunction'
-      required:
-      - abiFunction
-    Parameter:
-      type: object
-      properties:
-        name:
+            $ref: '#/components/schemas/ParameterWithValue'
+        stateMutability:
           type: string
-          example: _name
-          description: The name of the parameter as it appears in the ABI
-        description:
-          type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
-          type: string
-          example: string
-          description: The internal type of the parameter as it appears in the ABI
+          enum:
+          - pure
+          - view
         type:
           type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
+        name:
+          type: string
+        outputs:
           type: array
-          description: In case it’s a struct, it will hold the struct data
+          items:
+            $ref: '#/components/schemas/Parameter'
+        description:
+          type: string
       required:
-      - name
+      - stateMutability
       - type
-    WriteCallFunctionDto:
+      - inputs
+    WriteAbiFunction:
       type: object
       properties:
-        vaultAccountId:
+        stateMutability:
           type: string
-          example: '0'
-          description: The vault account id this contract was deploy from
-        abiFunction:
-          oneOf:
-          - $ref: '#/components/schemas/WriteAbiFunction'
-          - $ref: '#/components/schemas/SolanaInstructionWithValue'
-        amount:
-          type: string
-          description: Amount in base asset. Being used in payable functions
-          example: '12.345'
-        feeLevel:
           enum:
-          - LOW
-          - MEDIUM
-          - HIGH
+          - payable
+          - nonpayable
+          example: nonpayable
+        outputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+        type:
           type: string
-          description: Fee level for the write function transaction. interchangeable with the 'fee' field
-          example: MEDIUM
-        fee:
+          enum:
+          - function
+        name:
           type: string
-          description: Max fee amount for the write function transaction. interchangeable with the 'feeLevel' field
-          example: '2000'
-        note:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
+        description:
           type: string
-          description: Custom note, not sent to the blockchain, that describes the transaction at your Fireblocks workspace
-        useGasless:
-          type: boolean
-          example: false
-          description: Indicates whether the token should be created in a gasless manner, utilizing the ERC-2771 standard. When set to true, the transaction will be relayed by a designated relayer. The workspace must be configured to use Fireblocks gasless relay.
-        externalId:
-          type: string
-          description: External id that can be used to identify the transaction in your system. The unique identifier of the transaction outside of Fireblocks with max length of 255 characters
-          example: 0192e4f5-924e-7bb9-8e5b-c748270feb38
       required:
-      - vaultAccountId
-      - abiFunction
+      - stateMutability
+      - type
+      - inputs
+    ParameterWithValueList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ParameterWithValue'
     WriteCallFunctionResponseDto:
       type: object
       properties:
@@ -484,10 +480,20 @@ components:
           description: The Fireblocks transaction id of the function call
       required:
       - txId
-    ParameterWithValueList:
-      type: array
-      items:
-        $ref: '#/components/schemas/ParameterWithValue'
+    LeanAbiFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: initialize
+          description: The function name
+        inputs:
+          description: The function inputs
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
+      required:
+      - inputs
     AbiFunction:
       type: object
       properties:
@@ -527,56 +533,24 @@ components:
       required:
       - type
       - inputs
-    LeanAbiFunction:
+    ReadCallFunctionDto:
       type: object
       properties:
-        name:
-          type: string
-          example: initialize
-          description: The function name
-        inputs:
-          description: The function inputs
-          type: array
-          items:
-            $ref: '#/components/schemas/ParameterWithValue'
-      required:
-      - inputs
-    ContractAbiResponseDto:
-      type: object
-      properties:
-        abi:
+        abiFunction:
           example:
-          - inputs:
-            - internalType: address
-              name: implementation
-              type: address
-            - internalType: bytes
-              name: _data
-              type: bytes
-            stateMutability: nonpayable
-            type: constructor
-          description: The abi of the contract
-          type: array
-          items:
-            $ref: '#/components/schemas/AbiFunction'
-        implementationAbi:
-          example:
-          - inputs:
-            - internalType: address
-              name: to
-              type: address
-            - internalType: uint256
-              name: amount
-              type: uint256
-            stateMutability: nonpayable
+            inputs: []
+            stateMutability: view
             type: function
-            name: mint
-          description: The abi of the implementation contract if exists. Relevant only for proxy patterns
-          type: array
-          items:
-            $ref: '#/components/schemas/AbiFunction'
+            name: decimals
+            outputs:
+            - name: ''
+              type: uint8
+              internalType: uint8
+          description: The abi of the read function you wish to call
+          type: object
+          $ref: '#/components/schemas/ReadAbiFunction'
       required:
-      - abi
+      - abiFunction
     TransactionReceiptResponse:
       type: object
       properties:
@@ -676,12 +650,48 @@ components:
       required:
       - name
       - address
-    ParameterWithValue:
+    ContractAbiResponseDto:
+      type: object
+      properties:
+        abi:
+          example:
+          - inputs:
+            - internalType: address
+              name: implementation
+              type: address
+            - internalType: bytes
+              name: _data
+              type: bytes
+            stateMutability: nonpayable
+            type: constructor
+          description: The abi of the contract
+          type: array
+          items:
+            $ref: '#/components/schemas/AbiFunction'
+        implementationAbi:
+          example:
+          - inputs:
+            - internalType: address
+              name: to
+              type: address
+            - internalType: uint256
+              name: amount
+              type: uint256
+            stateMutability: nonpayable
+            type: function
+            name: mint
+          description: The abi of the implementation contract if exists. Relevant only for proxy patterns
+          type: array
+          items:
+            $ref: '#/components/schemas/AbiFunction'
+      required:
+      - abi
+    Parameter:
       type: object
       properties:
         name:
           type: string
-          example: Some Name
+          example: _name
           description: The name of the parameter as it appears in the ABI
         description:
           type: string
@@ -690,78 +700,58 @@ components:
         internalType:
           type: string
           example: string
-          description: The  internal type of the parameter as it appears in the ABI
+          description: The internal type of the parameter as it appears in the ABI
         type:
           type: string
           example: string
           description: The type of the parameter as it appears in the ABI
         components:
           type: array
-          items:
-            $ref: '#/components/schemas/Parameter'
-        value:
-          example: 'true'
-          description: The value of the parameter. can also be ParameterWithValue
-          type: string
-        functionValue:
-          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
-          allOf:
-          - $ref: '#/components/schemas/LeanAbiFunction'
+          description: In case it’s a struct, it will hold the struct data
       required:
       - name
       - type
-    WriteAbiFunction:
+    WriteCallFunctionDto:
       type: object
       properties:
-        stateMutability:
+        vaultAccountId:
           type: string
+          example: '0'
+          description: The vault account id this contract was deploy from
+        abiFunction:
+          oneOf:
+          - $ref: '#/components/schemas/WriteAbiFunction'
+          - $ref: '#/components/schemas/SolanaInstructionWithValue'
+        amount:
+          type: string
+          description: Amount in base asset. Being used in payable functions
+          example: '12.345'
+        feeLevel:
           enum:
-          - payable
-          - nonpayable
-          example: nonpayable
-        outputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Parameter'
-        type:
+          - LOW
+          - MEDIUM
+          - HIGH
           type: string
-          enum:
-          - function
-        name:
+          description: Fee level for the write function transaction. interchangeable with the 'fee' field
+          example: MEDIUM
+        fee:
           type: string
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParameterWithValue'
-        description:
+          description: Max fee amount for the write function transaction. interchangeable with the 'feeLevel' field
+          example: '2000'
+        note:
           type: string
+          description: Custom note, not sent to the blockchain, that describes the transaction at your Fireblocks workspace
+        useGasless:
+          type: boolean
+          example: false
+          description: Indicates whether the token should be created in a gasless manner, utilizing the ERC-2771 standard. When set to true, the transaction will be relayed by a designated relayer. The workspace must be configured to use Fireblocks gasless relay.
+        externalId:
+          type: string
+          description: External id that can be used to identify the transaction in your system. The unique identifier of the transaction outside of Fireblocks with max length of 255 characters
+          example: 0192e4f5-924e-7bb9-8e5b-c748270feb38
       required:
-      - stateMutability
-      - type
-      - inputs
-    IdlType:
-      type: string
-      enum:
-      - bool
-      - u8
-      - i8
-      - u16
-      - i16
-      - u32
-      - i32
-      - f32
-      - u64
-      - i64
-      - f64
-      - u128
-      - i128
-      - u256
-      - i256
-      - bytes
-      - string
-      - pubkey
-      description: The type of the parameter
-      example: u8
+      - vaultAccountId
+      - abiFunction
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key
@@ -771,6 +761,16 @@ components:
       schema:
         type: string
         example: some-unique-id
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   securitySchemes:
     bearerTokenAuth:
       type: http

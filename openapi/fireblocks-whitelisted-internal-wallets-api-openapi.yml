@@ -581,6 +581,15 @@ paths:
         source: response = fireblocks.internal_wallets.delete_internal_wallet_asset(wallet_id, asset_id);
 components:
   schemas:
+    CreateWalletRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: the wallet's display name
+        customerRefId:
+          description: Optional - Sets a customer reference ID
+          type: string
     CreateInternalWalletAssetRequest:
       type: object
       properties:
@@ -592,43 +601,6 @@ components:
           description: for XRP wallets, the destination tag; for EOS, the memo; for the fiat providers (BLINC by BCB Group), the Bank Transfer Description
       required:
       - address
-    UnmanagedWallet:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        customerRefId:
-          type: string
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/WalletAsset'
-      required:
-      - id
-      - name
-      - assets
-    SetCustomerRefIdRequest:
-      type: object
-      properties:
-        customerRefId:
-          description: Customer reference ID
-          type: string
-          example: some-customer-reference
-    PaginatedAssetsResponse:
-      type: object
-      properties:
-        total:
-          type: number
-          description: Total number of assets in the internal wallet
-        data:
-          $ref: '#/components/schemas/UnmanagedWallet'
-        next:
-          type: string
-          description: Cursor for the next page of results
-      required:
-      - data
     WalletAsset:
       type: object
       properties:
@@ -646,6 +618,47 @@ components:
           type: string
         activationTime:
           type: string
+    UnmanagedWallet:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        customerRefId:
+          type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletAsset'
+      required:
+      - id
+      - name
+      - assets
+    PaginatedAssetsResponse:
+      type: object
+      properties:
+        total:
+          type: number
+          description: Total number of assets in the internal wallet
+        data:
+          $ref: '#/components/schemas/UnmanagedWallet'
+        next:
+          type: string
+          description: Cursor for the next page of results
+      required:
+      - data
+    GetInternalWalletsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UnmanagedWallet'
+    SetCustomerRefIdRequest:
+      type: object
+      properties:
+        customerRefId:
+          description: Customer reference ID
+          type: string
+          example: some-customer-reference
     ConfigChangeRequestStatus:
       type: string
       enum:
@@ -654,19 +667,15 @@ components:
       - CANCELLED
       - REJECTED
       - FAILED
-    CreateWalletRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: the wallet's display name
-        customerRefId:
-          description: Optional - Sets a customer reference ID
-          type: string
-    GetInternalWalletsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/UnmanagedWallet'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   responses:
     Error:
       description: Error Response
@@ -677,15 +686,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http
