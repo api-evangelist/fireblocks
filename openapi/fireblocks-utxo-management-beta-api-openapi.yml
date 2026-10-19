@@ -1,0 +1,839 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks UTXO Management (Beta) API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: UTXO Management (Beta)
+paths:
+  /utxo_management/{vaultAccountId}/{assetId}/labels:
+    patch:
+      operationId: updateUtxoLabels
+      summary: Attach or detach labels to/from UTXOs
+      description: 'Attach or detach labels to/from UTXOs in a vault account. Labels can be
+
+        used for organizing and filtering UTXOs.
+
+
+        Labels are applied additively — `labelsToAttach` adds to the existing
+
+        label set and `labelsToDetach` removes from it. Neither operation
+
+        replaces the full set.
+
+
+        The request is all-or-nothing: if any identifier cannot be labelled, no
+
+        UTXO is labelled and the request fails with `400`. The response lists
+
+        every failed identifier in `failures`, each with its own `reason` — use
+
+        it, not the status, to decide what to do:
+
+        - `NOT_FOUND` — not found in this vault and asset.
+
+        - `NOT_LABELLABLE` — spent, or removed, and can no longer be labelled.
+
+
+        A UTXO removed within the last hour is reported as `NOT_FOUND` with
+
+        `utxoStatus: REMOVED`; if it does not reappear, it becomes
+
+        `NOT_LABELLABLE` after about an hour. A `400` without `failures` means
+
+        the request itself is malformed.
+
+
+        **Note:** These endpoints are currently in beta and might be subject to
+
+        changes.
+
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver,
+
+        Editor.'
+      tags:
+      - UTXO Management (Beta)
+      x-rate-limit-category: write
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttachDetachUtxoLabelsRequest'
+      responses:
+        '200':
+          description: UTXOs with updated labels
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachDetachUtxoLabelsResponse'
+        '400':
+          description: Some identifiers could not be labelled (listed in `failures`), or the request is malformed. No UTXO was labelled.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtxoLabelsErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AttachDetachUtxoLabelsResponse>> = fireblocks.uTXOManagementBeta.updateUtxoLabels(uTXOManagementBetaApiUpdateUtxoLabelsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AttachDetachUtxoLabelsResponse>> response = fireblocks.uTXOManagementBeta().updateUtxoLabels(attachDetachUtxoLabelsRequest, vaultAccountId, assetId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.u_t_x_o_management_beta.update_utxo_labels(attach_detach_utxo_labels_request, vault_account_id, asset_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AttachDetachUtxoLabelsResponse>> = fireblocks.uTXOManagementBeta.updateUtxoLabels(uTXOManagementBetaApiUpdateUtxoLabelsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AttachDetachUtxoLabelsResponse>> response = fireblocks.uTXOManagementBeta().updateUtxoLabels(attachDetachUtxoLabelsRequest, vaultAccountId, assetId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.u_t_x_o_management_beta.update_utxo_labels(attach_detach_utxo_labels_request, vault_account_id, asset_id, idempotency_key);
+  /utxo_management/{vaultAccountId}/{assetId}/selection_config:
+    parameters:
+    - in: path
+      name: vaultAccountId
+      required: true
+      description: The ID of the vault account.
+      schema:
+        type: string
+        format: numeric
+        x-fb-entity: vault_account
+    - in: path
+      name: assetId
+      required: true
+      description: The ID of the asset
+      schema:
+        type: string
+        x-fb-entity: asset
+    get:
+      operationId: getVaultAssetUtxoSelectionConfig
+      summary: Get vault and asset UTXO selection config
+      description: 'Returns the config stored at this vault-and-asset scope, if any, and the effective strategy after workspace fallback and runtime resolution. `ADAPTIVE` is the recommended strategy. When no row is stored at this scope and none is inherited from the workspace (source `DEFAULT`), `effective` is `ADAPTIVE` if adaptive selection is serving for this scope, otherwise `ASC`.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - UTXO Management (Beta)
+      x-rate-limit-category: read
+      responses:
+        '200':
+          description: Current UTXO selection config
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtxoSelectionConfigResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UtxoSelectionConfigResponse>> = fireblocks.uTXOManagementBeta.getVaultAssetUtxoSelectionConfig();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UtxoSelectionConfigResponse>> response = fireblocks.uTXOManagementBeta().getVaultAssetUtxoSelectionConfig();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.u_t_x_o_management_beta.get_vault_asset_utxo_selection_config();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UtxoSelectionConfigResponse>> = fireblocks.uTXOManagementBeta.getVaultAssetUtxoSelectionConfig();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UtxoSelectionConfigResponse>> response = fireblocks.uTXOManagementBeta().getVaultAssetUtxoSelectionConfig();
+      - lang: Python
+        source: response = fireblocks.u_t_x_o_management_beta.get_vault_asset_utxo_selection_config();
+    put:
+      operationId: upsertVaultAssetUtxoSelectionConfig
+      summary: Upsert vault and asset UTXO selection config
+      description: 'Creates or updates the UTXO selection strategy for this vault account and asset. `ADAPTIVE` is recommended.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - UTXO Management (Beta)
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertUtxoSelectionConfigRequest'
+      responses:
+        '200':
+          description: Updated UTXO selection config
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtxoSelectionConfigResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UtxoSelectionConfigResponse>> = fireblocks.uTXOManagementBeta.upsertVaultAssetUtxoSelectionConfig(uTXOManagementBetaApiUpsertVaultAssetUtxoSelectionConfigRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UtxoSelectionConfigResponse>> response = fireblocks.uTXOManagementBeta().upsertVaultAssetUtxoSelectionConfig(upsertUtxoSelectionConfigRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.u_t_x_o_management_beta.upsert_vault_asset_utxo_selection_config(upsert_utxo_selection_config_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UtxoSelectionConfigResponse>> = fireblocks.uTXOManagementBeta.upsertVaultAssetUtxoSelectionConfig(uTXOManagementBetaApiUpsertVaultAssetUtxoSelectionConfigRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UtxoSelectionConfigResponse>> response = fireblocks.uTXOManagementBeta().upsertVaultAssetUtxoSelectionConfig(upsertUtxoSelectionConfigRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.u_t_x_o_management_beta.upsert_vault_asset_utxo_selection_config(upsert_utxo_selection_config_request, idempotency_key);
+  /utxo_management/{vaultAccountId}/{assetId}/unspent_outputs:
+    get:
+      operationId: getUtxos
+      summary: List unspent outputs (UTXOs)
+      description: 'Returns a paginated list of unspent transaction outputs (UTXOs) for a UTXO-based asset in a vault account, with optional filters for labels, statuses, amounts, and more.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - UTXO Management (Beta)
+      x-rate-limit-category: read
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+      - in: path
+        name: assetId
+        required: true
+        description: The ID of the asset
+        schema:
+          type: string
+          x-fb-entity: asset
+      - in: query
+        name: pageCursor
+        required: false
+        description: Cursor for the next page of results
+        schema:
+          type: string
+        example: MjAyNS0wNy0wOSAxMDo1MzoxMy40NTI=:NA==
+      - in: query
+        name: pageSize
+        required: false
+        description: Number of results per page (max 250, default 50)
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 250
+          default: 50
+        example: 50
+      - in: query
+        name: sort
+        required: false
+        description: Field to sort by
+        schema:
+          type: string
+          enum:
+          - AMOUNT
+          - CONFIRMATIONS
+        example: AMOUNT
+      - in: query
+        name: order
+        required: false
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+        example: ASC
+      - in: query
+        name: includeAllLabels
+        required: false
+        description: Only return UTXOs that have ALL of these labels (AND logic).
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - cold-storage
+      - in: query
+        name: includeAnyLabels
+        required: false
+        description: Return UTXOs that have ANY of these labels (OR logic).
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - vip
+        - high-value
+      - in: query
+        name: excludeAnyLabels
+        required: false
+        description: Exclude UTXOs that have ANY of these labels.
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - deprecated
+      - in: query
+        name: includeStatuses
+        required: false
+        description: Filter by UTXO statuses to include.
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - AVAILABLE
+        - PENDING
+      - in: query
+        name: address
+        required: false
+        description: Filter by address
+        schema:
+          type: string
+        example: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+      - in: query
+        name: txHash
+        required: false
+        description: Filter by the on-chain hash of the transaction that created the UTXOs. Returns all UTXOs originating from that transaction.
+        schema:
+          type: string
+        example: 0000000000000000000a1b2c3d4e5f60718293a4b5c6d7e8f900112233445566
+      - in: query
+        name: txId
+        required: false
+        description: Filter by the Fireblocks transaction ID that created the UTXOs.
+        schema:
+          type: string
+          format: uuid
+        example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+      - in: query
+        name: minAmount
+        required: false
+        description: Minimum amount filter
+        schema:
+          type: string
+        example: '0.001'
+      - in: query
+        name: maxAmount
+        required: false
+        description: Maximum amount filter
+        schema:
+          type: string
+        example: '1.0'
+      responses:
+        '200':
+          description: A paginated list of UTXOs
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUtxosResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ListUtxosResponse>> = fireblocks.uTXOManagementBeta.getUtxos(uTXOManagementBetaApiGetUtxosRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ListUtxosResponse>> response = fireblocks.uTXOManagementBeta().getUtxos(vaultAccountId, assetId, pageCursor, pageSize, sort, order, includeAllLabels, includeAnyLabels, excludeAnyLabels, includeStatuses, address, txHash, txId, minAmount, maxAmount);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.u_t_x_o_management_beta.get_utxos(vault_account_id, asset_id, page_cursor, page_size, sort, order, include_all_labels, include_any_labels, exclude_any_labels, include_statuses, address, tx_hash, tx_id, min_amount, max_amount);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ListUtxosResponse>> = fireblocks.uTXOManagementBeta.getUtxos(uTXOManagementBetaApiGetUtxosRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ListUtxosResponse>> response = fireblocks.uTXOManagementBeta().getUtxos(vaultAccountId, assetId, pageCursor, pageSize, sort, order, includeAllLabels, includeAnyLabels, excludeAnyLabels, includeStatuses, address, txHash, txId, minAmount, maxAmount);
+      - lang: Python
+        source: response = fireblocks.u_t_x_o_management_beta.get_utxos(vault_account_id, asset_id, page_cursor, page_size, sort, order, include_all_labels, include_any_labels, exclude_any_labels, include_statuses, address, tx_hash, tx_id, min_amount, max_amount);
+  /utxo_management/selection_config:
+    get:
+      operationId: getUtxoSelectionConfig
+      summary: Get UTXO selection config
+      description: 'Returns the workspace-level configured selection strategy and the effective strategy after runtime resolution. `ADAPTIVE` is the recommended strategy. When no row is stored (source `DEFAULT`), `effective` is `ADAPTIVE` if adaptive selection is serving for this workspace, otherwise `ASC`.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      tags:
+      - UTXO Management (Beta)
+      x-rate-limit-category: read
+      responses:
+        '200':
+          description: Current UTXO selection config
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtxoSelectionConfigResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UtxoSelectionConfigResponse>> = fireblocks.uTXOManagementBeta.getUtxoSelectionConfig();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UtxoSelectionConfigResponse>> response = fireblocks.uTXOManagementBeta().getUtxoSelectionConfig();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.u_t_x_o_management_beta.get_utxo_selection_config();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UtxoSelectionConfigResponse>> = fireblocks.uTXOManagementBeta.getUtxoSelectionConfig();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UtxoSelectionConfigResponse>> response = fireblocks.uTXOManagementBeta().getUtxoSelectionConfig();
+      - lang: Python
+        source: response = fireblocks.u_t_x_o_management_beta.get_utxo_selection_config();
+    put:
+      operationId: upsertUtxoSelectionConfig
+      summary: Upsert UTXO selection config
+      description: 'Creates or updates the workspace-level UTXO selection strategy. `ADAPTIVE` is recommended.
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - UTXO Management (Beta)
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertUtxoSelectionConfigRequest'
+      responses:
+        '200':
+          description: Updated UTXO selection config
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtxoSelectionConfigResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UtxoSelectionConfigResponse>> = fireblocks.uTXOManagementBeta.upsertUtxoSelectionConfig(uTXOManagementBetaApiUpsertUtxoSelectionConfigRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UtxoSelectionConfigResponse>> response = fireblocks.uTXOManagementBeta().upsertUtxoSelectionConfig(upsertUtxoSelectionConfigRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.u_t_x_o_management_beta.upsert_utxo_selection_config(upsert_utxo_selection_config_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UtxoSelectionConfigResponse>> = fireblocks.uTXOManagementBeta.upsertUtxoSelectionConfig(uTXOManagementBetaApiUpsertUtxoSelectionConfigRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UtxoSelectionConfigResponse>> response = fireblocks.uTXOManagementBeta().upsertUtxoSelectionConfig(upsertUtxoSelectionConfigRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.u_t_x_o_management_beta.upsert_utxo_selection_config(upsert_utxo_selection_config_request, idempotency_key);
+components:
+  schemas:
+    UtxoInput-2:
+      type: object
+      properties:
+        txHash:
+          type: string
+          description: The transaction hash
+          example: b34f0c3ce612f1e5a5c19d6b1e6b5e3e7f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c
+        index:
+          type: integer
+          description: The output index (vout)
+          example: 0
+    UtxoSelectionConfigSourceEnum:
+      type: string
+      description: Where the effective strategy was resolved from. `DEFAULT` means no stored row applies at this scope or any scope it inherits from - `effective.strategy` reports whichever strategy currently applies. `WORKSPACE` and `VAULT_ASSET` are stored rows.
+      enum:
+      - DEFAULT
+      - WORKSPACE
+      - VAULT_ASSET
+      example: DEFAULT
+    UtxoLabelFailure:
+      type: object
+      description: A requested identifier that blocked the label request, with the reason it could not be labelled.
+      properties:
+        identifier:
+          description: The identifier exactly as it was sent in the request.
+          example:
+            txId: b70701f4-d7b1-4795-a8ee-b09cdb5b850e
+          allOf:
+          - $ref: '#/components/schemas/UtxoIdentifier'
+        reason:
+          type: string
+          description: 'Why the identifier could not be labelled:
+
+            - `NOT_FOUND` — no UTXO for it in this vault and asset. Retrying can work once it is indexed.
+
+            - `NOT_LABELLABLE` — the UTXO exists but can no longer be labelled (spent, or removed; for a transaction ID, every output). Retrying will not help.'
+          enum:
+          - NOT_FOUND
+          - NOT_LABELLABLE
+          - UNUSABLE_IDENTIFIER
+          example: NOT_LABELLABLE
+        utxoStatus:
+          type: string
+          description: 'The UTXO status behind the reason, when one explains it.
+
+            With `NOT_FOUND`, `REMOVED` means the UTXO was removed within the last hour and may still reappear;
+
+            if it does not, the same request returns `NOT_LABELLABLE` after about an hour.'
+          enum:
+          - SPENT
+          - REMOVED
+          example: SPENT
+      required:
+      - identifier
+      - reason
+    UtxoIdentifier:
+      type: object
+      description: 'Identifies a UTXO by either a Fireblocks transaction ID (targets all outputs of that transaction)
+
+        or a specific on-chain UTXO (txHash + index). Exactly one of these two forms must be provided.'
+      properties:
+        txId:
+          type: string
+          description: Fireblocks transaction ID
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850e
+        txHash:
+          type: string
+          maxLength: 64
+          pattern: ^[0-9a-fA-F]{1,64}$
+          description: On-chain transaction hash, in lowercase hex as the chain reports it. Matched case-sensitively, so an uppercase hash is never found.
+          example: b34f0c3ce612f1e5a5c19d6b1e6b5e3e7f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c
+        index:
+          type: integer
+          description: Output index (vout)
+          example: 0
+    ListUtxosResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: List of UTXOs
+          items:
+            $ref: '#/components/schemas/UtxoOutput'
+        next:
+          type:
+          - string
+          - 'null'
+          description: Cursor to the next page
+          example: MjAyNS0wNy0wOSAxMDo1MzoxMy40NTI=:NA==
+      required:
+      - data
+    UtxoSelectionConfigEntry:
+      type: object
+      description: Config row stored at exactly the requested scope. Omitted from the parent object when none exists; the server does not emit JSON `null`.
+      required:
+      - strategy
+      - updatedAt
+      properties:
+        strategy:
+          $ref: '#/components/schemas/UtxoSelectionStrategyEnum'
+        updatedAt:
+          type: string
+          format: date-time
+          description: Time at which this configured row was last updated.
+          example: '2026-09-09T15:00:00.000Z'
+    AttachDetachUtxoLabelsRequest:
+      type: object
+      properties:
+        utxoIdentifiers:
+          description: List of UTXO identifiers to apply label changes to
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: '#/components/schemas/UtxoIdentifier'
+        labelsToAttach:
+          description: Labels to attach to the specified UTXOs. At least one of labelsToAttach or labelsToDetach must be provided.
+          example:
+          - cold-storage
+          - vip
+          type: array
+          minItems: 1
+          maxItems: 5
+          items:
+            type: string
+            maxLength: 30
+        labelsToDetach:
+          description: Labels to detach from the specified UTXOs. At least one of labelsToAttach or labelsToDetach must be provided.
+          example:
+          - deprecated
+          type: array
+          minItems: 1
+          maxItems: 5
+          items:
+            type: string
+            maxLength: 30
+      required:
+      - utxoIdentifiers
+    AttachDetachUtxoLabelsResponse:
+      type: object
+      properties:
+        utxos:
+          type: array
+          description: Modified UTXOs with updated labels
+          items:
+            $ref: '#/components/schemas/UtxoOutput'
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    UtxoLabelsErrorResponse:
+      type: object
+      description: Returned when a label request is rejected. The request is all-or-nothing, so no UTXO was labelled.
+      properties:
+        message:
+          type: string
+          description: Summary of the rejection. When `failures` is present, it names the identifiers that blocked the request.
+          example: 'Cannot label the requested UTXOs: not labellable in its current status: b70701f4-d7b1-4795-a8ee-b09cdb5b850e'
+        failures:
+          type: array
+          description: 'Every identifier that blocked the request, each with its own reason.
+
+            Identifiers not listed were valid; resend them without the failed ones.
+
+            Absent when the request itself was invalid (e.g. a malformed label).'
+          example:
+          - identifier:
+              txId: b70701f4-d7b1-4795-a8ee-b09cdb5b850e
+            reason: NOT_LABELLABLE
+            utxoStatus: SPENT
+          items:
+            $ref: '#/components/schemas/UtxoLabelFailure'
+      required:
+      - message
+    UtxoSelectionStrategyEnum:
+      type: string
+      description: 'UTXO selection strategy. `ADAPTIVE` is recommended: the engine chooses inputs at selection time. `ASC` spends smallest UTXOs first. `DESC` spends largest first.'
+      enum:
+      - ASC
+      - DESC
+      - ADAPTIVE
+      example: ADAPTIVE
+    UtxoSelectionConfigResponse:
+      type: object
+      description: '`effective` is always present. `configured` is omitted when no row is stored at the requested scope (the server does not emit `"configured": null`). PUT responses always include `configured`.'
+      required:
+      - effective
+      properties:
+        configured:
+          $ref: '#/components/schemas/UtxoSelectionConfigEntry'
+        effective:
+          $ref: '#/components/schemas/EffectiveUtxoSelectionConfig'
+    EffectiveUtxoSelectionConfig:
+      type: object
+      required:
+      - strategy
+      - source
+      properties:
+        strategy:
+          $ref: '#/components/schemas/UtxoSelectionStrategyEnum'
+        source:
+          $ref: '#/components/schemas/UtxoSelectionConfigSourceEnum'
+    UtxoOutput:
+      type: object
+      required:
+      - input
+      - utxoId
+      - address
+      - amount
+      - status
+      properties:
+        input:
+          $ref: '#/components/schemas/UtxoInput-2'
+        utxoId:
+          type: string
+          description: The unique UTXO identifier
+          example: '123456'
+        address:
+          type: string
+          description: The address holding this UTXO
+          example: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+        amount:
+          type: string
+          description: The UTXO amount in the asset's native unit
+          example: '0.00150000'
+        confirmations:
+          type: integer
+          description: Number of confirmations
+          example: 6
+        status:
+          type: string
+          description: The UTXO status
+          example: AVAILABLE
+          enum:
+          - PENDING
+          - AVAILABLE
+          - FROZEN
+          - SELECTED
+        isChange:
+          type: boolean
+          description: Whether this is a change output
+          example: false
+        isCoinbase:
+          type: boolean
+          description: Whether this is a coinbase output
+          example: false
+        fbTxId:
+          type: string
+          description: The Fireblocks transaction ID that created this UTXO
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850e
+        createdByHash:
+          type: string
+          description: The on-chain block hash where this UTXO was created
+          example: 000000000000000000024bead8df69990852c202db0e0097c1a12ea637d7e96d
+        spentByFbTxId:
+          type: array
+          description: Fireblocks transaction IDs that selected/spent this UTXO
+          example:
+          - b70701f4-d7b1-4795-a8ee-b09cdb5b850e
+          items:
+            type: string
+        createdByHeight:
+          type: integer
+          description: The block height at which this UTXO was created
+          example: 800100
+        createdAt:
+          type: string
+          format: date-time
+          description: The timestamp when this UTXO was created
+          example: '2025-01-16T15:45:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The timestamp when this UTXO was last updated
+          example: '2025-01-16T15:45:00Z'
+        labels:
+          type: array
+          description: Labels attached to this UTXO
+          example:
+          - cold-storage
+          - vip
+          items:
+            type: string
+        hasNativeAssets:
+          type: boolean
+          description: Whether this UTXO carries Cardano native assets (tokens)
+          example: true
+    UpsertUtxoSelectionConfigRequest:
+      type: object
+      required:
+      - strategy
+      properties:
+        strategy:
+          $ref: '#/components/schemas/UtxoSelectionStrategyEnum'
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

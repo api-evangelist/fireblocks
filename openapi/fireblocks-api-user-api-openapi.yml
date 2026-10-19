@@ -1,0 +1,458 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Api User API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: API User
+paths:
+  /management/api_users:
+    get:
+      operationId: getApiUsers
+      summary: Get API Keys
+      description: 'List all API keys in your workspace.
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - API User
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const apiUsers = await fireblocks.getApiUsers();
+          name: Fireblocks SDK Javascript example
+        - language: python
+          code: apiUsers = fireblocks.get_api_users()
+          name: Fireblocks SDK Python example (Legacy)
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetAPIUsersResponse>> = fireblocks.apiUser.getApiUsers();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetAPIUsersResponse>> response = fireblocks.apiUser().getApiUsers();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.api_user.get_api_users();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: got api users
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAPIUsersResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetAPIUsersResponse>> = fireblocks.apiUser.getApiUsers();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetAPIUsersResponse>> response = fireblocks.apiUser().getApiUsers();
+      - lang: Python
+        source: response = fireblocks.api_user.get_api_users();
+    post:
+      operationId: createApiUser
+      summary: Create API Key
+      description: 'Create a new API key in your workspace.
+
+        Learn more about Fireblocks API Keys management in the following guide.
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - API User
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const res = await fireblocks.createApiUser(name, role, csrForNewUser, coSignerType, isFirstUser);
+          name: Fireblocks SDK Javascript example
+        - language: python
+          code: res = fireblocks.create_api_user(name, role, csr_pem, co_signer_setup, co_signer_setup_is_first_user)
+          name: Fireblocks SDK Python example (Legacy)
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.apiUser.createApiUser(apiUserApiCreateApiUserRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.apiUser().createApiUser(createAPIUser, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.api_user.create_api_user(create_a_p_i_user, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAPIUser'
+      responses:
+        '200':
+          description: User creation approval request has been sent
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '400':
+          description: bad request
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.apiUser.createApiUser(apiUserApiCreateApiUserRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.apiUser().createApiUser(createAPIUser, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.api_user.create_api_user(create_a_p_i_user, idempotency_key);
+  /management/api_users/{userId}/pairing_token:
+    post:
+      operationId: issueApiUserPairingToken
+      summary: Issue API user pairing token
+      description: 'Issues a device pairing token for the given user and returns the user''s info along with the token.
+
+        - The API user must be in PENDING_ACTIVATION status. If the user is already set up (enabled), the request is rejected with a 409 Conflict.
+
+        - Please note that this endpoint is available only for API keys with Owner/Admin/Non Signing Admin permissions.
+
+        - This is the same pairing token that the API Co-signer requests during installation and when you pair an additional API user with an existing Co-signer. You can use this endpoint instead of copying the token from Pair API user in the Console. The token is valid for one hour.'
+      tags:
+      - API User
+      x-rate-limit-category: write
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        description: The ID of the api user
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '201':
+          description: Pairing token issued
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueApiUserPairingTokenResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '404':
+          description: API user not found for the given userId.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '409':
+          description: Conflict. The API user is not in PENDING_ACTIVATION status (e.g. already set up / enabled).
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<IssueApiUserPairingTokenResponse>> = fireblocks.apiUser.issueApiUserPairingToken(apiUserApiIssueApiUserPairingTokenRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<IssueApiUserPairingTokenResponse>> response = fireblocks.apiUser().issueApiUserPairingToken(userId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.api_user.issue_api_user_pairing_token(user_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<IssueApiUserPairingTokenResponse>> = fireblocks.apiUser.issueApiUserPairingToken(apiUserApiIssueApiUserPairingTokenRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<IssueApiUserPairingTokenResponse>> response = fireblocks.apiUser().issueApiUserPairingToken(userId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.api_user.issue_api_user_pairing_token(user_id, idempotency_key);
+components:
+  schemas:
+    CreateAPIUser:
+      type: object
+      properties:
+        role:
+          type: string
+          description: Users role
+        name:
+          type: string
+          description: Users name
+        csrPem:
+          type: string
+          description: CSR file that is used to verify API requests. read more https://developers.fireblocks.com/docs/quickstart
+          example: '-----BEGIN CERTIFICATE REQUEST-----aaa-----END CERTIFICATE REQUEST-----'
+        coSignerSetupType:
+          type: string
+          description: Different environments allow for different setup options, field is required for management/signer role
+          example: SGX_MACHINE
+        coSignerSetupIsFirstUser:
+          type: boolean
+          description: pass as true if this is the first user on the coSigner machine
+      required:
+      - role
+      - name
+      - csrPem
+    GetAPIUsersResponse:
+      type: object
+      properties:
+        users:
+          $ref: '#/components/schemas/APIUsers'
+      required:
+      - users
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - INTERNAL
+              - AUTHENTICATION
+              - AUTHORIZATION
+              - VALIDATION
+              - NOT_FOUND
+              - UNPROCESSABLE_ENTITY
+              - FORBIDDEN
+            message:
+              type: string
+          required:
+          - type
+          - message
+      required:
+      - error
+    APIUser:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        name:
+          type: string
+          description: The name of the user
+        role:
+          $ref: '#/components/schemas/UserRole'
+        enabled:
+          $ref: '#/components/schemas/UserEnabled'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        userType:
+          $ref: '#/components/schemas/UserType'
+    APIUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/APIUser'
+    UserStatus:
+      type: string
+      description: The status of the user
+      enum:
+      - PENDING_ACTIVATION
+      - PENDING_DEVICE_PAIRING
+      - PENDING_DEVICE_SETUP
+      - READY
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    UserType:
+      type: string
+      description: The type of the user
+      enum:
+      - API
+      - CONSOLE
+    UserEnabled:
+      type: boolean
+      description: Whether the user is enabled
+    UserId:
+      type: string
+      description: The unique identifier of the user
+    UserRole:
+      type: string
+      description: The role of the user
+      enum:
+      - OWNER
+      - ADMIN
+      - SIGNER
+      - COLLATERALS_SIGNER
+      - EDITOR
+      - APPROVER
+      - VIEWER
+      - NON_SIGNING_ADMIN
+      - AUDITOR
+      - NCW_ADMIN
+      - NCW_SIGNER
+      - SECURITY_ADMIN
+      - SECURITY_AUDITOR
+    IssueApiUserPairingTokenResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        name:
+          type: string
+          description: The name of the user
+          example: John Doe
+        role:
+          $ref: '#/components/schemas/UserRole'
+        enabled:
+          $ref: '#/components/schemas/UserEnabled'
+        userType:
+          $ref: '#/components/schemas/UserType'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        pairingToken:
+          type: string
+          description: The device pairing token issued for the given user
+          example: access-token-for-pairing
+      required:
+      - id
+      - role
+      - enabled
+      - pairingToken
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

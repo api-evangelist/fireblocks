@@ -1,0 +1,4832 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Trading API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Trading
+paths:
+  /trading/offers:
+    post:
+      operationId: fetchAllOffers
+      summary: Get all offers
+      x-rate-limit-category: external_query
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      tags:
+      - Trading
+      description: 'Retrieve all available offers across the workspace for a given asset pair.
+
+        Always operates in open scope — no provider or account selection required.
+
+        Returns a mix of indicative rates and committed quotes as applicable per provider.
+
+
+        If no slippageBps is provided, it defaults to 50 bps (0.5%).
+
+        Slippage and settlement configuration do not affect the returned rate.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Editor.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOffersRequest'
+      responses:
+        '201':
+          description: Offers response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OffersResponse'
+        '400':
+          description: 'Bad request: invalid input parameters, malformed request body, or validation failure.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<OffersResponse>> = fireblocks.trading.fetchAllOffers(tradingApiFetchAllOffersRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<OffersResponse>> response = fireblocks.trading().fetchAllOffers(createOffersRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.fetch_all_offers(create_offers_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<OffersResponse>> = fireblocks.trading.fetchAllOffers(tradingApiFetchAllOffersRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<OffersResponse>> response = fireblocks.trading().fetchAllOffers(createOffersRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.trading.fetch_all_offers(create_offers_request, idempotency_key);
+  /trading/orders:
+    post:
+      operationId: createOrder
+      summary: Create an order
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      tags:
+      - Trading
+      description: 'Create an order to buy or sell an asset. If no source is given, an external source will be use.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Editor.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '202':
+          description: Order creation response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDetails'
+        '400':
+          description: 'Bad request: invalid input parameters, malformed request body, or validation failure.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<OrderDetails>> = fireblocks.trading.createOrder(tradingApiCreateOrderRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<OrderDetails>> response = fireblocks.trading().createOrder(createOrderRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.create_order(create_order_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<OrderDetails>> = fireblocks.trading.createOrder(tradingApiCreateOrderRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<OrderDetails>> response = fireblocks.trading().createOrder(createOrderRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.trading.create_order(create_order_request, idempotency_key);
+    get:
+      operationId: getOrders
+      summary: Get orders
+      x-rate-limit-category: read
+      tags:
+      - Trading
+      description: 'Retrieve a paginated list of orders with optional filtering by account, provider, status, and time range.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      parameters:
+      - name: pageSize
+        in: query
+        required: true
+        description: pageSize for pagination.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      - name: pageCursor
+        in: query
+        required: false
+        schema:
+          type: string
+          minLength: 1
+      - name: order
+        in: query
+        required: false
+        description: ASC / DESC ordering (default DESC)
+        schema:
+          type: string
+          default: DESC
+          enum:
+          - ASC
+          - DESC
+      - name: accountId
+        in: query
+        required: false
+        explode: true
+        style: form
+        description: Filter by accountId.
+        schema:
+          type: array
+          items:
+            type: string
+            minLength: 1
+      - name: providerId
+        in: query
+        required: false
+        explode: true
+        style: form
+        description: Filter by providerId.
+        schema:
+          type: array
+          items:
+            type: string
+            minLength: 1
+      - name: statuses
+        in: query
+        required: false
+        explode: true
+        style: form
+        description: Filter by order status.
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderStatus'
+      - name: startTime
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+      - name: endTime
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+      - name: assetConversionType
+        in: query
+        schema:
+          type: string
+          enum:
+          - DIGITAL_ONLY
+          - FIAT
+          description: Filter by asset conversion type.
+      responses:
+        '200':
+          description: Orders response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrdersResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetOrdersResponse>> = fireblocks.trading.getOrders(tradingApiGetOrdersRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetOrdersResponse>> response = fireblocks.trading().getOrders(pageSize, pageCursor, order, accountId, providerId, statuses, startTime, endTime, assetConversionType);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.get_orders(page_size, page_cursor, order, account_id, provider_id, statuses, start_time, end_time, asset_conversion_type);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetOrdersResponse>> = fireblocks.trading.getOrders(tradingApiGetOrdersRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetOrdersResponse>> response = fireblocks.trading().getOrders(pageSize, pageCursor, order, accountId, providerId, statuses, startTime, endTime, assetConversionType);
+      - lang: Python
+        source: response = fireblocks.trading.get_orders(page_size, page_cursor, order, account_id, provider_id, statuses, start_time, end_time, asset_conversion_type);
+  /trading/orders/{orderId}:
+    get:
+      operationId: getOrder
+      summary: Get order details
+      x-rate-limit-category: read
+      tags:
+      - Trading
+      description: 'Retrieve detailed information about a specific order by its ID.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      parameters:
+      - name: orderId
+        in: path
+        required: true
+        description: The ID of the order to fetch.
+        schema:
+          type: string
+          minLength: 1
+      responses:
+        '200':
+          description: Order response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDetails'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '404':
+          description: 'Not found: requested resource does not exist (e.g., order).'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<OrderDetails>> = fireblocks.trading.getOrder(tradingApiGetOrderRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<OrderDetails>> response = fireblocks.trading().getOrder(orderId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.get_order(order_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<OrderDetails>> = fireblocks.trading.getOrder(tradingApiGetOrderRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<OrderDetails>> response = fireblocks.trading().getOrder(orderId);
+      - lang: Python
+        source: response = fireblocks.trading.get_order(order_id);
+  /trading/orders/{orderId}/requirement:
+    get:
+      operationId: getOrderRequirements
+      summary: Get order requirement details for an order
+      x-rate-limit-category: read
+      tags:
+      - Trading
+      description: 'Fetch order requirement details for an order that is in `AWAITING_INFORMATION` status.
+
+
+        The response includes `requirementId` and `dueBy` metadata, a
+
+        `requiredData` JSON Schema (Draft-7) describing the shape of the `data` object expected on
+
+        `POST /trading/orders/{orderId}/requirement/data`, and `requiredFiles` descriptors for any files the
+
+        provider requires (uploaded via `POST /trading/orders/{orderId}/requirement/file`).
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      parameters:
+      - name: orderId
+        in: path
+        required: true
+        description: The ID of the order for which the order requirement is issued.
+        schema:
+          type: string
+          minLength: 1
+      responses:
+        '200':
+          description: Order requirement details
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderRequirementDetails'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '404':
+          description: 'Not found: the order does not exist.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '409':
+          description: 'Conflict: the order exists but does not have an active order requirement (e.g., the order is not in `AWAITING_INFORMATION`).'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<OrderRequirementDetails>> = fireblocks.trading.getOrderRequirements(tradingApiGetOrderRequirementsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<OrderRequirementDetails>> response = fireblocks.trading().getOrderRequirements(orderId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.get_order_requirements(order_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<OrderRequirementDetails>> = fireblocks.trading.getOrderRequirements(tradingApiGetOrderRequirementsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<OrderRequirementDetails>> response = fireblocks.trading().getOrderRequirements(orderId);
+      - lang: Python
+        source: response = fireblocks.trading.get_order_requirements(order_id);
+  /trading/orders/{orderId}/requirement/data:
+    post:
+      operationId: submitOrderRequirements
+      summary: Submit a response to an order requirement
+      x-rate-limit-category: write
+      tags:
+      - Trading
+      description: 'Submit the user''s textual response to an order requirement on an order that is in `AWAITING_INFORMATION` status.
+
+
+        The request body carries `data` — a free-form object conforming to the `requiredData` JSON Schema
+
+        returned by the GET endpoint. Any required files are uploaded separately via
+
+        `POST /trading/orders/{orderId}/requirement/file`.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Editor.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - name: orderId
+        in: path
+        required: true
+        description: The ID of the order to submit the order requirement response for.
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitOrderRequirementRequest'
+      responses:
+        '202':
+          description: Order requirement submission accepted for processing.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '400':
+          description: 'Bad request: invalid input parameters, malformed request body, or validation failure.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '404':
+          description: 'Not found: the order does not exist.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '409':
+          description: 'Conflict: the order exists but does not have an active order requirement (e.g., the order is not in `AWAITING_INFORMATION`).'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.trading.submitOrderRequirements(tradingApiSubmitOrderRequirementsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.trading().submitOrderRequirements(submitOrderRequirementRequest, orderId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.submit_order_requirements(submit_order_requirement_request, order_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.trading.submitOrderRequirements(tradingApiSubmitOrderRequirementsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.trading().submitOrderRequirements(submitOrderRequirementRequest, orderId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.trading.submit_order_requirements(submit_order_requirement_request, order_id, idempotency_key);
+  /trading/orders/{orderId}/requirement/file:
+    post:
+      operationId: uploadOrderRequirementFile
+      summary: Upload a file for an order requirement
+      x-rate-limit-category: write
+      tags:
+      - Trading
+      description: 'Upload a single file (multipart/form-data) in response to an order requirement on an order that is in
+
+        `AWAITING_INFORMATION` status. Call this endpoint once per required file.
+
+
+        Send `fileKey` (matching a `fileKey` from `requiredFiles` on the GET response) and the binary `file`. Its type
+
+        must be one of the supported file formats. Fireblocks encrypts each file and uploads it individually to the
+
+        underlying provider. The textual response is submitted separately via
+
+        `POST /trading/orders/{orderId}/requirement/data`.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Editor.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - name: orderId
+        in: path
+        required: true
+        description: The ID of the order to upload the order requirement file for.
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderRequirementFileUpload'
+      responses:
+        '202':
+          description: File accepted for processing.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '400':
+          description: 'Bad request: unsupported file type, missing fileKey, malformed request, or validation failure.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '404':
+          description: 'Not found: the order does not exist.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '409':
+          description: 'Conflict: the order exists but does not have an active order requirement (e.g., the order is not in `AWAITING_INFORMATION`).'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.trading.uploadOrderRequirementFile(tradingApiUploadOrderRequirementFileRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.trading().uploadOrderRequirementFile(orderId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.upload_order_requirement_file(order_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.trading.uploadOrderRequirementFile(tradingApiUploadOrderRequirementFileRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.trading().uploadOrderRequirementFile(orderId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.trading.upload_order_requirement_file(order_id, idempotency_key);
+  /trading/providers:
+    get:
+      operationId: getTradingProviders
+      summary: Get providers
+      x-rate-limit-category: query
+      tags:
+      - Trading
+      parameters:
+      - name: pageSize
+        in: query
+        required: false
+        description: Page size for pagination.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+      - name: pageCursor
+        in: query
+        required: false
+        description: Page cursor for pagination.
+        schema:
+          type: string
+      description: 'Retrieve a list of all available external providers supporting trading activities through the platform.
+
+
+        **Endpoint Permission:** Owner, Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      responses:
+        '200':
+          description: Providers response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvidersListResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ProvidersListResponse>> = fireblocks.trading.getTradingProviders(tradingApiGetTradingProvidersRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ProvidersListResponse>> response = fireblocks.trading().getTradingProviders(pageSize, pageCursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.get_trading_providers(page_size, page_cursor);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ProvidersListResponse>> = fireblocks.trading.getTradingProviders(tradingApiGetTradingProvidersRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ProvidersListResponse>> response = fireblocks.trading().getTradingProviders(pageSize, pageCursor);
+      - lang: Python
+        source: response = fireblocks.trading.get_trading_providers(page_size, page_cursor);
+  /trading/providers/{providerId}:
+    get:
+      operationId: getTradingProviderById
+      summary: Get trading provider by ID
+      x-rate-limit-category: read
+      tags:
+      - Trading
+      parameters:
+      - name: providerId
+        in: path
+        required: true
+        description: The unique identifier of the provider.
+        schema:
+          type: string
+          minLength: 1
+      description: 'Retrieve a single provider by ID.
+
+
+        **Endpoint Permission:** Owner, Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      responses:
+        '200':
+          description: Single provider details.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingProvider'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: Forbidden - insufficient permissions, disabled feature, or restricted access.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '404':
+          description: Provider not found.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: Rate limit exceeded - slow down and retry later.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TradingProvider>> = fireblocks.trading.getTradingProviderById(tradingApiGetTradingProviderByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TradingProvider>> response = fireblocks.trading().getTradingProviderById(providerId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.get_trading_provider_by_id(provider_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TradingProvider>> = fireblocks.trading.getTradingProviderById(tradingApiGetTradingProviderByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TradingProvider>> response = fireblocks.trading().getTradingProviderById(providerId);
+      - lang: Python
+        source: response = fireblocks.trading.get_trading_provider_by_id(provider_id);
+  /trading/quotes:
+    post:
+      operationId: createQuote
+      summary: Create a quote
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      tags:
+      - Trading
+      description: 'Generate a time-limited quote for asset conversion, providing exchange rate and amount calculations.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Editor.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuote'
+      responses:
+        '201':
+          description: Quote created
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotesResponse'
+        '400':
+          description: 'Bad request: invalid input parameters, malformed request body, or validation failure.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<QuotesResponse>> = fireblocks.trading.createQuote(tradingApiCreateQuoteRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<QuotesResponse>> response = fireblocks.trading().createQuote(createQuote, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.create_quote(create_quote, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<QuotesResponse>> = fireblocks.trading.createQuote(tradingApiCreateQuoteRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<QuotesResponse>> response = fireblocks.trading().createQuote(createQuote, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.trading.create_quote(create_quote, idempotency_key);
+  /trading/rates:
+    post:
+      operationId: fetchRates
+      summary: Get rates
+      x-rate-limit-category: external_query
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      tags:
+      - Trading
+      description: 'Retrieve indicative exchange rate from specified providers for a given asset pair.
+
+        Rates are non-executable price signals intended for discovery and display purposes.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.
+
+
+        For detailed information about error codes and troubleshooting, please refer to our API Error Codes documentation.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatesRequest'
+      responses:
+        '200':
+          description: Rate response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatesResponse'
+        '400':
+          description: 'Bad request: invalid input parameters, malformed request body, or validation failure.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        5XX:
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<RatesResponse>> = fireblocks.trading.fetchRates(tradingApiFetchRatesRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<RatesResponse>> response = fireblocks.trading().fetchRates(ratesRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.trading.fetch_rates(rates_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<RatesResponse>> = fireblocks.trading.fetchRates(tradingApiFetchRatesRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<RatesResponse>> response = fireblocks.trading().fetchRates(ratesRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.trading.fetch_rates(rates_request, idempotency_key);
+components:
+  schemas:
+    MarketExecutionResponseDetails:
+      allOf:
+      - $ref: '#/components/schemas/MarketTypeDetails'
+      - $ref: '#/components/schemas/ExecutionResponseBaseDetails'
+      example:
+        type: MARKET
+        side: BUY
+        baseAmount: '1000.00'
+        baseAssetId: USDC
+        baseAssetRail: BLOCKCHAIN
+        quoteAssetId: BTC
+        quoteAssetRail: BLOCKCHAIN
+    LimitExecutionResponseDetails:
+      allOf:
+      - $ref: '#/components/schemas/LimitTypeDetails'
+      - $ref: '#/components/schemas/ExecutionResponseBaseDetails'
+      example:
+        type: LIMIT
+        price: '60000.00'
+        timeInForce:
+          type: FOK
+        side: BUY
+        baseAmount: '1000.00'
+        baseAssetId: USDC
+        baseAssetRail: BLOCKCHAIN
+        quoteAssetId: BTC
+        quoteAssetRail: BLOCKCHAIN
+    FpsUkAddress:
+      type: object
+      required:
+      - accountHolder
+      - accountNumber
+      - sortCode
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        accountNumber:
+          type: string
+          description: UK bank account number
+          example: '12345678'
+        sortCode:
+          type: string
+          description: UK sort code (format XX-XX-XX)
+          example: 12-34-56
+    SourceOfFunds:
+      type: object
+      description: 'Information about the source and purpose of the funds being transacted. Used by providers that require additional context for compliance and reporting. Provide this field when the provider manifest indicates it is required.
+
+        '
+      properties:
+        reasonForPayment:
+          $ref: '#/components/schemas/ReasonForPaymentEnum'
+      example:
+        reasonForPayment: INVOICE_PAYMENT
+    ParticipantsIdentification:
+      description: KYC/AML participant identification
+      type: object
+      properties:
+        originator:
+          $ref: '#/components/schemas/Identification'
+        beneficiary:
+          $ref: '#/components/schemas/Identification'
+      example:
+        originator:
+          externalReferenceId: user_123456
+          entityType: INDIVIDUAL
+          participantRelationshipType: FirstParty
+          fullName:
+            firstName: John
+            lastName: Smith
+          dateOfBirth: '1985-03-15'
+          email: john.smith@example.com
+          phone: '+14155551234'
+          postalAddress:
+            streetName: Main Street
+            buildingNumber: '123'
+            postalCode: '10001'
+            city: New York
+            subdivision: NY
+            district: Manhattan
+            country: US
+        beneficiary:
+          externalReferenceId: user_789012
+          entityType: INDIVIDUAL
+          participantRelationshipType: ThirdParty
+          fullName:
+            firstName: Alice
+            lastName: Johnson
+          dateOfBirth: '1990-07-22'
+          email: alice.johnson@example.com
+          phone: '+14155551234'
+          postalAddress:
+            streetName: Broadway
+            buildingNumber: '456'
+            postalCode: '10002'
+            city: New York
+            subdivision: NY
+            district: Manhattan
+            country: US
+    InteracAddress:
+      type: object
+      description: "When true, funds are deposited directly into the recipient's bank account without a security question.\n When false, a security question and answer are required to complete the transfer"
+      required:
+      - accountHolder
+      - recipientHandle
+      - autoDeposit
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        recipientHandle:
+          $ref: '#/components/schemas/RecipientHandle'
+        message:
+          type: string
+          description: The message to be sent to the recipient
+          example: Please deposit the funds into the account
+        autoDeposit:
+          type: boolean
+          description: Whether to automatically deposit the funds into the account
+          example: true
+        securityQuestion:
+          type: string
+          description: The security question to be used for the security answer
+          example: What is your mother's maiden name?
+        securityAnswer:
+          type: string
+          description: The security answer to be used for the security question
+          example: Jane Smith
+      example:
+        accountHolder:
+          name: John Smith
+          city: Toronto
+          country: CA
+          subdivision: 'ON'
+          address: 123 Yonge Street
+          postalCode: M5B 1M4
+        recipientHandle:
+          type: EMAIL
+          value: john.smith@email.com
+        message: Please deposit the funds into the account
+        autoDeposit: true
+        securityQuestion: What is your mother's maiden name?
+        securityAnswer: Jane Smith
+    InternalTransferDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - INTERNAL_TRANSFER
+        address:
+          $ref: '#/components/schemas/InternalTransferAddress'
+      required:
+      - type
+      example:
+        type: INTERNAL_TRANSFER
+        address:
+          externalSubAccountId: sub_acc_1234567890
+          accountId: acc_1234567890
+    PayidDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - PAYID
+        address:
+          $ref: '#/components/schemas/PayidAddress'
+      required:
+      - type
+      - address
+      example:
+        type: PAYID
+        address:
+          accountHolder:
+            name: John Williams
+            city: Sydney
+            country: AU
+            subdivision: NSW
+            address: 456 George Street
+            postalCode: '2000'
+          payId: john.williams@email.com
+          payIdType: email
+          bsb: 123-456
+          accountNumber: '12345678'
+          bankName: Commonwealth Bank
+    BlockchainTransfer:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - BLOCKCHAIN
+        txHash:
+          type: string
+          description: The hash of the transaction on the blockchain.
+        amount:
+          type: string
+          description: The amount of the transaction.
+      required:
+      - amount
+      example:
+        type: BLOCKCHAIN
+        txHash: '0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b'
+        amount: '250.75'
+    PaymentInstructions:
+      oneOf:
+      - $ref: '#/components/schemas/BlockchainDestination'
+      - allOf:
+        - $ref: '#/components/schemas/FiatDestination'
+        - $ref: '#/components/schemas/FiatPaymentMetadata'
+    FiatTransfer:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - FIAT
+        amount:
+          type: string
+          description: The amount of the fiat transfer.
+        referenceId:
+          type: string
+          description: The reference ID for the fiat transfer.
+      required:
+      - amount
+      example:
+        type: FIAT
+        amount: '750.25'
+        referenceId: fiat_ref_2024_003_789
+    FiatDestination:
+      oneOf:
+      - $ref: '#/components/schemas/IbanDestination'
+      - $ref: '#/components/schemas/SwiftDestination'
+      - $ref: '#/components/schemas/AchDestination'
+      - $ref: '#/components/schemas/USWireDestination'
+      - $ref: '#/components/schemas/SpeiDestination'
+      - $ref: '#/components/schemas/SEPADestination'
+      - $ref: '#/components/schemas/PixDestination'
+      - $ref: '#/components/schemas/LocalBankTransferAfricaDestination'
+      - $ref: '#/components/schemas/MobileMoneyDestination'
+      - $ref: '#/components/schemas/EuropeanSEPADestination'
+      - $ref: '#/components/schemas/ChapsDestination'
+      - $ref: '#/components/schemas/InteracDestination'
+      - $ref: '#/components/schemas/PayidDestination'
+      - $ref: '#/components/schemas/InternalTransferDestination'
+      - $ref: '#/components/schemas/CipsDestination'
+      - $ref: '#/components/schemas/NequiDestination'
+      - $ref: '#/components/schemas/FpsUkDestination'
+      - $ref: '#/components/schemas/FpsHkDestination'
+      - $ref: '#/components/schemas/InstaPayDestination'
+      - $ref: '#/components/schemas/PesonetDestination'
+    AccountHolderDetails:
+      type: object
+      properties:
+        name:
+          description: Full name of the account holder.
+          type: string
+        city:
+          type: string
+        country:
+          description: Country code, as specified in ISO 3166-1 alpha-2.
+          type: string
+        subdivision:
+          description: Country administrative subdivision, as specified in ISO 3166-2.
+          type: string
+        address:
+          description: Account holder street address.
+          type: string
+        postalCode:
+          type: string
+      required:
+      - name
+      example:
+        name: John Smith
+        city: New York
+        country: US
+        subdivision: NY
+        address: 123 Wall Street, Apt 4B
+        postalCode: '10005'
+    FeeTypeEnum:
+      type: string
+      enum:
+      - ORDER
+      - NETWORK
+      - SPREAD
+      - REBATE
+      description: 'The type of fee, such as ORDER, NETWORK, or SPREAD. ORDER - Fee for executing the order. NETWORK - Fee for network transactions. SPREAD - Fee for the difference between buy and sell prices. REBATE - Negative fee returned to the user as a reward or incentive.
+
+        '
+    Iban:
+      type: string
+      pattern: ^[A-Z]{2}\d{2}[a-zA-Z0-9]{1,30}$
+      example: GB82WEST12345698765432
+    LocalBankAfricaAccountNumber:
+      type: string
+      pattern: ^\d{4,17}$
+      example: '1234567890123'
+    Quote:
+      type: object
+      description: A committed executable quote for a trading pair.
+      properties:
+        via:
+          $ref: '#/components/schemas/AccessTypeResponse'
+        id:
+          type: string
+          description: The unique identifier of the quote.
+          example: quote_8f2e4d1a9c5b7e3f
+        quoteAssetId:
+          type: string
+          description: The target asset identifier.
+          example: USD
+        quoteAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+        baseAssetId:
+          type: string
+          description: The source asset identifier.
+          example: BTC
+        baseAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+        baseAmount:
+          type: string
+          description: The amount of the base asset.
+          example: '1000.00'
+        quoteAmount:
+          type: string
+          description: The amount of the quote asset.
+          example: '0.02458'
+        priceImpact:
+          type: number
+          description: The estimated price impact as a decimal fraction.
+          example: 0.005
+        quoteMinAmount:
+          type: string
+          description: The minimum guaranteed amount of the quote asset.
+          example: '0.02450'
+        isSlippageApplied:
+          type: boolean
+          description: Indicates if slippage was applied to the quote.
+          default: false
+        executionSteps:
+          type: array
+          description: Ordered list of execution steps for the quote.
+          items:
+            $ref: '#/components/schemas/QuoteExecutionStep'
+        generalFees:
+          type: array
+          description: General fees associated with the quote.
+          items:
+            $ref: '#/components/schemas/Fee'
+        side:
+          $ref: '#/components/schemas/Side'
+        expiresAt:
+          type: string
+          description: 'The expiration time of the quote in ISO 8601 format, taken verbatim from the provider. This is not safety-margined by the server — integrators must apply their own margin if one is needed.
+
+            '
+          example: '2024-01-15T10:35:00.000Z'
+        requiredParticipantsIdentificationOnOrder:
+          type: string
+          description: 'A JSON Schema Draft-7 document in string format describing the fields required when creating an order so clients can validate their order payload before sending.
+
+            '
+        type:
+          type: string
+          enum:
+          - COMMITTED
+          - INDICATIVE
+          description: The type of the quote.
+          example: COMMITTED
+      required:
+      - via
+      - id
+      - baseAssetId
+      - quoteAssetId
+      - baseAmount
+      - quoteAmount
+      - side
+      - expiresAt
+      - type
+    LocalBankTransferAfricaDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - LOCAL_BANK_TRANSFER
+        address:
+          $ref: '#/components/schemas/LocalBankTransferAfricaAddress'
+      required:
+      - type
+      - address
+      example:
+        type: LOCAL_BANK_TRANSFER
+        address:
+          accountHolder:
+            name: Adaora Okafor
+            city: Lagos
+            country: NG
+            subdivision: LA
+            address: 15 Victoria Island Road
+            postalCode: '101001'
+          accountNumber: '1234567890123'
+          bankName: First Bank of Nigeria
+          bankCode: '011'
+    NequiDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The transfer rail type for the destination
+          enum:
+          - NEQUI
+          example: NEQUI
+        address:
+          $ref: '#/components/schemas/NequiAddress'
+      required:
+      - type
+      - address
+    CipsAddress:
+      type: object
+      required:
+      - accountHolder
+      - bankName
+      - bankCountry
+      - swiftCode
+      - accountNumber
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        bankName:
+          type: string
+          description: Name of the recipient's bank
+          example: Bank of China
+        bankCountry:
+          type: string
+          description: ISO 3166-1 alpha-2 country code of the bank
+          example: CN
+        swiftCode:
+          type: string
+          description: SWIFT/BIC code of the recipient bank
+          example: BKCHCNBJ
+        accountNumber:
+          type: string
+          description: Recipient bank account number
+          example: '6217000010000000000'
+    ExecutionResponseDetails:
+      discriminator:
+        propertyName: type
+        mapping:
+          MARKET: '#/components/schemas/MarketExecutionResponseDetails'
+          QUOTE: '#/components/schemas/QuoteExecutionWithRequoteResponseDetails'
+          LIMIT: '#/components/schemas/LimitExecutionResponseDetails'
+      oneOf:
+      - $ref: '#/components/schemas/MarketExecutionResponseDetails'
+      - $ref: '#/components/schemas/QuoteExecutionWithRequoteResponseDetails'
+      - $ref: '#/components/schemas/LimitExecutionResponseDetails'
+    ChapsDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - CHAPS
+        address:
+          $ref: '#/components/schemas/ChapsAddress'
+      required:
+      - type
+      - address
+      example:
+        type: CHAPS
+        address:
+          accountHolder:
+            name: John Smith
+            city: London
+            country: GB
+            subdivision: ENG
+            address: 123 Oxford Street
+            postalCode: W1D 1BS
+          sortCode: 12-34-56
+          accountNumber: '12345678'
+          bankName: Barclays Bank
+    SubmitOrderRequirementRequest:
+      type: object
+      description: Body of POST /trading/orders/{orderId}/requirement/data. Carries the textual response (`data`). Any required files are uploaded separately via POST /trading/orders/{orderId}/requirement/file.
+      properties:
+        data:
+          type: object
+          description: Free-form object that MUST conform to the `requiredData` JSON Schema returned by the GET endpoint. Carries text/select fields.
+          additionalProperties: true
+          example:
+            fullName: Jane Doe
+            nationality: US
+      required:
+      - data
+    FpsHkAddress:
+      type: object
+      properties:
+        recipientLegalName:
+          type: string
+          description: Full legal name of the recipient
+          example: Chan Tai Man
+        accountNumber:
+          type: string
+          description: Recipient bank account number
+          example: '1234567890'
+        bankCode:
+          type: string
+          description: Hong Kong bank code
+          example: '003'
+        phone:
+          type: string
+          description: Recipient phone number in E.164 format
+          example: '+85291234567'
+        email:
+          type: string
+          description: Recipient email address
+          example: chan.taiman@email.com
+        fpsId:
+          type: string
+          description: Hong Kong FPS identifier
+          example: '163912345'
+    ParticipantsIdentificationJsonSchema:
+      type: string
+      description: "A JSON Schema (draft-07) in string format that validates the ParticipantsIdentification object on requests where\nthe provider manifest declares a `participantsIdentificationPolicy` for that endpoint (e.g. POST /orders).\nDefines which fields from originator and/or beneficiary are required.\n\nThe schema uses oneOf to discriminate between INDIVIDUAL (PersonalIdentification) \nand BUSINESS (BusinessIdentification) entity types for each participant.\n\nFor INDIVIDUAL: fullName, dateOfBirth, postalAddress, email, phone, idNumber, idType, etc.\nFor BUSINESS: businessName, registrationNumber, postalAddress, email, phone, etc.\n\nIf you constrain `idType` or `additionalIdType` with a JSON Schema `enum`, use the same values as\n`PersonalIdentificationType` (authoritative list in that schema). The example below mirrors that enum.\n\nThe string content is expected to be valid JSON (application/json).\n"
+      example: "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"required\": [\"originator\"],\n  \"properties\": {\n    \"originator\": {\n      \"type\": \"object\",\n      \"required\": [\"entityType\"],\n      \"oneOf\": [\n        {\n          \"properties\": {\n            \"entityType\": { \"const\": \"INDIVIDUAL\" },\n            \"fullName\": {\n              \"type\": \"object\",\n              \"required\": [\"firstName\", \"lastName\"],\n              \"properties\": {\n                \"firstName\": { \"type\": \"string\" },\n                \"lastName\": { \"type\": \"string\" },\n                \"middleName\": { \"type\": \"string\" }\n              }\n            },\n            \"dateOfBirth\": { \"type\": \"string\", \"format\": \"date\" },\n            \"email\": { \"type\": \"string\", \"format\": \"email\" },\n            \"phone\": { \"type\": \"string\", \"pattern\": \"^\\\\+[1-9]\\\\d{1,14}$\" },\n            \"postalAddress\": {\n              \"type\": \"object\",\n              \"required\": [\"city\", \"country\"],\n              \"properties\": {\n                \"streetLine1\": { \"type\": \"string\" },\n                \"streetLine2\": { \"type\": \"string\" },\n                \"city\": { \"type\": \"string\" },\n                \"region\": { \"type\": \"string\" },\n                \"postalCode\": { \"type\": \"string\" },\n                \"country\": { \"type\": \"string\" }\n              }\n            },\n            \"idNumber\": { \"type\": \"string\" },\n            \"idType\": { \"type\": \"string\", \"enum\": [\"NIN_SLIP_CARD\", \"BVN\", \"ID_CARD\", \"ID_BOOK\", \"NATIONAL_ID\", \"ALIEN_CARD\", \"PASSPORT\", \"ECOWAS_CARD\", \"RWANDA_CARD\", \"DRIVERS_LICENSE\", \"RESIDENT_CARD\", \"VOTER_ID\", \"HEALTH_INSURANCE_ID\", \"GHANA_CARD\", \"REFUGEE_ID\", \"SSNIT\", \"NON_CITIZEN_ID\", \"NATIONAL_REGISTRATION_CARD\"] }\n          },\n          \"required\": [\"entityType\", \"fullName\", \"email\", \"postalAddress\"]\n        },\n        {\n          \"properties\": {\n            \"entityType\": { \"const\": \"BUSINESS\" },\n            \"businessName\": { \"type\": \"string\" },\n            \"registrationNumber\": { \"type\": \"string\" },\n            \"email\": { \"type\": \"string\", \"format\": \"email\" },\n            \"phone\": { \"type\": \"string\", \"pattern\": \"^\\\\+[1-9]\\\\d{1,14}$\" },\n            \"postalAddress\": {\n              \"type\": \"object\",\n              \"required\": [\"city\", \"country\"],\n              \"properties\": {\n                \"streetLine1\": { \"type\": \"string\" },\n                \"streetLine2\": { \"type\": \"string\" },\n                \"city\": { \"type\": \"string\" },\n                \"region\": { \"type\": \"string\" },\n                \"postalCode\": { \"type\": \"string\" },\n                \"country\": { \"type\": \"string\" }\n              }\n            }\n          },\n          \"required\": [\"entityType\", \"businessName\", \"postalAddress\"]\n        }\n      ]\n    },\n    \"beneficiary\": {\n      \"type\": \"object\",\n      \"required\": [\"entityType\"],\n      \"oneOf\": [\n        {\n          \"properties\": {\n            \"entityType\": { \"const\": \"INDIVIDUAL\" },\n            \"fullName\": {\n              \"type\": \"object\",\n              \"required\": [\"firstName\", \"lastName\"],\n              \"properties\": {\n                \"firstName\": { \"type\": \"string\" },\n                \"lastName\": { \"type\": \"string\" }\n              }\n            }\n          },\n          \"required\": [\"entityType\", \"fullName\"]\n        },\n        {\n          \"properties\": {\n            \"entityType\": { \"const\": \"BUSINESS\" },\n            \"businessName\": { \"type\": \"string\" }\n          },\n          \"required\": [\"entityType\", \"businessName\"]\n        }\n      ]\n    }\n  }\n}\n"
+    Offer:
+      discriminator:
+        propertyName: offerType
+        mapping:
+          RATE: '#/components/schemas/RateOffer'
+          QUOTE: '#/components/schemas/QuoteOffer'
+      oneOf:
+      - $ref: '#/components/schemas/RateOffer'
+      - $ref: '#/components/schemas/QuoteOffer'
+    SEPAAddress:
+      type: object
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        iban:
+          $ref: '#/components/schemas/Iban'
+        bic:
+          type: string
+          description: Bank Identifier Code (SWIFT/BIC)
+        bankName:
+          type: string
+        bankBranch:
+          type: string
+        bankAddress:
+          type: string
+        purposeCode:
+          type: string
+          description: ISO purpose code for the transfer
+        taxId:
+          type: string
+          description: Beneficiary tax identification number
+      required:
+      - accountHolder
+      - iban
+      example:
+        accountHolder:
+          name: Pierre Dubois
+          city: Paris
+          country: FR
+          subdivision: '11'
+          address: 15 Rue de la Paix
+          postalCode: '75001'
+        iban: FR1420041010050500013M02606
+        bic: PSSTFRPPPAR
+        bankName: La Banque Postale
+        bankBranch: Paris Central
+        bankAddress: 1 Boulevard de Vaugirard, 75015 Paris
+        purposeCode: TRAD
+        taxId: FR12345678901
+    ManifestQuoteInfo:
+      type: object
+      description: Defines requirements for the POST /quotes endpoint.
+      properties:
+        settlementTypes:
+          type: array
+          description: 'Supported settlement types when requesting a quote.
+
+            If present - settlement is required. If absent - no need to provide settlement.
+
+            '
+          items:
+            $ref: '#/components/schemas/DVPSettlementType'
+    Rate:
+      type: object
+      properties:
+        via:
+          $ref: '#/components/schemas/AccessTypeResponse'
+        baseAssetId:
+          type: string
+          description: The source asset identifier
+        baseAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+        quoteAssetId:
+          type: string
+          description: The target asset identifier
+        quoteAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+        rate:
+          type: string
+          pattern: ^\d+(\.\d+)?$
+          description: The indicative exchange rate — the number of units of the quote asset that equal 1 unit of the base asset. For example, if base is BTC and quote is USD, a rate of 75000 means 1 BTC = 75,000 USD.
+          example: '1.2345'
+      required:
+      - via
+      - baseAssetId
+      - quoteAssetId
+      - rate
+    PlatformPeerType:
+      type: string
+      enum:
+      - VAULT_ACCOUNT
+      - CONNECTED_ACCOUNT
+      - FIAT_ACCOUNT
+    OneTimeAddressReference:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/OneTimeAddressPeerType'
+        address:
+          type: string
+        tag:
+          type: string
+      required:
+      - type
+      - address
+      example:
+        type: ONE_TIME_ADDRESS
+        address: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+        tag: destination-memo-123
+    QuoteExecutionStep:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ExecutionStepType'
+        fee:
+          $ref: '#/components/schemas/Fee'
+      required:
+      - type
+      example:
+        type: MARKET_EXECUTION
+        fee:
+          feeType: ORDER
+          assetId: USD
+          amountType: FIXED
+          amount: '2.50'
+    OrderSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        via:
+          $ref: '#/components/schemas/AccessTypeResponse'
+        side:
+          $ref: '#/components/schemas/Side'
+        baseAmount:
+          type: string
+        quoteAmount:
+          type: string
+        baseAssetId:
+          type: string
+        quoteAssetId:
+          type: string
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        destination:
+          $ref: '#/components/schemas/AccountReference'
+        source:
+          $ref: '#/components/schemas/SettlementSourceAccount'
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - via
+      - baseAmount
+      - baseAssetId
+      - quoteAssetId
+      - status
+      - destination
+      - createdAt
+      - side
+      example:
+        id: ord_5f8e2d9c1a7b4e36
+        via:
+          type: PROVIDER_ACCOUNT
+          providerId: prov_8c3f1a4b2d6e9f7c
+          accountId: acc_5e9a2d1c4b7f3e8a
+        side: BUY
+        baseAmount: '1000.00'
+        quoteAmount: '0.02458'
+        baseAssetId: USD
+        quoteAssetId: BTC
+        status: COMPLETED
+        destination:
+          type: VAULT_ACCOUNT
+          accountId: vault_acc_7b2e5d8f1c4a9e3b
+        source:
+          type: VAULT_ACCOUNT
+          accountId: vault_acc_3f7e1d9b2c5a8e4f
+        createdAt: '2024-01-15T10:30:00.000Z'
+    ManifestOrderInfo:
+      type: object
+      description: Defines requirements for the POST /orders endpoint.
+      properties:
+        settlementTypes:
+          type: array
+          description: 'Supported settlement types when creating an order.
+
+            If present - settlement is required. If absent - no need to provide settlement.
+
+            '
+          items:
+            $ref: '#/components/schemas/SettlementTypeEnum'
+        executionTypes:
+          type: array
+          description: Supported execution types when creating an order.
+          items:
+            $ref: '#/components/schemas/ExecutionRequestDetailsType'
+        requiresReasonForPayment:
+          type: boolean
+          example: true
+          description: 'Information about the source and purpose of the funds being transacted.
+
+            Used by providers that require additional context for compliance and
+
+            reporting. Provide this field when the provider manifest indicates it is
+
+            required.
+
+            '
+      required:
+      - executionTypes
+    PesonetAddress:
+      type: object
+      required:
+      - accountHolder
+      - bankName
+      - accountNumber
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        bankName:
+          type: string
+          description: Name of the recipient's bank
+          example: BPI
+        accountNumber:
+          type: string
+          description: Recipient bank account number
+          example: 001234567890
+    TransferReceipt:
+      discriminator:
+        propertyName: type
+        mapping:
+          BLOCKCHAIN: '#/components/schemas/BlockchainTransfer'
+          FIAT: '#/components/schemas/FiatTransfer'
+      oneOf:
+      - $ref: '#/components/schemas/BlockchainTransfer'
+      - $ref: '#/components/schemas/FiatTransfer'
+    RetryRequoteTypeEnum:
+      type: string
+      enum:
+      - RETRY
+      description: Indicates that the order should be re-quoted if the original quote is expired, trying to match the original quote.
+    PixDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - PIX
+        address:
+          $ref: '#/components/schemas/PixAddress'
+      required:
+      - type
+      - address
+      example:
+        type: PIX
+        address:
+          accountHolder:
+            name: Maria Silva Santos
+            city: São Paulo
+            country: BR
+            subdivision: SP
+            address: Rua das Flores, 123
+            postalCode: 01234-567
+          pixKey: '11987654321'
+          keyType: phone
+          bankName: Banco do Brasil
+          bankCode: '001'
+    InstaPayDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The transfer rail type for the destination
+          enum:
+          - INSTA_PAY
+          example: INSTA_PAY
+        address:
+          $ref: '#/components/schemas/InstaPayAddress'
+      required:
+      - type
+      - address
+    FokTimeInForce:
+      type: object
+      description: Fill-or-kill - the order must be filled in full at the limit price immediately, or not at all.
+      properties:
+        type:
+          type: string
+          enum:
+          - FOK
+          description: Discriminator for the fill-or-kill time-in-force type.
+          example: FOK
+      required:
+      - type
+      example:
+        type: FOK
+    InternalTransferAddress:
+      type: object
+      required:
+      - externalSubAccountId
+      - accountId
+      properties:
+        externalAccountId:
+          type: string
+          description: The provider's identifier for the external account. This enables the user to fund the account externally (outside of Fireblocks) if needed.
+        accountId:
+          type: string
+          description: The Fireblocks account ID where the user should deposit the funds.
+      example:
+        externalSubAccountId: sub_acc_1234567890
+        accountId: acc_1234567890
+    FailureReason:
+      type: string
+      enum:
+      - INSUFFICIENT_FUNDS
+      - UNKNOWN_REASON
+      - INITIATE_PAYMENT_FAILURE
+      - POLICY_REJECTION
+      - TRANSACTION_FAILED
+      - ACCOUNT_NOT_ACTIVE
+      - ACCOUNT_NOT_FOUND
+      - BAD_REQUEST
+      - QUOTE_NOT_READY
+      - INVALID_DATA
+      - UNSUPPORTED_CONVERSION
+      - UNSUPPORTED_RAMP_METHOD
+      - REFUNDED
+      - FAILED_BY_PROVIDER
+      - ORDER_EXPIRED
+      - TRANSACTION_CANCELLED
+      - TRANSACTION_REJECTED
+      - TRANSACTION_BLOCKED
+      - PROVIDER_INTERNAL_ERROR
+      - UNSUPPORTED_SOURCE_ASSET
+      - UNSUPPORTED_DESTINATION_ASSET
+      - AMOUNT_BELOW_MINIMUM
+      - AMOUNT_ABOVE_MAXIMUM
+      - PII_MISSING
+      - EXTERNAL_SOURCE_NOT_SUPPORTED
+      - UNSUPPORTED_REGION
+      - DESTINATION_NOT_WHITELISTED
+      - MISSING_DESTINATION_DETAILS
+      - MISSING_WORKSPACE_DETAILS
+      - CREDIT_LIMIT_EXCEEDED
+      - QUOTE_EXPIRED
+      - DESK_REJECTED
+      - REQUOTE_WORSE_PRICE
+      - FOK_KILLED
+    SpeiAddress:
+      type: object
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        bankName:
+          type: string
+          description: Name of the bank.
+        bankAccountNumber:
+          type: string
+          description: The bank account number for the SPEI transfer.
+      required:
+      - accountHolder
+      - bankAccountNumber
+      example:
+        accountHolder:
+          name: Carlos Martinez Lopez
+          city: Mexico City
+          country: MX
+          subdivision: CDMX
+          address: Avenida Reforma 123
+          postalCode: '06600'
+        bankName: BBVA México
+        bankAccountNumber: 012180001234567890
+    PersonalIdentificationType:
+      type: string
+      description: 'Type of identification document. Acceptable values are: - ''NIN_SLIP_CARD'': National Identification Number (NIN) Slip Card - temporary identification card issued in Nigeria - ''BVN'': Bank Verification Number - unique identity number for bank account holders in Nigeria - ''ID_CARD'': General national identity card - ''ID_BOOK'': Identity book or booklet format identification document - ''NATIONAL_ID'': National identity document issued by government authorities - ''ALIEN_CARD'': Alien registration card for foreign nationals - ''PASSPORT'': International travel document and proof of identity - ''ECOWAS_CARD'': Economic Community of West African States identification card - ''RWANDA_CARD'': Rwandan national identification card - ''DRIVERS_LICENSE'': Driver''s license or driving permit - ''RESIDENT_CARD'': Resident permit or permanent resident card - ''VOTER_ID'': Voter identification card used for electoral registration - ''HEALTH_INSURANCE_ID'': Health insurance identification card - ''GHANA_CARD'': Ghana Card - national identification card issued in Ghana - ''REFUGEE_ID'': Refugee identification document - ''SSNIT'': Social Security and National Insurance Trust ID - social security number in Ghana - ''NON_CITIZEN_ID'': Identification document for non-citizens or foreign residents - ''NATIONAL_REGISTRATION_CARD'': National registration card issued by national registration authority'
+      enum:
+      - NIN_SLIP_CARD
+      - BVN
+      - ID_CARD
+      - ID_BOOK
+      - NATIONAL_ID
+      - ALIEN_CARD
+      - PASSPORT
+      - ECOWAS_CARD
+      - RWANDA_CARD
+      - DRIVERS_LICENSE
+      - RESIDENT_CARD
+      - VOTER_ID
+      - HEALTH_INSURANCE_ID
+      - GHANA_CARD
+      - REFUGEE_ID
+      - SSNIT
+      - NON_CITIZEN_ID
+      - NATIONAL_REGISTRATION_CARD
+    PrefundedSettlement:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/PrefundedSettlementType'
+        destinationAccount:
+          $ref: '#/components/schemas/AccountReference'
+      required:
+      - type
+      - destinationAccount
+      example:
+        type: PREFUNDED
+        destinationAccount:
+          type: VAULT_ACCOUNT
+          accountId: vault_acc_9f4e2d8b1c6a5e73
+    IbanDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - IBAN
+        address:
+          $ref: '#/components/schemas/IbanAddress'
+      required:
+      - type
+      - address
+      example:
+        type: IBAN
+        address:
+          accountHolder:
+            name: Maria Gonzalez
+            city: Madrid
+            country: ES
+            subdivision: MD
+            address: Calle Gran Via 123, 2°B
+            postalCode: '28013'
+          iban: ES9121000418450200051332
+    OrderExecutionStep:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ExecutionStepType'
+        status:
+          $ref: '#/components/schemas/ExecutionStepStatusEnum'
+        fee:
+          $ref: '#/components/schemas/Fee'
+        txId:
+          type: string
+        txHash:
+          type: string
+        error:
+          $ref: '#/components/schemas/ExecutionStepError'
+      required:
+      - type
+      - status
+      example:
+        type: EXECUTE
+        status: PROCESSING
+        fee:
+          feeType: NETWORK
+          assetId: ETH
+          amountType: FIXED
+          amount: '0.01'
+        txId: tx_abc123def456
+    LimitTypeEnum:
+      type: string
+      enum:
+      - LIMIT
+      description: Order type for limit orders
+    QuoteExecutionWithRequoteResponseDetails:
+      allOf:
+      - $ref: '#/components/schemas/QuoteExecutionTypeDetails'
+      - $ref: '#/components/schemas/ExecutionResponseBaseDetails'
+      - $ref: '#/components/schemas/ReQuoteDetails'
+      example:
+        type: QUOTE
+        quoteId: quote_8f2e4d1a9c5b7e3f
+        side: BUY
+        baseAmount: '1000.00'
+        baseAssetId: USDC
+        baseAssetRail: BLOCKCHAIN
+        quoteAssetId: BTC
+        quoteAssetRail: BLOCKCHAIN
+        reQuote:
+          type: RETRY
+          count: 1
+          slippageBps: 50
+    MobileMoneyDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MOBILE_MONEY
+        address:
+          $ref: '#/components/schemas/MobileMoneyAddress'
+      required:
+      - type
+      - address
+      example:
+        type: MOBILE_MONEY
+        address:
+          accountHolder:
+            name: Grace Wanjiku Kamau
+            city: Nairobi
+            country: KE
+            subdivision: NRB
+            address: Westlands Avenue 45
+            postalCode: '00100'
+          mobilePhoneNumber: '+254712345678'
+          provider: m-pesa
+          beneficiaryDocumentId: '12345678'
+          beneficiaryRelationship: self
+    ExecutionRequestBaseDetails:
+      type: object
+      properties:
+        side:
+          $ref: '#/components/schemas/Side'
+        baseAmount:
+          type: string
+          description: Amount in baseAssetId. BUY = base amount to receive; SELL = base amount to sell.
+        baseAssetId:
+          type: string
+          description: The asset you receive on BUY / give on SELL.
+        baseAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+        quoteAssetId:
+          type: string
+          description: Counter asset used to pay/receive
+        quoteAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+      required:
+      - baseAmount
+      - baseAssetId
+      - quoteAssetId
+      - side
+      example:
+        side: BUY
+        baseAmount: '1000.00'
+        baseAssetId: USDC
+        baseAssetRail: BLOCKCHAIN
+        quoteAssetId: BTC
+        quoteAssetRail: BLOCKCHAIN
+    QuoteExecutionWithRequoteRequestDetails:
+      allOf:
+      - $ref: '#/components/schemas/QuoteExecutionRequestDetails'
+      - $ref: '#/components/schemas/ReQuoteDetails'
+      example:
+        type: QUOTE
+        quoteId: quote_8f2e4d1a9c5b7e3f
+        reQuote:
+          type: RETRY
+          count: 1
+          slippageBps: 50
+    ExternalAccount:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ExternalAccountType'
+        senderInformation:
+          $ref: '#/components/schemas/ExternalAccountSenderInformation'
+      required:
+      - type
+      example:
+        type: EXTERNAL
+        senderInformation:
+          type: MOBILE_MONEY
+          mobilePhoneNumber: '+1234567890'
+          provider: MPESA
+          email: test@example.com
+    TransferRail:
+      type: string
+      description: "Transfer rail: \n* **BLOCKCHAIN** - Transfer over the public blockchain\n* **INTERNAL** - Internal transfer within the same account (e.g. sub-accounts or same api key)\n* **SWIFT** - International wire transfer\n* **IBAN** - International Bank Account Number transfer\n* **US_WIRE** - Domestic wire transfer within the United States (e.g. FedWire)\n* **ACH** - Automated Clearing House transfer, typically takes longer but not as expensive as wire transfers\n* **SEPA** - Euro transfers within the SEPA zone\n* **SPEI** - Mexican interbank electronic payment system\n* **PIX** - Brazilian instant payment system\n* **LBT** - Local bank transfers\n* **MOMO** - Mobile money transfers (e.g. M-Pesa)\n* **CHAPS** - The Clearing House Automated Payment System (CHAPS) is a real-time gross settlement payment system used for transactions in the United Kingdom\n* **PAYID** - PayID payment identifier system (Australia)\n* **INTERAC** - Interac electronic funds transfer (Canada)\n* **INTERNAL_TRANSFER** - Internal transfer between accounts\n* **CIPS** - Cross-Border Interbank Payment System (China)\n* **NEQUI** - Nequi mobile payment (Colombia)\n* **FPS_UK** - UK Faster Payments (GBP)\n* **FPS_HK** - Hong Kong Faster Payment System (HKD)\n* **INSTA_PAY** - InstaPay instant payment (Philippines)\n* **PESONET** - PesoNet batch payment (Philippines)\n"
+      enum:
+      - BLOCKCHAIN
+      - INTERNAL
+      - SWIFT
+      - IBAN
+      - US_WIRE
+      - ACH
+      - SEPA
+      - SPEI
+      - PIX
+      - LBT
+      - MOMO
+      - CHAPS
+      - PAYID
+      - INTERAC
+      - INTERNAL_TRANSFER
+      - CIPS
+      - NEQUI
+      - FPS_UK
+      - FPS_HK
+      - INSTA_PAY
+      - PESONET
+      example: BLOCKCHAIN
+    Settlement:
+      description: Settlement configuration for the order
+      discriminator:
+        propertyName: type
+        mapping:
+          PREFUNDED: '#/components/schemas/PrefundedSettlement'
+          DVP: '#/components/schemas/DVPSettlement'
+          POST_TRADE: '#/components/schemas/PostTradeSettlement'
+      oneOf:
+      - $ref: '#/components/schemas/PrefundedSettlement'
+      - $ref: '#/components/schemas/DVPSettlement'
+      - $ref: '#/components/schemas/PostTradeSettlement'
+    Manifest:
+      type: object
+      description: The manifest of the provider, describing its supported order, quote, and rate requirements.
+      properties:
+        order:
+          $ref: '#/components/schemas/ManifestOrder'
+        quote:
+          $ref: '#/components/schemas/ManifestQuote'
+        rate:
+          $ref: '#/components/schemas/ManifestBase'
+      required:
+      - order
+      - quote
+      - rate
+      example:
+        order:
+          supported: true
+          executionTypes:
+          - MARKET
+          - QUOTE
+          settlementTypes:
+          - DVP
+          participantsIdentificationPolicy:
+            defaultSchema: '{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","required":["originator","beneficiary"],"properties":{"originator":{"type":"object","required":["entityType"],"oneOf":[{"properties":{"entityType":{"const":"INDIVIDUAL"},"fullName":{"type":"object","required":["firstName","lastName"],"properties":{"firstName":{"type":"string"},"lastName":{"type":"string"}}},"email":{"type":"string","format":"email"}},"required":["entityType","fullName","email"]},{"properties":{"entityType":{"const":"BUSINESS"},"businessName":{"type":"string"},"email":{"type":"string","format":"email"}},"required":["entityType","businessName","email"]}]},"beneficiary":{"type":"object","required":["entityType"],"oneOf":[{"properties":{"entityType":{"const":"INDIVIDUAL"},"fullName":{"type":"object","required":["firstName","lastName"],"properties":{"firstName":{"type":"string"},"lastName":{"type":"string"}}}},"required":["entityType","fullName"]},{"properties":{"entityType":{"const":"BUSINESS"},"businessName":{"type":"string"}},"required":["entityType","businessName"]}]}}}'
+          supportedParties:
+          - FirstParty
+          - ThirdParty
+        quote:
+          supported: true
+          settlementTypes:
+          - DVP
+        rate:
+          supported: true
+    BankAddress:
+      type: object
+      properties:
+        streetName:
+          type: string
+        buildingNumber:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        subdivision:
+          type: string
+        district:
+          type: string
+        country:
+          type: string
+      description: Address of the bank.
+    InteracDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - INTERAC
+        address:
+          $ref: '#/components/schemas/InteracAddress'
+      required:
+      - type
+      - address
+      example:
+        type: INTERAC
+        address:
+          accountHolder:
+            name: John Smith
+            city: Toronto
+            country: CA
+            subdivision: 'ON'
+            address: 123 Yonge Street
+            postalCode: M5B 1M4
+          email: john.smith@email.com
+          institutionNumber: '001'
+          transitNumber: '12345'
+          accountNumber: '1234567'
+          bankName: Royal Bank of Canada
+    ExternalAccountSenderInformation:
+      oneOf:
+      - $ref: '#/components/schemas/ExternalAccountMobileMoney'
+      - $ref: '#/components/schemas/ExternalAccountLocalBankAfrica'
+      description: Additional data for the external account, depending on the type used.
+    OrderRequirementDetails:
+      type: object
+      description: Order requirement details for an order that is awaiting compliance requirements. Returned by GET /trading/orders/{orderId}/requirement.
+      properties:
+        requirementId:
+          type: string
+          description: Unique identifier of the order requirement request as issued by the provider.
+          example: info_7c1f9b2e4a6d
+        dueBy:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp indicating when the order requirement submission is due.
+          example: '2024-01-15T10:35:00.000Z'
+        requiredData:
+          $ref: '#/components/schemas/OrderRequirementSubmissionJsonSchema'
+        requiredFiles:
+          type: array
+          description: Descriptors for files the provider requires as part of the order requirement response. Empty when no files are required. Each entry's `fileKey` is used to correlate uploads on the corresponding upload request.
+          items:
+            $ref: '#/components/schemas/OrderRequirementFile'
+          example:
+          - fileKey: identity_document
+            description: A clear photo or scan of the account holder's government-issued ID.
+            allowedFileTypes:
+            - PDF
+            - JPEG
+            - PNG
+      required:
+      - requirementId
+      - requiredData
+      - requiredFiles
+    AchDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - ACH
+        address:
+          $ref: '#/components/schemas/AchAddress'
+      required:
+      - type
+      - address
+      example:
+        type: ACH
+        address:
+          accountHolder:
+            name: Sarah Johnson
+            city: Austin
+            country: US
+            subdivision: TX
+            address: 456 Oak Avenue
+            postalCode: '78701'
+          bankName: Chase Bank
+          bankAccountNumber: '1234567890123'
+          routingNumber: '021000021'
+          accountType: CHECKING
+    Side:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      description: 'BUY: receive base / pay quote; SELL: give base / receive quote.'
+    ScopeItemFailure:
+      type: object
+      properties:
+        providerId:
+          type: string
+          description: Identifier of the provider for which the request failed.
+          example: BRIDGE
+        accountId:
+          type: string
+          description: Identifier of the account for which the request failed (optional).
+          example: acc_9f4e2d8b1c6a5e73
+        error:
+          $ref: '#/components/schemas/TradingErrorSchema'
+      required:
+      - providerId
+      - error
+    FlowDirection:
+      type: string
+      description: The direction of asset conversion in an order.
+      enum:
+      - FIAT_TO_CRYPTO
+      - CRYPTO_TO_FIAT
+      - CRYPTO_TO_CRYPTO
+      - FIAT_TO_FIAT
+    ExecutionResponseBaseDetails:
+      type: object
+      properties:
+        side:
+          $ref: '#/components/schemas/Side'
+        baseAmount:
+          type: string
+          description: Amount to convert
+        baseAssetId:
+          type: string
+          description: Source asset identifier
+        baseAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+        quoteAssetId:
+          type: string
+          description: Target asset identifier
+        quoteAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+      required:
+      - baseAmount
+      - baseAssetId
+      - quoteAssetId
+      - side
+      example:
+        side: BUY
+        baseAmount: '1000.00'
+        baseAssetId: USDC
+        baseAssetRail: BLOCKCHAIN
+        quoteAssetId: BTC
+        quoteAssetRail: BLOCKCHAIN
+    DirectAccessResponseInfo:
+      type: object
+      properties:
+        subProviders:
+          type: array
+          description: 'The underlying providers or tools that this direct-access route is composed of, in execution order. Response-only: this field is populated by the server and is never accepted from client requests.'
+          items:
+            type: string
+          example:
+          - lifi-relay
+          - uniswap-v3
+    MobilePhoneNumber:
+      type: string
+      pattern: ^\+[1-9]\d{1,14}$
+      description: Mobile phone number in E.164 format
+      example: '+14155551234'
+    ManifestBase:
+      type: object
+      description: Base manifest schema with common properties
+      properties:
+        supported:
+          type: boolean
+          description: Indicates whether the endpoint is supported by the provider
+        participantsIdentificationPolicy:
+          $ref: '#/components/schemas/ParticipantsIdentificationPolicy'
+        supportedParties:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipantRelationshipType'
+          description: 'The participant party types the provider supports for this endpoint.
+
+            '
+          example:
+          - FirstParty
+          - ThirdParty
+      required:
+      - supported
+    PeerType:
+      type: string
+      enum:
+      - VAULT_ACCOUNT
+      - EXCHANGE_ACCOUNT
+      - UNMANAGED_WALLET
+      - FIAT_ACCOUNT
+      - CONNECTED_ACCOUNT
+      example: VAULT_ACCOUNT
+    ParticipantRelationshipType:
+      type: string
+      enum:
+      - FirstParty
+      - SecondParty
+      - ThirdParty
+      example: FirstParty
+    ParticipantsIdentificationPolicy:
+      type: object
+      description: 'When present on a provider manifest, specifies KYC/AML identification requirements as JSON Schemas.
+
+
+        `defaultSchema` is the baseline; `overrides` refine it by `asset`, `rail`, and/or `flowDirection`
+
+        (see priority below). The most specific matching override applies its `schema` for that request
+
+        context: it may fully replace `defaultSchema`, or partially override it—when the override `schema`
+
+        is not provided as a complete standalone definition, fields and rules omitted there continue to
+
+        follow `defaultSchema`. If this object is omitted from the manifest, the provider imposes no PII
+
+        requirements through this policy. FirstParty participants are always exempt.
+
+
+        Resolution: from overrides that match the request context, choose the most specific (most dimensions
+
+        matched); break ties by earlier position in the `overrides` array; if none match, use `defaultSchema`.
+
+
+        Priority (highest precedence first):
+
+        1. asset + rail + flowDirection
+
+        2. Any two dimensions: asset+rail, asset+flowDirection, rail+flowDirection
+
+        3. Any single dimension: asset, rail, or flowDirection
+
+        4. defaultSchema (no override matches)
+
+        '
+      properties:
+        defaultSchema:
+          $ref: '#/components/schemas/ParticipantsIdentificationJsonSchema'
+        overrides:
+          type: array
+          description: 'Contextual overrides scoped by asset, rail, and/or flowDirection. Most specific match wins; ties broken by array order. Replaces the default partially.
+
+            Each override MUST include at least one of `asset`, `rail`, or `flowDirection` (not `schema` alone); see IdentificationPolicyOverride.
+
+            '
+          items:
+            $ref: '#/components/schemas/IdentificationPolicyOverride'
+      required:
+      - defaultSchema
+      example:
+        defaultSchema: '{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","required":["originator","beneficiary"],"properties":{"originator":{"type":"object","required":["entityType"],"oneOf":[{"properties":{"entityType":{"const":"INDIVIDUAL"},"fullName":{"type":"object","required":["firstName","lastName"],"properties":{"firstName":{"type":"string"},"lastName":{"type":"string"}}},"email":{"type":"string","format":"email"}},"required":["entityType","fullName","email"]},{"properties":{"entityType":{"const":"BUSINESS"},"businessName":{"type":"string"},"email":{"type":"string","format":"email"}},"required":["entityType","businessName","email"]}]},"beneficiary":{"type":"object","required":["entityType"],"oneOf":[{"properties":{"entityType":{"const":"INDIVIDUAL"},"fullName":{"type":"object","required":["firstName","lastName"],"properties":{"firstName":{"type":"string"},"lastName":{"type":"string"}}}},"required":["entityType","fullName"]},{"properties":{"entityType":{"const":"BUSINESS"},"businessName":{"type":"string"}},"required":["entityType","businessName"]}]}}}'
+        overrides:
+        - asset: NGN
+          schema: '{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","required":["originator","beneficiary"],"properties":{"originator":{"type":"object","required":["entityType"],"oneOf":[{"properties":{"entityType":{"const":"INDIVIDUAL"},"fullName":{"type":"object","required":["firstName","lastName"],"properties":{"firstName":{"type":"string"},"lastName":{"type":"string"}}},"email":{"type":"string","format":"email"},"idNumber":{"type":"string"},"idType":{"type":"string","enum":["NIN_SLIP_CARD"]},"additionalIdNumber":{"type":"string"},"additionalIdType":{"type":"string","enum":["BVN"]}},"required":["entityType","fullName","email","idNumber","additionalIdNumber"]},{"properties":{"entityType":{"const":"BUSINESS"},"businessName":{"type":"string"},"email":{"type":"string","format":"email"},"registrationNumber":{"type":"string"}},"required":["entityType","businessName","email","registrationNumber"]}]},"beneficiary":{"type":"object","required":["entityType"],"oneOf":[{"properties":{"entityType":{"const":"INDIVIDUAL"},"fullName":{"type":"object","required":["firstName","lastName"],"properties":{"firstName":{"type":"string"},"lastName":{"type":"string"}}}},"required":["entityType","fullName"]},{"properties":{"entityType":{"const":"BUSINESS"},"businessName":{"type":"string"}},"required":["entityType","businessName"]}]}}}'
+        - rail: MOMO
+          schema: '{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","required":["originator"],"properties":{"originator":{"type":"object","required":["entityType"],"oneOf":[{"properties":{"entityType":{"const":"INDIVIDUAL"},"fullName":{"type":"object","required":["firstName"],"properties":{"firstName":{"type":"string"}}},"phone":{"type":"string"}},"required":["entityType","fullName","phone"]}]}}}'
+        - asset: NGN
+          rail: MOMO
+          schema: '{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","required":["originator"],"properties":{"originator":{"type":"object","required":["entityType"],"oneOf":[{"properties":{"entityType":{"const":"INDIVIDUAL"},"fullName":{"type":"object","required":["firstName"],"properties":{"firstName":{"type":"string"}}},"phone":{"type":"string"},"idNumber":{"type":"string"},"idType":{"type":"string","enum":["NIN_SLIP_CARD"]}},"required":["entityType","fullName","phone","idNumber"]}]}}}'
+    OffersResponse:
+      type: object
+      properties:
+        offers:
+          type: array
+          description: List of offers returned for the requested asset pair.
+          items:
+            $ref: '#/components/schemas/Offer'
+        errors:
+          type: array
+          description: Partial failures encountered while requesting offers. Empty when all offer requests succeed.
+          items:
+            $ref: '#/components/schemas/ScopeItemFailure'
+      required:
+      - offers
+      - errors
+    USWireAddress:
+      type: object
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        bankName:
+          type: string
+          description: Name of the bank.
+        bankAccountNumber:
+          type: string
+          description: The bank account number for the wire transfer.
+        routingNumber:
+          type: string
+          description: Routing number identifying the bank account.
+        bankAddress:
+          $ref: '#/components/schemas/BankAddress'
+      required:
+      - accountHolder
+      - bankAccountNumber
+      - routingNumber
+      example:
+        accountHolder:
+          name: Michael Thompson
+          city: Chicago
+          country: US
+          subdivision: IL
+          address: 200 West Jackson Blvd, Suite 1500
+          postalCode: '60606'
+        bankName: JPMorgan Chase Bank
+        bankAccountNumber: '987654321012345'
+        routingNumber: '021000021'
+        bankAddress: 270 Park Avenue, New York, NY 10017
+    DVPSettlementType:
+      type: string
+      enum:
+      - DVP
+    OrderRequirementFile:
+      type: object
+      description: A file the provider requires as part of the order requirement response.
+      properties:
+        fileKey:
+          type: string
+          description: Stable identifier for this required file. Used to correlate uploads on submission.
+          example: identity_document
+        description:
+          type: string
+          description: Human-readable description of what the file should contain.
+          example: A clear photo or scan of the account holder's government-issued ID.
+        allowedFileTypes:
+          type: array
+          description: File formats the provider accepts for this entry.
+          items:
+            $ref: '#/components/schemas/OrderRequirementAllowedFileType'
+          example:
+          - PDF
+          - JPEG
+          - PNG
+      required:
+      - fileKey
+      - description
+      - allowedFileTypes
+      example:
+        fileKey: identity_document
+        description: A clear photo or scan of the account holder's government-issued ID.
+        allowedFileTypes:
+        - PDF
+        - JPEG
+        - PNG
+    OneTimeAddressPeerType:
+      type: string
+      enum:
+      - ONE_TIME_ADDRESS
+    EuropeanSEPAAddress:
+      type: object
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        iban:
+          $ref: '#/components/schemas/Iban'
+        bic:
+          type: string
+        bankName:
+          type: string
+        bankBranch:
+          type: string
+        bankAddress:
+          type: string
+        purposeCode:
+          type: string
+        taxId:
+          type: string
+      required:
+      - accountHolder
+      - iban
+    FpsHkDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The transfer rail type for the destination
+          enum:
+          - FPS_HK
+          example: FPS_HK
+        address:
+          $ref: '#/components/schemas/FpsHkAddress'
+      required:
+      - type
+      - address
+    AccountBasedAccessProviderInfo:
+      type: object
+      properties:
+        connected:
+          type: boolean
+          description: Whether the provider is currently connected.
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountBase'
+      required:
+      - connected
+      - accounts
+    PlatformAccount:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/PlatformPeerType'
+        accountId:
+          type: string
+      required:
+      - type
+      - accountId
+      example:
+        type: VAULT_ACCOUNT
+        accountId: vault_acc_5e9a2d1c4b7f3e8a
+    OrderStatus:
+      type: string
+      enum:
+      - CREATED
+      - AWAITING_PAYMENT
+      - AWAITING_INFORMATION
+      - PENDING_USER_ACTION
+      - PROCESSING
+      - CANCELED
+      - COMPLETED
+      - FAILED
+      example: PROCESSING
+    RatesResponse:
+      type: object
+      properties:
+        rates:
+          type: array
+          description: List of indicative rates returned for the requested asset pair.
+          items:
+            $ref: '#/components/schemas/Rate'
+        errors:
+          type: array
+          description: Partial failures encountered while requesting rates. Empty when all rate requests succeed.
+          items:
+            $ref: '#/components/schemas/ScopeItemFailure'
+      required:
+      - rates
+      - errors
+    CreateOrderRequest:
+      type: object
+      properties:
+        via:
+          $ref: '#/components/schemas/AccessType'
+        executionRequestDetails:
+          $ref: '#/components/schemas/ExecutionRequestDetails'
+        settlement:
+          $ref: '#/components/schemas/Settlement'
+        participantsIdentification:
+          $ref: '#/components/schemas/ParticipantsIdentification'
+        sourceOfFunds:
+          $ref: '#/components/schemas/SourceOfFunds'
+        customerInternalReferenceId:
+          type: string
+          description: Internal reference ID for the customer
+        note:
+          type: string
+          maxLength: 512
+          description: Optional note for the order
+      required:
+      - via
+      - executionRequestDetails
+      - settlement
+      example:
+        via:
+          type: PROVIDER_ACCOUNT
+          providerId: prov_8c3f1a4b2d6e9f7c
+          accountId: acc_5e9a2d1c4b7f3e8a
+        executionRequestDetails:
+          type: MARKET
+          baseAssetId: USD
+          quoteAssetId: BTC
+          side: BUY
+          baseAmount: '1000.00'
+        settlement:
+          type: DVP
+          sourceAccount:
+            type: VAULT_ACCOUNT
+            id: vault_acc_3f7e1d9b2c5a8e4f
+          destinationAccount:
+            type: VAULT_ACCOUNT
+            id: vault_acc_7b2e5d8f1c4a9e3b
+        sourceOfFunds:
+          reasonForPayment: INVOICE_PAYMENT
+        customerInternalReferenceId: order_ref_2024_001
+        note: Monthly investment order
+    IbanAddress:
+      type: object
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        iban:
+          $ref: '#/components/schemas/Iban'
+      required:
+      - accountHolder
+      - iban
+      example:
+        accountHolder:
+          name: Maria Gonzalez
+          city: Madrid
+          country: ES
+          subdivision: MD
+          address: Calle Gran Via 123, 2°B
+          postalCode: '28013'
+        iban: ES9121000418450200051332
+    BlockchainAddress:
+      type: object
+      properties:
+        blockchainAddress:
+          type: string
+          description: The blockchain address.
+          example: '0x1234567890123456789012345678901234567890'
+        tag:
+          type: string
+          description: The tag of the blockchain address. It is used to identify the address in the blockchain. It is optional.
+          example: '1234567890'
+      required:
+      - blockchainAddress
+      description: The blockchain address information.
+      example:
+        blockchainAddress: '0x1234567890123456789012345678901234567890'
+        tag: '1234567890'
+    PaymentRedirect:
+      type: object
+      description: URL returned by the provider that the end user will be redirected to in order to complete the payment on the bank/mobile provider page. After completion, the bank/mobile provider redirects the end user back to successRedirectUrl (provided in the RAMP request)
+      properties:
+        url:
+          type: string
+          description: URL to redirect to
+          example: https://yellowcard.example.com/authorize?token=abc123&transactionId=16b8b2c3-bd61-4745-9c48-3d30c2bc6907
+        expiresAt:
+          type: string
+          description: Expiration date of the redirect
+          example: '2025-01-15T12:00:00Z'
+    ManifestQuote:
+      allOf:
+      - $ref: '#/components/schemas/ManifestBase'
+      - $ref: '#/components/schemas/ManifestQuoteInfo'
+    LimitTypeDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/LimitTypeEnum'
+        price:
+          type: string
+          description: Limit price for the order
+          example: '60000.00'
+        timeInForce:
+          $ref: '#/components/schemas/TimeInForce'
+      required:
+      - type
+      - price
+      - timeInForce
+    AchAddress:
+      type: object
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        bankName:
+          type: string
+          description: Name of the bank.
+        bankAccountNumber:
+          type: string
+          description: The bank account number for the ACH transfer.
+          pattern: ^\d{4,17}$
+        routingNumber:
+          type: string
+          pattern: ^\d{9}$
+          description: Routing number identifying the bank account.
+        accountType:
+          $ref: '#/components/schemas/AchAccountType'
+      required:
+      - accountHolder
+      - bankAccountNumber
+      - routingNumber
+      - accountType
+      example:
+        accountHolder:
+          name: Sarah Johnson
+          city: Austin
+          country: US
+          subdivision: TX
+          address: 456 Oak Avenue
+          postalCode: '78701'
+        bankName: Chase Bank
+        bankAccountNumber: '1234567890123'
+        routingNumber: '021000021'
+        accountType: CHECKING
+    ManifestOrder:
+      allOf:
+      - $ref: '#/components/schemas/ManifestBase'
+      - $ref: '#/components/schemas/ManifestOrderInfo'
+    RateOffer:
+      allOf:
+      - $ref: '#/components/schemas/Rate'
+      - $ref: '#/components/schemas/RateOfferType'
+    QuoteExecutionRequestDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/QuoteExecutionTypeEnum'
+        quoteId:
+          type: string
+          description: Quote ID for quote orders
+      required:
+      - type
+      - quoteId
+      example:
+        type: QUOTE
+        quoteId: quote_8f2e4d1a9c5b7e3f
+    AccountReference:
+      discriminator:
+        propertyName: type
+        mapping:
+          VAULT_ACCOUNT: '#/components/schemas/InternalReference'
+          EXCHANGE_ACCOUNT: '#/components/schemas/InternalReference'
+          UNMANAGED_WALLET: '#/components/schemas/InternalReference'
+          FIAT_ACCOUNT: '#/components/schemas/InternalReference'
+          ONE_TIME_ADDRESS: '#/components/schemas/OneTimeAddressReference'
+      oneOf:
+      - $ref: '#/components/schemas/InternalReference'
+      - $ref: '#/components/schemas/OneTimeAddressReference'
+    AccountBase:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the account
+        name:
+          type: string
+          description: The name of the account
+      required:
+      - id
+      - name
+      example:
+        id: acc_9f4e2d8b1c6a5e73
+        name: Main Trading Account
+    EuropeanSEPADestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - EUROPEAN_SEPA
+        address:
+          $ref: '#/components/schemas/EuropeanSEPAAddress'
+      required:
+      - type
+      - address
+    MarketTypeEnum:
+      type: string
+      enum:
+      - MARKET
+      description: Order type for market orders
+    ExecutionStepStatusEnum:
+      type: string
+      enum:
+      - WAITING
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - CANCELLED
+      example: PROCESSING
+    IdentificationPolicyOverride:
+      type: object
+      description: 'Override scoped by one or more dimensions. More dimensions = higher priority.
+
+        Equal priority ties are broken by array order.
+
+
+        **Validation:** At least one of `asset`, `rail`, or `flowDirection` will be present.
+
+
+        Priority (highest to lowest):
+
+        1. asset + rail + flowDirection
+
+        2. asset + rail
+
+        2. asset + flowDirection
+
+        2. rail + flowDirection
+
+        3. asset only
+
+        3. rail only
+
+        3. flowDirection only
+
+        4. defaultSchema (no override matched)
+
+        '
+      properties:
+        asset:
+          type: string
+          description: Fireblocks asset ID (fiat or crypto).
+        rail:
+          $ref: '#/components/schemas/TransferRail'
+        flowDirection:
+          $ref: '#/components/schemas/FlowDirection'
+        schema:
+          $ref: '#/components/schemas/ParticipantsIdentificationJsonSchema'
+      required:
+      - schema
+    DVPSettlement:
+      type: object
+      description: Source/Destination accounts for the quote (must have for defi quotes)
+      properties:
+        type:
+          $ref: '#/components/schemas/DVPSettlementType'
+        sourceAccount:
+          $ref: '#/components/schemas/SettlementSourceAccount'
+        destinationAccount:
+          $ref: '#/components/schemas/AccountReference'
+      required:
+      - type
+      - sourceAccount
+      - destinationAccount
+      example:
+        type: DVP
+        sourceAccount:
+          type: VAULT_ACCOUNT
+          id: vault_acc_3f7e1d9b2c5a8e4f
+        destinationAccount:
+          type: VAULT_ACCOUNT
+          id: vault_acc_7b2e5d8f1c4a9e3b
+    SEPADestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - SEPA
+        address:
+          $ref: '#/components/schemas/SEPAAddress'
+      required:
+      - type
+      - address
+      example:
+        type: SEPA
+        address:
+          accountHolder:
+            name: Hans Mueller
+            city: Berlin
+            country: DE
+            subdivision: BE
+            address: Unter den Linden 15
+            postalCode: '10117'
+          iban: DE89370400440532013000
+          bic: COBADEFFXXX
+          bankName: Commerzbank AG
+    RecipientHandle:
+      type: object
+      required:
+      - type
+      - value
+      properties:
+        type:
+          type: string
+          enum:
+          - EMAIL
+        value:
+          type: string
+          description: The value of the recipient handle
+          example: john.smith@email.com
+    FpsUkDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The transfer rail type for the destination
+          enum:
+          - FPS_UK
+          example: FPS_UK
+        address:
+          $ref: '#/components/schemas/FpsUkAddress'
+      required:
+      - type
+      - address
+    PixAddress:
+      type: object
+      required:
+      - accountHolder
+      - pixKey
+      - keyType
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        pixKey:
+          type: string
+        keyType:
+          type: string
+          enum:
+          - CPF
+          - CNPJ
+          - EMAIL
+          - PHONE
+          - RANDOM
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        qrCode:
+          type: string
+          description: The QR code to be used for the transfer
+          example: qr_code_number
+        expirationDate:
+          type: string
+          description: The expiration date of the QR code
+          example: '2025-01-15T12:00:00Z'
+      example:
+        accountHolder:
+          name: Maria Silva Santos
+          city: São Paulo
+          country: BR
+          subdivision: SP
+          address: Rua das Flores, 123
+          postalCode: 01234-567
+        pixKey: '11987654321'
+        keyType: phone
+        bankName: Banco do Brasil
+        bankCode: '001'
+        qrCode: qr_code_number
+        expirationDate: '2025-01-15T12:00:00Z'
+    InstaPayAddress:
+      type: object
+      required:
+      - accountHolder
+      - bankName
+      - accountNumber
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        bankName:
+          type: string
+          description: Name of the recipient's bank or wallet (e.g. BDO, BPI, GCash, Maya)
+          example: BDO Unibank
+        accountNumber:
+          type: string
+          description: Recipient bank account or wallet number
+          example: 001234567890
+    QuoteOfferType:
+      type: object
+      properties:
+        offerType:
+          type: string
+          enum:
+          - QUOTE
+          description: The type of offer — QUOTE for executable committed quotes.
+          example: QUOTE
+      required:
+      - offerType
+    AccountAccess:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - PROVIDER_ACCOUNT
+          description: Indicates this uses account-based access
+        providerId:
+          type: string
+          description: The ID of the provider
+        accountId:
+          type: string
+          description: The ID of the account
+      required:
+      - type
+      - accountId
+      example:
+        type: PROVIDER_ACCOUNT
+        providerId: bridge-provider-001
+        accountId: acc_9f4e2d8b1c6a5e73
+    GetOrdersResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderSummary'
+        total:
+          type: integer
+          description: Total number of orders matching the query.
+        next:
+          type: string
+          description: A cursor for the next page of results, if available.
+      required:
+      - total
+      - data
+      example:
+        data:
+        - id: ord_5f8e2d9c1a7b4e36
+          via:
+            type: PROVIDER_ACCOUNT
+            providerId: prov_8c3f1a4b2d6e9f7c
+            accountId: acc_5e9a2d1c4b7f3e8a
+          baseAmount: '1000.00'
+          quoteAmount: '0.02458'
+          baseAssetId: USD
+          quoteAssetId: BTC
+          status: COMPLETED
+          destination:
+            type: VAULT_ACCOUNT
+            accountId: vault_acc_7b2e5d8f1c4a9e3b
+          createdAt: '2024-01-15T10:30:00.000Z'
+        total: 1
+        next: cursor_next_page_token
+    OrderDetails:
+      type: object
+      properties:
+        id:
+          type: string
+        via:
+          $ref: '#/components/schemas/AccessTypeResponse'
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        receipt:
+          $ref: '#/components/schemas/TransferReceipt'
+        generalFees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fee'
+        executionSteps:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderExecutionStep'
+        executionResponseDetails:
+          $ref: '#/components/schemas/ExecutionResponseDetails'
+        settlement:
+          $ref: '#/components/schemas/Settlement'
+        participantsIdentification:
+          $ref: '#/components/schemas/ParticipantsIdentification'
+        paymentInstructions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentInstructions'
+          description: Payment instructions for the order, the client can use one of these to pay the order.
+        createdBy:
+          type: string
+          description: The ID of the user who created the order
+        customerInternalReferenceId:
+          type: string
+          description: Internal reference ID for the customer
+        note:
+          type: string
+          maxLength: 512
+          description: Optional note for the Order
+        expiresAt:
+          type: string
+          format: date-time
+        failure:
+          $ref: '#/components/schemas/Failure'
+      required:
+      - id
+      - via
+      - status
+      - createdAt
+      - createdBy
+      - executionSteps
+      - settlement
+      - executionResponseDetails
+      example:
+        id: order_9f4e2d8b1c6a5e73
+        via:
+          type: PROVIDER_ACCOUNT
+          providerId: bridge-provider-001
+          accountId: acc_9f4e2d8b1c6a5e73
+        status: PROCESSING
+        createdAt: '2024-01-15T10:30:00.000Z'
+        updatedAt: '2024-01-15T10:30:30.000Z'
+        receipt:
+          type: BLOCKCHAIN
+          txHash: '0x1234567890abcdef'
+          amount: '0.02458'
+        generalFees:
+        - feeType: ORDER
+          assetId: USDC
+          amountType: FIXED
+          amount: '5.00'
+        executionSteps:
+        - type: EXECUTE
+          status: PROCESSING
+          fee:
+            feeType: NETWORK
+            assetId: ETH
+            amountType: FIXED
+            amount: '0.01'
+          txId: tx_abc123def456
+        executionResponseDetails:
+          type: MARKET
+          side: BUY
+          baseAmount: '1000.00'
+          baseAssetId: USDC
+          quoteAssetId: BTC
+        settlement:
+          type: PREFUNDED
+          destinationAccount:
+            type: VAULT_ACCOUNT
+            accountId: vault_acc_9f4e2d8b1c6a5e73
+        createdBy: user_123abc456def789
+        customerInternalReferenceId: order_ref_2024_001
+        note: Monthly investment order
+    ExternalAccountMobileMoneyType:
+      type: string
+      enum:
+      - MOBILE_MONEY_RAIL
+    PersonalIdentificationDocument:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identification document number.
+          example: '12345678901'
+        type:
+          $ref: '#/components/schemas/PersonalIdentificationType'
+        expirationDate:
+          type: string
+          format: date
+          description: The expiration date of the identification document.
+          example: '2030-03-15'
+    QuoteExecutionTypeEnum:
+      type: string
+      enum:
+      - QUOTE
+      description: Order type for quote orders
+    BaseProvider:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the provider
+        name:
+          type: string
+          description: Display name of the provider
+        logo:
+          type: string
+          description: URL to the logo image of the provider
+        accountBased:
+          type: boolean
+          description: Indicates whether the provider access model is through accounts or directly
+        manifest:
+          $ref: '#/components/schemas/Manifest'
+      required:
+      - id
+      - name
+      - accountBased
+      - manifest
+    PersonalIdentification:
+      type: object
+      properties:
+        externalReferenceId:
+          type: string
+        entityType:
+          $ref: '#/components/schemas/PersonalEntityTypeEnum'
+        participantRelationshipType:
+          $ref: '#/components/schemas/ParticipantRelationshipType'
+        fullName:
+          type: object
+          properties:
+            firstName:
+              type: string
+            lastName:
+              type: string
+          required:
+          - firstName
+          - lastName
+        dateOfBirth:
+          type: string
+          format: date
+        postalAddress:
+          $ref: '#/components/schemas/PostalAddress'
+        email:
+          type: string
+          format: email
+        phone:
+          $ref: '#/components/schemas/MobilePhoneNumber'
+        idNumber:
+          type: string
+          deprecated: true
+          description: Deprecated. Use identificationDocuments instead.
+        idType:
+          allOf:
+          - $ref: '#/components/schemas/PersonalIdentificationType'
+          deprecated: true
+          description: Deprecated. Use identificationDocuments instead.
+          example: PASSPORT
+        additionalIdNumber:
+          type: string
+          deprecated: true
+          description: Deprecated. Use identificationDocuments instead.
+        additionalIdType:
+          allOf:
+          - $ref: '#/components/schemas/PersonalIdentificationType'
+          deprecated: true
+          description: Deprecated. Use identificationDocuments instead.
+          example: BVN
+        nationality:
+          type: string
+          description: The ISO-3166 Alpha-2 country code representing the individual's nationality.
+          example: US
+        identificationDocuments:
+          type: array
+          description: List of identification documents for the individual.
+          items:
+            $ref: '#/components/schemas/PersonalIdentificationDocument'
+          example:
+          - id: '12345678901'
+            type: PASSPORT
+            expirationDate: '2030-03-15'
+      required:
+      - externalReferenceId
+      - entityType
+      - participantRelationshipType
+      - fullName
+      - dateOfBirth
+      - postalAddress
+      example:
+        externalReferenceId: person_ref_7f3e2d1c4b8a5e9f
+        entityType: INDIVIDUAL
+        participantRelationshipType: FirstParty
+        fullName:
+          firstName: Alexander
+          lastName: Johnson
+        dateOfBirth: '1985-03-15'
+        postalAddress:
+          streetName: Oak Street
+          buildingNumber: '742'
+          postalCode: '90210'
+          city: Beverly Hills
+          subdivision: CA
+          district: Los Angeles County
+          country: US
+        email: alexander.johnson@example.com
+        phone: '+14155551234'
+        idNumber: '12345678901'
+        idType: PASSPORT
+        additionalIdNumber: BVN987654321
+        additionalIdType: BVN
+        nationality: US
+        identificationDocuments:
+        - id: '12345678901'
+          type: PASSPORT
+          expirationDate: '2030-03-15'
+    Fee:
+      allOf:
+      - $ref: '#/components/schemas/FeePropertiesDetails'
+      - discriminator:
+          propertyName: amountType
+          mapping:
+            FIXED: '#/components/schemas/FixedFee'
+            BPS: '#/components/schemas/BpsFee'
+        oneOf:
+        - $ref: '#/components/schemas/FixedFee'
+        - $ref: '#/components/schemas/BpsFee'
+    RatesRequest:
+      type: object
+      properties:
+        scope:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/ScopeItem'
+          description: One or more providers/accounts to request rates from. At least one scope item is required.
+        baseAssetId:
+          type: string
+          description: The source asset identifier.
+          example: BTC
+        quoteAssetId:
+          type: string
+          description: The target asset identifier.
+          example: USD
+        baseAmount:
+          type: string
+          pattern: ^\d+(\.\d+)?$
+          description: The amount to convert from
+          example: '100.00'
+      required:
+      - baseAssetId
+      - quoteAssetId
+      - scope
+    RetryRequoteRequestDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/RetryRequoteTypeEnum'
+        count:
+          type: integer
+          description: If quote is expired, how many times to re-generate new quotes to try having the order executed as in the original quote.
+          minimum: 1
+          maximum: 10
+        slippageBps:
+          type: integer
+          description: Slippage tolerance in basis points (bps) for quote orders - 1 is 0.01% and 10000 is 100%
+          minimum: 1
+          maximum: 10000
+      required:
+      - type
+      - count
+      example:
+        type: RETRY
+        count: 1
+        slippageBps: 50
+    RateOfferType:
+      type: object
+      properties:
+        offerType:
+          type: string
+          enum:
+          - RATE
+          description: The type of offer — RATE for indicative pricing.
+          example: RATE
+      required:
+      - offerType
+    AccountAccessResponse:
+      description: Response-only counterpart of AccountAccess.
+      allOf:
+      - $ref: '#/components/schemas/AccountAccess'
+      example:
+        type: PROVIDER_ACCOUNT
+        providerId: uniswap-v3-provider
+        accountId: account-123
+    ProvidersListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TradingProvider'
+          description: List of available providers
+        total:
+          type: integer
+          description: Total number of providers matching the query.
+        next:
+          type: string
+          description: A cursor for the next page of results, if available.
+      required:
+      - data
+      - total
+      example:
+        data:
+        - id: BRIDGE
+          name: Bridge
+          logo: https://example.com/logos/bridge.png
+          accountBased: true
+          manifest:
+            order:
+              supported: true
+              executionTypes:
+              - MARKET
+              settlementTypes:
+              - DVP
+            quote:
+              supported: false
+            rate:
+              supported: true
+          connected: true
+          accounts:
+          - id: acc_5e9a2d1c4b7f3e8a
+            name: Main Trading Account
+        - id: UNISWAP_CLASSIC
+          name: Uniswap Classic
+          logo: https://example.com/logos/uniswap.png
+          accountBased: false
+          manifest:
+            order:
+              supported: true
+              executionTypes:
+              - MARKET
+              settlementTypes:
+              - PREFUNDED
+            quote:
+              supported: false
+            rate:
+              supported: true
+          approved: true
+          hasTermsOfService: true
+          termsOfServiceUrl: https://uniswap.org/terms
+        total: 2
+        next: cursor_abc123def456
+    LocalBankTransferAfricaAddress:
+      type: object
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        accountNumber:
+          $ref: '#/components/schemas/LocalBankAfricaAccountNumber'
+        bankName:
+          type: string
+          description: Name of the bank
+        bankCode:
+          type: string
+          description: Internal bank identifier
+        successPaymentInstructionRedirectUrl:
+          type: string
+          description: The URL to redirect to after the payment instruction is successful
+        paymentRedirect:
+          $ref: '#/components/schemas/PaymentRedirect'
+      required:
+      - accountHolder
+      - accountNumber
+      - bankName
+      - bankCode
+      example:
+        accountHolder:
+          name: Adaora Okafor
+          city: Lagos
+          country: NG
+          subdivision: LA
+          address: 15 Victoria Island Road
+          postalCode: '101001'
+        accountNumber: '1234567890123'
+        bankName: First Bank of Nigeria
+        bankCode: '011'
+        successPaymentInstructionRedirectUrl: https://yellowcard.example.com/authorize?token=abc123&transactionId=16b8b2c3-bd61-4745-9c48-3d30c2bc6907
+        paymentRedirect:
+          url: https://yellowcard.example.com/authorize?token=abc123&transactionId=16b8b2c3-bd61-4745-9c48-3d30c2bc6907
+          expiresAt: '2025-01-15T12:00:00Z'
+    AchAccountType:
+      type: string
+      description: Type of the bank account.
+      enum:
+      - CHECKING
+      - SAVINGS
+      example: CHECKING
+    TimeInForce:
+      description: Time in force for limit orders
+      discriminator:
+        propertyName: type
+        mapping:
+          FOK: '#/components/schemas/FokTimeInForce'
+      oneOf:
+      - $ref: '#/components/schemas/FokTimeInForce'
+    MarketTypeDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/MarketTypeEnum'
+      required:
+      - type
+    FiatPaymentMetadata:
+      type: object
+      properties:
+        referenceId:
+          type: string
+    CreateQuote:
+      type: object
+      properties:
+        scope:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ScopeItem'
+        baseAssetId:
+          type: string
+          description: The asset you receive on BUY / give on SELL.
+        baseAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+        quoteAssetId:
+          type: string
+          description: The counter asset used to pay/receive.
+        quoteAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+        baseAmount:
+          type: string
+          pattern: ^\d+(\.\d+)?$
+          description: Amount in baseAssetId. BUY = base amount to receive; SELL = base amount to sell.
+          example: '100.00'
+        slippageBps:
+          type: number
+          description: Slippage tolerance in basis points (bps) for defi quotes - 1 is 0.01% and 10000 is 100%
+          default: 50
+          minimum: 1
+          maximum: 10000
+        settlement:
+          $ref: '#/components/schemas/DVPSettlement'
+        side:
+          $ref: '#/components/schemas/Side'
+        participantsIdentification:
+          $ref: '#/components/schemas/ParticipantsIdentification'
+      required:
+      - quoteAssetId
+      - baseAssetId
+      - baseAmount
+      - side
+      - scope
+      example:
+        scope:
+        - providerId: prov_8c3f1a4b2d6e9f7c
+          accountId: acc_5e9a2d1c4b7f3e8a
+        baseAssetId: USD
+        baseAssetRail: FIAT_RAILS
+        quoteAssetId: BTC
+        quoteAssetRail: BLOCKCHAIN_RAILS
+        baseAmount: '1000.00'
+        side: BUY
+        slippageBps: 100
+        settlement:
+          type: DVP
+          sourceAccount:
+            type: VAULT_ACCOUNT
+            id: vault_acc_3f7e1d9b2c5a8e4f
+          destinationAccount:
+            type: VAULT_ACCOUNT
+            id: vault_acc_7b2e5d8f1c4a9e3b
+    MarketRequoteTypeEnum:
+      type: string
+      enum:
+      - MARKET
+      description: Indicates that the order should be re-quoted if the original quote is expired. This will lead to a market order.
+    BusinessIdentification:
+      type: object
+      properties:
+        externalReferenceId:
+          type: string
+        entityType:
+          $ref: '#/components/schemas/BusinessEntityTypeEnum'
+        participantRelationshipType:
+          $ref: '#/components/schemas/ParticipantRelationshipType'
+        businessName:
+          type: string
+        registrationNumber:
+          type: string
+        postalAddress:
+          $ref: '#/components/schemas/PostalAddress'
+        email:
+          type: string
+          format: email
+        phone:
+          $ref: '#/components/schemas/MobilePhoneNumber'
+        dateOfRegistration:
+          type: string
+          format: date
+          description: The date the business was registered.
+          example: '2020-06-15'
+        countryOfRegistration:
+          type: string
+          description: The ISO-3166 Alpha-2 country code where the business is registered.
+          example: US
+      required:
+      - externalReferenceId
+      - entityType
+      - participantRelationshipType
+      - businessName
+      - registrationNumber
+      - postalAddress
+      example:
+        externalReferenceId: bus_ref_9f3e2d1c4b8a7e5f
+        entityType: BUSINESS
+        participantRelationshipType: COUNTERPARTY
+        businessName: TechCorp Solutions LLC
+        registrationNumber: TC-2023-001547
+        email: techcorp@example.com
+        phone: '+14155551234'
+        postalAddress:
+          streetAddress: 789 Innovation Drive
+          city: San Francisco
+          state: CA
+          postalCode: '94105'
+          country: US
+        dateOfRegistration: '2020-06-15'
+        countryOfRegistration: US
+    MarketExecutionRequestDetails:
+      allOf:
+      - $ref: '#/components/schemas/MarketTypeDetails'
+      - $ref: '#/components/schemas/ExecutionRequestBaseDetails'
+      example:
+        type: MARKET
+        baseAssetId: USD
+        quoteAssetId: BTC
+        side: BUY
+        baseAmount: '1000.00'
+    FixedFee:
+      type: object
+      properties:
+        amountType:
+          $ref: '#/components/schemas/FixedAmountTypeEnum'
+        amount:
+          type: string
+          pattern: ^\d+(\.\d+)?$
+          description: The fixed amount of the fee
+          example: '0.01'
+      required:
+      - amountType
+      - amount
+      example:
+        amountType: FIXED
+        amount: '0.01'
+    ReQuoteDetails:
+      type: object
+      properties:
+        reQuote:
+          discriminator:
+            propertyName: type
+            mapping:
+              MARKET: '#/components/schemas/MarketRequoteRequestDetails'
+              RETRY: '#/components/schemas/RetryRequoteRequestDetails'
+          oneOf:
+          - $ref: '#/components/schemas/MarketRequoteRequestDetails'
+          - $ref: '#/components/schemas/RetryRequoteRequestDetails'
+    OrderRequirementFileUpload:
+      type: object
+      description: Multipart body of POST /trading/orders/{orderId}/requirement/file. Uploads a single file as part of an order requirement response. Fireblocks encrypts and uploads each file individually to the underlying provider.
+      properties:
+        fileKey:
+          type: string
+          description: Identifier of the required file this upload satisfies. Must match a `fileKey` from `requiredFiles` on the GET response.
+          example: identity_document
+        file:
+          type: string
+          format: binary
+          description: The binary file content. The file's type must be one of the supported OrderRequirementAllowedFileType values; the file name and type are derived from the uploaded part.
+          example: <binary file content>
+      required:
+      - fileKey
+      - file
+    InternalReference:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/PeerType'
+        accountId:
+          type: string
+      required:
+      - accountId
+      - type
+      example:
+        type: VAULT_ACCOUNT
+        accountId: vault_acc_9f3e2d1c4b8a7e5f
+    MobileMoneyAddress:
+      type: object
+      required:
+      - accountHolder
+      - mobilePhoneNumber
+      - provider
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        mobilePhoneNumber:
+          $ref: '#/components/schemas/MobilePhoneNumber'
+        provider:
+          type: string
+          enum:
+          - m-pesa
+          - airtel
+          - mtn
+          - tigo
+          - orange
+          description: Mobile money provider
+        beneficiaryDocumentId:
+          type: string
+          description: Beneficiary document identification (may be required)
+        beneficiaryRelationship:
+          type: string
+          description: Relationship to beneficiary for AML purposes
+        successPaymentInstructionRedirectUrl:
+          type: string
+          description: The URL to redirect to after the payment instruction is successful
+        paymentRedirect:
+          $ref: '#/components/schemas/PaymentRedirect'
+      example:
+        accountHolder:
+          name: Grace Wanjiku Kamau
+          city: Nairobi
+          country: KE
+          subdivision: NRB
+          address: Westlands Avenue 45
+          postalCode: '00100'
+        mobilePhoneNumber: '+254712345678'
+        provider: m-pesa
+        beneficiaryDocumentId: '12345678'
+        beneficiaryRelationship: self
+        successPaymentInstructionRedirectUrl: https://yellowcard.example.com/authorize?token=abc123&transactionId=16b8b2c3-bd61-4745-9c48-3d30c2bc6907
+        paymentRedirect:
+          url: https://yellowcard.example.com/authorize?token=abc123&transactionId=16b8b2c3-bd61-4745-9c48-3d30c2bc6907
+          expiresAt: '2025-01-15T12:00:00Z'
+    ExternalAccountMobileMoneyProvider:
+      type: string
+      enum:
+      - M_PESA
+      - AIRTEL
+      - MTN
+      - TIGO
+      - ORANGE
+    ScopeItem:
+      type: object
+      additionalProperties: false
+      properties:
+        providerId:
+          type: string
+          description: The ID of the provider associated with the account.
+        accountId:
+          type: string
+          description: The ID of the account associated with the provider.
+      required:
+      - providerId
+      example:
+        providerId: prov_8c3f1a4b2d6e9f7c
+        accountId: acc_5e9a2d1c4b7f3e8a
+    FeePropertiesDetails:
+      type: object
+      properties:
+        feeType:
+          $ref: '#/components/schemas/FeeTypeEnum'
+        assetId:
+          type: string
+          description: The asset identifier for the fee.
+      required:
+      - feeType
+      - assetId
+    AccountBasedAccessProvider:
+      description: Provider integrated via Fireblocks connected accounts (`accountBased` is `true`).
+      allOf:
+      - $ref: '#/components/schemas/BaseProvider'
+      - $ref: '#/components/schemas/AccountBasedAccessProviderInfo'
+      example:
+        id: BRIDGE
+        name: Bridge
+        logo: https://example.com/logos/bridge.png
+        accountBased: true
+        manifest:
+          order:
+            supported: true
+            executionTypes:
+            - MARKET
+            settlementTypes:
+            - DVP
+          quote:
+            supported: false
+          rate:
+            supported: true
+        connected: true
+        accounts:
+        - id: acc_5e9a2d1c4b7f3e8a
+          name: Main Trading Account
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    PesonetDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The transfer rail type for the destination
+          enum:
+          - PESONET
+          example: PESONET
+        address:
+          $ref: '#/components/schemas/PesonetAddress'
+      required:
+      - type
+      - address
+    OrderRequirementSubmissionJsonSchema:
+      type: string
+      description: 'A JSON Schema (Draft-7) in string format describing the shape of the `data` object expected on the corresponding POST /trading/orders/{orderId}/requirement/data request. The schema is the contract: the client builds the `data` payload to match it, and SDKs can validate before sending. The string content is expected to be valid JSON (application/json).
+
+        '
+      example: "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"required\": [\"sourceOfFunds\", \"purposeOfPayment\"],\n  \"properties\": {\n    \"sourceOfFunds\": {\n      \"type\": \"string\",\n      \"enum\": [\"SALARY\", \"SAVINGS\", \"INVESTMENT_RETURNS\", \"BUSINESS_INCOME\", \"OTHER\"]\n    },\n    \"purposeOfPayment\": {\n      \"type\": \"string\",\n      \"enum\": [\"BUSINESS_EXPENSES\", \"PERSONAL_EXPENSES\", \"INVESTMENT\", \"OTHER\"]\n    }\n  }\n}\n"
+    CreateOffersRequest:
+      type: object
+      properties:
+        baseAssetId:
+          type: string
+          description: The source asset identifier.
+          example: BTC
+        baseAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+        quoteAssetId:
+          type: string
+          description: The target asset identifier.
+          example: USD
+        quoteAssetRail:
+          $ref: '#/components/schemas/TransferRail'
+        baseAmount:
+          type: string
+          pattern: ^\d+(\.\d+)?$
+          description: The amount to get offers for
+          example: '100.00'
+        slippageBps:
+          type: integer
+          description: Slippage tolerance in basis points (bps) for defi quotes - 1 is 0.01% and 10000 is 100%. If not set, defaults to 50 bps (0.5%).
+          default: 50
+          minimum: 1
+          maximum: 10000
+        settlement:
+          $ref: '#/components/schemas/DVPSettlement'
+        side:
+          $ref: '#/components/schemas/Side'
+      required:
+      - baseAssetId
+      - quoteAssetId
+      - baseAmount
+      - side
+    DirectAccessProviderInfo:
+      type: object
+      properties:
+        approved:
+          type: boolean
+          description: Whether the provider was approved for use
+        hasTermsOfService:
+          type: boolean
+          description: Whether the provider has terms of service
+        termsOfServiceUrl:
+          type: string
+          description: URL to the terms of service document
+        privacyPolicyUrl:
+          type: string
+          description: URL to the privacy policy document
+      required:
+      - hasTermsOfService
+    ChapsAddress:
+      type: object
+      required:
+      - accountHolder
+      - sortCode
+      - accountNumber
+      - bankAccountCountry
+      - bankAccountHolderName
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        sortCode:
+          type: string
+          description: UK bank sort code (format XX-XX-XX)
+          example: 12-34-56
+        accountNumber:
+          type: string
+          description: UK bank account number
+          example: '12345678'
+        bankName:
+          type: string
+          description: Name of the bank
+          example: Barclays Bank
+        bankAccountCountry:
+          type: string
+          pattern: ^\d{2}$
+          description: CHAPS bank account holder name
+          example: GB
+        bankAccountHolderName:
+          type: string
+          pattern: ^(?=.{1,140}$)[^\s]+(\s+[^\s]+)*$
+          example: John Smith
+          description: CHAPS bank account holder name
+      example:
+        accountHolder:
+          name: John Smith
+          city: London
+          country: GB
+          subdivision: ENG
+          address: 123 Oxford Street
+          postalCode: W1D 1BS
+        sortCode: 12-34-56
+        accountNumber: '12345678'
+        bankName: Barclays Bank
+    AccessTypeResponse:
+      description: Response-only counterpart of AccessType. Used by the `via` field of response schemas (Quote, Rate, OrderDetails, OrderSummary — and therefore QuoteOffer, RateOffer and Offer) so that the PROVIDER variant can expose `subProviders` without that field ever becoming reachable from a request body. Request schemas (CreateOrderRequest.via) keep using AccessType.
+      discriminator:
+        propertyName: type
+        mapping:
+          PROVIDER_ACCOUNT: '#/components/schemas/AccountAccessResponse'
+          PROVIDER: '#/components/schemas/DirectAccessResponse'
+      oneOf:
+      - $ref: '#/components/schemas/AccountAccessResponse'
+      - $ref: '#/components/schemas/DirectAccessResponse'
+    Failure:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/FailureReason'
+      required:
+      - reason
+    QuoteExecutionTypeDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/QuoteExecutionTypeEnum'
+        quoteId:
+          type: string
+          description: Quote ID for quote orders
+        quoteAmount:
+          type: string
+          description: Quote amount for quote orders
+      required:
+      - type
+      - quoteId
+      - quoteAmount
+    ExternalAccountLocalBankAfrica:
+      type: object
+      properties:
+        successRedirectUrl:
+          type: string
+          description: URL to redirect the end user back to after they complete the payment on the bank/mobile provider page (e.g., the merchant checkout page)
+    FixedAmountTypeEnum:
+      type: string
+      enum:
+      - FIXED
+      description: The type of amount for the fee, indicating a fixed amount.
+    PersonalEntityTypeEnum:
+      type: string
+      enum:
+      - INDIVIDUAL
+    ExecutionStepType:
+      type: string
+      enum:
+      - APPROVE
+      - PERMIT
+      - CONTRACT_CALL
+      - EXECUTE
+      - SETTLEMENT
+      - DELIVERY
+      example: EXECUTE
+    TradingErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+        descriptor:
+          type: string
+      required:
+      - code
+      - message
+      example:
+        code: 900
+        message: 'Invalid base amount: must be greater than 0'
+    PayidAddress:
+      type: object
+      required:
+      - accountHolder
+      - value
+      - type
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        value:
+          type: string
+          description: The PayID identifier (email, phone, ABN, or organization ID)
+          example: john.williams@email.com
+        type:
+          type: string
+          enum:
+          - EMAIL
+          description: The type of PayID being used
+          example: EMAIL
+        bsb:
+          type: string
+          description: Bank State Branch (BSB) number (6 digits, format XXX-XXX)
+          example: 123-456
+        accountNumber:
+          type: string
+          description: Australian bank account number
+          example: '12345678'
+      example:
+        accountHolder:
+          name: John Williams
+          city: Sydney
+          country: AU
+          subdivision: NSW
+          address: 456 George Street
+          postalCode: '2000'
+        value: john.williams@email.com
+        type: EMAIL
+        bsb: 123-456
+        accountNumber: '12345678'
+    DirectAccessProvider:
+      description: Provider used without per-account linking (`accountBased` is `false`).
+      allOf:
+      - $ref: '#/components/schemas/BaseProvider'
+      - $ref: '#/components/schemas/DirectAccessProviderInfo'
+      example:
+        id: UNISWAP_CLASSIC
+        name: Uniswap Classic
+        logo: https://example.com/logos/uniswap.png
+        accountBased: false
+        manifest:
+          order:
+            supported: true
+            executionTypes:
+            - MARKET
+            - QUOTE
+            settlementTypes:
+            - DVP
+          quote:
+            supported: true
+            settlementTypes:
+            - DVP
+          rate:
+            supported: true
+        approved: true
+        hasTermsOfService: true
+        termsOfServiceUrl: https://uniswap.org/terms
+    DirectAccessResponse:
+      description: Response-only counterpart of DirectAccess. Adds the server-populated `subProviders` field. Never use this schema in a request body — requests must keep using DirectAccess (via AccessType).
+      allOf:
+      - $ref: '#/components/schemas/DirectAccess'
+      - $ref: '#/components/schemas/DirectAccessResponseInfo'
+      example:
+        type: PROVIDER
+        providerId: uniswap-v3-provider
+        subProviders:
+        - lifi-relay
+        - uniswap-v3
+    SpeiDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - SPEI
+        address:
+          $ref: '#/components/schemas/SpeiAddress'
+      required:
+      - type
+      - address
+      example:
+        type: SPEI
+        address:
+          accountHolder:
+            name: Carlos Martinez Lopez
+            city: Mexico City
+            country: MX
+            subdivision: CDMX
+            address: Avenida Reforma 123
+            postalCode: '06600'
+          bankName: BBVA México
+          bankAccountNumber: 012180001234567890
+    PostalAddress:
+      type: object
+      properties:
+        streetName:
+          type: string
+        buildingNumber:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        subdivision:
+          type: string
+        district:
+          type: string
+        country:
+          type: string
+      required:
+      - streetName
+      - buildingNumber
+      - postalCode
+      - city
+      - subdivision
+      - district
+      - country
+      example:
+        streetName: Fifth Avenue
+        buildingNumber: '350'
+        postalCode: '10118'
+        city: New York
+        subdivision: NY
+        district: Manhattan
+        country: US
+    OrderRequirementAllowedFileType:
+      type: string
+      description: Supported file formats for order requirement file uploads.
+      enum:
+      - PDF
+      - JPEG
+      - PNG
+      - HEIC
+      - HEIF
+      - DOC
+      - DOCX
+      - XLS
+      - XLSX
+      - CSV
+      example: PDF
+    DirectAccess:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - PROVIDER
+          description: Indicates this uses direct provider access
+        providerId:
+          type: string
+          description: The ID of the provider
+      required:
+      - type
+      - providerId
+      example:
+        type: PROVIDER
+        providerId: uniswap-v3-provider
+    SwiftDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - SWIFT
+        address:
+          $ref: '#/components/schemas/SwiftAddress'
+      required:
+      - type
+      - address
+      example:
+        type: SWIFT
+        address:
+          accountHolder:
+            name: Pierre Dupont
+            city: Paris
+            country: FR
+            subdivision: IDF
+            address: 25 Avenue des Champs-Élysées
+            postalCode: '75008'
+          swiftCode: BNPAFRPPXXX
+          routingNumber: '20041'
+    LimitExecutionRequestDetails:
+      allOf:
+      - $ref: '#/components/schemas/LimitTypeDetails'
+      - $ref: '#/components/schemas/ExecutionRequestBaseDetails'
+      example:
+        type: LIMIT
+        price: '60000.00'
+        timeInForce:
+          type: FOK
+        baseAssetId: USD
+        quoteAssetId: BTC
+        side: BUY
+        baseAmount: '1000.00'
+    BlockchainDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of destination. Use "BLOCKCHAIN" for blockchain address destinations.
+          example: BLOCKCHAIN
+          enum:
+          - BLOCKCHAIN
+        address:
+          $ref: '#/components/schemas/BlockchainAddress'
+      required:
+      - type
+      - address
+      example:
+        type: BLOCKCHAIN
+        address:
+          blockchainAddress: '0x1234567890123456789012345678901234567890'
+          tag: '1234567890'
+    ExecutionStepError:
+      type: string
+      enum:
+      - INTERNAL_ERROR
+      - QUOTE_EXPIRED
+      - INSUFFICIENT_OUTPUT_AMOUNT
+      - INSUFFICIENT_FUNDS
+      - LAST_TRANSACTION_FAILED
+      - SWAP_APPROVAL_FAILED
+      - PROVIDER_EXECUTION_ERROR
+      example: INSUFFICIENT_FUNDS
+    AccessType:
+      discriminator:
+        propertyName: type
+        mapping:
+          PROVIDER_ACCOUNT: '#/components/schemas/AccountAccess'
+          PROVIDER: '#/components/schemas/DirectAccess'
+      oneOf:
+      - $ref: '#/components/schemas/AccountAccess'
+      - $ref: '#/components/schemas/DirectAccess'
+    ExternalAccountMobileMoney:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ExternalAccountMobileMoneyType'
+        mobilePhoneNumber:
+          $ref: '#/components/schemas/MobilePhoneNumber'
+        provider:
+          $ref: '#/components/schemas/ExternalAccountMobileMoneyProvider'
+        email:
+          type: string
+          format: email
+        successRedirectUrl:
+          type: string
+          description: URL to redirect the end user back to after they complete the payment on the bank/mobile provider page (e.g., the merchant checkout page)
+      required:
+      - type
+      - mobilePhoneNumber
+      - provider
+      - email
+    ExecutionRequestDetailsType:
+      type: string
+      enum:
+      - QUOTE
+      - MARKET
+      - LIMIT
+      description: Execution type supported by the provider
+    PrefundedSettlementType:
+      type: string
+      enum:
+      - PREFUNDED
+    ExternalAccountType:
+      type: string
+      enum:
+      - EXTERNAL
+    SettlementTypeEnum:
+      type: string
+      enum:
+      - DVP
+      - PREFUNDED
+      - POST_TRADE
+      description: Settlement type supported by the provider
+    ExecutionRequestDetails:
+      description: Order execution details
+      discriminator:
+        propertyName: type
+        mapping:
+          MARKET: '#/components/schemas/MarketExecutionRequestDetails'
+          QUOTE: '#/components/schemas/QuoteExecutionWithRequoteRequestDetails'
+          LIMIT: '#/components/schemas/LimitExecutionRequestDetails'
+      oneOf:
+      - $ref: '#/components/schemas/MarketExecutionRequestDetails'
+      - $ref: '#/components/schemas/QuoteExecutionWithRequoteRequestDetails'
+      - $ref: '#/components/schemas/LimitExecutionRequestDetails'
+    TradingProvider:
+      oneOf:
+      - $ref: '#/components/schemas/AccountBasedAccessProvider'
+      - $ref: '#/components/schemas/DirectAccessProvider'
+    ReasonForPaymentEnum:
+      type: string
+      description: 'The reason or purpose of the payment. Used by providers (e.g. CPN) that require a categorical reason for cross-border payment compliance and reporting. Optional at the API level; runtime enforcement is handled by the calling service against the provider''s requirements.
+
+        '
+      enum:
+      - INVOICE_PAYMENT
+      - SERVICES_PAYMENT
+      - SOFTWARE_PAYMENT
+      - IMPORTED_GOODS_PAYMENT
+      - TRAVEL_SERVICES
+      - TRANSFER_TO_OWN_ACCOUNT
+      - LOAN_REPAYMENT
+      - PAYROLL
+      - PROPERTY_RENTAL
+      - INFORMATION_SERVICE_CHARGES
+      - ADVERTISING_AND_PUBLIC_RELATIONS
+      - INTELLECTUAL_PROPERTY_FEES
+      - FINANCIAL_SERVICE_FEES
+      - ADVISORY_AND_TECHNICAL_FEES
+      - REPRESENTATIVE_OFFICE_EXPENSES
+      - TAX_PAYMENT
+      - GOODS_TRANSPORTATION_FEES
+      - CONSTRUCTION_EXPENSES
+      - INSURANCE_PREMIUM
+      - GENERAL_GOODS_TRADE
+      - INSURANCE_CLAIMS_PAYMENT
+      - FAMILY_REMITTANCE
+      - EDUCATION_EXPENSES
+      - MEDICAL_TREATMENT
+      - DONATIONS
+      - MUTUAL_FUND_INVESTMENT
+      - CURRENCY_EXCHANGE
+      - ADVANCE_GOODS_PAYMENT
+      - MERCHANT_SETTLEMENT
+      - REPATRIATION_FUND_SETTLEMENT
+      - CORPORATE_INVESTMENT
+      - INTER_COMPANY_TRANSFER
+      - OFFICE_OPERATING_EXPENSES
+    QuotesResponse:
+      type: object
+      properties:
+        quotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Quote'
+        quoteFailures:
+          type: array
+          description: List of partial failures encountered while requesting quotes. Empty when all quote attempts succeed.
+          items:
+            $ref: '#/components/schemas/ScopeItemFailure'
+      required:
+      - quotes
+      - quoteFailures
+      example:
+        quotes:
+        - via:
+            type: PROVIDER_ACCOUNT
+            providerId: bridge-provider-001
+            accountId: acc_9f4e2d8b1c6a5e73
+          id: quote_8f2e4d1a9c5b7e3f
+          type: COMMITTED
+          baseAssetId: USDC
+          quoteAssetId: BTC
+          baseAmount: '1000.00'
+          quoteAmount: '0.02458'
+          priceImpact: 0.005
+          quoteMinAmount: '0.02450'
+          expiresAt: '2024-01-15T10:35:00.000Z'
+          executionSteps:
+          - type: EXECUTE
+            fee:
+              feeType: ORDER
+              assetId: USDC
+              amountType: FIXED
+              amount: '2.50'
+          generalFees:
+          - feeType: ORDER
+            assetId: USDC
+            amountType: FIXED
+            amount: '2.50'
+        quoteFailures:
+        - providerId: BRIDGE
+          accountId: acc_9f4e2d8b1c6a5e73
+          error:
+            code: 3107
+            message: This trading pair is not supported by the provider.
+        - providerId: UNISWAP
+          error:
+            code: 3101
+            message: Provider not found.
+            descriptor:
+              providerId: UNISWAP
+    CipsDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The transfer rail type for the destination
+          enum:
+          - CIPS
+          example: CIPS
+        address:
+          $ref: '#/components/schemas/CipsAddress'
+        referenceId:
+          type: string
+          description: Optional payment reference
+          example: INV-2024-0001
+      required:
+      - type
+      - address
+    USWireDestination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - WIRE
+        address:
+          $ref: '#/components/schemas/USWireAddress'
+      required:
+      - type
+      - address
+      example:
+        type: WIRE
+        address:
+          accountHolder:
+            name: John Smith
+            city: New York
+            country: US
+            subdivision: NY
+            address: 123 Wall Street
+            postalCode: '10005'
+          bankName: Chase Bank
+          bankAccountNumber: '123456789012'
+          routingNumber: '021000021'
+          bankAddress: 270 Park Avenue, New York, NY 10017
+    BusinessEntityTypeEnum:
+      type: string
+      enum:
+      - BUSINESS
+    NequiAddress:
+      type: object
+      required:
+      - phone
+      properties:
+        phone:
+          type: string
+          description: Recipient phone number in E.164 format
+          example: '+573001234567'
+    PostTradeSettlement:
+      type: object
+      description: 'Nothing moves on-platform; settlement happens bilaterally, provider-side, after execution.
+
+        '
+      properties:
+        type:
+          $ref: '#/components/schemas/PostTradeSettlementType'
+      required:
+      - type
+      example:
+        type: POST_TRADE
+    BpsFee:
+      type: object
+      properties:
+        amountType:
+          type: string
+          enum:
+          - BPS
+        amount:
+          type: number
+          minimum: 0
+          maximum: 10000
+          description: Fee in basis points (1 = 0.01%, 10000 = 100%)
+          example: 50
+      required:
+      - amountType
+      - amount
+      example:
+        amountType: BPS
+        amount: 50
+    SwiftAddress:
+      type: object
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolderDetails'
+        swiftCode:
+          $ref: '#/components/schemas/SwiftCode'
+        routingNumber:
+          type: string
+          description: Routing number identifying the bank account.
+      required:
+      - accountHolder
+      - swiftCode
+      - routingNumber
+      example:
+        accountHolder:
+          name: Emma Watson
+          city: London
+          country: GB
+          subdivision: ENG
+          address: 25 Bank Street, Canary Wharf
+          postalCode: E14 5JP
+        swiftCode: CHASUS33XXX
+        routingNumber: 026009593
+    SwiftCode:
+      type: string
+      pattern: ^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$
+      example: CHASUS33XXX
+    QuoteOffer:
+      allOf:
+      - $ref: '#/components/schemas/Quote'
+      - $ref: '#/components/schemas/QuoteOfferType'
+    PostTradeSettlementType:
+      type: string
+      enum:
+      - POST_TRADE
+    MarketRequoteRequestDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/MarketRequoteTypeEnum'
+      required:
+      - type
+      example:
+        type: MARKET
+    Identification:
+      discriminator:
+        propertyName: entityType
+        mapping:
+          INDIVIDUAL: '#/components/schemas/PersonalIdentification'
+          BUSINESS: '#/components/schemas/BusinessIdentification'
+      oneOf:
+      - $ref: '#/components/schemas/PersonalIdentification'
+      - $ref: '#/components/schemas/BusinessIdentification'
+    SettlementSourceAccount:
+      discriminator:
+        propertyName: type
+        mapping:
+          VAULT_ACCOUNT: '#/components/schemas/PlatformAccount'
+          CONNECTED_ACCOUNT: '#/components/schemas/PlatformAccount'
+          FIAT_ACCOUNT: '#/components/schemas/PlatformAccount'
+          EXTERNAL: '#/components/schemas/ExternalAccount'
+      oneOf:
+      - $ref: '#/components/schemas/PlatformAccount'
+      - $ref: '#/components/schemas/ExternalAccount'
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

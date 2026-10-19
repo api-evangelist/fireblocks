@@ -1,0 +1,158 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks OTA (Beta) API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: OTA (Beta)
+paths:
+  /management/ota:
+    put:
+      operationId: setOtaStatus
+      summary: Enable or disable transactions to OTA
+      description: 'Enable or disable transactions to One Time Addresses (Non Whitelisted addresses).
+
+        Learn more about One Time Addresses'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetOtaStatusRequest'
+      responses:
+        '202':
+          description: Successfully updated OTA status
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetOtaStatusResponse'
+        '400':
+          description: Bad request
+        '409':
+          description: Similar request already pending
+        '500':
+          description: Internal server error
+      tags:
+      - OTA (Beta)
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SetOtaStatusResponse>> = fireblocks.oTABeta.setOtaStatus(oTABetaApiSetOtaStatusRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SetOtaStatusResponse>> response = fireblocks.oTABeta().setOtaStatus(setOtaStatusRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.o_t_a_beta.set_ota_status(set_ota_status_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SetOtaStatusResponse>> = fireblocks.oTABeta.setOtaStatus(oTABetaApiSetOtaStatusRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SetOtaStatusResponse>> response = fireblocks.oTABeta().setOtaStatus(setOtaStatusRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.o_t_a_beta.set_ota_status(set_ota_status_request, idempotency_key);
+    get:
+      operationId: getOtaStatus
+      summary: Returns current OTA status
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOtaStatusResponse'
+          description: Current OTA status
+        '404':
+          description: Configuration not found for tenant
+      tags:
+      - OTA (Beta)
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetOtaStatusResponse>> = fireblocks.oTABeta.getOtaStatus();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetOtaStatusResponse>> response = fireblocks.oTABeta().getOtaStatus();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.o_t_a_beta.get_ota_status();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetOtaStatusResponse>> = fireblocks.oTABeta.getOtaStatus();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetOtaStatusResponse>> response = fireblocks.oTABeta().getOtaStatus();
+      - lang: Python
+        source: response = fireblocks.o_t_a_beta.get_ota_status();
+components:
+  schemas:
+    SetOtaStatusRequest:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Set true or false to enable or disable OTA transactions
+    SetOtaStatusResponse:
+      oneOf:
+      - type: object
+        properties:
+          message:
+            type: string
+            description: Message indicating the result of the operation for example when no config change is needed
+            example: No change needed. The current status is false
+      - type: string
+        description: Message indicating the result of the operation when config was successfully updated
+        example: Accepted
+    GetOtaStatusResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Current OTA status
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

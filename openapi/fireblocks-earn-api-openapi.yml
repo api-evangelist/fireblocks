@@ -1,0 +1,1471 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Earn API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Earn
+paths:
+  /earn/actions:
+    get:
+      operationId: getEarnActions
+      summary: List earn lending actions
+      description: Returns a paginated list of lending actions (deposits and withdrawals) for the authenticated tenant.
+      parameters:
+      - name: pageCursor
+        in: query
+        required: false
+        description: Cursor for the next or previous page of results.
+        schema:
+          type: string
+      - name: pageSize
+        in: query
+        required: false
+        description: Number of items per page (default 100, max 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+      - name: sortBy
+        in: query
+        required: false
+        description: Field to sort results by.
+        schema:
+          type: string
+          enum:
+          - createdAt
+          - updatedAt
+      - name: order
+        in: query
+        required: false
+        description: Sort order (ASC or DESC).
+        schema:
+          type: string
+          default: DESC
+          example: ASC
+          enum:
+          - ASC
+          - DESC
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetActionsResponse'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '404':
+          description: 'Not found: requested resource does not exist.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '500':
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Earn
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetActionsResponse>> = fireblocks.earn.getEarnActions(earnApiGetEarnActionsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetActionsResponse>> response = fireblocks.earn().getEarnActions(pageCursor, pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.earn.get_earn_actions(page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetActionsResponse>> = fireblocks.earn.getEarnActions(earnApiGetEarnActionsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetActionsResponse>> response = fireblocks.earn().getEarnActions(pageCursor, pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.earn.get_earn_actions(page_cursor, page_size, sort_by, order);
+    post:
+      operationId: createEarnAction
+      summary: Create and execute a lending action (deposit or withdraw)
+      description: 'Creates and runs a sequence of on-chain steps for either a deposit into or a withdrawal from an earn
+
+        vault/market. Specify the operation with `action` in the request body (`DEPOSIT` or `WITHDRAW`).'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEarnActionRequest'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEarnActionResponse'
+        '400':
+          description: 'Bad request: missing/invalid fields, unsupported amount, or malformed payload.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted provider.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '404':
+          description: 'Not found: requested resource does not exist (e.g., opportunity, provider, or wallet).'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '500':
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Earn
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateEarnActionResponse>> = fireblocks.earn.createEarnAction(earnApiCreateEarnActionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateEarnActionResponse>> response = fireblocks.earn().createEarnAction(createEarnActionRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.earn.create_earn_action(create_earn_action_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateEarnActionResponse>> = fireblocks.earn.createEarnAction(earnApiCreateEarnActionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateEarnActionResponse>> response = fireblocks.earn().createEarnAction(createEarnActionRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.earn.create_earn_action(create_earn_action_request, idempotency_key);
+  /earn/actions/{id}:
+    get:
+      operationId: getEarnAction
+      summary: Get a single earn lending action
+      description: Returns one lending action by its action sequence id (tenant-scoped).
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Action sequence id (UUID).
+        schema:
+          type: string
+          minLength: 1
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetActionResponse'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '404':
+          description: 'Not found: action does not exist or is not visible for this tenant.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '500':
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Earn
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetActionResponse>> = fireblocks.earn.getEarnAction(earnApiGetEarnActionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetActionResponse>> response = fireblocks.earn().getEarnAction(id);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.earn.get_earn_action(id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetActionResponse>> = fireblocks.earn.getEarnAction(earnApiGetEarnActionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetActionResponse>> response = fireblocks.earn().getEarnAction(id);
+      - lang: Python
+        source: response = fireblocks.earn.get_earn_action(id);
+  /earn/opportunities:
+    get:
+      operationId: getEarnOpportunities
+      summary: Get list of earn opportunities
+      description: Get list of earn opportunities (vaults).
+      parameters:
+      - name: pageCursor
+        in: query
+        required: false
+        description: Cursor for the next or previous page of results.
+        schema:
+          type: string
+      - name: pageSize
+        in: query
+        required: false
+        description: Number of items per page.
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+      - name: sortBy
+        in: query
+        required: false
+        description: Field to sort results by.
+        schema:
+          type: string
+      - name: order
+        in: query
+        required: false
+        description: Sort order (ASC or DESC).
+        schema:
+          type: string
+          default: DESC
+          example: ASC
+          enum:
+          - ASC
+          - DESC
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOpportunitiesResponse'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '404':
+          description: 'Not found: requested resource does not exist.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '500':
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Earn
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetOpportunitiesResponse>> = fireblocks.earn.getEarnOpportunities(earnApiGetEarnOpportunitiesRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetOpportunitiesResponse>> response = fireblocks.earn().getEarnOpportunities(pageCursor, pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.earn.get_earn_opportunities(page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetOpportunitiesResponse>> = fireblocks.earn.getEarnOpportunities(earnApiGetEarnOpportunitiesRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetOpportunitiesResponse>> response = fireblocks.earn().getEarnOpportunities(pageCursor, pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.earn.get_earn_opportunities(page_cursor, page_size, sort_by, order);
+  /earn/positions:
+    get:
+      operationId: getEarnPositions
+      summary: Get list of earn positions
+      description: 'Get list of earn positions for accounts tracked for this workspace.
+
+        Optional query parameters filter by chain, provider, and pagination.'
+      parameters:
+      - name: chainId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: providerId
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - MORPHO
+          - AAVE
+      - name: pageCursor
+        in: query
+        required: false
+        description: Cursor for the next or previous page of results.
+        schema:
+          type: string
+      - name: pageSize
+        in: query
+        required: false
+        description: Number of items per page.
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+      - name: sortBy
+        in: query
+        required: false
+        description: Field to sort results by.
+        schema:
+          type: string
+      - name: order
+        in: query
+        required: false
+        description: Sort order (ASC or DESC).
+        schema:
+          type: string
+          default: DESC
+          example: ASC
+          enum:
+          - ASC
+          - DESC
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPositionsResponse'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '404':
+          description: 'Not found: requested resource does not exist.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '500':
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Earn
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetPositionsResponse>> = fireblocks.earn.getEarnPositions(earnApiGetEarnPositionsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetPositionsResponse>> response = fireblocks.earn().getEarnPositions(chainId, providerId, pageCursor, pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.earn.get_earn_positions(chain_id, provider_id, page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetPositionsResponse>> = fireblocks.earn.getEarnPositions(earnApiGetEarnPositionsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetPositionsResponse>> response = fireblocks.earn().getEarnPositions(chainId, providerId, pageCursor, pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.earn.get_earn_positions(chain_id, provider_id, page_cursor, page_size, sort_by, order);
+  /earn/providers:
+    get:
+      operationId: getEarnProviders
+      summary: Get list of earn providers
+      description: Get list of earn providers.
+      parameters:
+      - name: pageCursor
+        in: query
+        required: false
+        description: Cursor for the next or previous page of results.
+        schema:
+          type: string
+      - name: pageSize
+        in: query
+        required: false
+        description: Number of items per page.
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+      - name: sortBy
+        in: query
+        required: false
+        description: Field to sort results by.
+        schema:
+          type: string
+      - name: order
+        in: query
+        required: false
+        description: Sort order (ASC or DESC).
+        schema:
+          type: string
+          default: DESC
+          example: ASC
+          enum:
+          - ASC
+          - DESC
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProvidersResponse'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted access.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '404':
+          description: 'Not found: requested resource does not exist.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '500':
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Earn
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetProvidersResponse>> = fireblocks.earn.getEarnProviders(earnApiGetEarnProvidersRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetProvidersResponse>> response = fireblocks.earn().getEarnProviders(pageCursor, pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.earn.get_earn_providers(page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetProvidersResponse>> = fireblocks.earn.getEarnProviders(earnApiGetEarnProvidersRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetProvidersResponse>> response = fireblocks.earn().getEarnProviders(pageCursor, pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.earn.get_earn_providers(page_cursor, page_size, sort_by, order);
+  /earn/providers/approve_terms_of_service:
+    post:
+      operationId: approveTermsOfService
+      summary: Approve earn provider terms of service
+      description: 'Approves earn provider terms of service for this workspace (one-time per tenant).
+
+        When `isTermsApprovalRequired` is true on a provider (see list providers),
+
+        call this once before creating or executing earn actions with providers that require it.
+
+        After success, `GET /earn/providers` reflects `isTermsOfServiceApproved`.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '204':
+          description: Terms of service accepted.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '400':
+          description: 'Bad request: missing/invalid fields, unsupported amount, or malformed payload.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '403':
+          description: 'Forbidden: insufficient permissions, disabled feature, or restricted provider/validator.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '404':
+          description: 'Not found: requested resource does not exist (e.g., position, validator, provider, or wallet).'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '429':
+          description: 'Rate limit exceeded: slow down and retry later.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '500':
+          description: Internal error while processing the request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Earn
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.earn.approveTermsOfService(earnApiApproveTermsOfServiceRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.earn().approveTermsOfService(idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.earn.approve_terms_of_service(idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.earn.approveTermsOfService(earnApiApproveTermsOfServiceRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.earn().approveTermsOfService(idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.earn.approve_terms_of_service(idempotency_key);
+components:
+  schemas:
+    Position-2:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Position UUID.
+          example: 660e8400-e29b-41d4-a716-446655440001
+        status:
+          type: string
+          description: Lifecycle status of the position.
+          example: ACTIVE
+          enum:
+          - ACTIVE
+          - INACTIVE
+        inFlight:
+          type: boolean
+          description: True while an action is in progress for this position.
+          example: false
+        positionType:
+          type: string
+          description: Whether the position is lend- or borrow-side.
+          example: LEND
+          enum:
+          - LEND
+          - BORROW
+        vaultAccountId:
+          type: string
+          description: Fireblocks vault account holding the position.
+          example: '12345'
+        opportunityId:
+          type: string
+          description: Opportunity / vault or market identifier.
+          example: morpho-usdc-vault-1
+        chainId:
+          type: string
+          description: Chain identifier as a string (e.g. "1").
+          example: '1'
+        providerId:
+          type: string
+          description: Lending protocol.
+          example: MORPHO
+          enum:
+          - MORPHO
+          - AAVE
+        origin:
+          type: string
+          description: Whether the position was opened natively in Fireblocks or imported externally.
+          example: NATIVE
+          enum:
+          - NATIVE
+          - EXTERNAL
+        principalAssetId:
+          type: string
+          description: Fireblocks asset id for the principal (underlying) asset.
+          example: USDC_ETH
+        positionAssetId:
+          type: string
+          description: Fireblocks asset id for the position / share token.
+          example: MORPHO_USDC_VAULT_ETH
+        principalBalance:
+          type: string
+          description: Human-readable principal balance.
+          example: '10000.00'
+        positionBalance:
+          type: string
+          description: Human-readable position token balance.
+          example: '9950.5'
+        createdAt:
+          type: string
+          description: Creation time (ISO-8601).
+          example: '2025-01-15T10:00:00Z'
+        updatedAt:
+          type: string
+          description: Last update time (ISO-8601).
+          example: '2025-03-20T08:30:00Z'
+        lastSyncedAt:
+          type: string
+          description: Last successful on-chain sync time (ISO-8601).
+          example: '2025-03-20T08:29:55Z'
+        lastModifiedAt:
+          type: string
+          description: Timestamp of the last user-triggered action on this position (ISO-8601). Empty if the user has never interacted with it.
+          example: '2025-03-19T14:00:00Z'
+        availableActions:
+          type: array
+          description: Actions the API allows next for this position.
+          items:
+            type: string
+            enum:
+            - DEPOSIT
+            - WITHDRAW
+          example:
+          - DEPOSIT
+          - WITHDRAW
+        yield:
+          type: string
+          description: Accrued yield in principal token units (decimal string). Only present for Morpho positions.
+          example: '1.23'
+      required:
+      - id
+      - status
+      - inFlight
+      - positionType
+      - vaultAccountId
+      - opportunityId
+      - chainId
+      - providerId
+      - origin
+      - principalAssetId
+      - positionAssetId
+      - principalBalance
+      - positionBalance
+      - createdAt
+      - updatedAt
+      - availableActions
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    GetOpportunitiesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Page of lending opportunities for this query.
+          items:
+            $ref: '#/components/schemas/Opportunity'
+          example:
+          - id: opp-usdc-eth-001
+            providerId: MORPHO
+            type: VAULT
+            chainId: '1'
+            address: '0x1234567890123456789012345678901234567890'
+            name: USDC Core
+            symbol: mUSDC
+            principalAsset:
+              address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+              symbol: USDC
+              decimals: 6
+              assetId: USDC_ETH
+            positionAsset:
+              address: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd'
+              symbol: mUSDC
+              decimals: 18
+              assetId: MORPHO_USDC_VAULT_ETH
+            totalAssets: '50000000.0'
+            liquidity: '1200000.0'
+            apy:
+              native: 4.25
+              gross: 4.4
+              net: 4.05
+            performanceFee: '0.10'
+            exposure: []
+            managementFee: '0.01'
+        next:
+          type: string
+          description: Opaque cursor for the next page; empty when there is no next page.
+          example: ''
+        prev:
+          type: string
+          description: Opaque cursor for the previous page; empty when there is no previous page.
+          example: ''
+        total:
+          type: integer
+          format: int32
+          description: Total number of items matching the query.
+          example: 1
+      required:
+      - data
+      - total
+    Exposure:
+      type: object
+      description: Vault allocation exposure item (Morpho MetaMorpho allocation slice).
+      properties:
+        address:
+          type: string
+          description: Contract address of the exposure token on-chain.
+          example: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+        amount:
+          type: string
+          description: Human-readable token amount (raw on-chain value scaled by 10^decimals).
+          example: '10.0'
+        symbol:
+          type: string
+          description: Human-readable ticker (e.g. USDC).
+          example: USDC
+        decimals:
+          type: integer
+          format: int32
+          description: Token decimals used when interpreting on-chain amounts.
+          example: 6
+        assetId:
+          type: string
+          description: Fireblocks legacy asset identifier (e.g. USDC_ETH, PYUSD); only present when resolved via asset-service.
+          example: USDC_ETH
+        amountUsd:
+          type: string
+          description: USD notional value of the exposure amount.
+          example: '10.0'
+      required:
+      - address
+      - amount
+    EarnProvider:
+      type: object
+      properties:
+        providerId:
+          type: string
+          description: Stable protocol identifier (`MORPHO` or `AAVE`).
+          example: AAVE
+          enum:
+          - MORPHO
+          - AAVE
+        displayName:
+          type: string
+          description: Human-readable protocol name for UI.
+          example: Aave
+        logoUrl:
+          type: string
+          description: URL for the provider logo asset.
+          example: https://cdn.example.com/aave.svg
+        supportedChainIds:
+          type: array
+          description: EVM chain IDs where this provider is supported.
+          minItems: 0
+          maxItems: 10
+          items:
+            type: integer
+            format: int32
+          example:
+          - 1
+          - 42161
+        isTermsApprovalRequired:
+          type: boolean
+          description: Whether the user must accept terms before using this provider.
+          example: false
+        termsOfServiceUrl:
+          type: string
+          description: URL to the provider terms of service, when applicable.
+          example: https://aave.com/terms
+        isTermsOfServiceApproved:
+          type: boolean
+          description: Whether terms have been approved for this workspace / context.
+          example: true
+    EarnAsset:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Contract address of the token on-chain.
+          example: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+        symbol:
+          type: string
+          description: Human-readable ticker (e.g. USDC).
+          example: USDC
+        decimals:
+          type: integer
+          format: int32
+          description: Token decimals used when interpreting on-chain amounts.
+          example: 6
+        assetId:
+          type: string
+          description: Fireblocks legacy asset identifier (e.g. USDC_ETH, PYUSD).
+          example: USDC_ETH
+    GetPositionsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Page of user lending positions for this query.
+          items:
+            $ref: '#/components/schemas/Position-2'
+          example:
+          - id: 660e8400-e29b-41d4-a716-446655440001
+            status: ACTIVE
+            inFlight: false
+            positionType: LEND
+            vaultAccountId: '12345'
+            opportunityId: morpho-usdc-vault-1
+            chainId: '1'
+            providerId: MORPHO
+            origin: NATIVE
+            principalAssetId: USDC_ETH
+            positionAssetId: MORPHO_USDC_VAULT_ETH
+            principalBalance: '10000.00'
+            positionBalance: '9950.5'
+            createdAt: '2025-01-15T10:00:00Z'
+            updatedAt: '2025-03-20T08:30:00Z'
+            lastSyncedAt: '2025-03-20T08:29:55Z'
+            availableActions:
+            - DEPOSIT
+            - WITHDRAW
+        next:
+          type: string
+          description: Opaque cursor for the next page; empty when there is no next page.
+          example: ''
+        prev:
+          type: string
+          description: Opaque cursor for the previous page; empty when there is no previous page.
+          example: ''
+        total:
+          type: integer
+          format: int32
+          description: Total number of items matching the query.
+          example: 1
+      required:
+      - data
+      - total
+    Opportunity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique opportunity identifier.
+          example: opp-usdc-eth-001
+        providerId:
+          type: string
+          description: Lending protocol (`MORPHO` or `AAVE`).
+          example: MORPHO
+          enum:
+          - MORPHO
+          - AAVE
+        type:
+          type: string
+          description: Opportunity kind — vault or market.
+          example: VAULT
+          enum:
+          - VAULT
+          - MARKET
+        chainId:
+          type: string
+          description: Chain identifier as a string (e.g. "1" for Ethereum mainnet).
+          example: '1'
+        address:
+          type: string
+          description: Primary contract address for the vault or market.
+          example: '0x1234567890123456789012345678901234567890'
+        name:
+          type: string
+          description: Display name of the opportunity.
+          example: USDC Core
+        symbol:
+          type: string
+          description: Symbol or share token ticker for the position asset.
+          example: mUSDC
+        principalAsset:
+          description: Underlying token the user deposits (principal).
+          allOf:
+          - $ref: '#/components/schemas/EarnAsset'
+        positionAsset:
+          description: Token representing the user’s position in the protocol (e.g. vault share).
+          allOf:
+          - $ref: '#/components/schemas/EarnAsset'
+        totalAssets:
+          type: string
+          description: Human-readable total value locked / assets in the opportunity.
+          example: '50000000.0'
+        totalAssetsUsd:
+          type: string
+          description: USD-denominated total assets / TVL.
+          example: '50000000.00'
+        liquidity:
+          type: string
+          description: Human-readable available liquidity.
+          example: '1200000.0'
+        liquidityUsd:
+          type: string
+          description: USD-denominated available liquidity.
+          example: '1200000.00'
+        apy:
+          description: APY breakdown; values are percentages (e.g. 4.25 means 4.25%).
+          allOf:
+          - $ref: '#/components/schemas/Apy'
+        performanceFee:
+          type: string
+          description: Performance fee as a human-readable decimal string.
+          example: '0.10'
+        managementFee:
+          type: string
+          description: Management fee as a human-readable decimal string.
+          example: '0.01'
+        exposureType:
+          type: string
+          description: What the `exposure` rows represent; `UNSPECIFIED` when there is no exposure.
+          example: VAULT_ALLOCATION
+          enum:
+          - UNSPECIFIED
+          - VAULT_ALLOCATION
+          - MARKET_COLLATERAL
+        exposure:
+          type: array
+          description: Per-asset exposure breakdown (vault allocation slices, top 20 by USD notional). Empty when not applicable.
+          minItems: 0
+          maxItems: 20
+          items:
+            $ref: '#/components/schemas/Exposure'
+          example: []
+        curator:
+          description: Curator information for Morpho vaults.
+          example:
+            name: Sentora
+            iconUrl: https://example.com/sentora-icon.png
+          allOf:
+          - $ref: '#/components/schemas/EarnCurator'
+        metadata:
+          description: Protocol-level metadata (display name and logo).
+          example:
+            name: Aave
+            iconUrl: https://example.com/aave-icon.png
+          allOf:
+          - $ref: '#/components/schemas/EarnMetadata'
+    CreateEarnActionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ActionIntent UUID for tracking the lending action workflow.
+          example: 550e8400-e29b-41d4-a716-446655440000
+        status:
+          type: string
+          description: Lifecycle status (e.g. CREATED, IN_PROGRESS, COMPLETED).
+          example: CREATED
+          enum:
+          - CREATED
+          - IN_PROGRESS
+          - COMPLETED
+          - CANCELED
+          - FAILED
+      required:
+      - id
+      - status
+    GetProvidersResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Page of integrated lending providers.
+          items:
+            $ref: '#/components/schemas/EarnProvider'
+          example:
+          - providerId: MORPHO
+            displayName: Morpho
+            logoUrl: https://cdn.example.com/morpho.svg
+            supportedChainIds:
+            - 1
+            - 8453
+            isTermsApprovalRequired: true
+            termsOfServiceUrl: https://example.com/morpho/tos
+            isTermsOfServiceApproved: false
+        next:
+          type: string
+          description: Opaque cursor for the next page; empty when there is no next page.
+          example: ''
+        prev:
+          type: string
+          description: Opaque cursor for the previous page; empty when there is no previous page.
+          example: ''
+        total:
+          type: integer
+          format: int32
+          description: Total number of items matching the query.
+          example: 1
+      required:
+      - data
+      - total
+    GetActionsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Page of lending actions for this query.
+          items:
+            $ref: '#/components/schemas/GetActionResponse'
+          example:
+          - id: 660e8400-e29b-41d4-a716-446655440001
+            vaultAccountId: '0'
+            userId: 550e8400-e29b-41d4-a716-446655440000
+            status: IN_PROGRESS
+            providerId: MORPHO
+            actionType: DEPOSIT
+            opportunityId: morpho-usdc-vault-1
+            amount: '1500.5'
+            createdAt: '2025-01-15T10:00:00Z'
+            updatedAt: '2025-03-20T08:30:00Z'
+            records:
+            - actionType: APPROVE
+              status: COMPLETED
+              txId: tx_abc123
+              txHash: 0xabc...
+              updatedAt: '2025-03-20T08:29:00Z'
+        next:
+          type: string
+          description: Opaque cursor for the next page; empty when there is no next page.
+          example: ''
+        prev:
+          type: string
+          description: Opaque cursor for the previous page; empty when there is no previous page.
+          example: ''
+        total:
+          type: integer
+          format: int32
+          description: Total number of items matching the query.
+          example: 1
+      required:
+      - data
+      - total
+    EarnCurator:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Curator display name.
+          example: Sentora
+        iconUrl:
+          type: string
+          format: uri
+          description: URL of the curator's icon/logo.
+          example: https://example.com/sentora-icon.png
+    ActionRecord:
+      type: object
+      description: One row in the lending action execution sequence.
+      properties:
+        actionType:
+          type: string
+          description: Kind of step in the lending sequence.
+          example: APPROVE
+          enum:
+          - APPROVE
+          - DEPOSIT
+          - WITHDRAW
+        status:
+          type: string
+          description: Step lifecycle status.
+          example: COMPLETED
+          enum:
+          - NOT_STARTED
+          - PROCESSING
+          - PENDING_SIGNATURE
+          - BROADCASTING
+          - CONFIRMING
+          - COMPLETED
+          - FAILED
+          - CANCELED
+        txId:
+          type: string
+          description: Fireblocks transaction id when applicable (unset when NOT_STARTED).
+          example: tx_abc123def456
+        txHash:
+          type: string
+          description: On-chain transaction hash when applicable (unset when NOT_STARTED).
+          example: '0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b'
+        errorMessage:
+          type: string
+          description: Error detail when the step failed.
+        updatedAt:
+          type: string
+          description: Last update time (ISO-8601); may be empty when status is NOT_STARTED.
+          example: '2025-03-20T08:30:00Z'
+      required:
+      - actionType
+      - status
+      - updatedAt
+    EarnMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Protocol display name (e.g. "Aave", "Aave Horizon").
+          example: Aave
+        iconUrl:
+          type: string
+          format: uri
+          description: URL of the protocol's icon/logo.
+          example: https://example.com/aave-icon.png
+    CreateEarnActionRequest:
+      type: object
+      properties:
+        action:
+          type: string
+          description: Whether to deposit into or withdraw from the lending opportunity.
+          example: DEPOSIT
+          enum:
+          - DEPOSIT
+          - WITHDRAW
+        opportunityId:
+          type: string
+          description: Identifier of the vault or market (lending opportunity).
+          example: morpho-usdc-vault-1
+        vaultAccountId:
+          type: string
+          description: Fireblocks vault account that will execute the action.
+          example: '12345'
+        amount:
+          type: string
+          description: Human-readable token amount (e.g. "1.6") or the keyword "max" for the full position or available balance.
+          example: '1000.0'
+      required:
+      - action
+      - opportunityId
+      - vaultAccountId
+      - amount
+    Apy:
+      type: object
+      properties:
+        native:
+          type: number
+          format: double
+          description: APY in native format (before fees), as a percentage (e.g. 4.25 means 4.25%, not 0.0425).
+          example: 4.25
+        gross:
+          type: number
+          format: double
+          description: Gross APY before fees, as a percentage (e.g. 4.25 means 4.25%, not 0.0425).
+          example: 4.4
+        net:
+          type: number
+          format: double
+          description: Net APY after fees, as a percentage (e.g. 4.25 means 4.25%, not 0.0425).
+          example: 4.05
+        supplyIncentiveApy:
+          type: number
+          format: double
+          description: Additional incentive APY from reward programs (e.g. Merkl rewards on Aave), as a percentage. Only present when the opportunity has active incentives.
+          example: 0.5
+    GetActionResponse:
+      type: object
+      description: Single lending action (intent plus per-step execution rows).
+      properties:
+        id:
+          type: string
+          description: Action sequence id (UUID).
+          example: 660e8400-e29b-41d4-a716-446655440001
+        vaultAccountId:
+          type: string
+          description: Fireblocks vault account that executed the action.
+          example: '0'
+        userId:
+          type: string
+          description: User who initiated the action.
+          example: 550e8400-e29b-41d4-a716-446655440000
+        status:
+          type: string
+          description: Intent status (e.g. CREATED, IN_PROGRESS, COMPLETED).
+          example: IN_PROGRESS
+        providerId:
+          type: string
+          description: Lending protocol identifier.
+          example: MORPHO
+          enum:
+          - MORPHO
+          - AAVE
+        actionType:
+          type: string
+          description: Whether this action is a deposit or withdraw flow.
+          example: DEPOSIT
+          enum:
+          - DEPOSIT
+          - WITHDRAW
+        opportunityId:
+          type: string
+          description: Target lending opportunity identifier.
+          example: morpho-usdc-vault-1
+        positionId:
+          type: string
+          description: Position id in the system when applicable.
+          example: 770e8400-e29b-41d4-a716-446655440002
+        amount:
+          type: string
+          description: Human-readable amount for the action.
+          example: '1500.5'
+        createdAt:
+          type: string
+          description: Creation time (ISO-8601).
+          example: '2025-01-15T10:00:00Z'
+        updatedAt:
+          type: string
+          description: Last update time (ISO-8601).
+          example: '2025-03-20T08:30:00Z'
+        records:
+          type: array
+          description: Ordered execution steps for this action.
+          items:
+            $ref: '#/components/schemas/ActionRecord'
+          minItems: 1
+          maxItems: 4
+      required:
+      - id
+      - vaultAccountId
+      - userId
+      - status
+      - providerId
+      - actionType
+      - opportunityId
+      - amount
+      - createdAt
+      - updatedAt
+      - records
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

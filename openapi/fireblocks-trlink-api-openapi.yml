@@ -1,0 +1,3413 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks TR Link API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: TRLink
+paths:
+  /screening/trlink/customers:
+    post:
+      operationId: createTRLinkCustomer
+      summary: Create customer
+      description: Creates a new customer (legal entity/VASP) for TRSupport Travel Rule compliance operations. The customer represents your organization in the Travel Rule network and contains IVMS101-compliant identity information.
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkCreateCustomerRequest'
+      responses:
+        '201':
+          description: Customer created successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkCustomerResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkCustomerResponse>> = fireblocks.tRLink.createTRLinkCustomer(tRLinkApiCreateTRLinkCustomerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkCustomerResponse>> response = fireblocks.tRLink().createTRLinkCustomer(tRLinkCreateCustomerRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.create_t_r_link_customer(t_r_link_create_customer_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkCustomerResponse>> = fireblocks.tRLink.createTRLinkCustomer(tRLinkApiCreateTRLinkCustomerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkCustomerResponse>> response = fireblocks.tRLink().createTRLinkCustomer(tRLinkCreateCustomerRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.create_t_r_link_customer(t_r_link_create_customer_request, idempotency_key);
+    get:
+      operationId: getTRLinkCustomers
+      summary: Get all customers
+      description: Retrieves all customers associated with the authenticated tenant. Returns a list of legal entities configured for Travel Rule compliance.
+      responses:
+        '200':
+          description: Customers retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkCustomersListResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkCustomersListResponse>> = fireblocks.tRLink.getTRLinkCustomers();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<TRLinkCustomerResponse>>> response = fireblocks.tRLink().getTRLinkCustomers();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_customers();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkCustomersListResponse>> = fireblocks.tRLink.getTRLinkCustomers();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<TRLinkCustomerResponse>>> response = fireblocks.tRLink().getTRLinkCustomers();
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_customers();
+  /screening/trlink/customers/{customerId}:
+    get:
+      operationId: getTRLinkCustomerById
+      summary: Get customer by ID
+      description: Retrieves detailed information about a specific customer by their unique identifier.
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        description: Customer unique identifier
+        example: 550e8400-e29b-41d4-a716-446655440001
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Customer retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkCustomerResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkCustomerResponse>> = fireblocks.tRLink.getTRLinkCustomerById(tRLinkApiGetTRLinkCustomerByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkCustomerResponse>> response = fireblocks.tRLink().getTRLinkCustomerById(customerId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_customer_by_id(customer_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkCustomerResponse>> = fireblocks.tRLink.getTRLinkCustomerById(tRLinkApiGetTRLinkCustomerByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkCustomerResponse>> response = fireblocks.tRLink().getTRLinkCustomerById(customerId);
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_customer_by_id(customer_id);
+    put:
+      operationId: updateTRLinkCustomer
+      summary: Update customer
+      description: Updates an existing customer's information. All fields are optional - only provided fields will be updated.
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        description: Customer unique identifier
+        example: 550e8400-e29b-41d4-a716-446655440001
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkUpdateCustomerRequest'
+      responses:
+        '200':
+          description: Customer updated successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkCustomerResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkCustomerResponse>> = fireblocks.tRLink.updateTRLinkCustomer(tRLinkApiUpdateTRLinkCustomerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkCustomerResponse>> response = fireblocks.tRLink().updateTRLinkCustomer(tRLinkUpdateCustomerRequest, customerId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.update_t_r_link_customer(t_r_link_update_customer_request, customer_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkCustomerResponse>> = fireblocks.tRLink.updateTRLinkCustomer(tRLinkApiUpdateTRLinkCustomerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkCustomerResponse>> response = fireblocks.tRLink().updateTRLinkCustomer(tRLinkUpdateCustomerRequest, customerId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.update_t_r_link_customer(t_r_link_update_customer_request, customer_id, idempotency_key);
+    delete:
+      operationId: deleteTRLinkCustomer
+      summary: Delete customer
+      description: Deletes a customer and all associated integrations. This action cannot be undone.
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        description: Customer unique identifier
+        example: 550e8400-e29b-41d4-a716-446655440001
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Customer deleted successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.tRLink.deleteTRLinkCustomer(tRLinkApiDeleteTRLinkCustomerRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.tRLink().deleteTRLinkCustomer(customerId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.delete_t_r_link_customer(customer_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.tRLink.deleteTRLinkCustomer(tRLinkApiDeleteTRLinkCustomerRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.tRLink().deleteTRLinkCustomer(customerId);
+      - lang: Python
+        source: response = fireblocks.t_r_link.delete_t_r_link_customer(customer_id);
+  /screening/trlink/customers/{customerId}/integrations:
+    get:
+      operationId: getTRLinkCustomerIntegrations
+      summary: Get customer integrations
+      description: Retrieves all TRSupport integrations for a specific customer. Returns a list of partner integrations configured for Travel Rule compliance.
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        description: Customer unique identifier
+        example: 550e8400-e29b-41d4-a716-446655440001
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Customer integrations retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkCustomerIntegrationsListResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkCustomerIntegrationsListResponse>> = fireblocks.tRLink.getTRLinkCustomerIntegrations(tRLinkApiGetTRLinkCustomerIntegrationsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<TRLinkCustomerIntegrationResponse>>> response = fireblocks.tRLink().getTRLinkCustomerIntegrations(customerId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_customer_integrations(customer_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkCustomerIntegrationsListResponse>> = fireblocks.tRLink.getTRLinkCustomerIntegrations(tRLinkApiGetTRLinkCustomerIntegrationsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<TRLinkCustomerIntegrationResponse>>> response = fireblocks.tRLink().getTRLinkCustomerIntegrations(customerId);
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_customer_integrations(customer_id);
+  /screening/trlink/customers/{customerId}/integrations/{customerIntegrationId}:
+    get:
+      operationId: getTRLinkCustomerIntegrationById
+      summary: Get customer integration by ID
+      description: Retrieves detailed information about a specific customer integration.
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        description: Customer unique identifier
+        example: 550e8400-e29b-41d4-a716-446655440001
+        schema:
+          type: string
+          format: uuid
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        example: 123e4567-e89b-12d3-a456-426614174000
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Customer integration retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkCustomerIntegrationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkCustomerIntegrationResponse>> = fireblocks.tRLink.getTRLinkCustomerIntegrationById(tRLinkApiGetTRLinkCustomerIntegrationByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkCustomerIntegrationResponse>> response = fireblocks.tRLink().getTRLinkCustomerIntegrationById(customerId, customerIntegrationId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_customer_integration_by_id(customer_id, customer_integration_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkCustomerIntegrationResponse>> = fireblocks.tRLink.getTRLinkCustomerIntegrationById(tRLinkApiGetTRLinkCustomerIntegrationByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkCustomerIntegrationResponse>> response = fireblocks.tRLink().getTRLinkCustomerIntegrationById(customerId, customerIntegrationId);
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_customer_integration_by_id(customer_id, customer_integration_id);
+  /screening/trlink/customers/integration:
+    post:
+      operationId: createTRLinkIntegration
+      summary: Create customer integration
+      description: Creates a new TRSupport integration for a customer. This establishes a connection placeholder between a customer and a Travel Rule partner. Use the connect endpoint to provide credentials after creation. You may optionally supply `customerIntegrationId` in the request body when your tenant is enabled for client-provided integration ids.
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkCreateIntegrationRequest'
+      responses:
+        '201':
+          description: Customer integration created successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkCustomerIntegrationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkCustomerIntegrationResponse>> = fireblocks.tRLink.createTRLinkIntegration(tRLinkApiCreateTRLinkIntegrationRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkCustomerIntegrationResponse>> response = fireblocks.tRLink().createTRLinkIntegration(tRLinkCreateIntegrationRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.create_t_r_link_integration(t_r_link_create_integration_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkCustomerIntegrationResponse>> = fireblocks.tRLink.createTRLinkIntegration(tRLinkApiCreateTRLinkIntegrationRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkCustomerIntegrationResponse>> response = fireblocks.tRLink().createTRLinkIntegration(tRLinkCreateIntegrationRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.create_t_r_link_integration(t_r_link_create_integration_request, idempotency_key);
+  /screening/trlink/customers/integration/{customerIntegrationId}:
+    put:
+      operationId: connectTRLinkIntegration
+      summary: Connect customer integration
+      description: Connects a customer integration by providing API credentials. Stores encrypted credentials and enables the integration for use.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        example: 123e4567-e89b-12d3-a456-426614174000
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkConnectIntegrationRequest'
+      responses:
+        '200':
+          description: Customer integration connected successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkCustomerIntegrationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkCustomerIntegrationResponse>> = fireblocks.tRLink.connectTRLinkIntegration(tRLinkApiConnectTRLinkIntegrationRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkCustomerIntegrationResponse>> response = fireblocks.tRLink().connectTRLinkIntegration(tRLinkConnectIntegrationRequest, customerIntegrationId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.connect_t_r_link_integration(t_r_link_connect_integration_request, customer_integration_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkCustomerIntegrationResponse>> = fireblocks.tRLink.connectTRLinkIntegration(tRLinkApiConnectTRLinkIntegrationRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkCustomerIntegrationResponse>> response = fireblocks.tRLink().connectTRLinkIntegration(tRLinkConnectIntegrationRequest, customerIntegrationId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.connect_t_r_link_integration(t_r_link_connect_integration_request, customer_integration_id, idempotency_key);
+    delete:
+      operationId: disconnectTRLinkIntegration
+      summary: Disconnect customer integration
+      description: 'Disconnects the integration for the authenticated workspace (tenant): removes stored credentials and deletes this tenant''s integration record. The operation is scoped to the caller''s tenant; it does not remove partner-side state for other workspaces that reuse the same logical customer integration. The record cannot be recovered after delete.'
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        example: 123e4567-e89b-12d3-a456-426614174000
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Customer integration disconnected successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.tRLink.disconnectTRLinkIntegration(tRLinkApiDisconnectTRLinkIntegrationRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.tRLink().disconnectTRLinkIntegration(customerIntegrationId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.disconnect_t_r_link_integration(customer_integration_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.tRLink.disconnectTRLinkIntegration(tRLinkApiDisconnectTRLinkIntegrationRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.tRLink().disconnectTRLinkIntegration(customerIntegrationId);
+      - lang: Python
+        source: response = fireblocks.t_r_link.disconnect_t_r_link_integration(customer_integration_id);
+  /screening/trlink/customers/integration/{customerIntegrationId}/assets:
+    get:
+      operationId: listTRLinkSupportedAssets
+      summary: List supported assets
+      description: Retrieves a paginated list of assets supported by the partner integration. Includes a flag indicating whether the partner can handle assets not explicitly listed. Supports cursor-based pagination.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - name: pageSize
+        in: query
+        required: false
+        description: Number of results per page (max 100)
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 100
+      - name: pageCursor
+        in: query
+        required: false
+        description: Cursor for pagination (from previous response)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Supported assets retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkAssetsListPagedResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkAssetsListPagedResponse>> = fireblocks.tRLink.listTRLinkSupportedAssets(tRLinkApiListTRLinkSupportedAssetsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkAssetsListPagedResponse>> response = fireblocks.tRLink().listTRLinkSupportedAssets(customerIntegrationId, pageSize, pageCursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.list_t_r_link_supported_assets(customer_integration_id, page_size, page_cursor);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkAssetsListPagedResponse>> = fireblocks.tRLink.listTRLinkSupportedAssets(tRLinkApiListTRLinkSupportedAssetsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkAssetsListPagedResponse>> response = fireblocks.tRLink().listTRLinkSupportedAssets(customerIntegrationId, pageSize, pageCursor);
+      - lang: Python
+        source: response = fireblocks.t_r_link.list_t_r_link_supported_assets(customer_integration_id, page_size, page_cursor);
+  /screening/trlink/customers/integration/{customerIntegrationId}/assets/{assetId}:
+    get:
+      operationId: getTRLinkSupportedAsset
+      summary: Get supported asset by ID
+      description: Retrieves detailed information about a specific asset by its Fireblocks asset ID. Returns the transformed Fireblocks asset data, raw partner response, and support status.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - name: assetId
+        in: path
+        required: true
+        description: Fireblocks asset ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Asset retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkGetSupportedAssetResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkGetSupportedAssetResponse>> = fireblocks.tRLink.getTRLinkSupportedAsset(tRLinkApiGetTRLinkSupportedAssetRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkGetSupportedAssetResponse>> response = fireblocks.tRLink().getTRLinkSupportedAsset(customerIntegrationId, assetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_supported_asset(customer_integration_id, asset_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkGetSupportedAssetResponse>> = fireblocks.tRLink.getTRLinkSupportedAsset(tRLinkApiGetTRLinkSupportedAssetRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkGetSupportedAssetResponse>> response = fireblocks.tRLink().getTRLinkSupportedAsset(customerIntegrationId, assetId);
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_supported_asset(customer_integration_id, asset_id);
+  /screening/trlink/customers/integration/{customerIntegrationId}/public_key:
+    get:
+      operationId: getTRLinkIntegrationPublicKey
+      summary: Get public key for PII encryption
+      description: Retrieves the partner's public key in JWK format for encrypting PII data in Travel Rule Messages. Use this key to encrypt sensitive originator and beneficiary information before sending Travel Rule messages.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        example: 123e4567-e89b-12d3-a456-426614174000
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Public key retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkPublicKeyResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkPublicKeyResponse>> = fireblocks.tRLink.getTRLinkIntegrationPublicKey(tRLinkApiGetTRLinkIntegrationPublicKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkPublicKeyResponse>> response = fireblocks.tRLink().getTRLinkIntegrationPublicKey(customerIntegrationId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_integration_public_key(customer_integration_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkPublicKeyResponse>> = fireblocks.tRLink.getTRLinkIntegrationPublicKey(tRLinkApiGetTRLinkIntegrationPublicKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkPublicKeyResponse>> response = fireblocks.tRLink().getTRLinkIntegrationPublicKey(customerIntegrationId);
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_integration_public_key(customer_integration_id);
+  /screening/trlink/customers/integration/{customerIntegrationId}/test_connection:
+    post:
+      operationId: testTRLinkIntegrationConnection
+      summary: Test connection
+      description: Tests the connection to a customer integration by validating stored credentials and attempting communication with the Travel Rule partner. Returns connection status and any error messages.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        example: 123e4567-e89b-12d3-a456-426614174000
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '200':
+          description: Connection test completed (success or failure details in response body)
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkTestConnectionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkTestConnectionResponse>> = fireblocks.tRLink.testTRLinkIntegrationConnection(tRLinkApiTestTRLinkIntegrationConnectionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkTestConnectionResponse>> response = fireblocks.tRLink().testTRLinkIntegrationConnection(customerIntegrationId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.test_t_r_link_integration_connection(customer_integration_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkTestConnectionResponse>> = fireblocks.tRLink.testTRLinkIntegrationConnection(tRLinkApiTestTRLinkIntegrationConnectionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkTestConnectionResponse>> response = fireblocks.tRLink().testTRLinkIntegrationConnection(customerIntegrationId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.test_t_r_link_integration_connection(customer_integration_id, idempotency_key);
+  /screening/trlink/customers/integration/{customerIntegrationId}/transactions/{txId}/manual_decision:
+    post:
+      operationId: createTRLinkManualDecision
+      summary: Manual decision for missing TRM
+      description: Accept or reject destinations stuck in NoTRM step without waiting for TRP webhook or policy timeout.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+        example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      - name: txId
+        in: path
+        required: true
+        description: Fireblocks transaction unique identifier
+        schema:
+          type: string
+          format: uuid
+        example: b70701f4-d7b1-4795-a8ee-b09cdb5b850e
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkManualDecisionRequest'
+      responses:
+        '200':
+          description: Decision applied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkManualDecisionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkManualDecisionResponse>> = fireblocks.tRLink.createTRLinkManualDecision(tRLinkApiCreateTRLinkManualDecisionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkManualDecisionResponse>> response = fireblocks.tRLink().createTRLinkManualDecision(tRLinkManualDecisionRequest, customerIntegrationId, txId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.create_t_r_link_manual_decision(t_r_link_manual_decision_request, customer_integration_id, tx_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkManualDecisionResponse>> = fireblocks.tRLink.createTRLinkManualDecision(tRLinkApiCreateTRLinkManualDecisionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkManualDecisionResponse>> response = fireblocks.tRLink().createTRLinkManualDecision(tRLinkManualDecisionRequest, customerIntegrationId, txId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.create_t_r_link_manual_decision(t_r_link_manual_decision_request, customer_integration_id, tx_id, idempotency_key);
+  /screening/trlink/customers/integration/{customerIntegrationId}/trm:
+    post:
+      operationId: createTRLinkTrm
+      summary: Create Travel Rule Message
+      description: Creates a new travel rule message with IVMS101-compliant PII data. Encrypts sensitive originator and beneficiary information before sending to partner.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkCreateTrmRequest'
+      responses:
+        '201':
+          description: TRM created successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkTrmInfoResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkTrmInfoResponse>> = fireblocks.tRLink.createTRLinkTrm(tRLinkApiCreateTRLinkTrmRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkTrmInfoResponse>> response = fireblocks.tRLink().createTRLinkTrm(tRLinkCreateTrmRequest, customerIntegrationId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.create_t_r_link_trm(t_r_link_create_trm_request, customer_integration_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkTrmInfoResponse>> = fireblocks.tRLink.createTRLinkTrm(tRLinkApiCreateTRLinkTrmRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkTrmInfoResponse>> response = fireblocks.tRLink().createTRLinkTrm(tRLinkCreateTrmRequest, customerIntegrationId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.create_t_r_link_trm(t_r_link_create_trm_request, customer_integration_id, idempotency_key);
+  /screening/trlink/customers/integration/{customerIntegrationId}/trm/{trmId}:
+    get:
+      operationId: getTRLinkTrmById
+      summary: Get TRM by ID
+      description: Retrieves a Travel Rule Message by its unique identifier from the partner provider. Returns full TRM details including status, IVMS101 data, and transaction information.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - name: trmId
+        in: path
+        required: true
+        description: Travel Rule Message unique identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: TRM retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkTrmInfoResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkTrmInfoResponse>> = fireblocks.tRLink.getTRLinkTrmById(tRLinkApiGetTRLinkTrmByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkTrmInfoResponse>> response = fireblocks.tRLink().getTRLinkTrmById(customerIntegrationId, trmId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_trm_by_id(customer_integration_id, trm_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkTrmInfoResponse>> = fireblocks.tRLink.getTRLinkTrmById(tRLinkApiGetTRLinkTrmByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkTrmInfoResponse>> response = fireblocks.tRLink().getTRLinkTrmById(customerIntegrationId, trmId);
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_trm_by_id(customer_integration_id, trm_id);
+  /screening/trlink/customers/integration/{customerIntegrationId}/trm/{trmId}/cancel:
+    post:
+      operationId: cancelTRLinkTrm
+      summary: Cancel Travel Rule Message
+      description: Cancels a travel rule message. The TRM status will be updated to cancelled and the partner will be notified.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - name: trmId
+        in: path
+        required: true
+        description: Travel Rule Message unique identifier
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkCancelTrmRequest'
+      responses:
+        '202':
+          description: Transaction cancellation request accepted
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkTrmInfoResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkTrmInfoResponse>> = fireblocks.tRLink.cancelTRLinkTrm(tRLinkApiCancelTRLinkTrmRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkTrmInfoResponse>> response = fireblocks.tRLink().cancelTRLinkTrm(tRLinkCancelTrmRequest, customerIntegrationId, trmId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.cancel_t_r_link_trm(t_r_link_cancel_trm_request, customer_integration_id, trm_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkTrmInfoResponse>> = fireblocks.tRLink.cancelTRLinkTrm(tRLinkApiCancelTRLinkTrmRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkTrmInfoResponse>> response = fireblocks.tRLink().cancelTRLinkTrm(tRLinkCancelTrmRequest, customerIntegrationId, trmId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.cancel_t_r_link_trm(t_r_link_cancel_trm_request, customer_integration_id, trm_id, idempotency_key);
+  /screening/trlink/customers/integration/{customerIntegrationId}/trm/{trmId}/redirect:
+    post:
+      operationId: redirectTRLinkTrm
+      summary: Redirect Travel Rule Message
+      description: Redirects a Travel Rule Message to a subsidiary VASP. This operation requires the partner to support nested VASPs functionality.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - name: trmId
+        in: path
+        required: true
+        description: Travel Rule Message unique identifier
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkRedirectTrmRequest'
+      responses:
+        '202':
+          description: Transaction redirect request accepted
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkTrmInfoResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkTrmInfoResponse>> = fireblocks.tRLink.redirectTRLinkTrm(tRLinkApiRedirectTRLinkTrmRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkTrmInfoResponse>> response = fireblocks.tRLink().redirectTRLinkTrm(tRLinkRedirectTrmRequest, customerIntegrationId, trmId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.redirect_t_r_link_trm(t_r_link_redirect_trm_request, customer_integration_id, trm_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkTrmInfoResponse>> = fireblocks.tRLink.redirectTRLinkTrm(tRLinkApiRedirectTRLinkTrmRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkTrmInfoResponse>> response = fireblocks.tRLink().redirectTRLinkTrm(tRLinkRedirectTrmRequest, customerIntegrationId, trmId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.redirect_t_r_link_trm(t_r_link_redirect_trm_request, customer_integration_id, trm_id, idempotency_key);
+  /screening/trlink/customers/integration/{customerIntegrationId}/trm/{trmId}/required_actions:
+    get:
+      operationId: getTRLinkTrmRequiredActions
+      summary: Get required actions for a TRM
+      description: Retrieves the list of required actions (e.g., PII fields) needed to process the Travel Rule Message.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - name: trmId
+        in: path
+        required: true
+        description: Travel Rule Message unique identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Required actions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkGetRequiredActionsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkGetRequiredActionsResponse>> = fireblocks.tRLink.getTRLinkTrmRequiredActions(tRLinkApiGetTRLinkTrmRequiredActionsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkGetRequiredActionsResponse>> response = fireblocks.tRLink().getTRLinkTrmRequiredActions(customerIntegrationId, trmId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_trm_required_actions(customer_integration_id, trm_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkGetRequiredActionsResponse>> = fireblocks.tRLink.getTRLinkTrmRequiredActions(tRLinkApiGetTRLinkTrmRequiredActionsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkGetRequiredActionsResponse>> response = fireblocks.tRLink().getTRLinkTrmRequiredActions(customerIntegrationId, trmId);
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_trm_required_actions(customer_integration_id, trm_id);
+  /screening/trlink/customers/integration/{customerIntegrationId}/trm/{trmId}/resolve_action:
+    post:
+      operationId: resolveActionTRLinkTrm
+      summary: Resolve action for a TRM
+      description: Submits required data (e.g., beneficiary PII) to resolve a pending Travel Rule Message action.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - name: trmId
+        in: path
+        required: true
+        description: Travel Rule Message unique identifier
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkResolveActionRequest'
+      responses:
+        '200':
+          description: Action resolved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkTrmInfoResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkTrmInfoResponse>> = fireblocks.tRLink.resolveActionTRLinkTrm(tRLinkApiResolveActionTRLinkTrmRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkTrmInfoResponse>> response = fireblocks.tRLink().resolveActionTRLinkTrm(tRLinkResolveActionRequest, customerIntegrationId, trmId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.resolve_action_t_r_link_trm(t_r_link_resolve_action_request, customer_integration_id, trm_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkTrmInfoResponse>> = fireblocks.tRLink.resolveActionTRLinkTrm(tRLinkApiResolveActionTRLinkTrmRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkTrmInfoResponse>> response = fireblocks.tRLink().resolveActionTRLinkTrm(tRLinkResolveActionRequest, customerIntegrationId, trmId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.resolve_action_t_r_link_trm(t_r_link_resolve_action_request, customer_integration_id, trm_id, idempotency_key);
+  /screening/trlink/customers/integration/{customerIntegrationId}/trm/assess:
+    post:
+      operationId: assessTRLinkTravelRuleRequirement
+      summary: Assess Travel Rule requirement
+      description: Assesses travel rule requirement for a transaction by validating stored credentials and determining whether Travel Rule compliance is required based on amount, jurisdiction, and partner thresholds.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkAssessTravelRuleRequest'
+      responses:
+        '200':
+          description: Travel rule assessment completed
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkAssessTravelRuleResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkAssessTravelRuleResponse>> = fireblocks.tRLink.assessTRLinkTravelRuleRequirement(tRLinkApiAssessTRLinkTravelRuleRequirementRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkAssessTravelRuleResponse>> response = fireblocks.tRLink().assessTRLinkTravelRuleRequirement(tRLinkAssessTravelRuleRequest, customerIntegrationId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.assess_t_r_link_travel_rule_requirement(t_r_link_assess_travel_rule_request, customer_integration_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkAssessTravelRuleResponse>> = fireblocks.tRLink.assessTRLinkTravelRuleRequirement(tRLinkApiAssessTRLinkTravelRuleRequirementRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkAssessTravelRuleResponse>> response = fireblocks.tRLink().assessTRLinkTravelRuleRequirement(tRLinkAssessTravelRuleRequest, customerIntegrationId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.assess_t_r_link_travel_rule_requirement(t_r_link_assess_travel_rule_request, customer_integration_id, idempotency_key);
+  /screening/trlink/customers/integration/{customerIntegrationId}/vasps:
+    get:
+      operationId: listTRLinkVasps
+      summary: List VASPs
+      description: Retrieves a paginated list of VASPs (Virtual Asset Service Providers) available through the partner integration. Supports cursor-based pagination.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - name: pageSize
+        in: query
+        required: false
+        description: Number of results per page (max 100)
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 100
+      - name: pageCursor
+        in: query
+        required: false
+        description: Cursor for pagination (from previous response)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: VASPs retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkAPIPagedResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkAPIPagedResponse>> = fireblocks.tRLink.listTRLinkVasps(tRLinkApiListTRLinkVaspsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkAPIPagedResponse>> response = fireblocks.tRLink().listTRLinkVasps(customerIntegrationId, pageSize, pageCursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.list_t_r_link_vasps(customer_integration_id, page_size, page_cursor);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkAPIPagedResponse>> = fireblocks.tRLink.listTRLinkVasps(tRLinkApiListTRLinkVaspsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkAPIPagedResponse>> response = fireblocks.tRLink().listTRLinkVasps(customerIntegrationId, pageSize, pageCursor);
+      - lang: Python
+        source: response = fireblocks.t_r_link.list_t_r_link_vasps(customer_integration_id, page_size, page_cursor);
+  /screening/trlink/customers/integration/{customerIntegrationId}/vasps/{vaspId}:
+    get:
+      operationId: getTRLinkVaspById
+      summary: Get VASP by ID
+      description: Retrieves detailed information about a specific VASP by its unique identifier. Returns VASP details including public key if available.
+      parameters:
+      - name: customerIntegrationId
+        in: path
+        required: true
+        description: Customer integration unique identifier
+        schema:
+          type: string
+          format: uuid
+      - name: vaspId
+        in: path
+        required: true
+        description: VASP unique identifier (DID format)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: VASP retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkVaspDto'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkVaspDto>> = fireblocks.tRLink.getTRLinkVaspById(tRLinkApiGetTRLinkVaspByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkVaspDto>> response = fireblocks.tRLink().getTRLinkVaspById(customerIntegrationId, vaspId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_vasp_by_id(customer_integration_id, vasp_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkVaspDto>> = fireblocks.tRLink.getTRLinkVaspById(tRLinkApiGetTRLinkVaspByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkVaspDto>> response = fireblocks.tRLink().getTRLinkVaspById(customerIntegrationId, vaspId);
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_vasp_by_id(customer_integration_id, vasp_id);
+  /screening/trlink/partners:
+    get:
+      operationId: getTRLinkPartners
+      summary: List available TRSupport partners
+      description: Retrieves a list of all available Travel Rule Support integration partners. Partners provide Travel Rule compliance services such as VASP discovery, TRM exchange, and PII encryption.
+      responses:
+        '200':
+          description: List of partners retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkPartnersListResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkPartnersListResponse>> = fireblocks.tRLink.getTRLinkPartners();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<TRLinkPartnerResponse>>> response = fireblocks.tRLink().getTRLinkPartners();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_partners();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkPartnersListResponse>> = fireblocks.tRLink.getTRLinkPartners();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<TRLinkPartnerResponse>>> response = fireblocks.tRLink().getTRLinkPartners();
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_partners();
+  /screening/trlink/policy:
+    get:
+      operationId: getTRLinkPolicy
+      summary: Get TRLink policy
+      description: Retrieves the complete TRSupport policy for the authenticated tenant, including pre-screening rules, post-screening rules, and missing TRM rules. Pre-screening rules determine whether transactions should be screened. Post-screening rules determine actions based on screening results. Missing TRM rules handle cases when screening data is unavailable.
+      responses:
+        '200':
+          description: Policy retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkPolicyResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkPolicyResponse>> = fireblocks.tRLink.getTRLinkPolicy();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkPolicyResponse>> response = fireblocks.tRLink().getTRLinkPolicy();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.get_t_r_link_policy();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkPolicyResponse>> = fireblocks.tRLink.getTRLinkPolicy();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkPolicyResponse>> response = fireblocks.tRLink().getTRLinkPolicy();
+      - lang: Python
+        source: response = fireblocks.t_r_link.get_t_r_link_policy();
+  /screening/trlink/transaction/{txId}/destination/travel_rule_message_id:
+    post:
+      operationId: setTRLinkDestinationTravelRuleMessageId
+      summary: Set destination travel rule message ID
+      description: Associates a Travel Rule Message ID with a specific destination in a multi-destination Fireblocks transaction. Matches destinations by amount and peer path.
+      parameters:
+      - name: txId
+        in: path
+        required: true
+        description: Fireblocks transaction unique identifier
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkSetDestinationTravelRuleMessageIdRequest'
+      responses:
+        '200':
+          description: Destination travel rule message ID set successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkSetDestinationTravelRuleMessageIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkSetDestinationTravelRuleMessageIdResponse>> = fireblocks.tRLink.setTRLinkDestinationTravelRuleMessageId(tRLinkApiSetTRLinkDestinationTravelRuleMessageIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkSetDestinationTravelRuleMessageIdResponse>> response = fireblocks.tRLink().setTRLinkDestinationTravelRuleMessageId(tRLinkSetDestinationTravelRuleMessageIdRequest, txId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.set_t_r_link_destination_travel_rule_message_id(t_r_link_set_destination_travel_rule_message_id_request, tx_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkSetDestinationTravelRuleMessageIdResponse>> = fireblocks.tRLink.setTRLinkDestinationTravelRuleMessageId(tRLinkApiSetTRLinkDestinationTravelRuleMessageIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkSetDestinationTravelRuleMessageIdResponse>> response = fireblocks.tRLink().setTRLinkDestinationTravelRuleMessageId(tRLinkSetDestinationTravelRuleMessageIdRequest, txId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.set_t_r_link_destination_travel_rule_message_id(t_r_link_set_destination_travel_rule_message_id_request, tx_id, idempotency_key);
+  /screening/trlink/transaction/{txId}/travel_rule_message_id:
+    post:
+      operationId: setTRLinkTransactionTravelRuleMessageId
+      summary: Set transaction travel rule message ID
+      description: Associates a Travel Rule Message ID with a Fireblocks transaction. This links the TRM compliance data to the blockchain transaction.
+      parameters:
+      - name: txId
+        in: path
+        required: true
+        description: Fireblocks transaction unique identifier
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TRLinkSetTransactionTravelRuleMessageIdRequest'
+      responses:
+        '200':
+          description: Travel rule message ID set successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRLinkSetTransactionTravelRuleMessageIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - TRLink
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TRLinkSetTransactionTravelRuleMessageIdResponse>> = fireblocks.tRLink.setTRLinkTransactionTravelRuleMessageId(tRLinkApiSetTRLinkTransactionTravelRuleMessageIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TRLinkSetTransactionTravelRuleMessageIdResponse>> response = fireblocks.tRLink().setTRLinkTransactionTravelRuleMessageId(tRLinkSetTransactionTravelRuleMessageIdRequest, txId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.t_r_link.set_t_r_link_transaction_travel_rule_message_id(t_r_link_set_transaction_travel_rule_message_id_request, tx_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TRLinkSetTransactionTravelRuleMessageIdResponse>> = fireblocks.tRLink.setTRLinkTransactionTravelRuleMessageId(tRLinkApiSetTRLinkTransactionTravelRuleMessageIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TRLinkSetTransactionTravelRuleMessageIdResponse>> response = fireblocks.tRLink().setTRLinkTransactionTravelRuleMessageId(tRLinkSetTransactionTravelRuleMessageIdRequest, txId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.t_r_link.set_t_r_link_transaction_travel_rule_message_id(t_r_link_set_transaction_travel_rule_message_id_request, tx_id, idempotency_key);
+components:
+  schemas:
+    TRLinkPaging:
+      type: object
+      properties:
+        next:
+          type: string
+          description: Cursor for next page
+          example: eyJwYWdlIjoyLCJsaW1pdCI6MTAwfQ==
+      required:
+      - next
+    TRLinkMissingTrmAction-2:
+      type: string
+      description: TRLink missing TRM action
+      enum:
+      - WAIT
+      - REJECT
+      - ACCEPT
+    TRLinkJwkPublicKey:
+      type: object
+      description: JSON Web Key (JWK) format public key
+      properties:
+        kty:
+          type: string
+          enum:
+          - RSA
+          description: Key type
+          example: RSA
+        e:
+          type: string
+          description: RSA public exponent
+          example: AQAB
+        use:
+          type: string
+          enum:
+          - enc
+          description: Public key use (encryption)
+          example: enc
+        kid:
+          type: string
+          description: Key ID
+          example: key-12345
+        n:
+          type: string
+          description: RSA modulus
+          example: xGOr-H7A...
+      required:
+      - kty
+      - e
+      - use
+      - kid
+      - n
+    TRLinkManualDecisionResponse:
+      type: object
+      description: Response containing the result of the manual decision
+      properties:
+        action:
+          $ref: '#/components/schemas/TRLinkManualDecisionAction'
+        source:
+          $ref: '#/components/schemas/TRLinkManualDecisionSource'
+        txId:
+          type: string
+          description: Transaction ID
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850e
+        destinationsAffected:
+          type: integer
+          description: Number of destinations where the decision was applied
+          example: 2
+        destinationsSkipped:
+          type: integer
+          description: Number of destinations that were skipped
+          example: 0
+        details:
+          type: array
+          minItems: 0
+          maxItems: 100
+          description: Per-destination details
+          items:
+            $ref: '#/components/schemas/TRLinkManualDecisionDestinationDetail'
+      required:
+      - action
+      - source
+      - txId
+      - destinationsAffected
+      - destinationsSkipped
+      - details
+    TRLinkPolicyResponse:
+      type: object
+      description: TRLink policy response containing pre-screening, post-screening, and missing TRM rules
+      properties:
+        preScreeningRules:
+          type: array
+          description: Pre-screening rules that determine whether transactions should be screened
+          items:
+            $ref: '#/components/schemas/TRLinkPreScreeningRule-2'
+        postScreeningRules:
+          type: array
+          description: Post-screening rules that determine actions based on screening results
+          items:
+            $ref: '#/components/schemas/TRLinkPostScreeningRule-2'
+        missingTrmRules:
+          type: array
+          description: Rules for handling transactions when TRM screening data is unavailable
+          items:
+            $ref: '#/components/schemas/TRLinkMissingTrmRule-2'
+      required:
+      - preScreeningRules
+      - postScreeningRules
+      - missingTrmRules
+    TRLinkVaspListDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: VASP unique identifier (DID format)
+          example: did:ethr:0x1234567890abcdef
+        name:
+          type: string
+          description: VASP display name
+          example: ACME Virtual Assets
+        legalName:
+          type:
+          - string
+          - 'null'
+          description: Legal entity name
+          example: ACME Virtual Assets Corporation
+        nationalIdentification:
+          $ref: '#/components/schemas/TRLinkVaspNationalIdentification'
+        geographicAddress:
+          $ref: '#/components/schemas/TRLinkVaspGeographicAddress'
+      required:
+      - id
+      - name
+      additionalProperties: true
+    TRLinkVaspGeographicAddress:
+      type: object
+      properties:
+        formattedAddress:
+          type:
+          - string
+          - 'null'
+          description: Complete formatted address
+          example: 123 Main Street, New York, NY 10001, USA
+        country:
+          type:
+          - string
+          - 'null'
+          description: Country code or name
+          example: USA
+        streetName:
+          type:
+          - string
+          - 'null'
+          description: Street name
+          example: Main Street
+        buildingNumber:
+          type:
+          - string
+          - 'null'
+          description: Building number
+          example: '123'
+        city:
+          type:
+          - string
+          - 'null'
+          description: City name
+          example: New York
+        postalCode:
+          type:
+          - string
+          - 'null'
+          description: Postal/ZIP code
+          example: '10001'
+    TRLinkAssessmentDecision:
+      type: string
+      enum:
+      - REQUIRED
+      - NOT_REQUIRED
+      - NEED_MORE_INFO
+      description: Decision about Travel Rule applicability
+      example: REQUIRED
+    TRLinkTrmInfoResponse:
+      type: object
+      description: Travel Rule Message information
+      properties:
+        id:
+          type: string
+          description: TRM message ID
+          example: trm_1234567890abcdef
+        version:
+          type:
+          - string
+          - 'null'
+          description: TRM version
+          example: '1.0'
+        status:
+          $ref: '#/components/schemas/TRLinkTrmStatus'
+        reason:
+          type:
+          - string
+          - 'null'
+          description: Human readable reason for the current status
+          example: Travel Rule compliance required for this transaction
+        externalId:
+          type: string
+          description: External ID (e.g., Fireblocks ID)
+          example: 550e8400-e29b-41d4-a716-446655440000
+        asset:
+          $ref: '#/components/schemas/TRLinkAsset'
+        amount:
+          type: string
+          description: Transaction amount in asset units
+          example: '1000'
+        fiatValue:
+          $ref: '#/components/schemas/TRLinkFiatValue'
+        direction:
+          $ref: '#/components/schemas/TRLinkTrmDirection'
+        originatorVaspId:
+          type:
+          - string
+          - 'null'
+          description: ID of the originator VASP
+          example: did:ethr:0x1234567890abcdef
+        beneficiaryVaspId:
+          type:
+          - string
+          - 'null'
+          description: ID of the beneficiary VASP
+          example: did:ethr:0xfedcba0987654321
+        txnInfo:
+          $ref: '#/components/schemas/TRLinkTxnInfo'
+        ivms101:
+          $ref: '#/components/schemas/TRLinkIvmsResponse'
+        providerData:
+          $ref: '#/components/schemas/TRLinkProviderData'
+      required:
+      - id
+      - externalId
+      - asset
+      - amount
+      - direction
+      - txnInfo
+      - ivms101
+    TRLinkOneTimeAddress:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Blockchain address
+          example: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb'
+        tag:
+          type:
+          - string
+          - 'null'
+          description: Destination tag (memo, memo ID, etc.)
+          example: '1234567890'
+      required:
+      - address
+    TRLinkSetTransactionTravelRuleMessageIdRequest:
+      type: object
+      properties:
+        travelRuleMessageId:
+          type:
+          - string
+          - 'null'
+          description: Travel Rule Message ID to associate with transaction (null to unset)
+          example: trm_1234567890abcdef
+      required:
+      - travelRuleMessageId
+    TRLinkTransactionDirection:
+      type: string
+      enum:
+      - INBOUND
+      - OUTBOUND
+      description: Transaction direction from workspace perspective
+      example: OUTBOUND
+    TRLinkTransferPeerPath:
+      type: object
+      description: Transfer peer path for destination matching
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+          description: Peer type
+          example: VAULT_ACCOUNT
+        id:
+          type:
+          - string
+          - 'null'
+          description: Peer ID
+          example: '12'
+        subType:
+          type:
+          - string
+          - 'null'
+          description: Peer subtype
+          example: '0'
+        address:
+          type:
+          - string
+          - 'null'
+          description: Peer address
+          example: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb'
+    TRLinkTxnInfo:
+      type: object
+      properties:
+        originatorWalletAddress:
+          type: string
+          description: Originator's blockchain wallet address
+          example: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb'
+        beneficiaryWalletAddress:
+          type: string
+          description: Beneficiary's blockchain wallet address
+          example: '0x8d12A197cB00D4747a1fe03395095ce2A5CC6819'
+        txHash:
+          type: string
+          description: Blockchain transaction hash
+          example: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
+      required:
+      - originatorWalletAddress
+      - beneficiaryWalletAddress
+      - txHash
+    TRLinkAssessTravelRuleResponse:
+      type: object
+      description: Response indicating whether Travel Rule compliance is required
+      properties:
+        decision:
+          $ref: '#/components/schemas/TRLinkAssessmentDecision'
+        reason:
+          type: string
+          description: Explanation of the decision
+          example: Transaction amount exceeds Travel Rule threshold for this jurisdiction
+        requiredFields:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: List of required fields if Travel Rule is required
+          example:
+          - originator.name
+          - originator.address
+          - beneficiary.name
+          - beneficiary.address
+        missingInfo:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: List of missing fields if more information is needed
+          example:
+          - beneficiary.nationalIdentification
+          - beneficiary.dateOfBirth
+        thresholds:
+          $ref: '#/components/schemas/TRLinkThresholds'
+      required:
+      - decision
+      - reason
+    TRLinkManualDecisionRequest:
+      type: object
+      description: Request to manually accept or reject destinations stuck in NoTRM status
+      properties:
+        action:
+          $ref: '#/components/schemas/TRLinkManualDecisionAction'
+        reason:
+          type: string
+          description: Optional reason for the manual decision (e.g. 'Internal KYC approved'). Do not include PII.
+          maxLength: 500
+          example: Internal KYC approved
+      required:
+      - action
+    TRLinkManualDecisionSource:
+      type: string
+      description: Source of the manual decision
+      enum:
+      - MANUAL
+      - POLICY
+      example: MANUAL
+    TRLinkCustomerIntegrationsListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/TRLinkCustomerIntegrationResponse'
+    TRLinkTrmStatus:
+      type:
+      - string
+      - 'null'
+      enum:
+      - PENDING
+      - ACCEPTED
+      - REJECTED
+      - FAILED
+      description: Current status of the Travel Rule Message
+      example: ACCEPTED
+    TRLinkAPIPagedResponse:
+      type: object
+      description: Generic paginated response wrapper with cursor-based pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TRLinkVaspListDto'
+          description: Array of result items
+        paging:
+          $ref: '#/components/schemas/TRLinkPaging'
+      required:
+      - data
+    TRLinkPreScreeningRule-2:
+      type: object
+      description: Pre-screening rule that determines if a transaction should be screened
+      properties:
+        customerId:
+          type:
+          - string
+          - 'null'
+          description: Customer identifier
+          example: cust_123abc
+        direction:
+          $ref: '#/components/schemas/TRLinkTransactionDirection'
+        sourceType:
+          type:
+          - string
+          - 'null'
+          description: Source entity type
+          example: VAULT_ACCOUNT
+        sourceSubType:
+          type:
+          - string
+          - 'null'
+          description: Source entity subtype
+        sourceAddress:
+          type:
+          - string
+          - 'null'
+          description: Source blockchain address
+          example: '0x1234567890abcdef1234567890abcdef12345678'
+        destType:
+          type:
+          - string
+          - 'null'
+          description: Destination entity type
+          example: EXTERNAL_WALLET
+        destSubType:
+          type:
+          - string
+          - 'null'
+          description: Destination entity subtype
+        destAddress:
+          type:
+          - string
+          - 'null'
+          description: Destination blockchain address
+          example: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd'
+        sourceId:
+          type:
+          - string
+          - 'null'
+          description: Source identifier
+        destId:
+          type:
+          - string
+          - 'null'
+          description: Destination identifier
+        asset:
+          type:
+          - string
+          - 'null'
+          description: Asset or cryptocurrency type
+          example: BTC
+        baseAsset:
+          type:
+          - string
+          - 'null'
+          description: Base asset for derivatives
+        amount:
+          $ref: '#/components/schemas/ScreeningPolicyAmount'
+        networkProtocol:
+          type:
+          - string
+          - 'null'
+          description: Network protocol identifier
+          example: BITCOIN
+        operation:
+          type:
+          - string
+          - 'null'
+          description: Operation type
+          example: TRANSFER
+        description:
+          type:
+          - string
+          - 'null'
+          description: Rule description
+          example: Screen large BTC outbound transactions to external wallets
+        isDefault:
+          type:
+          - boolean
+          - 'null'
+          description: Whether this is a default rule
+          example: false
+        action:
+          $ref: '#/components/schemas/TRLinkPreScreeningAction-2'
+      required:
+      - action
+    TRLinkRedirectTrmRequest:
+      type: object
+      properties:
+        subsidiaryVaspId:
+          type: string
+          description: ID of the subsidiary VASP to redirect the TRM to
+          example: did:ethr:0xabcdef1234567890
+      required:
+      - subsidiaryVaspId
+    TRLinkGeographicAddressRequest:
+      type:
+      - object
+      - 'null'
+      description: Geographic address following IVMS101 standard
+      properties:
+        addressLine:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            maxLength: 70
+          maxItems: 3
+          description: Address lines (max 3, each up to 70 characters)
+          example:
+          - Suite 100
+        streetName:
+          type:
+          - string
+          - 'null'
+          maxLength: 70
+          description: Street name (required if buildingNumber is provided)
+          example: Main Street
+        buildingNumber:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Building number
+          example: '123'
+        floor:
+          type:
+          - string
+          - 'null'
+          maxLength: 70
+          description: Floor number
+          example: '5'
+        postBox:
+          type:
+          - string
+          - 'null'
+          maxLength: 16
+          description: Post box number
+          example: PO Box 456
+        postCode:
+          type:
+          - string
+          - 'null'
+          maxLength: 16
+          description: Postal code (required if townName is provided)
+          example: '10001'
+        townName:
+          type:
+          - string
+          - 'null'
+          maxLength: 35
+          description: City or town name (required if postCode is provided)
+          example: New York
+        districtName:
+          type:
+          - string
+          - 'null'
+          maxLength: 35
+          description: District name
+          example: Manhattan
+        countrySubDivision:
+          type:
+          - string
+          - 'null'
+          maxLength: 35
+          description: State or province (validated against country)
+          example: NY
+        country:
+          type:
+          - string
+          - 'null'
+          description: ISO 3166-1 alpha-2 country code (required if town, district, or sub-division provided)
+          example: US
+    TRLinkPartnerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Partner unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        ident:
+          type: string
+          description: Partner identification code
+          example: notabene
+        name:
+          type: string
+          description: Partner display name
+          example: Notabene
+        description:
+          type:
+          - string
+          - 'null'
+          description: Partner description
+          example: Travel Rule compliance provider
+        baseUrl:
+          type: string
+          description: Partner API base URL
+          example: https://api.notabene.id
+        active:
+          type: boolean
+          description: Whether the partner is active
+          example: true
+        isTest:
+          type: boolean
+          description: Whether this is a test/sandbox partner
+          example: false
+      required:
+      - id
+      - ident
+      - name
+      - baseUrl
+      - active
+      - isTest
+    TRLinkMissingTrmRule-2:
+      type: object
+      description: Rule for handling transactions when TRM screening data is missing or unavailable
+      properties:
+        customerId:
+          type:
+          - string
+          - 'null'
+          description: Customer identifier
+          example: cust_123abc
+        direction:
+          $ref: '#/components/schemas/TRLinkTransactionDirection'
+        sourceType:
+          type:
+          - string
+          - 'null'
+          description: Source entity type
+          example: EXTERNAL_WALLET
+        sourceSubType:
+          type:
+          - string
+          - 'null'
+          description: Source entity subtype
+        sourceAddress:
+          type:
+          - string
+          - 'null'
+          description: Source blockchain address
+          example: '0xabcdef1234567890abcdef1234567890abcdef12'
+        destType:
+          type:
+          - string
+          - 'null'
+          description: Destination entity type
+          example: VAULT_ACCOUNT
+        destSubType:
+          type:
+          - string
+          - 'null'
+          description: Destination entity subtype
+        destAddress:
+          type:
+          - string
+          - 'null'
+          description: Destination blockchain address
+          example: '0x567890abcdef1234567890abcdef1234567890ab'
+        sourceId:
+          type:
+          - string
+          - 'null'
+          description: Source identifier
+        destId:
+          type:
+          - string
+          - 'null'
+          description: Destination identifier
+        asset:
+          type:
+          - string
+          - 'null'
+          description: Asset or cryptocurrency type
+          example: BTC
+        baseAsset:
+          type:
+          - string
+          - 'null'
+          description: Base asset for derivatives
+        amount:
+          $ref: '#/components/schemas/ScreeningPolicyAmount'
+        networkProtocol:
+          type:
+          - string
+          - 'null'
+          description: Network protocol identifier
+          example: BITCOIN
+        operation:
+          type:
+          - string
+          - 'null'
+          description: Operation type
+          example: TRANSFER
+        description:
+          type:
+          - string
+          - 'null'
+          description: Rule description
+          example: Wait for TRM screening on inbound transactions
+        isDefault:
+          type:
+          - boolean
+          - 'null'
+          description: Whether this is a default rule
+          example: false
+        validBefore:
+          type:
+          - number
+          - 'null'
+          description: Rule expires once this many seconds have elapsed since the wait/screening step started
+          example: 1800
+        validAfter:
+          type:
+          - number
+          - 'null'
+          description: Rule applies only after this many seconds have elapsed since the wait/screening step started
+          example: 1800
+        action:
+          $ref: '#/components/schemas/TRLinkMissingTrmAction-2'
+      required:
+      - action
+    TRLinkIvmsResponse:
+      type: object
+      description: IVMS101 data in response format
+      properties:
+        version:
+          type: string
+          description: IVMS101 version
+          example: '1.0'
+        data:
+          type: string
+          description: Base64 encoded IVMS101 data containing originator and beneficiary information
+          example: eyJvcmlnaW5hdG9yIjp7Im5hbWUiOiJKb2huIERvZSIsImFkZHJlc3MiOiIxMjMgTWFpbiBTdCJ9LCJiZW5lZmljaWFyeSI6eyJuYW1lIjoiSmFuZSBTbWl0aCIsImFkZHJlc3MiOiI0NTYgRWxtIFN0In19
+        filledFields:
+          type: array
+          items:
+            type: string
+          description: List of fields that are filled in the IVMS101 data
+          example:
+          - originator.name
+          - originator.address
+          - beneficiary.name
+          - beneficiary.address
+      required:
+      - version
+      - data
+      - filledFields
+    TRLinkCreateTrmRequest:
+      type: object
+      description: Request to create a Travel Rule Message with IVMS101 PII data
+      properties:
+        assetId:
+          type:
+          - string
+          - 'null'
+          description: Asset identifier (required when txId not provided)
+          example: USDT_ERC20
+        amount:
+          type:
+          - string
+          - 'null'
+          description: Transaction amount (required when txId not provided)
+          example: '1000'
+        amountUSD:
+          type:
+          - string
+          - 'null'
+          description: Amount in USD (optional)
+          example: '1000.50'
+        source:
+          $ref: '#/components/schemas/TRLinkSourceTransferPeerPath'
+        srcAddress:
+          type:
+          - string
+          - 'null'
+          description: Source address (optional)
+          example: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb'
+        destination:
+          $ref: '#/components/schemas/TRLinkDestinationTransferPeerPath'
+        destAddress:
+          type:
+          - string
+          - 'null'
+          description: Destination address (optional)
+          example: '0x8d12A197cB00D4747a1fe03395095ce2A5CC6819'
+        destTag:
+          type:
+          - string
+          - 'null'
+          description: Destination tag (optional)
+          example: '1234567890'
+        txId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Fireblocks transaction ID (optional) - RECOMMENDED for inbound transactions
+          example: 550e8400-e29b-41d4-a716-446655440000
+        txHash:
+          type:
+          - string
+          - 'null'
+          description: Transaction hash (optional)
+          example: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
+        direction:
+          $ref: '#/components/schemas/TRLinkTransactionDirection'
+        originatorVaspId:
+          type:
+          - string
+          - 'null'
+          description: Originator VASP identifier - required for inbound transactions
+          example: did:ethr:0x1234567890abcdef
+        beneficiaryVaspId:
+          type:
+          - string
+          - 'null'
+          description: Beneficiary VASP identifier - required for outbound transactions
+          example: did:ethr:0xfedcba0987654321
+        ivms101:
+          $ref: '#/components/schemas/TRLinkIvms'
+      required:
+      - ivms101
+    TRLinkCustomersListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/TRLinkCustomerResponse'
+    TRLinkDestinationTransferPeerPath:
+      type: object
+      description: Destination peer path for transaction
+      properties:
+        type:
+          type: string
+          description: Destination peer type (e.g., ONE_TIME_ADDRESS, VAULT_ACCOUNT)
+          example: ONE_TIME_ADDRESS
+        id:
+          type:
+          - string
+          - 'null'
+          description: Destination peer ID
+          example: '45'
+        walletId:
+          type:
+          - string
+          - 'null'
+          description: Destination wallet ID
+          example: '0'
+        oneTimeAddress:
+          $ref: '#/components/schemas/TRLinkOneTimeAddress'
+      required:
+      - type
+    TRLinkProviderData:
+      type: object
+      properties:
+        provider:
+          type:
+          - string
+          - 'null'
+          description: Provider name
+          example: notabene
+        data:
+          type:
+          - object
+          - 'null'
+          description: Provider-specific data
+          additionalProperties: true
+          example:
+            vasp_did: did:ethr:0x1234567890abcdef
+            compliance_status: verified
+    TRLinkCustomerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Customer unique identifier
+          example: 550e8400-e29b-41d4-a716-446655440001
+        discoverable:
+          $ref: '#/components/schemas/TRLinkDiscoverableStatus'
+        shortName:
+          type: string
+          description: Short display name
+          example: Acme Corp
+        fullLegalName:
+          type: string
+          description: Full legal entity name
+          example: Acme Corporation Ltd.
+        geographicAddress:
+          $ref: '#/components/schemas/TRLinkGeographicAddressRequest'
+        countryOfRegistration:
+          type: string
+          description: ISO 3166-1 alpha-2 country code where the entity is registered
+          example: US
+        nationalIdentification:
+          type:
+          - string
+          - 'null'
+          description: 'National identification, returned exactly as stored: a compact, whitespace-free JSON-encoded string with these optional keys (in this order): `nationalIdentifier`, `nationalIdentifierType` (e.g. `LEIX` for an LEI), `countryOfIssue` (ISO 3166-1 alpha-2), `registrationAuthority`. Maximum length is 240 characters.'
+          example: '{"nationalIdentifier":"EXAMPLELEI1234567890","nationalIdentifierType":"LEIX","countryOfIssue":"US"}'
+        dateOfIncorporation:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date of entity incorporation (ISO 8601 format)
+          example: '2015-03-15'
+        vaults:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
+          description: Associated Fireblocks vault account IDs
+          example:
+          - 0
+          - 1
+          - 2
+        trPrimaryPurpose:
+          type: string
+          description: 'Primary Travel Rule role for this customer; determines how the customer''s Travel Rule messages are routed. Valid values: `notabene`, `trlink`.'
+          example: trlink
+        createDate:
+          type: string
+          format: date-time
+          description: Timestamp when the customer was created (ISO 8601 format)
+          example: '2025-01-20T10:30:00.000Z'
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Timestamp when the customer was last updated (ISO 8601 format)
+          example: '2025-01-24T08:45:00.000Z'
+      required:
+      - id
+      - discoverable
+      - shortName
+      - fullLegalName
+      - countryOfRegistration
+      - trPrimaryPurpose
+      - createDate
+      - lastUpdate
+    TRLinkConnectIntegrationRequest:
+      type: object
+      properties:
+        apiKey:
+          type: string
+          description: API key provided by the Travel Rule partner
+          example: fb_api_key_12345
+        secret:
+          type:
+          - string
+          - 'null'
+          description: Secret/password provided by the Travel Rule partner (optional)
+          example: secret_value_67890
+      required:
+      - apiKey
+    TRLinkRequiredField:
+      type: object
+      description: An IVMS101 field requirement with its type and path
+      properties:
+        type:
+          type: string
+          description: The person type for this field
+          example: naturalPerson
+        path:
+          type: string
+          description: IVMS101 field path
+          example: Beneficiary.beneficiaryPerson[].naturalPerson.name.nameIdentifier[].primaryIdentifier
+      required:
+      - type
+      - path
+    TRLinkPostScreeningRule-2:
+      type: object
+      description: Post-screening rule that determines the verdict based on screening results
+      properties:
+        customerId:
+          type:
+          - string
+          - 'null'
+          description: Customer identifier
+          example: cust_123abc
+        direction:
+          $ref: '#/components/schemas/TRLinkTransactionDirection'
+        sourceType:
+          type:
+          - string
+          - 'null'
+          description: Source entity type
+          example: EXTERNAL_WALLET
+        sourceSubType:
+          type:
+          - string
+          - 'null'
+          description: Source entity subtype
+        sourceAddress:
+          type:
+          - string
+          - 'null'
+          description: Source blockchain address
+          example: '0x9876543210fedcba9876543210fedcba98765432'
+        destType:
+          type:
+          - string
+          - 'null'
+          description: Destination entity type
+          example: VAULT_ACCOUNT
+        destSubType:
+          type:
+          - string
+          - 'null'
+          description: Destination entity subtype
+        destAddress:
+          type:
+          - string
+          - 'null'
+          description: Destination blockchain address
+          example: '0x1234567890abcdef1234567890abcdef12345678'
+        sourceId:
+          type:
+          - string
+          - 'null'
+          description: Source identifier
+        destId:
+          type:
+          - string
+          - 'null'
+          description: Destination identifier
+        asset:
+          type:
+          - string
+          - 'null'
+          description: Asset or cryptocurrency type
+          example: ETH
+        baseAsset:
+          type:
+          - string
+          - 'null'
+          description: Base asset for derivatives
+        amount:
+          $ref: '#/components/schemas/ScreeningPolicyAmount'
+        networkProtocol:
+          type:
+          - string
+          - 'null'
+          description: Network protocol identifier
+          example: ETHEREUM
+        operation:
+          type:
+          - string
+          - 'null'
+          description: Operation type
+          example: TRANSFER
+        description:
+          type:
+          - string
+          - 'null'
+          description: Rule description
+          example: Accept transactions with TRM approval after January 2024
+        isDefault:
+          type:
+          - boolean
+          - 'null'
+          description: Whether this is a default rule
+          example: false
+        providerIdent:
+          type:
+          - string
+          - 'null'
+          description: TRP provider identifier
+          example: trm-provider-1
+        trmStatus:
+          $ref: '#/components/schemas/TRLinkTrmStatus'
+        validBefore:
+          type:
+          - number
+          - 'null'
+          description: Rule expires once this many seconds have elapsed since the wait/screening step started
+          example: 1800
+        validAfter:
+          type:
+          - number
+          - 'null'
+          description: Rule applies only after this many seconds have elapsed since the wait/screening step started
+          example: 1800
+        action:
+          $ref: '#/components/schemas/TRLinkPostScreeningAction'
+      required:
+      - action
+    TRLinkManualDecisionAction:
+      type: string
+      description: Decision action for destinations in NoTRM status
+      enum:
+      - ACCEPT
+      - REJECT
+      example: ACCEPT
+    TRLinkPublicAssetInfo:
+      type: object
+      description: Public asset information with limited properties for API consumption
+      properties:
+        id:
+          type: string
+          description: The unique ID of the asset (e.g., Fireblocks asset ID)
+          example: USDC_ETH
+        name:
+          type: string
+          description: The name of the asset
+          example: USD Coin
+        type:
+          type: string
+          description: The type of the asset (e.g., BASE_ASSET, ERC20)
+          example: ERC20
+        contractAddress:
+          type: string
+          description: The contract address of the asset (for tokenized assets)
+          example: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+        nativeAsset:
+          type: string
+          description: The native asset of the network (e.g., ETH for ERC20 tokens)
+          example: ETH
+        decimals:
+          type: number
+          description: The number of decimal places for the asset
+          example: 6
+        issuerAddress:
+          type:
+          - string
+          - 'null'
+          description: The issuer address of the asset (optional)
+          example: '0x1234567890abcdef1234567890abcdef12345678'
+      required:
+      - id
+      - name
+      - type
+      - contractAddress
+      - nativeAsset
+      - decimals
+    ScreeningPolicyAmount:
+      type: object
+      description: Amount specification with range and currency type (screening policy rules – BYORK, TRLink, etc.)
+      properties:
+        range:
+          $ref: '#/components/schemas/ScreeningPolicyAmountRange'
+        currency:
+          $ref: '#/components/schemas/ScreeningPolicyCurrency'
+      example:
+        range:
+          min: '1000'
+          max: '100000'
+        currency: USD
+      required:
+      - range
+      - currency
+    TRLinkResolveActionRequest:
+      type: object
+      description: Request to resolve a pending TRM action
+      properties:
+        type:
+          type: string
+          description: The action type identifier as defined by the Travel Rule provider. Must match one of the types returned by the get required actions endpoint. Values are provider-specific and may vary across different TRP implementations.
+          example: UPLOAD_BENEFICIARY_PII
+        data:
+          $ref: '#/components/schemas/TRLinkResolveActionData'
+      required:
+      - type
+    TRLinkSetDestinationTravelRuleMessageIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+        updatedDestinations:
+          type: number
+          description: Number of destinations updated
+          example: 1
+        failedDestinations:
+          type: number
+          description: Number of destinations that failed to update
+          example: 0
+        errors:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: List of errors (if any)
+          example: []
+      required:
+      - success
+      - updatedDestinations
+      - failedDestinations
+    ScreeningPolicyAmountRange:
+      type: object
+      description: Minimum and maximum amount range specification
+      properties:
+        min:
+          type:
+          - string
+          - 'null'
+          description: Minimum amount (inclusive)
+          example: '1000'
+        max:
+          type:
+          - string
+          - 'null'
+          description: Maximum amount (inclusive)
+          example: '100000'
+    TRLinkAssessTravelRuleRequest:
+      type: object
+      description: Request to assess whether Travel Rule compliance is required for a transaction
+      properties:
+        txId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Fireblocks transaction ID (optional) - RECOMMENDED for inbound transactions
+          example: 550e8400-e29b-41d4-a716-446655440000
+        amount:
+          type:
+          - string
+          - 'null'
+          description: Transaction amount (required when txId not provided)
+          example: '1000'
+        amountUSD:
+          type:
+          - string
+          - 'null'
+          description: Transaction amount in USD (optional)
+          example: '1000.50'
+        destination:
+          $ref: '#/components/schemas/TRLinkDestinationTransferPeerPath'
+        destAddress:
+          type:
+          - string
+          - 'null'
+          description: Destination address (optional)
+          example: '0x8d12A197cB00D4747a1fe03395095ce2A5CC6819'
+        destTag:
+          type:
+          - string
+          - 'null'
+          description: Destination tag (optional)
+          example: '1234567890'
+        source:
+          $ref: '#/components/schemas/TRLinkSourceTransferPeerPath'
+        srcAddress:
+          type:
+          - string
+          - 'null'
+          description: Source address (optional)
+          example: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb'
+        assetId:
+          type:
+          - string
+          - 'null'
+          description: Asset identifier (e.g., ETH, BTC, USDC)
+          example: USDT_ERC20
+        direction:
+          $ref: '#/components/schemas/TRLinkTransactionDirection'
+        txHash:
+          type:
+          - string
+          - 'null'
+          description: Transaction hash (optional)
+          example: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
+        originatorVaspId:
+          type:
+          - string
+          - 'null'
+          description: Originator VASP identifier - required for inbound transactions
+          example: did:ethr:0x1234567890abcdef
+        beneficiaryVaspId:
+          type:
+          - string
+          - 'null'
+          description: Beneficiary VASP identifier - required for outbound transactions
+          example: did:ethr:0xfedcba0987654321
+    TRLinkSourceTransferPeerPath:
+      type: object
+      description: Source peer path for transaction
+      properties:
+        type:
+          type: string
+          description: Source peer type (e.g., VAULT_ACCOUNT, UNKNOWN)
+          example: VAULT_ACCOUNT
+        id:
+          type:
+          - string
+          - 'null'
+          description: Source peer ID
+          example: '12'
+        walletId:
+          type:
+          - string
+          - 'null'
+          description: Source wallet ID
+          example: '0'
+      required:
+      - type
+    TRLinkTestConnectionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the connection test was successful
+          example: true
+        message:
+          type:
+          - string
+          - 'null'
+          description: Additional message about the connection test (present when success is false)
+          example: 'Connection test failed: Invalid API key'
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the test was performed (ISO 8601 format)
+          example: '2025-01-24T10:30:00.000Z'
+        partnerIdent:
+          type:
+          - string
+          - 'null'
+          description: Partner identification code
+          example: notabene
+        partnerName:
+          type:
+          - string
+          - 'null'
+          description: Partner display name
+          example: Notabene
+      required:
+      - success
+      - timestamp
+    TRLinkSetDestinationTravelRuleMessageIdRequest:
+      type: object
+      description: Request to set TRM ID for specific transaction destination
+      properties:
+        amount:
+          type: string
+          description: Destination amount for matching
+          example: '1000'
+        destination:
+          $ref: '#/components/schemas/TRLinkTransferPeerPath'
+        travelRuleMessageId:
+          type:
+          - string
+          - 'null'
+          description: Travel Rule Message ID to associate with destination (null to unset)
+          example: trm_1234567890abcdef
+      required:
+      - amount
+      - destination
+      - travelRuleMessageId
+    TRLinkGetSupportedAssetResponse:
+      type: object
+      description: Response for getting a single supported asset by ID
+      properties:
+        fireblocksAsset:
+          $ref: '#/components/schemas/TRLinkPublicAssetInfo'
+        partnerResponse:
+          type:
+          - object
+          - 'null'
+          description: Raw partner response data
+          additionalProperties: true
+          example:
+            assetCode: USDC
+            network: ethereum
+            enabled: true
+        partnerCanHandleAnyAsset:
+          type: boolean
+          description: Whether partner can handle any asset (not just explicitly listed ones)
+          example: false
+        note:
+          type: string
+          description: Note about asset support capabilities
+          example: Partner supports only explicitly listed assets
+        supported:
+          type: boolean
+          description: Whether the asset is supported by the partner
+          example: true
+      required:
+      - fireblocksAsset
+      - partnerResponse
+      - partnerCanHandleAnyAsset
+      - note
+      - supported
+    TRLinkResolveActionData:
+      type:
+      - object
+      - 'null'
+      description: 'Data to submit when resolving an action.
+
+        The structure varies by action type and is validated by the TRP provider.
+
+
+        For UPLOAD_BENEFICIARY_PII action type:
+
+        Contains beneficiaryPii with IVMS101-encoded PII data.
+
+        '
+      properties:
+        beneficiaryPii:
+          $ref: '#/components/schemas/TRLinkBeneficiaryPii'
+    TRLinkTrmDirection:
+      type: string
+      enum:
+      - in
+      - out
+      description: Transaction direction for TRM (in = inbound, out = outbound)
+      example: out
+    TRLinkSetTransactionTravelRuleMessageIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+      required:
+      - success
+    TRLinkBeneficiaryPii:
+      type: object
+      description: Beneficiary PII data in IVMS101 format
+      properties:
+        ivms101:
+          $ref: '#/components/schemas/TRLinkIvms'
+      required:
+      - ivms101
+    TRLinkUpdateCustomerRequest:
+      type: object
+      properties:
+        discoverable:
+          $ref: '#/components/schemas/TRLinkDiscoverableStatus'
+        shortName:
+          type: string
+          description: Short display name (required)
+          example: Acme Corporation
+        fullLegalName:
+          type:
+          - string
+          - 'null'
+          description: Full legal entity name
+          example: Acme Corporation Ltd.
+        geographicAddress:
+          $ref: '#/components/schemas/TRLinkGeographicAddressRequest'
+        countryOfRegistration:
+          type:
+          - string
+          - 'null'
+          description: ISO 3166-1 alpha-2 country code where the entity is registered
+          example: US
+        nationalIdentification:
+          type:
+          - string
+          - 'null'
+          description: 'National identification, sent as a JSON-encoded string. The server normalizes input into a compact JSON with these optional keys: `nationalIdentifier`, `nationalIdentifierType` (e.g. `LEIX` for an LEI), `countryOfIssue` (ISO 3166-1 alpha-2), `registrationAuthority`. If the input is not a JSON object, it is wrapped as `{"nationalIdentifier":"<value>"}`; if the value matches the LEI format, `nationalIdentifierType` is set to `LEIX` automatically and `countryOfIssue` defaults to this request''s `countryOfRegistration` if not provided. The compacted JSON must be 240 characters or fewer. Omitting this field leaves the stored value unchanged; setting it to `null` clears it. On read, the value is returned exactly as stored.'
+          example: '{"nationalIdentifier":"EXAMPLELEI1234567890","nationalIdentifierType":"LEIX","countryOfIssue":"US"}'
+        dateOfIncorporation:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: 'Date of entity incorporation (ISO 8601 format: YYYY-MM-DD)'
+          example: '2015-03-15'
+        vaults:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
+          description: Associated Fireblocks vault account IDs
+          example:
+          - 0
+          - 1
+          - 2
+          - 3
+        trPrimaryPurpose:
+          type: string
+          description: 'Primary Travel Rule role for this customer; determines how the customer''s Travel Rule messages are routed. Valid values: `notabene`, `trlink`. Omit the field to leave the stored value unchanged.'
+          example: trlink
+      required:
+      - shortName
+    TRLinkFiatValue:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: Fiat amount
+          example: '1000.50'
+        currency:
+          type: string
+          description: Fiat currency code
+          example: USD
+      required:
+      - amount
+      - currency
+    TRLinkCreateIntegrationRequest:
+      type: object
+      properties:
+        customerId:
+          type: string
+          format: uuid
+          description: Customer unique identifier
+          example: 550e8400-e29b-41d4-a716-446655440001
+        partnerIdent:
+          type: string
+          description: Partner identification code (e.g., "sumsub", "notabene")
+          example: sumsub
+        customerIntegrationId:
+          type: string
+          format: uuid
+          description: Optional. When supplied and permitted for the tenant (feature flag / CSM arrangement), this value is used as the TRLink integration identifier instead of a server-generated UUID. If omitted, the API generates a UUID. If supplied when the tenant is not permitted to set a custom id, the request fails with 400. Contact your CSM if you need a custom integration id.
+          example: 660e8400-e29b-41d4-a716-446655440099
+      required:
+      - customerId
+      - partnerIdent
+    TRLinkVaspDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: VASP unique identifier (DID format)
+          example: did:ethr:0x1234567890abcdef
+        name:
+          type: string
+          description: VASP display name
+          example: ACME Virtual Assets
+        legalName:
+          type:
+          - string
+          - 'null'
+          description: Legal entity name
+          example: ACME Virtual Assets Corporation
+        nationalIdentification:
+          $ref: '#/components/schemas/TRLinkVaspNationalIdentification'
+        geographicAddress:
+          $ref: '#/components/schemas/TRLinkVaspGeographicAddress'
+        publicKey:
+          type:
+          - string
+          - 'null'
+          description: VASP public key for encryption
+          example: '-----BEGIN PUBLIC KEY-----
+
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+
+            -----END PUBLIC KEY-----'
+      required:
+      - id
+      - name
+      additionalProperties: true
+    TRLinkAssetFormat:
+      type: string
+      enum:
+      - fireblocks
+      - coinmarketcap
+      description: Asset format type
+      example: fireblocks
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    TRLinkPublicKeyResponse:
+      type: object
+      properties:
+        issuer:
+          type: string
+          description: Partner issuer identifier
+          example: notabene
+        publicKey:
+          $ref: '#/components/schemas/TRLinkJwkPublicKey'
+      required:
+      - issuer
+      - publicKey
+    TRLinkAssetsListPagedResponse:
+      type: object
+      description: Paginated list of supported assets with partner capability flag
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TRLinkPublicAssetInfo'
+          description: List of supported assets
+        paging:
+          $ref: '#/components/schemas/TRLinkPaging'
+        partnerCanHandleAnyAsset:
+          type: boolean
+          description: Whether partner can handle any asset (not just explicitly listed ones)
+          example: true
+        note:
+          type: string
+          description: Note about asset support capabilities
+          example: Partner can handle assets beyond those explicitly listed
+      required:
+      - data
+      - partnerCanHandleAnyAsset
+      - note
+    TRLinkAssetData:
+      type: object
+      properties:
+        ticker:
+          type:
+          - string
+          - 'null'
+          description: Asset ticker symbol (e.g., BTC, ETH, USDT)
+          example: USDT
+        network:
+          type: string
+          description: Network identifier from Fireblocks (e.g., ETH, BTC)
+          example: ETH
+        ucid:
+          type:
+          - number
+          - 'null'
+          description: CoinMarketCap unique coin ID
+          example: 825
+        contractAddress:
+          type:
+          - string
+          - 'null'
+          description: Contract address for tokens
+          example: '0xdac17f958d2ee523a2206206994597c13d831ec7'
+        id:
+          type:
+          - string
+          - 'null'
+          description: Fireblocks asset ID
+          example: USDT_ERC20
+      required:
+      - network
+    TRLinkManualDecisionDestinationDetail:
+      type: object
+      description: Per-destination result of the manual decision
+      properties:
+        destinationScreeningId:
+          type: string
+          description: Destination screening record ID
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        applied:
+          type: boolean
+          description: Whether the decision was applied to this destination
+          example: true
+        skipReason:
+          type:
+          - string
+          - 'null'
+          description: Reason if the destination was skipped
+          example: null
+      required:
+      - destinationScreeningId
+      - applied
+    TRLinkThresholds:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: Threshold amount
+          example: '1000'
+        currency:
+          type: string
+          description: Currency code
+          example: USD
+    TRLinkGetRequiredActionsResponse:
+      type: object
+      description: Response containing the list of required actions for a TRM
+      properties:
+        actions:
+          type: array
+          minItems: 0
+          maxItems: 10
+          description: List of required actions for the TRM
+          items:
+            $ref: '#/components/schemas/TRLinkRequiredAction'
+      required:
+      - actions
+    TRLinkRequiredActionData:
+      type:
+      - object
+      - 'null'
+      description: 'Data describing what fields are required to resolve the action.
+
+        The structure varies by action type and is defined by the TRP provider.
+
+
+        For UPLOAD_BENEFICIARY_PII action type:
+
+        Contains beneficiaryRequiredFields and/or originatorRequiredFields
+
+        listing the IVMS101 field paths that must be provided.
+
+        '
+      properties:
+        beneficiaryRequiredFields:
+          type: array
+          minItems: 0
+          maxItems: 30
+          description: List of required beneficiary IVMS101 fields
+          items:
+            $ref: '#/components/schemas/TRLinkRequiredField'
+        originatorRequiredFields:
+          type: array
+          minItems: 0
+          maxItems: 30
+          description: List of required originator IVMS101 fields
+          items:
+            $ref: '#/components/schemas/TRLinkRequiredField'
+    TRLinkCancelTrmRequest:
+      type: object
+      properties:
+        reason:
+          type:
+          - string
+          - 'null'
+          description: Reason for cancellation
+          example: Transaction no longer needed
+        cancelledBy:
+          type:
+          - string
+          - 'null'
+          description: User ID who cancelled the TRM
+          example: user_123456
+    TRLinkCustomerIntegrationResponse:
+      type: object
+      properties:
+        customerIntegrationId:
+          type: string
+          format: uuid
+          description: Customer integration unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        apiKey:
+          type:
+          - string
+          - 'null'
+          description: API key for partner integration (censored for security)
+          example: fb_***************
+        secret:
+          type:
+          - string
+          - 'null'
+          description: Secret for partner integration (censored for security)
+          example: '***'
+        createDate:
+          type: string
+          format: date-time
+          description: Timestamp when the integration was created (ISO 8601 format)
+          example: '2025-01-20T10:30:00.000Z'
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Timestamp when the integration was last updated (ISO 8601 format)
+          example: '2025-01-24T08:45:00.000Z'
+        partner:
+          $ref: '#/components/schemas/TRLinkPartnerResponse'
+        customer:
+          $ref: '#/components/schemas/TRLinkCustomerResponse'
+      required:
+      - customerIntegrationId
+      - createDate
+      - lastUpdate
+      - partner
+      - customer
+    TRLinkRequiredAction:
+      type: object
+      description: A required action for processing the TRM
+      properties:
+        type:
+          type: string
+          description: The action type identifier as defined by the Travel Rule provider. Values are provider-specific and may vary across different TRP implementations, so this field is intentionally not restricted to a fixed set of values.
+          example: UPLOAD_BENEFICIARY_PII
+        description:
+          type:
+          - string
+          - 'null'
+          description: Human-readable description of the action
+          example: Provide beneficiary PII fields to process the TR message
+        data:
+          $ref: '#/components/schemas/TRLinkRequiredActionData'
+      required:
+      - type
+    TRLinkAsset:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/TRLinkAssetFormat'
+        data:
+          $ref: '#/components/schemas/TRLinkAssetData'
+      required:
+      - format
+      - data
+    TRLinkPartnersListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/TRLinkPartnerResponse'
+    TRLinkPreScreeningAction-2:
+      type: string
+      enum:
+      - SCREEN
+      - PASS
+    TRLinkIvms:
+      type: object
+      description: IVMS101 data structure containing encrypted PII
+      properties:
+        version:
+          type: string
+          description: IVMS version
+          example: IVMS101.2023
+        data:
+          type: string
+          description: Encrypted IVMS101 data containing originator and beneficiary information
+          example: aGVsbG8gd29ybGQgdGhpcyBpcyBlbmNyeXB0ZWQgZGF0YQ==
+        filledFields:
+          type: array
+          items:
+            type: string
+          description: List of fields that are filled in the IVMS data
+          example:
+          - Beneficiary.beneficiaryPersons[].legalPerson.name.nameIdentifier
+          - Beneficiary.beneficiaryPersons[].naturalPerson.name.nameIdentifier
+      required:
+      - version
+      - data
+      - filledFields
+    TRLinkVaspNationalIdentification:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: National identification number
+          example: '123456789'
+        type:
+          type:
+          - string
+          - 'null'
+          description: Type of national identification
+          example: LEI
+        authority:
+          type:
+          - string
+          - 'null'
+          description: Issuing authority
+          example: Financial Conduct Authority
+      required:
+      - identifier
+    TRLinkDiscoverableStatus:
+      type:
+      - string
+      - 'null'
+      description: Customer discoverability status in the Travel Rule network
+      enum:
+      - anonymous
+      - hidden
+      - discoverable
+      example: discoverable
+    TRLinkCreateCustomerRequest:
+      type: object
+      properties:
+        discoverable:
+          $ref: '#/components/schemas/TRLinkDiscoverableStatus'
+        shortName:
+          type: string
+          description: Short display name (required)
+          example: Acme Corp
+        fullLegalName:
+          type:
+          - string
+          - 'null'
+          description: Full legal entity name
+          example: Acme Corporation Ltd.
+        geographicAddress:
+          $ref: '#/components/schemas/TRLinkGeographicAddressRequest'
+        countryOfRegistration:
+          type:
+          - string
+          - 'null'
+          description: ISO 3166-1 alpha-2 country code where the entity is registered
+          example: US
+        nationalIdentification:
+          type:
+          - string
+          - 'null'
+          description: 'National identification, sent as a JSON-encoded string. The server normalizes input into a compact JSON with these optional keys: `nationalIdentifier`, `nationalIdentifierType` (e.g. `LEIX` for an LEI), `countryOfIssue` (ISO 3166-1 alpha-2), `registrationAuthority`. If the input is not a JSON object, it is wrapped as `{"nationalIdentifier":"<value>"}`; if the value matches the LEI format, `nationalIdentifierType` is set to `LEIX` automatically and `countryOfIssue` defaults to this request''s `countryOfRegistration` if not provided. The compacted JSON must be 240 characters or fewer. On read, the value is returned exactly as stored.'
+          example: '{"nationalIdentifier":"EXAMPLELEI1234567890","nationalIdentifierType":"LEIX","countryOfIssue":"US"}'
+        dateOfIncorporation:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: 'Date of entity incorporation (ISO 8601 format: YYYY-MM-DD)'
+          example: '2015-03-15'
+        vaults:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
+          description: Associated Fireblocks vault account IDs
+          example:
+          - 0
+          - 1
+          - 2
+        trPrimaryPurpose:
+          type: string
+          default: trlink
+          description: 'Primary Travel Rule role for this customer; determines how the customer''s Travel Rule messages are routed. Valid values: `notabene`, `trlink`.'
+          example: trlink
+      required:
+      - shortName
+    TRLinkPostScreeningAction:
+      type: string
+      enum:
+      - ACCEPT
+      - ALERT
+      - REJECT
+      - WAIT
+    ScreeningPolicyCurrency:
+      type: string
+      enum:
+      - USD
+      - NATIVE
+      example: USD
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

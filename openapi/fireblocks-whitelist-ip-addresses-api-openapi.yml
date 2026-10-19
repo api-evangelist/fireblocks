@@ -1,0 +1,177 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks whitelist ip addresses API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: whitelist ip addresses
+paths:
+  /management/api_users/{userId}/whitelist_ip_addresses:
+    get:
+      operationId: getWhitelistIpAddresses
+      summary: Get whitelisted ip addresses for an API Key
+      description: 'Get a list of the whitelisted IP addresses for a specific API Key
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - whitelist ip addresses
+      x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const whitelistedAddresses = await fireblocks.getWhitelistedAddresses(apiUserId);
+          name: Fireblocks SDK Javascript example
+        - language: python
+          code: whitelisted_addresses = fireblocks.get_whitelisted_ip_addresses(api_user_id)
+          name: Fireblocks SDK Python example (Legacy)
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetWhitelistIpAddressesResponse>> = fireblocks.whitelistIpAddresses.getWhitelistIpAddresses(whitelistIpAddressesApiGetWhitelistIpAddressesRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetWhitelistIpAddressesResponse>> response = fireblocks.whitelistIpAddresses().getWhitelistIpAddresses(userId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.whitelist_ip_addresses.get_whitelist_ip_addresses(user_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        description: The ID of the api user
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successfully got whitelisted ip addresses
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWhitelistIpAddressesResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetWhitelistIpAddressesResponse>> = fireblocks.whitelistIpAddresses.getWhitelistIpAddresses(whitelistIpAddressesApiGetWhitelistIpAddressesRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetWhitelistIpAddressesResponse>> response = fireblocks.whitelistIpAddresses().getWhitelistIpAddresses(userId);
+      - lang: Python
+        source: response = fireblocks.whitelist_ip_addresses.get_whitelist_ip_addresses(user_id);
+components:
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  schemas:
+    GetWhitelistIpAddressesResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The ID of the user
+        whitelistedIps:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: List of whitelisted ip addresses
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - INTERNAL
+              - AUTHENTICATION
+              - AUTHORIZATION
+              - VALIDATION
+              - NOT_FOUND
+              - UNPROCESSABLE_ENTITY
+              - FORBIDDEN
+            message:
+              type: string
+          required:
+          - type
+          - message
+      required:
+      - error
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

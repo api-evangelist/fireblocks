@@ -1,13 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests……………
+  title: Fireblocks Webhooks V2 API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
     - Visit our website for more information: Fireblocks Website
 
     - Visit our developer docs: Fireblocks DevPortal'
-  version: 1.8.0
+  version: 1.6.2
   contact:
     email: developers@fireblocks.com
 servers:
@@ -15,7 +15,6 @@ servers:
   description: Fireblocks Production Environment Base URL
 - url: https://sandbox-api.fireblocks.io/v1
   description: Fireblocks Sandbox Environment Base URL
-security: []
 tags:
 - name: Webhooks V2
 paths:
@@ -27,6 +26,7 @@ paths:
 
 
         **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      x-rate-limit-category: write
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
       requestBody:
@@ -70,10 +70,8 @@ paths:
     get:
       operationId: getWebhooks
       summary: Get all webhooks
-      description: 'Get all webhooks (paginated).
-
-
-        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      description: Get all webhooks (paginated).
+      x-rate-limit-category: query
       parameters:
       - name: order
         required: false
@@ -95,7 +93,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Maximum number of items on the page
+        description: Maximum number of items in the page
         schema:
           minimum: 1
           maximum: 100
@@ -134,14 +132,631 @@ paths:
         source: CompletableFuture<ApiResponse<WebhookPaginatedResponse>> response = fireblocks.webhooksV2().getWebhooks(order, pageCursor, pageSize);
       - lang: Python
         source: response = fireblocks.webhooks_v2.get_webhooks(order, page_cursor, page_size);
+  /webhooks_settings/mtls:
+    post:
+      operationId: createWebhookMtlsConfig
+      summary: Create an mTLS configuration
+      description: 'Stores a certificate signed against the CSR from `GET /v1/webhooks_settings/mtls_csr` and returns its id, which is then set as `webhookMtlsId` on a webhook or on OAuth credentials. The private key the certificate was issued for is derived from the certificate, so it is never named by the caller.
+
+
+        Re-uploading a certificate already stored returns the existing id rather than creating a second configuration, so several webhooks and OAuth credentials can share one certificate.
+
+
+        A certificate that was not issued for a private key this workspace holds is rejected with a `400`.
+
+
+        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebhookMtlsConfigRequest'
+      responses:
+        '201':
+          description: The stored mTLS configuration
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookMtlsConfig'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WebhookMtlsConfig>> = fireblocks.webhooksV2.createWebhookMtlsConfig(webhooksV2ApiCreateWebhookMtlsConfigRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<WebhookMtlsConfig>> response = fireblocks.webhooksV2().createWebhookMtlsConfig(createWebhookMtlsConfigRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.create_webhook_mtls_config(create_webhook_mtls_config_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WebhookMtlsConfig>> = fireblocks.webhooksV2.createWebhookMtlsConfig(webhooksV2ApiCreateWebhookMtlsConfigRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<WebhookMtlsConfig>> response = fireblocks.webhooksV2().createWebhookMtlsConfig(createWebhookMtlsConfigRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.create_webhook_mtls_config(create_webhook_mtls_config_request, idempotency_key);
+    get:
+      operationId: getWebhookMtlsConfigs
+      summary: List the uploaded mTLS configurations
+      description: 'Lists the workspace''s mTLS configurations, newest first. Pass `ids` to ask about
+
+        particular ones instead — useful for resolving the `webhookMtlsId` values on a set of
+
+        webhooks in one call.'
+      x-rate-limit-category: read
+      parameters:
+      - name: ids
+        required: false
+        in: query
+        description: Return only the configurations with these ids, instead of all of them. Repeat the parameter for each id. An id belonging to another workspace, or to nothing, is left out of the response rather than failing the request.
+        schema:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            format: uuid
+        example:
+        - 6f1b7c62-0f2e-4f1a-9a5e-9f2b1c3d4e5f
+      responses:
+        '200':
+          description: The workspace's mTLS configurations
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookMtlsConfigsList'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WebhookMtlsConfigsList>> = fireblocks.webhooksV2.getWebhookMtlsConfigs(webhooksV2ApiGetWebhookMtlsConfigsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<WebhookMtlsConfig>>> response = fireblocks.webhooksV2().getWebhookMtlsConfigs(ids);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.get_webhook_mtls_configs(ids);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WebhookMtlsConfigsList>> = fireblocks.webhooksV2.getWebhookMtlsConfigs(webhooksV2ApiGetWebhookMtlsConfigsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<WebhookMtlsConfig>>> response = fireblocks.webhooksV2().getWebhookMtlsConfigs(ids);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.get_webhook_mtls_configs(ids);
+  /webhooks_settings/mtls_csr:
+    get:
+      operationId: getMtlsCsr
+      summary: Get mTLS CSR
+      description: 'Returns the Certificate Signing Request (CSR) PEM that customers use to generate their signed client certificate.
+
+
+        The private key the CSR is built from is held by Fireblocks and is specific to this workspace. It is created on the first request for a given key type, and the same CSR is returned on subsequent requests for that type.
+
+
+        Pass `keyAlgorithm` to choose RSA or ECDSA. A workspace may hold one key of each: the CSR returned is always the one for the type requested, so a certificate signed against it matches the key used at delivery time.
+
+
+        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      x-rate-limit-category: read
+      parameters:
+      - name: keyAlgorithm
+        required: false
+        in: query
+        description: Algorithm of the private key the CSR is generated for. ECDSA keys are smaller and quicker to issue, but the certificate authority signing the request has to accept an EC subject key, which some do not by default.
+        schema:
+          type: string
+          enum:
+          - RSA
+          - ECDSA
+          default: RSA
+          example: RSA
+      responses:
+        '200':
+          description: The mTLS CSR PEM
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookMtlsCsrResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WebhookMtlsCsrResponse>> = fireblocks.webhooksV2.getMtlsCsr(webhooksV2ApiGetMtlsCsrRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<WebhookMtlsCsrResponse>> response = fireblocks.webhooksV2().getMtlsCsr(keyAlgorithm);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.get_mtls_csr(key_algorithm);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WebhookMtlsCsrResponse>> = fireblocks.webhooksV2.getMtlsCsr(webhooksV2ApiGetMtlsCsrRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<WebhookMtlsCsrResponse>> response = fireblocks.webhooksV2().getMtlsCsr(keyAlgorithm);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.get_mtls_csr(key_algorithm);
+  /webhooks_settings/mtls/{webhookMtlsId}:
+    get:
+      operationId: getWebhookMtlsConfig
+      summary: Get an mTLS configuration by id
+      description: Retrieve one stored mTLS configuration by its id.
+      x-rate-limit-category: read
+      parameters:
+      - name: webhookMtlsId
+        required: true
+        in: path
+        description: The unique identifier of the mTLS configuration
+        schema:
+          format: uuid
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          type: string
+      responses:
+        '200':
+          description: An mTLS configuration
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookMtlsConfig'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WebhookMtlsConfig>> = fireblocks.webhooksV2.getWebhookMtlsConfig(webhooksV2ApiGetWebhookMtlsConfigRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<WebhookMtlsConfig>> response = fireblocks.webhooksV2().getWebhookMtlsConfig(webhookMtlsId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.get_webhook_mtls_config(webhook_mtls_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WebhookMtlsConfig>> = fireblocks.webhooksV2.getWebhookMtlsConfig(webhooksV2ApiGetWebhookMtlsConfigRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<WebhookMtlsConfig>> response = fireblocks.webhooksV2().getWebhookMtlsConfig(webhookMtlsId);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.get_webhook_mtls_config(webhook_mtls_id);
+    patch:
+      operationId: updateWebhookMtlsConfig
+      summary: Update an mTLS configuration
+      description: 'Renames a configuration, replaces its certificate, or both. Only the fields present in the request are changed; anything omitted is left as it is, and a request with neither field is rejected with a `400`.
+
+
+        Replacing `signedCert` switches every webhook and OAuth credentials set using this configuration over to the new certificate in one write, and the private key it was issued for is re-derived from the certificate. A replacement that was not issued for a private key this workspace holds is rejected with a `400`.
+
+
+        Sending `name: null` removes the label.
+
+
+        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      x-rate-limit-category: write
+      parameters:
+      - name: webhookMtlsId
+        required: true
+        in: path
+        description: The unique identifier of the mTLS configuration
+        schema:
+          format: uuid
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWebhookMtlsConfigRequest'
+      responses:
+        '200':
+          description: The updated mTLS configuration
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookMtlsConfig'
+        '400':
+          description: Neither `name` nor `signedCert` was provided, so there is nothing to change, or the replacement certificate was rejected — it is not valid X.509, or it was not issued for a private key this workspace holds.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WebhookMtlsConfig>> = fireblocks.webhooksV2.updateWebhookMtlsConfig(webhooksV2ApiUpdateWebhookMtlsConfigRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<WebhookMtlsConfig>> response = fireblocks.webhooksV2().updateWebhookMtlsConfig(updateWebhookMtlsConfigRequest, webhookMtlsId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.update_webhook_mtls_config(update_webhook_mtls_config_request, webhook_mtls_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WebhookMtlsConfig>> = fireblocks.webhooksV2.updateWebhookMtlsConfig(webhooksV2ApiUpdateWebhookMtlsConfigRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<WebhookMtlsConfig>> response = fireblocks.webhooksV2().updateWebhookMtlsConfig(updateWebhookMtlsConfigRequest, webhookMtlsId);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.update_webhook_mtls_config(update_webhook_mtls_config_request, webhook_mtls_id);
+    delete:
+      operationId: deleteWebhookMtlsConfig
+      summary: Delete an mTLS configuration
+      description: 'Deletes an mTLS configuration. By default the delete is refused while the configuration is still in use: if any webhook or OAuth credentials reference it, nothing is deleted and the request fails with `409 Conflict`, naming the reason and listing the ids of what references it. This protects a shared configuration from being removed out from under the webhooks and token requests that depend on it.
+
+
+        Pass `forceDelete=true` to delete anyway. That detaches everything referencing it — it clears `webhookMtlsId` on each webhook and OAuth credentials, it does **not** delete them — then deletes the configuration and returns the deleted resource together with `detachedWebhookIds` and `detachedWebhookOauthIds`. Detached webhooks keep delivering notifications, and detached OAuth credentials keep requesting tokens, but without a client certificate, so an endpoint that requires mTLS will reject them from that point on.
+
+
+        When nothing references the configuration the delete succeeds either way, and both lists come back empty.
+
+
+        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      x-rate-limit-category: write
+      parameters:
+      - name: webhookMtlsId
+        required: true
+        in: path
+        description: The unique identifier of the mTLS configuration
+        schema:
+          format: uuid
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          type: string
+      - name: forceDelete
+        required: false
+        in: query
+        description: Delete the configuration even while webhooks or OAuth credentials still reference it, detaching them instead of refusing; their ids are returned in `detachedWebhookIds` and `detachedWebhookOauthIds`. Leave it unset, or `false`, to get a `409 Conflict` whenever anything still references the configuration.
+        schema:
+          type: boolean
+          default: false
+        example: true
+      responses:
+        '200':
+          description: The deleted mTLS configuration, plus the ids of any webhooks and OAuth credentials that were detached from it
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteWebhookMtlsConfigResponse'
+        '409':
+          description: Webhooks or OAuth credentials still reference this configuration and `forceDelete` was not set. Nothing was deleted. The error message names the reason and the ids of what references it — detach those webhooks and OAuth credentials, or retry with `forceDelete=true`.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DeleteWebhookMtlsConfigResponse>> = fireblocks.webhooksV2.deleteWebhookMtlsConfig(webhooksV2ApiDeleteWebhookMtlsConfigRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DeleteWebhookMtlsConfigResponse>> response = fireblocks.webhooksV2().deleteWebhookMtlsConfig(webhookMtlsId, forceDelete);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.delete_webhook_mtls_config(webhook_mtls_id, force_delete);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DeleteWebhookMtlsConfigResponse>> = fireblocks.webhooksV2.deleteWebhookMtlsConfig(webhooksV2ApiDeleteWebhookMtlsConfigRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DeleteWebhookMtlsConfigResponse>> response = fireblocks.webhooksV2().deleteWebhookMtlsConfig(webhookMtlsId, forceDelete);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.delete_webhook_mtls_config(webhook_mtls_id, force_delete);
+  /webhooks_settings/oauth:
+    post:
+      operationId: createWebhookOauth
+      summary: Create OAuth credentials
+      description: 'Creates a reusable OAuth client credential set. Attach it to a webhook by passing the returned id as that webhook''s `webhookOauthId`. Several webhooks may share one credential set, so rotating its client secret covers all of them at once. The client secret is write-only and is never returned.
+
+
+        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebhookOauthRequest'
+      responses:
+        '201':
+          description: created the OAuth credentials successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookOauthCredentials'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WebhookOauthCredentials>> = fireblocks.webhooksV2.createWebhookOauth(webhooksV2ApiCreateWebhookOauthRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<WebhookOauthCredentials>> response = fireblocks.webhooksV2().createWebhookOauth(createWebhookOauthRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.create_webhook_oauth(create_webhook_oauth_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WebhookOauthCredentials>> = fireblocks.webhooksV2.createWebhookOauth(webhooksV2ApiCreateWebhookOauthRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<WebhookOauthCredentials>> response = fireblocks.webhooksV2().createWebhookOauth(createWebhookOauthRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.create_webhook_oauth(create_webhook_oauth_request, idempotency_key);
+    get:
+      operationId: getWebhookOauths
+      summary: Get all OAuth credentials
+      description: Lists every OAuth credential set for the workspace. Client secrets are never returned.
+      x-rate-limit-category: read
+      responses:
+        '200':
+          description: The workspace's OAuth credentials
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookOauthList'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WebhookOauthList>> = fireblocks.webhooksV2.getWebhookOauths();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<WebhookOauthCredentials>>> response = fireblocks.webhooksV2().getWebhookOauths();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.get_webhook_oauths();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WebhookOauthList>> = fireblocks.webhooksV2.getWebhookOauths();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<WebhookOauthCredentials>>> response = fireblocks.webhooksV2().getWebhookOauths();
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.get_webhook_oauths();
+  /webhooks_settings/oauth/{webhookOauthId}:
+    get:
+      operationId: getWebhookOauth
+      summary: Get OAuth credentials by id
+      description: Retrieve an OAuth credential set by its id. The client secret is never returned.
+      x-rate-limit-category: read
+      parameters:
+      - name: webhookOauthId
+        required: true
+        in: path
+        description: The unique identifier of the OAuth credentials
+        schema:
+          format: uuid
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          type: string
+      responses:
+        '200':
+          description: An OAuth credentials object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookOauthCredentials'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WebhookOauthCredentials>> = fireblocks.webhooksV2.getWebhookOauth(webhooksV2ApiGetWebhookOauthRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<WebhookOauthCredentials>> response = fireblocks.webhooksV2().getWebhookOauth(webhookOauthId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.get_webhook_oauth(webhook_oauth_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WebhookOauthCredentials>> = fireblocks.webhooksV2.getWebhookOauth(webhooksV2ApiGetWebhookOauthRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<WebhookOauthCredentials>> response = fireblocks.webhooksV2().getWebhookOauth(webhookOauthId);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.get_webhook_oauth(webhook_oauth_id);
+    patch:
+      operationId: updateWebhookOauth
+      summary: Update OAuth credentials
+      description: 'Updates only the fields present in the request; anything omitted is left as it is. Sending `clientSecret` on its own rotates the secret for every webhook using these credentials.
+
+
+        `customJwtClaims`, `customBodyParams` and `customHeaders` are all merged key by key rather than replaced, the same way a webhook''s own `customHeaders` behaves: a key sent with a value is added or overwritten, a key sent with a `null` value is deleted, and a key you omit is left alone. Setting one of the three to `null` as a whole clears that map, which is the quick way to empty it without naming every key. There is no ambiguity between the two uses of `null` — one names an entry to delete, the other names the field. A claim cannot be set to JSON `null`, though, on this endpoint or on create, because `null` is spent on deletion. `webhookMtlsId` is a scalar rather than a map, so `null` there does remove it.
+
+
+        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      x-rate-limit-category: write
+      parameters:
+      - name: webhookOauthId
+        required: true
+        in: path
+        description: The unique identifier of the OAuth credentials
+        schema:
+          format: uuid
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWebhookOauthRequest'
+      responses:
+        '200':
+          description: Updated OAuth credentials object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookOauthCredentials'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WebhookOauthCredentials>> = fireblocks.webhooksV2.updateWebhookOauth(webhooksV2ApiUpdateWebhookOauthRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<WebhookOauthCredentials>> response = fireblocks.webhooksV2().updateWebhookOauth(updateWebhookOauthRequest, webhookOauthId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.update_webhook_oauth(update_webhook_oauth_request, webhook_oauth_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WebhookOauthCredentials>> = fireblocks.webhooksV2.updateWebhookOauth(webhooksV2ApiUpdateWebhookOauthRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<WebhookOauthCredentials>> response = fireblocks.webhooksV2().updateWebhookOauth(updateWebhookOauthRequest, webhookOauthId);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.update_webhook_oauth(update_webhook_oauth_request, webhook_oauth_id);
+    delete:
+      operationId: deleteWebhookOauth
+      summary: Delete OAuth credentials
+      description: 'Deletes an OAuth credential set. By default the delete is refused while the credentials are still in use: if any webhook references them, nothing is deleted and the request fails with `409 Conflict`, naming the reason and listing the ids of the referencing webhooks. This protects a shared credential set from being removed out from under the webhooks that depend on it, since several webhooks may reference the same one.
+
+
+        Pass `forceDelete=true` to delete anyway. That detaches every referencing webhook — it clears each webhook''s `webhookOauthId`, it does **not** delete the webhook — then deletes the credential set and returns the deleted resource together with `detachedWebhookIds`. The detached webhooks keep delivering notifications, but without an `Authorization` header, so their endpoints will see unauthenticated deliveries from that point on.
+
+
+        When nothing references the credentials the delete succeeds either way, and `detachedWebhookIds` comes back empty.
+
+
+        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      x-rate-limit-category: write
+      parameters:
+      - name: webhookOauthId
+        required: true
+        in: path
+        description: The unique identifier of the OAuth credentials
+        schema:
+          format: uuid
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          type: string
+      - name: forceDelete
+        required: false
+        in: query
+        description: Delete the credentials even while webhooks still reference them, detaching those webhooks instead of refusing. Leave it unset, or `false`, to get a `409 Conflict` whenever anything still references the credentials.
+        schema:
+          type: boolean
+          default: false
+        example: true
+      responses:
+        '200':
+          description: The deleted OAuth credentials, plus the ids of any webhooks that were detached from them
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteWebhookOauthResponse'
+        '409':
+          description: Webhooks still reference these credentials and `forceDelete` was not set. Nothing was deleted. The error message names the reason and the ids of the referencing webhooks — detach or delete those webhooks, or retry with `forceDelete=true`.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DeleteWebhookOauthResponse>> = fireblocks.webhooksV2.deleteWebhookOauth(webhooksV2ApiDeleteWebhookOauthRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DeleteWebhookOauthResponse>> response = fireblocks.webhooksV2().deleteWebhookOauth(webhookOauthId, forceDelete);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.delete_webhook_oauth(webhook_oauth_id, force_delete);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DeleteWebhookOauthResponse>> = fireblocks.webhooksV2.deleteWebhookOauth(webhooksV2ApiDeleteWebhookOauthRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DeleteWebhookOauthResponse>> response = fireblocks.webhooksV2().deleteWebhookOauth(webhookOauthId, forceDelete);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.delete_webhook_oauth(webhook_oauth_id, force_delete);
   /webhooks/{webhookId}:
     get:
       operationId: getWebhook
       summary: Get webhook by id
-      description: 'Retrieve a webhook by its ID.
-
-
-        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      description: Retrieve a webhook by its id
       parameters:
       - name: webhookId
         required: true
@@ -165,6 +780,7 @@ paths:
           $ref: '#/components/responses/Error'
       tags:
       - Webhooks V2
+      x-rate-limit-category: read
       x-readme:
         code-samples:
         - language: typescript
@@ -186,10 +802,10 @@ paths:
     patch:
       operationId: updateWebhook
       summary: Update webhook
-      description: 'Update a webhook by its ID.
+      description: 'Update a webhook by its id
 
 
-        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+        Endpoint Permission: Owner, Admin, Non-Signing Admin.'
       parameters:
       - name: webhookId
         required: true
@@ -219,6 +835,7 @@ paths:
           $ref: '#/components/responses/Error'
       tags:
       - Webhooks V2
+      x-rate-limit-category: write
       x-readme:
         code-samples:
         - language: typescript
@@ -239,11 +856,11 @@ paths:
         source: response = fireblocks.webhooks_v2.update_webhook(update_webhook_request, webhook_id);
     delete:
       operationId: deleteWebhook
-      summary: Delete a webhook
-      description: 'Delete a webhook by its ID.
+      summary: Delete webhook
+      description: 'Delete a webhook by its id
 
 
-        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+        Endpoint Permission: Owner, Admin, Non-Signing Admin.'
       parameters:
       - name: webhookId
         required: true
@@ -267,6 +884,7 @@ paths:
           $ref: '#/components/responses/Error'
       tags:
       - Webhooks V2
+      x-rate-limit-category: write
       x-readme:
         code-samples:
         - language: typescript
@@ -285,14 +903,66 @@ paths:
         source: CompletableFuture<ApiResponse<Webhook>> response = fireblocks.webhooksV2().deleteWebhook(webhookId);
       - lang: Python
         source: response = fireblocks.webhooks_v2.delete_webhook(webhook_id);
+  /webhooks/{webhookId}/metrics/{metricName}:
+    get:
+      operationId: getMetrics
+      summary: Get webhook metrics
+      description: Get webhook metrics by webhook id and metric name
+      parameters:
+      - name: webhookId
+        required: true
+        in: path
+        schema:
+          format: uuid
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          type: string
+      - name: metricName
+        required: true
+        in: path
+        description: Name of the metric to retrieve
+        schema:
+          type: string
+          example: LAST_ACTIVE_HOUR_ERROR_RATE
+          enum:
+          - LAST_ACTIVE_HOUR_ERROR_RATE
+      responses:
+        '200':
+          description: Webhook metrics
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookMetric'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<WebhookMetric>> = fireblocks.webhooksV2.getMetrics(webhooksV2ApiGetMetricsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<WebhookMetric>> response = fireblocks.webhooksV2().getMetrics(webhookId, metricName);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.get_metrics(webhook_id, metric_name);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<WebhookMetric>> = fireblocks.webhooksV2.getMetrics(webhooksV2ApiGetMetricsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<WebhookMetric>> response = fireblocks.webhooksV2().getMetrics(webhookId, metricName);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.get_metrics(webhook_id, metric_name);
   /webhooks/{webhookId}/notifications:
     get:
       operationId: getNotifications
-      summary: Get all notifications by webhook ID
-      description: 'Get all notifications by webhook ID (paginated).
-
-
-        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      summary: Get all notifications by webhook id
+      description: Get all notifications by webhook id (paginated)
       parameters:
       - name: webhookId
         required: true
@@ -315,9 +985,9 @@ paths:
       - name: sortBy
         required: false
         in: query
-        description: Sort by field (id, createdAt, updatedAt, status, eventType, resourceId)
+        description: Sort by field
         schema:
-          default: id
+          default: updatedAt
           example: id
           enum:
           - id
@@ -336,7 +1006,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: Maximum number of items on the page
+        description: Maximum number of items in the page
         schema:
           minimum: 1
           maximum: 100
@@ -348,21 +1018,20 @@ paths:
         in: query
         description: Start time in milliseconds since epoch to filter by notifications created after this time (default 31 days ago)
         schema:
-          example: '1625097600000'
-          type: string
+          example: 1625097600000
+          type: number
       - name: endTime
         required: false
         in: query
         description: End time in milliseconds since epoch to filter by notifications created before this time (default current time)
         schema:
-          example: '1625017600000'
-          type: string
+          example: 1625017600000
+          type: number
       - name: statuses
         required: false
         in: query
         description: List of notification statuses to filter by
         schema:
-          example: COMPLETED
           type: array
           items:
             $ref: '#/components/schemas/NotificationStatus'
@@ -371,9 +1040,6 @@ paths:
         in: query
         description: List of webhook event types to filter by
         schema:
-          example:
-          - transaction.created
-          - transaction.status.updated
           type: array
           items:
             $ref: '#/components/schemas/WebhookEvent'
@@ -383,6 +1049,7 @@ paths:
         description: Resource ID to filter by
         schema:
           type: string
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
       responses:
         '200':
           description: A paginated response containing NotificationExternalDTO objects
@@ -393,98 +1060,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotificationPaginatedResponse'
+        default:
+          $ref: '#/components/responses/Error'
       tags:
       - Webhooks V2
+      x-rate-limit-category: query
       x-readme:
         code-samples:
         - language: typescript
           code: 'const response: Promise<FireblocksResponse<NotificationPaginatedResponse>> = fireblocks.webhooksV2.getNotifications(webhooksV2ApiGetNotificationsRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<NotificationPaginatedResponse>> response = fireblocks.webhooksV2().getNotifications(webhookId, order, pageCursor, pageSize, createdStartDate, createdEndDate, statuses, eventTypes, resourceId);
+          code: CompletableFuture<ApiResponse<NotificationPaginatedResponse>> response = fireblocks.webhooksV2().getNotifications(webhookId, order, sortBy, pageCursor, pageSize, startTime, endTime, statuses, events, resourceId);
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.webhooks_v2.get_notifications(webhook_id, order, page_cursor, page_size, created_start_date, created_end_date, statuses, event_types, resource_id);
+          code: response = fireblocks.webhooks_v2.get_notifications(webhook_id, order, sort_by, page_cursor, page_size, start_time, end_time, statuses, events, resource_id);
           name: Fireblocks SDK Python example
       x-codeSamples:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<NotificationPaginatedResponse>> = fireblocks.webhooksV2.getNotifications(webhooksV2ApiGetNotificationsRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<NotificationPaginatedResponse>> response = fireblocks.webhooksV2().getNotifications(webhookId, order, pageCursor, pageSize, createdStartDate, createdEndDate, statuses, eventTypes, resourceId);
+        source: CompletableFuture<ApiResponse<NotificationPaginatedResponse>> response = fireblocks.webhooksV2().getNotifications(webhookId, order, sortBy, pageCursor, pageSize, startTime, endTime, statuses, events, resourceId);
       - lang: Python
-        source: response = fireblocks.webhooks_v2.get_notifications(webhook_id, order, page_cursor, page_size, created_start_date, created_end_date, statuses, event_types, resource_id);
-  /webhooks/{webhookId}/notifications/{notificationId}/resend:
-    post:
-      operationId: resendNotificationById
-      summary: Resend notification by ID
-      description: 'Resend a notification by its ID.
-
-
-        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin, Signer, Editor.'
-      parameters:
-      - name: webhookId
-        description: The ID of the webhook
-        required: true
-        in: path
-        schema:
-          type: string
-      - name: notificationId
-        description: The ID of the notification
-        required: true
-        in: path
-        schema:
-          type: string
-      - $ref: '#/components/parameters/X-Idempotency-Key'
-      responses:
-        '202':
-          description: Resend notification request was accepted and is being processed
-          headers:
-            X-Request-ID:
-              $ref: '#/components/headers/X-Request-ID'
-        default:
-          $ref: '#/components/responses/Error'
-      tags:
-      - Webhooks V2
-  /webhooks/{webhookId}/notifications/resend_by_resource:
-    post:
-      operationId: resendNotificationsByResourceId
-      summary: Resend notifications by resource ID
-      description: 'Resend notifications by their resource ID.
-
-
-        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin, Signer, Editor.'
-      parameters:
-      - $ref: '#/components/parameters/X-Idempotency-Key'
-      - name: webhookId
-        description: The ID of the webhook
-        required: true
-        in: path
-        schema:
-          type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ResendNotificationsByResourceIdRequest'
-      responses:
-        '202':
-          description: Resend notifications by resource request was accepted and is being processed
-          headers:
-            X-Request-ID:
-              $ref: '#/components/headers/X-Request-ID'
-        default:
-          $ref: '#/components/responses/Error'
-      tags:
-      - Webhooks V2
+        source: response = fireblocks.webhooks_v2.get_notifications(webhook_id, order, sort_by, page_cursor, page_size, start_time, end_time, statuses, events, resource_id);
   /webhooks/{webhookId}/notifications/{notificationId}:
     get:
       operationId: getNotification
-      summary: Get notification by ID
-      description: 'Get a notification by its notification ID.
-
-
-        **Endpoint Permissions:** Owner, Admin, Non-Signing Admin.'
+      summary: Get notification by id
       parameters:
       - name: includeData
         description: Include the data of the notification
@@ -514,8 +1116,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotificationWithData'
+        default:
+          $ref: '#/components/responses/Error'
       tags:
       - Webhooks V2
+      x-rate-limit-category: read
       x-readme:
         code-samples:
         - language: typescript
@@ -538,7 +1143,7 @@ paths:
     get:
       operationId: getNotificationAttempts
       summary: Get notification attempts
-      description: Get notification attempts by notification ID.
+      description: Get notification attempts by notification id
       parameters:
       - name: webhookId
         description: The ID of the webhook to fetch
@@ -582,14 +1187,252 @@ paths:
           $ref: '#/components/responses/Error'
       tags:
       - Webhooks V2
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<NotificationAttemptsPaginatedResponse>> = fireblocks.webhooksV2.getNotificationAttempts(webhooksV2ApiGetNotificationAttemptsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<NotificationAttemptsPaginatedResponse>> response = fireblocks.webhooksV2().getNotificationAttempts(webhookId, notificationId, pageCursor, pageSize);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.get_notification_attempts(webhook_id, notification_id, page_cursor, page_size);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<NotificationAttemptsPaginatedResponse>> = fireblocks.webhooksV2.getNotificationAttempts(webhooksV2ApiGetNotificationAttemptsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<NotificationAttemptsPaginatedResponse>> response = fireblocks.webhooksV2().getNotificationAttempts(webhookId, notificationId, pageCursor, pageSize);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.get_notification_attempts(webhook_id, notification_id, page_cursor, page_size);
+  /webhooks/{webhookId}/notifications/{notificationId}/resend:
+    post:
+      operationId: resendNotificationById
+      summary: Resend notification by id
+      description: 'Resend notification by ID
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Editor, Signer.'
+      parameters:
+      - name: webhookId
+        description: The ID of the webhook
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: notificationId
+        description: The ID of the notification
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '202':
+          description: Resend notification request was accepted and is being processed
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-rate-limit-category: async
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.webhooksV2.resendNotificationById(webhooksV2ApiResendNotificationByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.webhooksV2().resendNotificationById(webhookId, notificationId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.resend_notification_by_id(webhook_id, notification_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.webhooksV2.resendNotificationById(webhooksV2ApiResendNotificationByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.webhooksV2().resendNotificationById(webhookId, notificationId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.resend_notification_by_id(webhook_id, notification_id, idempotency_key);
+  /webhooks/{webhookId}/notifications/resend_by_query:
+    post:
+      operationId: resendNotificationsByQuery
+      summary: Resend notifications by query
+      description: 'Resend notifications matching the given query filters (statuses, events, time range, resource ID)
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Editor, Signer.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - name: webhookId
+        description: The ID of the webhook
+        required: true
+        in: path
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendByQueryRequest'
+      responses:
+        '200':
+          description: No matching notifications to resend
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResendByQueryResponse'
+        '202':
+          description: Resend notifications request was accepted and is being processed
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResendByQueryResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-rate-limit-category: high_compute
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ResendByQueryResponse>> = fireblocks.webhooksV2.resendNotificationsByQuery(webhooksV2ApiResendNotificationsByQueryRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ResendByQueryResponse>> response = fireblocks.webhooksV2().resendNotificationsByQuery(resendByQueryRequest, webhookId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.resend_notifications_by_query(resend_by_query_request, webhook_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ResendByQueryResponse>> = fireblocks.webhooksV2.resendNotificationsByQuery(webhooksV2ApiResendNotificationsByQueryRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ResendByQueryResponse>> response = fireblocks.webhooksV2().resendNotificationsByQuery(resendByQueryRequest, webhookId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.resend_notifications_by_query(resend_by_query_request, webhook_id, idempotency_key);
+  /webhooks/{webhookId}/notifications/resend_by_query/jobs/{jobId}:
+    get:
+      operationId: getResendByQueryJobStatus
+      summary: Get resend by query job status
+      description: Get the status of a resend by query job
+      parameters:
+      - name: webhookId
+        description: The ID of the webhook
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: jobId
+        description: The ID of the resend job
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Job status
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResendFailedNotificationsJobStatusResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ResendFailedNotificationsJobStatusResponse>> = fireblocks.webhooksV2.getResendByQueryJobStatus(webhooksV2ApiGetResendByQueryJobStatusRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ResendFailedNotificationsJobStatusResponse>> response = fireblocks.webhooksV2().getResendByQueryJobStatus(webhookId, jobId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.get_resend_by_query_job_status(webhook_id, job_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ResendFailedNotificationsJobStatusResponse>> = fireblocks.webhooksV2.getResendByQueryJobStatus(webhooksV2ApiGetResendByQueryJobStatusRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ResendFailedNotificationsJobStatusResponse>> response = fireblocks.webhooksV2().getResendByQueryJobStatus(webhookId, jobId);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.get_resend_by_query_job_status(webhook_id, job_id);
+  /webhooks/{webhookId}/notifications/resend_by_resource:
+    post:
+      operationId: resendNotificationsByResourceId
+      summary: Resend notifications by resource Id
+      description: 'Resend notifications by resource Id
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Editor, Signer.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - name: webhookId
+        description: The ID of the webhook
+        required: true
+        in: path
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendNotificationsByResourceIdRequest'
+      responses:
+        '202':
+          description: Resend notifications by resource request was accepted and is being processed
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Webhooks V2
+      x-rate-limit-category: async
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.webhooksV2.resendNotificationsByResourceId(webhooksV2ApiResendNotificationsByResourceIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.webhooksV2().resendNotificationsByResourceId(resendNotificationsByResourceIdRequest, webhookId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.resend_notifications_by_resource_id(resend_notifications_by_resource_id_request, webhook_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.webhooksV2.resendNotificationsByResourceId(webhooksV2ApiResendNotificationsByResourceIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.webhooksV2().resendNotificationsByResourceId(resendNotificationsByResourceIdRequest, webhookId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.resend_notifications_by_resource_id(resend_notifications_by_resource_id_request, webhook_id, idempotency_key);
   /webhooks/{webhookId}/notifications/resend_failed:
     post:
       operationId: resendFailedNotifications
       summary: Resend failed notifications
-      description: 'Resend all failed notifications for a webhook in the last 24 hours.
+      description: 'Resend all failed notifications for a webhook in the last 24 hours
 
 
-        **Endpoint Permission:** Owner, Admin, Non-Signing Admin, Signer, Editor.'
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Editor, Signer.'
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
       - name: webhookId
@@ -630,11 +1473,29 @@ paths:
       tags:
       - Webhooks V2
       x-rate-limit-category: high_compute
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ResendFailedNotificationsResponse>> = fireblocks.webhooksV2.resendFailedNotifications(webhooksV2ApiResendFailedNotificationsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ResendFailedNotificationsResponse>> response = fireblocks.webhooksV2().resendFailedNotifications(resendFailedNotificationsRequest, webhookId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.resend_failed_notifications(resend_failed_notifications_request, webhook_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ResendFailedNotificationsResponse>> = fireblocks.webhooksV2.resendFailedNotifications(webhooksV2ApiResendFailedNotificationsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ResendFailedNotificationsResponse>> response = fireblocks.webhooksV2().resendFailedNotifications(resendFailedNotificationsRequest, webhookId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.resend_failed_notifications(resend_failed_notifications_request, webhook_id, idempotency_key);
   /webhooks/{webhookId}/notifications/resend_failed/jobs/{jobId}:
     get:
       operationId: getResendJobStatus
       summary: Get resend job status
-      description: Get the status of a resend job.
+      description: Get the status of a resend job
       parameters:
       - name: webhookId
         description: The ID of the webhook
@@ -663,34 +1524,76 @@ paths:
       tags:
       - Webhooks V2
       x-rate-limit-category: read
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ResendFailedNotificationsJobStatusResponse>> = fireblocks.webhooksV2.getResendJobStatus(webhooksV2ApiGetResendJobStatusRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ResendFailedNotificationsJobStatusResponse>> response = fireblocks.webhooksV2().getResendJobStatus(webhookId, jobId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.webhooks_v2.get_resend_job_status(webhook_id, job_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ResendFailedNotificationsJobStatusResponse>> = fireblocks.webhooksV2.getResendJobStatus(webhooksV2ApiGetResendJobStatusRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ResendFailedNotificationsJobStatusResponse>> response = fireblocks.webhooksV2().getResendJobStatus(webhookId, jobId);
+      - lang: Python
+        source: response = fireblocks.webhooks_v2.get_resend_job_status(webhook_id, job_id);
 components:
   schemas:
-    Notification:
+    WebhookOauthCustomBodyParams:
+      type:
+      - object
+      - 'null'
+      description: 'Extra parameters for the token request body — `scope` most commonly, sometimes `audience` or `resource`. Applies to every authentication method.
+
+        Values must be strings, because the token request body is form-encoded rather than JSON. An empty string is allowed. `grant_type`, `client_id`, `client_secret`, `client_assertion` and `client_assertion_type` are set by Fireblocks and cannot be overridden. Names are case-sensitive. The whole object must be under 16 KB.
+
+        Values are write-only; responses return only the parameter names. On update this merges key by key rather than replacing — see `WebhookOauthCustomBodyParamsUpdate`.'
+      additionalProperties:
+        type: string
+      example:
+        scope: payments.read payments.write
+    WebhookOauthCustomBodyParamsUpdate:
+      type:
+      - object
+      - 'null'
+      description: 'A delta applied to the token request body parameters. A parameter with a value is added or replaced, a parameter with `null` is deleted, and one you leave out is untouched. So `{ "scope": "payments.read", "audience": null }` sets `scope`, drops `audience`, and changes nothing else.
+
+        Send `customBodyParams: null` to clear every parameter in one call. That does not collide with a `null` value on a name: one names the parameter to delete, the other names the whole field.
+
+        Same rules as on create: string values only, `grant_type`/`client_id`/`client_secret`/ `client_assertion`/`client_assertion_type` reserved, names case-sensitive, resulting set under 16 KB, values write-only.'
+      additionalProperties:
+        type:
+        - string
+        - 'null'
+      example:
+        scope: payments.read payments.write
+        audience: null
+    NotificationWithData:
       type: object
       properties:
         id:
           type: string
-          description: The id of the Notification
           example: 44fcead0-7053-4831-a53a-df7fb90d440f
           format: uuid
         createdAt:
-          type: string
-          description: The creation date of the notification
-          example: '2021-07-01T00:00:00.000Z'
-          format: date-time
+          type: integer
+          format: int64
+          description: The creation date of the notification in milliseconds
+          example: 1625126400000
         updatedAt:
-          type: string
-          description: The date when the notification was updated
-          example: '2021-07-01T00:00:00.000Z'
-          format: date-time
+          type: integer
+          format: int64
+          description: The date when the notification was updated in milliseconds
+          example: 1625126400000
         status:
           $ref: '#/components/schemas/NotificationStatus'
         eventType:
           $ref: '#/components/schemas/WebhookEvent'
-        eventVersion:
-          type: number
-          description: The event version of the Notification
-          example: 1
         resourceId:
           type:
           - string
@@ -699,96 +1602,117 @@ components:
           description: The resource id of the event which the Notification is listen to
           example: 44fcead0-7053-4831-a53a-df7fb90d440f
           format: uuid
-        attempts:
-          default: []
-          description: The attempts related to Notification
-          type: array
-          items:
-            type: string
+        data:
+          type: object
+          description: notification data
       required:
       - id
       - createdAt
       - updatedAt
       - status
       - eventType
-      - eventVersion
-    WebhookEvent:
-      type: string
-      enum:
-      - transaction.created
-      - transaction.status.updated
-      - transaction.approval_status.updated
-      - transaction.network_records.processing_completed
-      - external_wallet.asset.added
-      - external_wallet.asset.removed
-      - internal_wallet.asset.added
-      - internal_wallet.asset.removed
-      - contract_wallet.asset.added
-      - contract_wallet.asset.removed
-      - vault_account.created
-      - vault_account.asset.added
-      - vault_account.asset.balance_updated
-      - vault_account.nft.balance_updated
-      - embedded_wallet.created
-      - embedded_wallet.account.created
-      - embedded_wallet.device.added
-      - embedded_wallet.asset.added
-      - embedded_wallet.status.updated
-      - embedded_wallet.asset.balance_updated
-      - onchain_data.updated
-      - connection.added
-      - connection.removed
-      - connection.request.waiting_peer_approval
-      - connection.request.rejected_by_peer
-      - exchange_account.added
-      - fiat_account.added
-      - ticket.created
-      - ticket.submitted
-      - ticket.expired
-      - ticket.canceled
-      - ticket.fulfilled
-      - ticket.counterparty.added
-      - ticket.counterparty_external_id.set
-      - ticket.note.added
-      - ticket.expired_in.set
-      - ticket.expired_at.set
-      - ticket.term.added
-      - ticket.term.updated
-      - ticket.term.deleted
-      - ticket.term.funded
-      - ticket.term.manually_funded
-      - ticket.term.funding_canceled
-      - ticket.term.funding_failed
-      - ticket.term.funding_completed
-      - ticket.term.transaction_status_changed
-    ResendFailedNotificationsRequest:
+    ErrorSchema:
       type: object
       properties:
-        startTime:
+        message:
+          type: string
+        code:
           type: number
-          description: '(optional) Start time for the resend window in milliseconds since epoch up to 24 hours before the current time - Default if missing means 24 hours before the current time in milliseconds since epoch - Maximum value is current time in milliseconds since epoch - Minimum value is 24 hours before the current time in milliseconds since epoch
+    ResendByQueryResponse:
+      type: object
+      properties:
+        total:
+          type: number
+          description: The total number of notifications that are scheduled to be resent.
+          example: 10
+    NotificationAttempt:
+      type: object
+      properties:
+        sentTime:
+          type: integer
+          format: int64
+          description: The time when the attempt was sent in milliseconds.
+          example: 1625126400000
+        duration:
+          type: integer
+          description: The duration of the attempt in milliseconds.
+          example: 130
+        responseCode:
+          type: integer
+          description: The response code of the attempt, when missing refer to failureReason.
+          example: 200
+        failureReason:
+          type: string
+          enum:
+          - TIMED_OUT
+          - NO_RESPONSE
+          description: The request failure reason in case responseCode is missing.
+          example: TIMED_OUT
+      required:
+      - sentTime
+      - duration
+    WebhookOauthCustomJwtClaimsUpdate:
+      type:
+      - object
+      - 'null'
+      description: 'A delta applied to the JWT assertion claims. A claim with a value is added or replaced, a claim with `null` is deleted, and a claim you leave out is untouched. So `{ "aud": "https://auth.example.com", "resource": null }` sets `aud`, drops `resource`, and changes nothing else.
 
-            '
-          example: 1625097600000
-        events:
-          type: array
-          description: '(optional) Event types to resend, default is all event types - Default if missing means all events will be included - Empty array means all events will be included
+        Send `customJwtClaims: null` to clear every claim in one call. That does not collide with a `null` value on a name: one names the claim to delete, the other names the whole field.
 
-            '
-          example:
-          - transaction.created
-          - transaction.status.updated
-        items:
-          $ref: '#/components/schemas/WebhookEvent'
-    NotificationStatus:
-      type: string
-      description: The status of the Notification
-      example: COMPLETED
-      enum:
-      - COMPLETED
-      - FAILED
-      - IN_PROGRESS
-      - ON_HOLD
+        Same rules as on create: any JSON type except `null`, `iss`/`sub`/`jti`/`iat`/`exp` reserved, names case-sensitive, resulting set under 16 KB, values write-only.'
+      additionalProperties:
+        description: Claim value. May be any JSON type, or `null` to delete the claim.
+      example:
+        aud: https://auth.example.com
+        resource: null
+    UpdateWebhookOauthRequest:
+      type: object
+      description: 'A partial update. Every field is optional and an omitted field is left as it is, so `{ "clientSecret": "new-secret" }` rotates the secret and changes nothing else. A rotation applies to every webhook referencing these credentials.
+
+
+        The three custom maps merge. A key with a value is upserted, a key with `null` is deleted, a key you leave out is untouched, and the whole field set to `null` clears the map. There is no ambiguity between the two uses of `null` — one names an entry, the other names the field. `webhookMtlsId` is a scalar, so `null` there removes it.'
+      properties:
+        name:
+          type: string
+          description: A label for this credential set. Omit to leave it unchanged.
+          example: Production treasury gateway
+          minLength: 1
+          maxLength: 128
+        clientId:
+          type: string
+          description: OAuth client ID. Omit to leave it unchanged.
+          example: my-client-id
+          minLength: 1
+          maxLength: 255
+        clientSecret:
+          type: string
+          description: A new OAuth client secret. Limited to 480 bytes when UTF-8 encoded, so a secret using non-ASCII characters fits fewer than 480 of them. Write-only — never returned in any response. Send this on its own to rotate the secret without changing anything else. Omit to leave it unchanged.
+          example: my-new-client-secret
+          minLength: 1
+          maxLength: 480
+        url:
+          type: string
+          description: Token endpoint URL. HTTPS on port 443 only, and the host must resolve publicly. Omit to leave it unchanged.
+          pattern: ^https://
+          maxLength: 2048
+          example: https://auth.example.com/oauth/token
+        authMethod:
+          type: string
+          description: '`client_secret_basic`, `client_secret_post` or `client_secret_jwt`. Omit to leave it unchanged — it does not revert to the default.'
+          example: client_secret_jwt
+        customJwtClaims:
+          $ref: '#/components/schemas/WebhookOauthCustomJwtClaimsUpdate'
+        customBodyParams:
+          $ref: '#/components/schemas/WebhookOauthCustomBodyParamsUpdate'
+        customHeaders:
+          $ref: '#/components/schemas/WebhookOauthCustomHeadersUpdate'
+        webhookMtlsId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The id of the mTLS configuration presented to the token endpoint, from `/v1/webhooks_settings/mtls`. Omit to leave it unchanged, or send `null` to stop using mTLS for the token request. Requires the mTLS feature to be enabled for the workspace (`403` otherwise), a configuration of this workspace (`404` otherwise), and one linked to a private key (`400` otherwise).
+          example: 6f1b7c62-0f2e-4f1a-9a5e-9f2b1c3d4e5f
     WebhookPaginatedResponse:
       type: object
       properties:
@@ -805,6 +1729,32 @@ components:
           example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
       required:
       - data
+    ResendFailedNotificationsRequest:
+      type: object
+      properties:
+        startTime:
+          type: number
+          description: '(optional) Start time for the resend window in milliseconds since epoch up to 24 hours before the current time - Default if missing means 24 hours before the current time in milliseconds since epoch - Maximum value is current time in milliseconds since epoch - Minimum value is 24 hours before the current time in milliseconds since epoch
+
+            '
+          example: 1625097600000
+        events:
+          type: array
+          description: "(optional) Event types to resend, default is all event types\n    - Default if missing means all events will be included\n    - Empty array means all events will be included\n"
+          example:
+          - transaction.created
+          - transaction.status.updated
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+    NotificationStatus:
+      type: string
+      description: The status of the Notification
+      example: COMPLETED
+      enum:
+      - COMPLETED
+      - FAILED
+      - IN_PROGRESS
+      - ON_HOLD
     ResendFailedNotificationsResponse:
       type: object
       properties:
@@ -812,6 +1762,250 @@ components:
           type: number
           description: The total number of failed notifications that are scheduled to be resent.
           example: 10
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the Notification
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+        createdAt:
+          type: integer
+          format: int64
+          description: The creation date of the notification in milliseconds
+          example: 1625126400000
+        updatedAt:
+          type: integer
+          format: int64
+          description: The date when the notification was updated in milliseconds
+          example: 1625126400000
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+        eventType:
+          $ref: '#/components/schemas/WebhookEvent'
+        resourceId:
+          type:
+          - string
+          - 'null'
+          default: null
+          description: The resource id of the event which the Notification is listen to
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+          format: uuid
+      required:
+      - id
+      - createdAt
+      - updatedAt
+      - status
+      - eventType
+    WebhookOauthList:
+      type: array
+      description: Every OAuth credential set belonging to the workspace. Client secrets are never returned.
+      items:
+        $ref: '#/components/schemas/WebhookOauthCredentials'
+    WebhookMtlsConfigsList:
+      type: array
+      description: Every mTLS configuration belonging to the workspace, newest first.
+      items:
+        $ref: '#/components/schemas/WebhookMtlsConfig'
+    UpdateWebhookMtlsConfigRequest:
+      type: object
+      description: At least one property must be provided.
+      minProperties: 1
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          pattern: ^[a-zA-Z0-9 ]*$
+          description: A new label for this mTLS configuration, or `null` to remove it. Letters, digits and spaces only.
+          example: Production gateway 2027
+        signedCert:
+          type: string
+          description: A replacement signed certificate PEM. Every webhook and OAuth credentials set using this configuration switches to it, and the private key it was issued for is re-derived from the certificate.
+          example: '-----BEGIN CERTIFICATE-----
+
+            ...
+
+            -----END CERTIFICATE-----'
+    NotificationAttemptsPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/NotificationAttempt'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+    WebhookMtlsCsrResponse:
+      type: object
+      description: mTLS Certificate Signing Request response
+      properties:
+        csr:
+          type: string
+          description: The Fireblocks PEM-encoded Certificate Signing Request (CSR).
+          example: '-----BEGIN CERTIFICATE REQUEST-----
+
+            ...
+
+            -----END CERTIFICATE REQUEST-----'
+        keyAlgorithm:
+          $ref: '#/components/schemas/WebhookMtlsKeyAlgorithm'
+      required:
+      - csr
+      - keyAlgorithm
+    DeleteWebhookOauthResponse:
+      description: The deleted OAuth credential set, plus the ids of any webhooks the delete detached from it. Webhooks are only detached by `forceDelete=true`; without it a delete is refused with `409` while anything still references the credentials.
+      allOf:
+      - $ref: '#/components/schemas/WebhookOauthCredentials'
+      - type: object
+        properties:
+          detachedWebhookIds:
+            type: array
+            description: Webhooks whose `webhookOauthId` was cleared. The webhooks themselves are not deleted and keep delivering, just without an `Authorization` header. Empty unless `forceDelete=true` detached something.
+            items:
+              type: string
+              format: uuid
+            example:
+            - 44fcead0-7053-4831-a53a-df7fb90d440f
+        required:
+        - detachedWebhookIds
+    WebhookMtlsKeyAlgorithm:
+      type: string
+      description: Algorithm of the Fireblocks-held mTLS private key. A workspace may hold one key of each type, so a CSR is always returned for the type requested, and the type is echoed back on the response. ECDSA keys are smaller and quicker to issue, but the certificate authority signing the request has to accept an EC subject key, which some do not by default.
+      example: RSA
+      enum:
+      - RSA
+      - ECDSA
+    WebhookCustomHeaders:
+      type: object
+      description: 'Custom HTTP headers attached to every notification delivered by this webhook.
+
+        A value is a string, sent as one header line, or an array of strings, sent as one header line per element under the same name. `Cookie` and `Authorization` accept only a string. An empty array is rejected — leave the name out instead.
+
+        At most 10 headers, counted by name — an array value counts once, however many lines it sends. Names must be valid HTTP header tokens, are case-insensitive, and are at most 128 characters. A value may be empty and has no length limit of its own; the whole object must be under 16 KB when serialized as UTF-8. A value that large may still be refused by your own endpoint, since web servers commonly cap the whole request header block at around 8 KB.
+
+        Reserved names: `Host`, `Content-Type`, `Content-Length`, `Transfer-Encoding`, `Connection`, `User-Agent`, `Accept`, `Accept-Encoding`, `Fireblocks-Signature`, `Fireblocks-Webhook-Signature`. `Authorization` may be set, but not together with `webhookOauthId`; a request that would leave both set is rejected.
+
+        Values are write-only; responses return only the header names.'
+      additionalProperties:
+        description: 'A string, sent as one header line, or an array of strings, sent as one header line per element. A string may be empty: RFC 9110 §5.5 permits an empty field value, and it reaches your endpoint as an empty value rather than being dropped. A value has no length limit of its own and must not contain control characters. An array must not be empty and is not accepted for `Cookie` or `Authorization`.'
+        example: abc123
+      example:
+        X-Gateway-Key: abc123
+        X-Region-Tag: eu
+        X-Forwarded-For:
+        - 203.0.113.7
+        - 198.51.100.4
+    WebhookEvent:
+      type: string
+      enum:
+      - transaction.created
+      - transaction.status.updated
+      - transaction.approval_status.updated
+      - transaction.network_records.processing_completed
+      - transaction.alert.stuck
+      - external_wallet.asset.added
+      - external_wallet.asset.removed
+      - internal_wallet.asset.added
+      - internal_wallet.asset.removed
+      - contract_wallet.asset.added
+      - contract_wallet.asset.removed
+      - vault_account.created
+      - vault_account.asset.added
+      - vault_account.asset.balance_updated
+      - vault_account.nft.balance_updated
+      - vault_account.bulk_create_job_started
+      - vault_account.bulk_create_job_ended
+      - vault_account.asset.bulk_add_job_started
+      - vault_account.asset.bulk_add_job_ended
+      - embedded_wallet.status.updated
+      - embedded_wallet.created
+      - embedded_wallet.asset.balance_updated
+      - embedded_wallet.asset.added
+      - embedded_wallet.account.created
+      - embedded_wallet.device.added
+      - onchain_data.updated
+      - connection.added
+      - connection.removed
+      - connection.request.waiting_peer_approval
+      - connection.request.rejected_by_peer
+      - exchange_account.connected
+      - fiat_account.connected
+      - connected_account.connected
+      - exchange_account.credentials_replaced
+      - connected_account.credentials_replaced
+      - ticket.created
+      - ticket.submitted
+      - ticket.expired
+      - ticket.canceled
+      - ticket.fulfilled
+      - ticket.counterparty.added
+      - ticket.counterparty_external_id.set
+      - ticket.note.added
+      - ticket.expires_at.set
+      - ticket.expires_in.set
+      - ticket.term.added
+      - ticket.term.updated
+      - ticket.term.deleted
+      - ticket.term.funded
+      - ticket.term.manually_funded
+      - ticket.term.funding_canceled
+      - ticket.term.funding_failed
+      - ticket.term.funding_completed
+      - ticket.term.transaction_status_changed
+      - settlement.created
+      - order.updated
+      - automation_execution.update
+    UpdateWebhookRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The url of the webhook where notifications will be sent. URL must be valid, unique and https.
+          example: https://example.com/webhook
+          minLength: 1
+        description:
+          type: string
+          description: description of the webhook of what it is used for.should not contain special characters.
+          example: This webhook is used for transactions notifications
+          minLength: 1
+        events:
+          type: array
+          description: The events that the webhook will be subscribed to
+          example:
+          - transaction.created
+          - transaction.status.updated
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+        enabled:
+          type: boolean
+          description: The status of the webhook
+          example: false
+        webhookMtlsId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The id of the mTLS configuration this webhook presents when delivering, from `/v1/webhooks_settings/mtls`. Several webhooks may share one configuration, so replacing its certificate covers all of them at once. Send `null` to stop using mTLS for this webhook.
+          example: 6f1b7c62-0f2e-4f1a-9a5e-9f2b1c3d4e5f
+        webhookOauthId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The id of the OAuth credentials this webhook authenticates with, from `/v1/webhooks_settings/oauth`. Several webhooks may share one credential set, so rotating its client secret covers all of them at once. Send `null` to stop using OAuth for this webhook. Cannot be combined with an `authorization` custom header on the same webhook; a request that would leave both set is rejected.
+          example: 123e4567-e89b-12d3-a456-426614174000
+        customHeaders:
+          $ref: '#/components/schemas/WebhookCustomHeadersUpdate'
     Webhook:
       type: object
       properties:
@@ -842,85 +2036,91 @@ components:
           enum:
           - DISABLED
           - ENABLED
+          - SUSPENDED
           type: string
           description: The status of the webhook
           example: ENABLED
         createdAt:
-          type: string
-          description: The date and time the webhook was created
-          example: '2021-09-01T12:00:00Z'
-          format: date-time
+          type: integer
+          format: int64
+          description: The date and time the webhook was created in milliseconds
+          example: 1625126400000
         updatedAt:
+          type: integer
+          format: int64
+          description: The date and time the webhook was last updated in milliseconds
+          example: 1625126400000
+        webhookMtlsId:
           type: string
-          description: The date and time the webhook was last updated
-          example: '2021-09-05T15:00:00Z'
-          format: date-time
-    NotificationWithData:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 44fcead0-7053-4831-a53a-df7fb90d440f
           format: uuid
-        createdAt:
+          description: The id of the mTLS configuration this webhook presents when delivering, from `/v1/webhooks_settings/mtls`. Absent when the webhook does not use mTLS.
+          example: 6f1b7c62-0f2e-4f1a-9a5e-9f2b1c3d4e5f
+        webhookOauthId:
           type: string
-          description: The creation date of the notification
-          example: '2021-07-01T00:00:00.000Z'
-          format: date-time
-        updatedAt:
-          type: string
-          description: The date when the notification was updated
-          example: '2021-07-01T00:00:00.000Z'
-          format: date-time
-        status:
-          $ref: '#/components/schemas/NotificationStatus'
-        eventType:
-          $ref: '#/components/schemas/WebhookEvent'
-        eventVersion:
-          type: number
-          description: The event version which the Notification is listen to
-          example: 1
-        resourceId:
-          type:
-          - string
-          - 'null'
-          default: null
-          description: The resource id of the event which the Notification is listen to
-          example: 44fcead0-7053-4831-a53a-df7fb90d440f
           format: uuid
-        attempts:
-          default: []
-          description: The attempts related to Notification
-          type: array
-          items:
-            type: string
-        data:
-          type: object
-          description: notification data
+          description: The id of the OAuth credentials this webhook authenticates with. Absent when the webhook does not use OAuth. Read the credentials themselves from `/v1/webhooks_settings/oauth/{webhookOauthId}`.
+          example: 123e4567-e89b-12d3-a456-426614174000
+        customHeaders:
+          $ref: '#/components/schemas/WebhookCustomHeadersResponse'
       required:
       - id
+      - url
+      - events
+      - status
       - createdAt
       - updatedAt
-      - status
-      - eventType
-      - eventVersion
-      - attempts
-    NotificationAttemptsPaginatedResponse:
+    WebhookMetric:
       type: object
       properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/NotificationAttempt'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next Page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+        value:
+          type: string
+          description: The value of the metric
+          example: 55
       required:
-      - data
+      - value
+    WebhookOauthCustomJwtClaims:
+      type:
+      - object
+      - 'null'
+      description: 'Extra claims for the JWT assertion. Used only when `authMethod` is `client_secret_jwt`. The usual one to set is `aud`, which defaults to the token endpoint URL; some authorization servers expect their own identifier instead.
+
+        A value may be any JSON type except `null` — `null` is reserved for deleting a claim on update. `iss`, `sub`, `jti`, `iat` and `exp` are set by Fireblocks and cannot be overridden. Names are case-sensitive. The whole object must be under 16 KB.
+
+        Values are write-only; responses return only the claim names. On update this merges claim by claim rather than replacing — see `WebhookOauthCustomJwtClaimsUpdate`.'
+      additionalProperties:
+        description: Claim value. May be any JSON type except `null`.
+      example:
+        aud: https://auth.example.com
+        email_verified: true
+    WebhookOauthCustomHeaders:
+      type:
+      - object
+      - 'null'
+      description: 'Extra HTTP headers for **the token request to your authorization server** — not for the webhook delivery, which has its own separate `customHeaders`. A gateway API key is the usual case.
+
+        Values must be strings; an empty string is allowed. Names are matched case-insensitively, so two names differing only in case are a duplicate. Names are stored and returned lowercased, so `X-Api-Key` comes back as `x-api-key`. `Content-Type`, `Content-Length` and `Host` are set by Fireblocks and cannot be overridden. `Authorization` can be set with `client_secret_post` or `client_secret_jwt`, which send the credentials in the body — useful when your token endpoint sits behind a gateway. It is rejected with `client_secret_basic`, which sends the credentials in that header. Values have no length limit of their own; the whole object must be under 16 KB when serialized as UTF-8.
+
+        Values are write-only; responses return only the header names. On update this merges name by name rather than replacing — see `WebhookOauthCustomHeadersUpdate`.'
+      additionalProperties:
+        type: string
+      example:
+        x-api-key: gateway-key
+    WebhookOauthCustomHeadersUpdate:
+      type:
+      - object
+      - 'null'
+      description: 'A delta applied to the token request headers — not the webhook delivery headers. A header with a value is added or replaced, a header with `null` is deleted, and one you leave out is untouched. So `{ "X-Api-Key": "new-key", "X-Tenant": null }` rotates `X-Api-Key`, drops `X-Tenant`, and changes nothing else.
+
+        Send `customHeaders: null` to clear every header in one call. That does not collide with a `null` value on a name: one names the header to delete, the other names the whole field. Names are case-insensitive, so a `null` under one casing deletes a header stored under another, and names are stored and returned lowercased.
+
+        Same rules as on create: string values only, `Content-Type`, `Content-Length` and `Host` reserved, `Authorization` only with `client_secret_post` or `client_secret_jwt`, resulting set under 16 KB, values write-only.'
+      additionalProperties:
+        type:
+        - string
+        - 'null'
+      example:
+        x-api-key: gateway-key
+        x-tenant: null
     NotificationPaginatedResponse:
       type: object
       properties:
@@ -929,6 +2129,12 @@ components:
           description: The data of the current page
           items:
             $ref: '#/components/schemas/Notification'
+        total:
+          type:
+          - number
+          - 'null'
+          description: The total number of notifications after all filters applied (not returned when 'pageCursor' parameter is used)
+          example: 100
         next:
           type:
           - string
@@ -937,60 +2143,67 @@ components:
           example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
       required:
       - data
-    UpdateWebhookRequest:
+    WebhookMtlsConfig:
       type: object
+      description: A signed client certificate stored for the workspace, and the id a webhook or OAuth credentials set references to use it. Several of them may share one configuration, so replacing the certificate here switches all of them at once.
       properties:
-        url:
+        id:
           type: string
-          description: The url of the webhook where notifications will be sent. URL must be valid, unique and https.
-          example: https://example.com/webhook
-          minLength: 1
-        description:
+          format: uuid
+          description: The unique identifier of the mTLS configuration, to be set as `webhookMtlsId` on a webhook or on OAuth credentials.
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        name:
           type: string
-          description: description of the webhook of what it is used for.should not contain special characters.
-          example: This webhook is used for transactions notifications
-          minLength: 1
-        events:
-          type: array
-          description: The events that the webhook will be subscribed to
-          example:
-          - transaction.created
-          - transaction.status.updated
-          items:
-            $ref: '#/components/schemas/WebhookEvent'
-        enabled:
-          type: boolean
-          description: The status of the webhook
-          example: false
-    ResendFailedNotificationsJobStatusResponse:
-      type: object
-      properties:
-        jobId:
+          description: The label given to this mTLS configuration.
+          example: Production gateway 2026
+        signedCert:
           type: string
-          description: Bulk resend job ID
-          example: 123e4567-e89b-12d3-426614174000
-        status:
-          type: string
-          description: Bulk resend job status
-          example: COMPLETED
-          enum:
-          - QUEUED
-          - IN_PROGRESS
-          - COMPLETED
-          - FAILED
-        processed:
-          type: number
-          description: Number of notifications processed
-          example: 100
-        total:
-          type: number
-          description: Total number of notifications to process
-          example: 1000
+          description: The signed client certificate PEM.
+          example: '-----BEGIN CERTIFICATE-----
+
+            ...
+
+            -----END CERTIFICATE-----'
+        expiresAt:
+          type: integer
+          format: int64
+          description: When the certificate itself expires, in milliseconds since the epoch.
+          example: 1726108200000
+        createdAt:
+          type: integer
+          format: int64
+          description: When the certificate was uploaded, in milliseconds since the epoch.
+          example: 1694572200000
+        updatedAt:
+          type: integer
+          format: int64
+          description: When this configuration was last changed, in milliseconds since the epoch. Differs from createdAt once the certificate has been replaced or the configuration renamed.
+          example: 1726108200000
       required:
-      - jobId
-      - status
-      - processed
-      - total
+      - id
+      - signedCert
+      - expiresAt
+      - createdAt
+      - updatedAt
+    CreateWebhookMtlsConfigRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          pattern: ^[a-zA-Z0-9 ]*$
+          description: A label for this mTLS configuration, to tell several certificates apart. Letters, digits and spaces only.
+          example: Production gateway 2026
+        signedCert:
+          type: string
+          description: Signed client certificate PEM, issued for the CSR from `GET /v1/webhooks_settings/mtls_csr`. The private key it belongs to is derived from the certificate itself.
+          example: '-----BEGIN CERTIFICATE-----
+
+            ...
+
+            -----END CERTIFICATE-----'
+      required:
+      - signedCert
     CreateWebhookRequest:
       type: object
       properties:
@@ -1017,10 +2230,113 @@ components:
           description: The status of the webhook. If false, the webhook will not receive notifications.
           example: false
           default: true
+        webhookMtlsId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The id of the mTLS configuration this webhook presents when delivering, from `/v1/webhooks_settings/mtls`. Several webhooks may share one configuration, so replacing its certificate covers all of them at once. Send `null` to stop using mTLS for this webhook.
+          example: 6f1b7c62-0f2e-4f1a-9a5e-9f2b1c3d4e5f
+        webhookOauthId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The id of the OAuth credentials this webhook authenticates with, from `/v1/webhooks_settings/oauth`. Several webhooks may share one credential set, so rotating its client secret covers all of them at once. Send `null` to stop using OAuth for this webhook. Cannot be combined with an `authorization` custom header on the same webhook; a request that would leave both set is rejected.
+          example: 123e4567-e89b-12d3-a456-426614174000
+        customHeaders:
+          $ref: '#/components/schemas/WebhookCustomHeaders'
       required:
       - url
-      - description
       - events
+    ResendByQueryRequest:
+      type: object
+      properties:
+        statuses:
+          type: array
+          description: "(optional) List of notification statuses to resend\n    - Default if missing: `[\"FAILED\", \"ON_HOLD\"]`\n"
+          example:
+          - ON_HOLD
+          - IN_PROGRESS
+          items:
+            $ref: '#/components/schemas/NotificationStatus'
+        startTime:
+          type: number
+          description: '(optional) Start time for the resend window in milliseconds since epoch, within the last 72 hours - Default if missing means 24 hours before the current time in milliseconds since epoch - Maximum value is current time in milliseconds since epoch - Minimum value is 72 hours before the current time in milliseconds since epoch
+
+            '
+          example: 1625097600000
+        endTime:
+          type: number
+          description: '(optional) End time for the resend window in milliseconds since epoch, within the last 72 hours - Default if missing means current time in milliseconds since epoch - Requires startTime to be provided - Must be after startTime - Time window between startTime and endTime must not exceed 24 hours
+
+            '
+          example: 1625184000000
+        events:
+          type: array
+          description: "(optional) Event types to resend, default is all event types\n    - Default if missing means all events will be included\n    - Empty array means all events will be included\n"
+          example:
+          - transaction.created
+          - transaction.status.updated
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+        resourceId:
+          type: string
+          description: '(optional) Resource ID to filter notifications by
+
+            '
+          example: 123e4567-e89b-12d3-a456-426614174000
+    CreateWebhookOauthRequest:
+      type: object
+      description: A new reusable OAuth 2.0 client credential set. Attach it to a webhook by passing the returned id as that webhook's `webhookOauthId`. Several webhooks may share one credential set, so rotating its client secret covers all of them at once.
+      properties:
+        name:
+          type: string
+          description: A label for this credential set, shown when listing them.
+          example: Production treasury gateway
+          minLength: 1
+          maxLength: 128
+        clientId:
+          type: string
+          description: OAuth client ID used to authenticate with the token endpoint.
+          example: my-client-id
+          minLength: 1
+          maxLength: 255
+        clientSecret:
+          type: string
+          description: OAuth client secret. Write-only — never returned. Limited to 480 bytes UTF-8 encoded. With `client_secret_jwt` it signs the assertion rather than being sent.
+          example: my-client-secret
+          minLength: 1
+          maxLength: 480
+        url:
+          type: string
+          description: Token endpoint URL. HTTPS on port 443 only, and the host must resolve publicly — localhost and private, link-local or loopback addresses are rejected.
+          pattern: ^https://
+          maxLength: 2048
+          example: https://auth.example.com/oauth/token
+        authMethod:
+          type: string
+          default: client_secret_basic
+          description: How the client credentials reach the token endpoint. `client_secret_basic` uses an HTTP Basic header, `client_secret_post` uses form fields in the body, and `client_secret_jwt` sends a JWT assertion signed with the secret, so the secret itself is never transmitted. Defaults to `client_secret_basic`.
+          example: client_secret_basic
+        customJwtClaims:
+          $ref: '#/components/schemas/WebhookOauthCustomJwtClaims'
+        customBodyParams:
+          $ref: '#/components/schemas/WebhookOauthCustomBodyParams'
+        customHeaders:
+          $ref: '#/components/schemas/WebhookOauthCustomHeaders'
+        webhookMtlsId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The id of the mTLS configuration presented to the token endpoint, from `/v1/webhooks_settings/mtls`. It can be the same configuration a webhook uses, so one certificate, signed from `GET /v1/webhooks_settings/mtls_csr`, serves both the token endpoint and the receiver. Omit, or send `null`, for a token request without mTLS. Requires the mTLS feature to be enabled for the workspace (`403` otherwise), a configuration of this workspace (`404` otherwise), and one linked to a private key (`400` otherwise).
+          example: 6f1b7c62-0f2e-4f1a-9a5e-9f2b1c3d4e5f
+      required:
+      - name
+      - clientId
+      - clientSecret
+      - url
     ResendNotificationsByResourceIdRequest:
       type: object
       properties:
@@ -1031,7 +2347,7 @@ components:
           format: uuid
         excludeStatuses:
           type: array
-          description: "(optional) List of notification statuses to exclude from the resend operation\n    - It's optional but it must be included. For example, if there is no status, the syntax will be \"excludeStatuses\": []\n    - Empty array means all statuses will be included\n    - If you want to exclude some statuses, you can use the following example: [ IN_PROGRESS, FAILED ]\n    - Default if missing, means all statuses other than \"COMPLETED\" will be included\n"
+          description: "(optional) List of notification statuses to exclude from the resend operation\n    - Empty array means all statuses will be included\n    - If you want to exclude some statuses, you can use the following example: [ IN_PROGRESS, FAILED ]\n    - Default if missing, means all statuses other than \"COMPLETED\" will be included\n"
           example:
           - IN_PROGRESS
           - FAILED
@@ -1039,32 +2355,159 @@ components:
             $ref: '#/components/schemas/NotificationStatus'
       required:
       - resourceId
-    NotificationAttempt:
+    WebhookCustomHeadersUpdate:
+      type:
+      - object
+      - 'null'
+      description: 'A delta applied to the delivery headers. A header with a value is added or replaced, a header with `null` is deleted, and one you leave out is untouched. A value replaces what is stored under that name rather than adding to it, so an array is the complete new set of lines for that header.
+
+        Send `customHeaders: null` to clear every header in one call. That does not collide with a `null` value on a name: one names the header to delete, the other names the whole field.
+
+        Names are case-insensitive, so a `null` under one casing deletes a header stored under another.
+
+        Same rules as on create: string or non-empty array, `Cookie` and `Authorization` string-only, 10 headers and under 16 KB in the resulting set, the same reserved names, and values write-only. Entries set to `null` do not count towards the limit. `Authorization` cannot be combined with `webhookOauthId`, though one request may add it and detach the credentials together.'
+      additionalProperties:
+        description: A string, sent as one header line, or an array of strings, sent as one header line per element, or `null` to delete the header. A string may be empty. A value has no length limit of its own and must not contain control characters. An array must not be empty and is not accepted for `Cookie` or `Authorization`.
+        example: abc123
+      example:
+        X-Gateway-Key: abc123
+        X-Forwarded-For:
+        - 203.0.113.7
+        - 198.51.100.4
+        X-Region-Tag: null
+    ResendFailedNotificationsJobStatusResponse:
       type: object
       properties:
-        sentTime:
+        jobId:
+          type: string
+          description: Bulk resend job ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        status:
+          type: string
+          description: Bulk resend job status
+          example: COMPLETED
+          enum:
+          - QUEUED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+        processed:
+          type: number
+          description: Number of notifications processed
+          example: 100
+        total:
+          type: number
+          description: Total number of notifications to process
+          example: 1000
+      required:
+      - jobId
+      - status
+      - processed
+      - total
+    WebhookOauthCredentials:
+      type: object
+      description: 'A stored OAuth 2.0 client credential set, referenced by webhooks through their `webhookOauthId`. Deliveries for a webhook that references one carry `Authorization: Bearer {token}`, using a token fetched from `url` and cached until it expires, so your authorization server sees far fewer token requests than deliveries. Secret material is never returned: `clientSecret` is absent from this schema entirely, and the `customJwtClaims`, `customBodyParams` and `customHeaders` fields are reduced to their names, without the configured values.'
+      properties:
+        id:
+          type: string
+          description: The id of the OAuth credentials. Pass this as a webhook's `webhookOauthId` to attach them.
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+        name:
+          type: string
+          description: The label given to this credential set.
+          example: Production treasury gateway
+        clientId:
+          type: string
+          description: OAuth client ID used to authenticate with the token endpoint.
+          example: my-client-id
+        url:
+          type: string
+          description: Token endpoint URL.
+          example: https://auth.example.com/oauth/token
+        authMethod:
+          type: string
+          default: client_secret_basic
+          description: 'How the client credentials are presented to the token endpoint: `client_secret_basic`, `client_secret_post` or `client_secret_jwt`. Credentials created without this field report `client_secret_basic`, which is what they use.'
+          example: client_secret_basic
+        customJwtClaims:
+          type: array
+          description: Names of the additional claims placed in the JWT assertion. Claim values are write-only and are never returned. Absent when no custom claims are configured.
+          items:
+            type: string
+          example:
+          - aud
+          - resource
+        customBodyParams:
+          type: array
+          description: Names of the additional parameters added to the token request body. Parameter values are write-only and are never returned. Absent when no custom parameters are configured.
+          items:
+            type: string
+          example:
+          - scope
+        customHeaders:
+          type: array
+          description: Names of the additional HTTP headers added to **the token request sent to the authorization server** — not to the webhook delivery, which has its own separate `customHeaders`. Header values are write-only and are never returned. Absent when no custom headers are configured.
+          items:
+            type: string
+          example:
+          - X-Api-Key
+        webhookMtlsId:
+          type: string
+          format: uuid
+          description: The id of the mTLS configuration presented to the token endpoint. Absent when the token request does not use mTLS. Read the certificate from `/v1/webhooks_settings/mtls/{id}`.
+          example: 6f1b7c62-0f2e-4f1a-9a5e-9f2b1c3d4e5f
+        createdAt:
           type: integer
           format: int64
-          description: The time when the attempt was sent in milliseconds.
-          example: 1625126400000
-        duration:
+          description: The date and time the OAuth credentials were created, in milliseconds.
+          example: 1625097600000
+        updatedAt:
           type: integer
-          description: The duration of the attempt in milliseconds.
-          example: 130
-        responseCode:
-          type: integer
-          description: The response code of the attempt, when missing refer to failureReason.
-          example: 200
-        failureReason:
-          type: string
-          enum:
-          - TIMED_OUT
-          - NO_RESPONSE
-          description: The request failure reason in case responseCode is missing.
-          example: TIMED_OUT
+          format: int64
+          description: The date and time the OAuth credentials were last updated, in milliseconds.
+          example: 1625097600000
       required:
-      - sentTime
-      - duration
+      - id
+      - name
+      - clientId
+      - url
+      - authMethod
+      - createdAt
+      - updatedAt
+    WebhookCustomHeadersResponse:
+      type: array
+      description: Names of the custom headers configured for this webhook. Header values are never returned.
+      items:
+        type: string
+      example:
+      - x-gateway-key
+      - x-region-tag
+    DeleteWebhookMtlsConfigResponse:
+      description: The deleted mTLS configuration, plus the ids of any webhooks and OAuth credentials the delete detached from it. They are only detached by `forceDelete=true`; without it a delete is refused with `409` while anything still references the configuration.
+      allOf:
+      - $ref: '#/components/schemas/WebhookMtlsConfig'
+      - type: object
+        properties:
+          detachedWebhookIds:
+            type: array
+            description: Webhooks whose `webhookMtlsId` was cleared. The webhooks themselves are not deleted and keep delivering, just without a client certificate. Empty unless `forceDelete=true` detached something.
+            items:
+              type: string
+              format: uuid
+            example:
+            - 44fcead0-7053-4831-a53a-df7fb90d440f
+          detachedWebhookOauthIds:
+            type: array
+            description: OAuth credentials whose `webhookMtlsId` was cleared. Their token requests continue without a client certificate. Empty unless `forceDelete=true` detached something.
+            items:
+              type: string
+              format: uuid
+            example:
+            - 6e5daa9a-56cd-4975-ac16-bb9d1b48dff5
+        required:
+        - detachedWebhookIds
+        - detachedWebhookOauthIds
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key
@@ -1073,7 +2516,15 @@ components:
       required: false
       schema:
         type: string
-        example: some-unique-id
+  headers:
+    Location:
+      schema:
+        type: string
+      description: The location URL of the request status
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
   responses:
     Error:
       description: Error Response
@@ -1093,3 +2544,9 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

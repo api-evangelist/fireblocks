@@ -1,0 +1,330 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Tempo (Beta) API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Tempo (Beta)
+paths:
+  /operations/tempo/transfer:
+    post:
+      summary: Create a Tempo transfer transaction
+      description: Creates a new Tempo transfer transaction.
+      tags:
+      - Tempo (Beta)
+      operationId: createTempoTransfer
+      x-rate-limit-category: async
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTempoTransferRequest'
+      responses:
+        '200':
+          description: Transaction created.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTempoTransferResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateTempoTransferResponse>> = fireblocks.tempoBeta.createTempoTransfer(tempoBetaApiCreateTempoTransferRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateTempoTransferResponse>> response = fireblocks.tempoBeta().createTempoTransfer(createTempoTransferRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.tempo_beta.create_tempo_transfer(create_tempo_transfer_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateTempoTransferResponse>> = fireblocks.tempoBeta.createTempoTransfer(tempoBetaApiCreateTempoTransferRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateTempoTransferResponse>> response = fireblocks.tempoBeta().createTempoTransfer(createTempoTransferRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.tempo_beta.create_tempo_transfer(create_tempo_transfer_request, idempotency_key);
+components:
+  schemas:
+    OneTimeAddress:
+      type: object
+      properties:
+        address:
+          type: string
+        tag:
+          type: string
+      required:
+      - address
+    TempoTransferSource:
+      type: object
+      description: The transfer's source.
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - VAULT_ACCOUNT
+          - EMBEDDED_WALLET
+          description: The kind of source.
+          example: VAULT_ACCOUNT
+        id:
+          type: string
+          description: Required when type is VAULT_ACCOUNT — the vault account ID.
+          example: '0'
+        walletId:
+          type: string
+          description: Required when type is EMBEDDED_WALLET.
+          example: wallet-1
+      example:
+        type: VAULT_ACCOUNT
+        id: '0'
+    TempoTransferDestinationItem:
+      type: object
+      description: One destination in a multi-destination transfer. `destination.type` is narrowed the same way as the top-level `destination` field.
+      properties:
+        amount:
+          type: string
+          description: The amount to transfer to this destination, as a numeric string.
+          example: '0.01'
+        destination:
+          $ref: '#/components/schemas/TempoTransferDestination'
+        travelRuleMessageId:
+          type: string
+          description: Beta. An identifier of a TravelRule message, already sent to the TravelRule provider.
+          example: trm_12345678-1234-1234-1234-123456789012
+        customerRefId:
+          type: string
+          description: The ID for AML providers to associate the owner of funds with transactions.
+          example: abcdef
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    TransactionConfigurations:
+      type: object
+      properties:
+        expiresAfterSeconds:
+          type: number
+          description: The number of seconds the transaction is valid for before it expires. After the specified duration, the transaction will expire if it has not been broadcasted.
+          minimum: 300
+          maximum: 86400
+          example: 3600
+    CreateTempoTransferResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The Fireblocks transaction ID.
+          example: d5c9a1b2-3e4f-4a5b-8c6d-7e8f9a0b1c2d
+        status:
+          type: string
+          description: The current status of the transaction.
+          example: SUBMITTED
+    TempoTransferDestination:
+      type: object
+      description: The transfer's destination. Mutually exclusive with `destinations`.
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - VAULT_ACCOUNT
+          - ONE_TIME_ADDRESS
+          - UNMANAGED_WALLET
+          description: The kind of destination.
+          example: VAULT_ACCOUNT
+        id:
+          type: string
+          description: Required when type is VAULT_ACCOUNT or UNMANAGED_WALLET.
+          example: '1'
+        oneTimeAddress:
+          $ref: '#/components/schemas/OneTimeAddress'
+      example:
+        type: VAULT_ACCOUNT
+        id: '1'
+    CreateTempoTransferRequest:
+      description: Request body for creating a Tempo transfer transaction.
+      allOf:
+      - type: object
+        description: Chain-agnostic core fields.
+        required:
+        - assetId
+        - source
+        properties:
+          note:
+            type: string
+            description: A custom note that can be associated with the transaction.
+            example: Created via API
+          externalTxId:
+            type: string
+            description: Unique ID provided by the customer, used to identify the transaction.
+            example: unique-id-123
+          feeCurrency:
+            type: string
+            x-fb-entity: asset
+            description: The asset ID used to pay the transaction fee, if different from assetId. Maps to FeeParams.feeCurrency. Must be a valid fee token for `assetId` (e.g. a TIP-20 gas token for the base asset); an invalid pairing surfaces as 400 INVALID_FEE_CURRENCY_PARAM.
+            example: PATHUSD_TEMPO_54V8
+          assetId:
+            type: string
+            x-fb-entity: asset
+            description: The ID of the asset to transfer. Must be a non-deprecated asset supported on a Tempo-eligible blockchain; an unknown, deprecated, or unsupported asset surfaces as 400 UNSUPPORTED_ASSET.
+            example: PATHUSD_TEMPO_54V8
+          source:
+            $ref: '#/components/schemas/TempoTransferSource'
+          destination:
+            $ref: '#/components/schemas/TempoTransferDestination'
+          amount:
+            type: string
+            description: The amount to transfer, as a numeric string. Required when `destination` is set; must be omitted when `destinations` is set (each entry carries its own amount instead).
+            example: '0.01'
+          treatAsGrossAmount:
+            type: boolean
+            description: If true, the specified amount includes the fee (fee is deducted from amount).
+            example: false
+          feeLevel:
+            type: string
+            enum:
+            - LOW
+            - MEDIUM
+            - HIGH
+            description: The fee level to use, mutually exclusive with an explicit custom fee.
+            example: MEDIUM
+          travelRuleMessage:
+            type: string
+            description: Beta. An opaque travel-rule payload.
+            example: '{}'
+          travelRuleMessageId:
+            type: string
+            description: Beta. An identifier of a TravelRule message, already sent to the TravelRule provider.
+            example: trm_12345678-1234-1234-1234-123456789012
+          useGasless:
+            type: boolean
+            description: Opt in to fee-payer-sponsored (gasless) transfer.
+            example: true
+          configurations:
+            $ref: '#/components/schemas/TransactionConfigurations'
+      - description: EVM-specific fields.  maxFeePerGas/maxPriorityFeePerGas are EIP-1559 fee parameters.
+        allOf:
+        - type: object
+          description: EIP-1559 fee parameters.
+          properties:
+            maxFeePerGas:
+              type: string
+              description: The maximum total fee per gas the sender is willing to pay, in wei.
+              example: '50'
+            maxPriorityFeePerGas:
+              type: string
+              description: The maximum priority fee (tip) per gas the sender is willing to pay, in wei.
+              example: '2'
+        - type: object
+          properties:
+            destinations:
+              type: array
+              items:
+                $ref: '#/components/schemas/TempoTransferDestinationItem'
+              description: Multiple destinations for a single transfer. Mutually exclusive with `destination`.
+              example:
+              - destination:
+                  type: VAULT_ACCOUNT
+                  id: '2'
+                amount: '0.01'
+            failOnLowFee:
+              type: boolean
+              description: Beta. If true, fail the transaction rather than sending it with a low fee.
+              example: false
+            gasLimit:
+              type: string
+              description: The gas limit for the transaction.
+              example: '21000'
+            replaceTxByHash:
+              type: string
+              description: Beta. The hash of the EVM transaction to replace (RBF).
+              example: '0x9fc76417374aa880d4449a1f7f31ec597f00b1f6f3dd2d66f4c9c6c445836d8'
+            feePayerAccountId:
+              type: string
+              description: Vault account ID of the fee payer sponsoring this transfer.
+              example: '3'
+      - type: object
+        description: Tempo-specific fields.
+        properties:
+          nonceStrategy:
+            type: string
+            enum:
+            - SEQUENTIAL
+            - USER_DEFINED_LANE
+            - EXPIRING
+            description: 'Tempo''s 2-dimensional nonce strategy: `SEQUENTIAL` runs under a single nonce lane (lane 0); `USER_DEFINED_LANE` runs in parallel under a specified lane (1–16), and requires `nonceLane`; `EXPIRING` marks the transaction with an expiry of up to 5 minutes (Tempo-defined) and does not use `nonceLane`.'
+            example: SEQUENTIAL
+          nonceLane:
+            type: integer
+            minimum: 1
+            maximum: 16
+            description: The nonce lane to use, 1–16. Required and only meaningful when nonceStrategy is USER_DEFINED_LANE; not used for SEQUENTIAL or EXPIRING.
+            example: 1
+          memo:
+            type: string
+            description: Beta. Tempo TIP-20 memo (max 32 bytes).
+            example: invoice-1234
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

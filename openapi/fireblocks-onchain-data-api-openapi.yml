@@ -1,0 +1,907 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Onchain Data API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Onchain Data
+paths:
+  /onchain_data/base_asset_id/{baseAssetId}/access_registry_address/{accessRegistryAddress}/list:
+    get:
+      operationId: getAccessRegistryCurrentState
+      summary: Get the current state of addresses in an access registry
+      x-rate-limit-category: read
+      description: Returns the current state of addresses in the specified access registry. Only addresses that are currently active (added but not removed) are included.
+      parameters:
+      - $ref: '#/components/parameters/BaseAssetId'
+      - $ref: '#/components/parameters/AccessRegistryAddress'
+      - $ref: '#/components/parameters/PageCursor'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/ListAccessRegistrySortBy'
+      - $ref: '#/components/parameters/Order'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AccessRegistryCurrentStateResponse>> = fireblocks.onchainData.getAccessRegistryCurrentState(onchainDataApiGetAccessRegistryCurrentStateRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AccessRegistryCurrentStateResponse>> response = fireblocks.onchainData().getAccessRegistryCurrentState(baseAssetId, accessRegistryAddress, pageCursor, pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.onchain_data.get_access_registry_current_state(base_asset_id, access_registry_address, page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Access registry current state retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessRegistryCurrentStateResponse-2'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Onchain Data
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AccessRegistryCurrentStateResponse>> = fireblocks.onchainData.getAccessRegistryCurrentState(onchainDataApiGetAccessRegistryCurrentStateRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AccessRegistryCurrentStateResponse>> response = fireblocks.onchainData().getAccessRegistryCurrentState(baseAssetId, accessRegistryAddress, pageCursor, pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.onchain_data.get_access_registry_current_state(base_asset_id, access_registry_address, page_cursor, page_size, sort_by, order);
+  /onchain_data/base_asset_id/{baseAssetId}/access_registry_address/{accessRegistryAddress}/summary:
+    get:
+      operationId: getAccessRegistrySummary
+      summary: Summary of access registry state
+      x-rate-limit-category: read
+      description: Returns a summary of the current state of the access registry for the specified baseAssetId and accessRegistryAddress.
+      parameters:
+      - $ref: '#/components/parameters/BaseAssetId'
+      - $ref: '#/components/parameters/AccessRegistryAddress'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AccessRegistrySummaryResponse>> = fireblocks.onchainData.getAccessRegistrySummary(onchainDataApiGetAccessRegistrySummaryRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AccessRegistrySummaryResponse>> response = fireblocks.onchainData().getAccessRegistrySummary(baseAssetId, accessRegistryAddress);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.onchain_data.get_access_registry_summary(base_asset_id, access_registry_address);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Successfully retrieved the summary of the access registry state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessRegistrySummaryResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Onchain Data
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AccessRegistrySummaryResponse>> = fireblocks.onchainData.getAccessRegistrySummary(onchainDataApiGetAccessRegistrySummaryRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AccessRegistrySummaryResponse>> response = fireblocks.onchainData().getAccessRegistrySummary(baseAssetId, accessRegistryAddress);
+      - lang: Python
+        source: response = fireblocks.onchain_data.get_access_registry_summary(base_asset_id, access_registry_address);
+  ? /onchain_data/base_asset_id/{baseAssetId}/contract_address/{contractAddress}/account_address/{accountAddress}/balance_history
+  : get:
+      operationId: getContractBalanceHistory
+      summary: Get historical balance data for a specific account in a contract
+      x-rate-limit-category: read
+      description: Returns the paginated balance history of the specified account in a contract with optional date range and interval filtering.
+      parameters:
+      - $ref: '#/components/parameters/BaseAssetId'
+      - $ref: '#/components/parameters/ContractAddress'
+      - $ref: '#/components/parameters/AccountAddress'
+      - $ref: '#/components/parameters/StartDate'
+      - $ref: '#/components/parameters/EndDate'
+      - $ref: '#/components/parameters/Interval'
+      - $ref: '#/components/parameters/PageCursor'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/SortByTimestamp'
+      - $ref: '#/components/parameters/Order'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<BalanceHistoryPagedResponse>> = fireblocks.onchainData.getContractBalanceHistory(onchainDataApiGetContractBalanceHistoryRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<BalanceHistoryPagedResponse>> response = fireblocks.onchainData().getContractBalanceHistory(baseAssetId, contractAddress, accountAddress, startDate, endDate, interval, pageCursor, pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.onchain_data.get_contract_balance_history(base_asset_id, contract_address, account_address, start_date, end_date, interval, page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Successfully retrieved the contract balance history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceHistoryPagedResponse-2'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Onchain Data
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<BalanceHistoryPagedResponse>> = fireblocks.onchainData.getContractBalanceHistory(onchainDataApiGetContractBalanceHistoryRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<BalanceHistoryPagedResponse>> response = fireblocks.onchainData().getContractBalanceHistory(baseAssetId, contractAddress, accountAddress, startDate, endDate, interval, pageCursor, pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.onchain_data.get_contract_balance_history(base_asset_id, contract_address, account_address, start_date, end_date, interval, page_cursor, page_size, sort_by, order);
+  /onchain_data/base_asset_id/{baseAssetId}/contract_address/{contractAddress}/balances:
+    get:
+      operationId: getLatestBalancesForContract
+      summary: Get latest balances for all addresses holding tokens from a contract
+      x-rate-limit-category: read
+      description: Returns the latest balance for each unique address with support for numeric balance sorting. The `prev` cursor is reserved for future support.
+      parameters:
+      - $ref: '#/components/parameters/BaseAssetId'
+      - $ref: '#/components/parameters/ContractAddress'
+      - $ref: '#/components/parameters/AccountAddressQuery'
+      - $ref: '#/components/parameters/PageCursor'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/BalancesSortBy'
+      - $ref: '#/components/parameters/Order'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AddressBalancePagedResponse>> = fireblocks.onchainData.getLatestBalancesForContract(onchainDataApiGetLatestBalancesForContractRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AddressBalancePagedResponse>> response = fireblocks.onchainData().getLatestBalancesForContract(baseAssetId, contractAddress, accountAddress, pageCursor, pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.onchain_data.get_latest_balances_for_contract(base_asset_id, contract_address, account_address, page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Successfully retrieved the latest balances for the contract
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressBalancePagedResponse-2'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Onchain Data
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AddressBalancePagedResponse>> = fireblocks.onchainData.getLatestBalancesForContract(onchainDataApiGetLatestBalancesForContractRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AddressBalancePagedResponse>> response = fireblocks.onchainData().getLatestBalancesForContract(baseAssetId, contractAddress, accountAddress, pageCursor, pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.onchain_data.get_latest_balances_for_contract(base_asset_id, contract_address, account_address, page_cursor, page_size, sort_by, order);
+  /onchain_data/base_asset_id/{baseAssetId}/contract_address/{contractAddress}/roles:
+    get:
+      operationId: getActiveRolesForContract
+      summary: List of active roles for a given contract address and base asset ID
+      x-rate-limit-category: read
+      description: Returns a list of currently active roles for the specified baseAssetId and contractAddress.
+      parameters:
+      - $ref: '#/components/parameters/BaseAssetId'
+      - $ref: '#/components/parameters/ContractAddress'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ActiveRolesResponse>> = fireblocks.onchainData.getActiveRolesForContract(onchainDataApiGetActiveRolesForContractRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ActiveRolesResponse>> response = fireblocks.onchainData().getActiveRolesForContract(baseAssetId, contractAddress);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.onchain_data.get_active_roles_for_contract(base_asset_id, contract_address);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Successfully retrieved the list of active roles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActiveRolesResponse-2'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Onchain Data
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ActiveRolesResponse>> = fireblocks.onchainData.getActiveRolesForContract(onchainDataApiGetActiveRolesForContractRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ActiveRolesResponse>> response = fireblocks.onchainData().getActiveRolesForContract(baseAssetId, contractAddress);
+      - lang: Python
+        source: response = fireblocks.onchain_data.get_active_roles_for_contract(base_asset_id, contract_address);
+  /onchain_data/base_asset_id/{baseAssetId}/contract_address/{contractAddress}/summary:
+    get:
+      operationId: getContractBalancesSummary
+      summary: Get summary for the token contract
+      x-rate-limit-category: read
+      description: Returns the total number of unique addresses holding balances and the total supply for the specified contract.
+      parameters:
+      - $ref: '#/components/parameters/BaseAssetId'
+      - $ref: '#/components/parameters/ContractAddress'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TokenContractSummaryResponse>> = fireblocks.onchainData.getContractBalancesSummary(onchainDataApiGetContractBalancesSummaryRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TokenContractSummaryResponse>> response = fireblocks.onchainData().getContractBalancesSummary(baseAssetId, contractAddress);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.onchain_data.get_contract_balances_summary(base_asset_id, contract_address);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Successfully retrieved the summary for the token contract
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenContractSummaryResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Onchain Data
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TokenContractSummaryResponse>> = fireblocks.onchainData.getContractBalancesSummary(onchainDataApiGetContractBalancesSummaryRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TokenContractSummaryResponse>> response = fireblocks.onchainData().getContractBalancesSummary(baseAssetId, contractAddress);
+      - lang: Python
+        source: response = fireblocks.onchain_data.get_contract_balances_summary(base_asset_id, contract_address);
+  /onchain_data/base_asset_id/{baseAssetId}/contract_address/{contractAddress}/total_supply:
+    get:
+      operationId: getContractTotalSupply
+      summary: Get historical total supply data for a contract
+      x-rate-limit-category: read
+      description: Returns the paginated total supply history of the specified contract with optional date range and interval filtering.
+      parameters:
+      - $ref: '#/components/parameters/BaseAssetId'
+      - $ref: '#/components/parameters/ContractAddress'
+      - $ref: '#/components/parameters/StartDate'
+      - $ref: '#/components/parameters/EndDate'
+      - $ref: '#/components/parameters/Interval'
+      - $ref: '#/components/parameters/PageCursor'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/SortByTimestamp'
+      - $ref: '#/components/parameters/Order'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TotalSupplyPagedResponse>> = fireblocks.onchainData.getContractTotalSupply(onchainDataApiGetContractTotalSupplyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TotalSupplyPagedResponse>> response = fireblocks.onchainData().getContractTotalSupply(baseAssetId, contractAddress, startDate, endDate, interval, pageCursor, pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.onchain_data.get_contract_total_supply(base_asset_id, contract_address, start_date, end_date, interval, page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Successfully retrieved the contract total supply history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TotalSupplyPagedResponse-2'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Onchain Data
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TotalSupplyPagedResponse>> = fireblocks.onchainData.getContractTotalSupply(onchainDataApiGetContractTotalSupplyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TotalSupplyPagedResponse>> response = fireblocks.onchainData().getContractTotalSupply(baseAssetId, contractAddress, startDate, endDate, interval, pageCursor, pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.onchain_data.get_contract_total_supply(base_asset_id, contract_address, start_date, end_date, interval, page_cursor, page_size, sort_by, order);
+  /onchain_data/base_asset_id/{baseAssetId}/contract_address/{contractAddress}/transactions:
+    get:
+      operationId: getOnchainTransactions
+      summary: Fetch onchain transactions for a contract
+      x-rate-limit-category: read
+      description: Returns a paginated list of onchain transactions for the specified contract address and base asset ID, optionally filtered by date range.
+      parameters:
+      - $ref: '#/components/parameters/BaseAssetId'
+      - $ref: '#/components/parameters/ContractAddress'
+      - $ref: '#/components/parameters/StartDate'
+      - $ref: '#/components/parameters/EndDate'
+      - $ref: '#/components/parameters/PageCursor'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/TransactionsSortBy'
+      - $ref: '#/components/parameters/Order'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<OnchainTransactionsPagedResponse>> = fireblocks.onchainData.getOnchainTransactions(onchainDataApiGetOnchainTransactionsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<OnchainTransactionsPagedResponse>> response = fireblocks.onchainData().getOnchainTransactions(baseAssetId, contractAddress, startDate, endDate, pageCursor, pageSize, sortBy, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.onchain_data.get_onchain_transactions(base_asset_id, contract_address, start_date, end_date, page_cursor, page_size, sort_by, order);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Onchain transactions fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnchainTransactionsPagedResponse-2'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Onchain Data
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<OnchainTransactionsPagedResponse>> = fireblocks.onchainData.getOnchainTransactions(onchainDataApiGetOnchainTransactionsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<OnchainTransactionsPagedResponse>> response = fireblocks.onchainData().getOnchainTransactions(baseAssetId, contractAddress, startDate, endDate, pageCursor, pageSize, sortBy, order);
+      - lang: Python
+        source: response = fireblocks.onchain_data.get_onchain_transactions(base_asset_id, contract_address, start_date, end_date, page_cursor, page_size, sort_by, order);
+components:
+  schemas:
+    TokenContractSummaryResponse:
+      type: object
+      properties:
+        baseAssetId:
+          type: string
+          description: The base asset ID
+          example: ETH
+        contractAddress:
+          type: string
+          description: The contract address
+          example: '0x1234567890123456789012345678901234567890'
+        totalAddresses:
+          type: number
+          description: Total number of addresses with balances
+          example: 150
+        totalSupply:
+          type: string
+          description: The total supply of the token
+          example: '1000000000000000000000'
+      required:
+      - baseAssetId
+      - contractAddress
+      - totalAddresses
+      - totalSupply
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    BalanceHistoryPagedResponse-2:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceHistoryItemDto'
+          description: Array of balance history data points
+        next:
+          type: string
+          example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+          description: Cursor for next page
+        prev:
+          type: string
+          example: dGhpcyBpcyBhIHByZXZpb3VzIGN1cnNvcg==
+          description: Cursor for previous page
+        total:
+          type: number
+          example: 150
+          description: Total count of items
+      required:
+      - data
+    AccessRegistryCurrentStateResponse-2:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRegistryAddressItem'
+          description: Array of active addresses in the access registry
+        next:
+          type: string
+          example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+          description: Cursor for next page
+        prev:
+          type: string
+          example: dGhpcyBpcyBhIHByZXZpb3VzIGN1bcnNvcg==
+          description: Cursor for previous page
+        total:
+          type: number
+          example: 150
+          description: Total count of active addresses in the access registry
+      required:
+      - data
+    DecodedLog:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Contract address that emitted the log
+          example: '0x1234567890123456789012345678901234567890'
+        blockHash:
+          type: string
+          description: Hash of the block containing this log
+          example: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
+        blockNumber:
+          type: string
+          description: Block number containing this log
+          example: '12345678'
+        transactionHash:
+          type: string
+          description: Hash of the transaction that generated this log
+          example: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890'
+        logIndex:
+          type: string
+          description: Index of the log in the transaction
+          example: '0'
+      required:
+      - address
+      - blockHash
+      - blockNumber
+      - transactionHash
+      - logIndex
+      description: Decoded event log from a blockchain transaction. Note - Additional dynamic properties may be present beyond the required ones.
+    AccessRegistrySummaryResponse:
+      type: object
+      properties:
+        totalActiveAddresses:
+          type: number
+          description: The total number of active addresses in the access registry
+          example: 42
+      required:
+      - totalActiveAddresses
+    AccessRegistryAddressItem:
+      type: object
+      properties:
+        address:
+          type: string
+          description: The address that was added to the access registry
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        dateAdded:
+          type: string
+          format: date-time
+          description: The date when the address was added to the access registry
+          example: '2024-07-01T00:00:00.000Z'
+      required:
+      - address
+      - dateAdded
+    OnchainTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the transaction
+          example: 550e8400-e29b-41d4-a716-446655440000
+        baseAssetId:
+          type: string
+          description: The blockchain base asset identifier
+          example: ETH_TEST3
+        blockHash:
+          type: string
+          description: Hash of the block containing this transaction
+          example: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
+        blockNumber:
+          type: integer
+          description: Block number containing this transaction
+          example: 12345678
+        blockTimestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the block was mined
+          example: '2025-01-16T15:45:00Z'
+        chainId:
+          type: integer
+          description: Chain ID of the blockchain
+          example: 1
+        contractAddress:
+          type:
+          - string
+          - 'null'
+          description: Contract address if this is a contract transaction
+          example: '0x1234567890123456789012345678901234567890'
+        cumulativeGasUsed:
+          type: string
+          description: Cumulative gas used in the block up to this transaction
+          example: '21000'
+        decodedLogs:
+          $ref: '#/components/schemas/DecodedLog'
+        effectiveGasPrice:
+          type: string
+          description: Effective gas price paid for the transaction
+          example: '20000000000'
+        fromAddress:
+          type: string
+          description: Address that initiated the transaction
+          example: '0xabcdef1234567890abcdef1234567890abcdef12'
+        gasUsed:
+          type: string
+          description: Amount of gas used by this transaction
+          example: '21000'
+        status:
+          type: string
+          description: Transaction status
+          example: '1'
+        toAddress:
+          type:
+          - string
+          - 'null'
+          description: Address that received the transaction
+          example: '0x1234567890123456789012345678901234567890'
+        transactionHash:
+          type: string
+          description: Hash of the transaction
+          example: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890'
+        transactionIndex:
+          type: string
+          description: Index of the transaction in the block
+          example: '0'
+        type:
+          type: string
+          description: Transaction type
+          example: '2'
+      required:
+      - id
+      - baseAssetId
+      - blockHash
+      - blockNumber
+      - blockTimestamp
+      - chainId
+      - cumulativeGasUsed
+      - effectiveGasPrice
+      - fromAddress
+      - gasUsed
+      - status
+      - transactionHash
+      - transactionIndex
+      - type
+    OnchainTransactionsPagedResponse-2:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnchainTransaction'
+          description: Array of onchain transactions
+        next:
+          type: string
+          example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+          description: Cursor for next page
+        prev:
+          type: string
+          example: dGhpcyBpcyBhIHByZXZpb3VzIGN1cnNvcg==
+          description: Cursor for previous page
+        total:
+          type: number
+          example: 150
+          description: Total count of items
+      required:
+      - data
+    BalanceHistoryItemDto:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the data point
+          example: '2024-01-01T23:59:59.999Z'
+        balance:
+          type: string
+          description: Balance at the given timestamp
+          example: '1000000000000000000000'
+      required:
+      - timestamp
+      - balance
+    RoleGrantee:
+      type: object
+      properties:
+        accountAddress:
+          type: string
+          description: The address of the account that has been granted the role
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        dateOfGrant:
+          type: string
+          format: date-time
+          description: The date when the role was granted to this account
+          example: '2024-07-01T00:00:00.000Z'
+      required:
+      - accountAddress
+      - dateOfGrant
+    TotalSupplyPagedResponse-2:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TotalSupplyItemDto'
+          description: Array of total supply data points
+        next:
+          type: string
+          example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+          description: Cursor for next page
+        prev:
+          type: string
+          example: dGhpcyBpcyBhIHByZXZpb3VzIGN1cnNvcg==
+          description: Cursor for previous page
+        total:
+          type: number
+          example: 150
+          description: Total count of items
+      required:
+      - data
+    AddressBalancePagedResponse-2:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressBalanceItemDto'
+          description: Array of address balance data
+        next:
+          type: string
+          example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+          description: Cursor for next page
+        prev:
+          type: string
+          example: dGhpcyBpcyBhIHByZXZpb3VzIGN1cnNvcg==
+          description: Cursor for previous page (reserved for future support)
+        total:
+          type: number
+          example: 150
+          description: Total count of items
+      required:
+      - data
+    RoleDetails-2:
+      type: object
+      properties:
+        roleHash:
+          type: string
+          description: The role hash identifier
+          example: '0x0000000000000000000000000000000000000000000000000000000000000000'
+        description:
+          type: string
+          description: Human-readable description of the role
+          example: DEFAULT_ADMIN_ROLE
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleGrantee'
+          description: List of accounts that have been granted this role
+      required:
+      - roleHash
+      - description
+      - accounts
+    ActiveRolesResponse-2:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/RoleDetails-2'
+      description: A map of role names to their details
+    TotalSupplyItemDto:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the data point
+          example: '2024-01-01T23:59:59.999Z'
+        totalSupply:
+          type: string
+          description: Total supply at the given timestamp
+          example: '1000000000000000000000'
+      required:
+      - timestamp
+      - totalSupply
+    AddressBalanceItemDto:
+      type: object
+      properties:
+        accountAddress:
+          type: string
+          description: The account address
+          example: '0x1234567890123456789012345678901234567890'
+        balance:
+          type: string
+          description: The current balance of the account
+          example: '1000000000000000000'
+        lastUpdated:
+          type: string
+          format: date-time
+          description: The timestamp when this balance was last updated
+          example: '2023-12-01T12:00:00.000Z'
+      required:
+      - accountAddress
+      - balance
+      - lastUpdated
+  parameters:
+    BaseAssetId:
+      name: baseAssetId
+      in: path
+      description: The blockchain base assetId
+      example: ETH_TEST3
+      schema:
+        type: string
+      required: true
+    Interval:
+      name: interval
+      in: query
+      description: Time interval for grouping data
+      example: day
+      schema:
+        type: string
+        enum:
+        - hour
+        - day
+        - week
+        - month
+        default: day
+      required: false
+    AccountAddress:
+      name: accountAddress
+      in: path
+      required: true
+      description: The account address to get balance history for
+      schema:
+        type: string
+        example: '0x1234567890abcdef1234567890abcdef12345678'
+    AccessRegistryAddress:
+      name: accessRegistryAddress
+      in: path
+      description: The access registry address
+      example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+      schema:
+        type: string
+      required: true
+    BalancesSortBy:
+      name: sortBy
+      in: query
+      description: Sorting field for balances
+      required: false
+      schema:
+        type: string
+        enum:
+        - accountAddress
+        - blockTimestamp
+        default: blockTimestamp
+    ContractAddress:
+      name: contractAddress
+      in: path
+      description: The contract address
+      example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+      schema:
+        type: string
+      required: true
+    PageCursor:
+      name: pageCursor
+      in: query
+      description: Page cursor to get the next page"
+      example: MjAyMy0xMi0xMyAyMDozNjowOC4zMDI=:MTEwMA==
+      schema:
+        type: string
+      required: false
+    StartDate:
+      name: startDate
+      in: query
+      description: Start date of the time range in ISO 8601 format
+      example: '2025-01-16T15:45:00Z'
+      schema:
+        type: string
+        format: date-time
+      required: false
+    EndDate:
+      name: endDate
+      in: query
+      description: End date of the time range in ISO 8601 format
+      example: '2025-01-16T15:45:00Z'
+      schema:
+        type: string
+        format: date-time
+      required: false
+    ListAccessRegistrySortBy:
+      name: sortBy
+      in: query
+      description: Sorting field (enum).
+      required: false
+      schema:
+        type: string
+        enum:
+        - dateAdded
+        - address
+        default: dateAdded
+    Order:
+      name: order
+      in: query
+      description: ASC / DESC ordering (default DESC)
+      required: false
+      schema:
+        type: string
+        enum:
+        - ASC
+        - DESC
+        default: DESC
+    PageSize:
+      name: pageSize
+      in: query
+      description: Number of items per page (max 100), requesting more then 100 will return 100 items
+      example: 10
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+      required: false
+    SortByTimestamp:
+      name: sortBy
+      in: query
+      description: Sorting field (enum). Sorting only supported by 'blockTimestamp'
+      required: false
+      schema:
+        type: string
+        enum:
+        - blockTimestamp
+        default: blockTimestamp
+    AccountAddressQuery:
+      name: accountAddress
+      in: query
+      description: Optional filter to get balance for a specific account address
+      required: false
+      schema:
+        type: string
+        example: '0x1234567890abcdef1234567890abcdef12345678'
+    TransactionsSortBy:
+      name: sortBy
+      in: query
+      description: Sorting field (enum).
+      required: false
+      schema:
+        type: string
+        enum:
+        - blockTimestamp
+        - blockNumber
+        - transactionHash
+        default: blockTimestamp
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

@@ -1,0 +1,869 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Blockchain link (Beta) API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Blockchain link (Beta)
+paths:
+  /blockchain_link/blockchains:
+    post:
+      operationId: createBlockchainLinkChain
+      summary: Create a new blockchain
+      description: Registers a new tenant-managed blockchain from the supplied declared properties. The blockchain starts in the CREATED state and must be activated separately before it can be used.
+      tags:
+      - Blockchain link (Beta)
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBlockchainRequest'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBlockchainResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateBlockchainResponse>> = fireblocks.blockchainLinkBeta.createBlockchainLinkChain(blockchainLinkBetaApiCreateBlockchainLinkChainRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateBlockchainResponse>> response = fireblocks.blockchainLinkBeta().createBlockchainLinkChain(createBlockchainRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchain_link_beta.create_blockchain_link_chain(create_blockchain_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateBlockchainResponse>> = fireblocks.blockchainLinkBeta.createBlockchainLinkChain(blockchainLinkBetaApiCreateBlockchainLinkChainRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateBlockchainResponse>> response = fireblocks.blockchainLinkBeta().createBlockchainLinkChain(createBlockchainRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.blockchain_link_beta.create_blockchain_link_chain(create_blockchain_request, idempotency_key);
+    get:
+      operationId: listBlockchainLinkChains
+      summary: List blockchains with pagination and filtering
+      description: Returns the tenant's blockchains, paginated and filterable by state, network environment, and free-text search, with configurable sorting.
+      tags:
+      - Blockchain link (Beta)
+      x-rate-limit-category: query
+      parameters:
+      - in: query
+        name: pageCursor
+        required: false
+        description: tenant_id is extracted from JWT token context. Opaque cursor for the requested page. Currently encodes the 1-based page number as a decimal string ("1", "2", ...); treat as opaque on the client. Absent = first page.
+        schema:
+          type: string
+        example: '1'
+      - in: query
+        name: pageSize
+        required: false
+        description: Maximum number of items per page. Default 20, clamped to [1, 1000].
+        schema:
+          type: number
+          minimum: 1
+          maximum: 1000
+          default: 20
+        example: 20
+      - in: query
+        name: search
+        required: false
+        description: Free-text search across chain and symbol name.
+        schema:
+          type: string
+        example: eth
+      - in: query
+        name: status
+        required: false
+        description: Include filter (repeated query params).
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockchainStateFilter'
+        example:
+        - BLOCKCHAIN_STATE_ACTIVATED
+      - in: query
+        name: blockchainEnv
+        required: false
+        description: Filter by network.
+        schema:
+          $ref: '#/components/schemas/BlockchainEnvironment'
+      - in: query
+        name: sortBy
+        required: false
+        description: 'Sort field. Default: createdAt.'
+        schema:
+          $ref: '#/components/schemas/BlockchainSortField'
+      - in: query
+        name: order
+        required: false
+        description: 'Sort order. Default: DESC.'
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          default: DESC
+        example: DESC
+      - in: query
+        name: statusExclude
+        required: false
+        description: Exclude filter (repeated query params).
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockchainStateFilter'
+        example:
+        - BLOCKCHAIN_STATE_DEACTIVATED
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBlockchainsResponse-2'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ListBlockchainsResponse>> = fireblocks.blockchainLinkBeta.listBlockchainLinkChains(blockchainLinkBetaApiListBlockchainLinkChainsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ListBlockchainsResponse>> response = fireblocks.blockchainLinkBeta().listBlockchainLinkChains(pageCursor, pageSize, search, status, blockchainEnv, sortBy, order, statusExclude);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchain_link_beta.list_blockchain_link_chains(page_cursor, page_size, search, status, blockchain_env, sort_by, order, status_exclude);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ListBlockchainsResponse>> = fireblocks.blockchainLinkBeta.listBlockchainLinkChains(blockchainLinkBetaApiListBlockchainLinkChainsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ListBlockchainsResponse>> response = fireblocks.blockchainLinkBeta().listBlockchainLinkChains(pageCursor, pageSize, search, status, blockchainEnv, sortBy, order, statusExclude);
+      - lang: Python
+        source: response = fireblocks.blockchain_link_beta.list_blockchain_link_chains(page_cursor, page_size, search, status, blockchain_env, sort_by, order, status_exclude);
+  /blockchain_link/blockchains/{blockchainId}:
+    get:
+      operationId: getBlockchainLinkChain
+      summary: Get a blockchain by ID
+      description: Returns a single blockchain owned by the tenant, identified by its ID.
+      tags:
+      - Blockchain link (Beta)
+      x-rate-limit-category: read
+      parameters:
+      - in: path
+        name: blockchainId
+        required: true
+        description: ID of the blockchain to retrieve (supplied as a path parameter).
+        schema:
+          type: string
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBlockchainByIdResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetBlockchainByIdResponse>> = fireblocks.blockchainLinkBeta.getBlockchainLinkChain(blockchainLinkBetaApiGetBlockchainLinkChainRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetBlockchainByIdResponse>> response = fireblocks.blockchainLinkBeta().getBlockchainLinkChain(blockchainId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchain_link_beta.get_blockchain_link_chain(blockchain_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetBlockchainByIdResponse>> = fireblocks.blockchainLinkBeta.getBlockchainLinkChain(blockchainLinkBetaApiGetBlockchainLinkChainRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetBlockchainByIdResponse>> response = fireblocks.blockchainLinkBeta().getBlockchainLinkChain(blockchainId);
+      - lang: Python
+        source: response = fireblocks.blockchain_link_beta.get_blockchain_link_chain(blockchain_id);
+    put:
+      operationId: updateBlockchainLinkChain
+      summary: Update a blockchain
+      description: Updates the declared properties of an existing blockchain identified by its ID. Only the fields supplied in the request are modified.
+      tags:
+      - Blockchain link (Beta)
+      x-rate-limit-category: write
+      parameters:
+      - in: path
+        name: blockchainId
+        required: true
+        description: ID of the blockchain to update (supplied as a path parameter).
+        schema:
+          type: string
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlockchainDeclaredProperties'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateBlockchainResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UpdateBlockchainResponse>> = fireblocks.blockchainLinkBeta.updateBlockchainLinkChain(blockchainLinkBetaApiUpdateBlockchainLinkChainRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UpdateBlockchainResponse>> response = fireblocks.blockchainLinkBeta().updateBlockchainLinkChain(blockchainDeclaredProperties, blockchainId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchain_link_beta.update_blockchain_link_chain(blockchain_declared_properties, blockchain_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UpdateBlockchainResponse>> = fireblocks.blockchainLinkBeta.updateBlockchainLinkChain(blockchainLinkBetaApiUpdateBlockchainLinkChainRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UpdateBlockchainResponse>> response = fireblocks.blockchainLinkBeta().updateBlockchainLinkChain(blockchainDeclaredProperties, blockchainId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.blockchain_link_beta.update_blockchain_link_chain(blockchain_declared_properties, blockchain_id, idempotency_key);
+    delete:
+      operationId: deleteBlockchainLinkChain
+      summary: Delete a blockchain
+      description: Permanently removes a blockchain identified by its ID. The blockchain must not be in an active lifecycle state.
+      tags:
+      - Blockchain link (Beta)
+      x-rate-limit-category: write
+      parameters:
+      - in: path
+        name: blockchainId
+        required: true
+        description: tenant_id is extracted from JWT token context
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.blockchainLinkBeta.deleteBlockchainLinkChain(blockchainLinkBetaApiDeleteBlockchainLinkChainRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.blockchainLinkBeta().deleteBlockchainLinkChain(blockchainId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchain_link_beta.delete_blockchain_link_chain(blockchain_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.blockchainLinkBeta.deleteBlockchainLinkChain(blockchainLinkBetaApiDeleteBlockchainLinkChainRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.blockchainLinkBeta().deleteBlockchainLinkChain(blockchainId);
+      - lang: Python
+        source: response = fireblocks.blockchain_link_beta.delete_blockchain_link_chain(blockchain_id);
+  /blockchain_link/blockchains/{blockchainId}/activate:
+    post:
+      operationId: activateBlockchainLinkChain
+      summary: Activate a blockchain (triggers activation workflow)
+      description: Starts the asynchronous activation workflow for the blockchain identified by its ID, transitioning it towards the ACTIVATED state.
+      tags:
+      - Blockchain link (Beta)
+      x-rate-limit-category: async
+      parameters:
+      - in: path
+        name: blockchainId
+        required: true
+        description: Required blockchain ID to activate
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '202':
+          description: Accepted
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivateBlockchainResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ActivateBlockchainResponse>> = fireblocks.blockchainLinkBeta.activateBlockchainLinkChain(blockchainLinkBetaApiActivateBlockchainLinkChainRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ActivateBlockchainResponse>> response = fireblocks.blockchainLinkBeta().activateBlockchainLinkChain(blockchainId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchain_link_beta.activate_blockchain_link_chain(blockchain_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ActivateBlockchainResponse>> = fireblocks.blockchainLinkBeta.activateBlockchainLinkChain(blockchainLinkBetaApiActivateBlockchainLinkChainRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ActivateBlockchainResponse>> response = fireblocks.blockchainLinkBeta().activateBlockchainLinkChain(blockchainId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.blockchain_link_beta.activate_blockchain_link_chain(blockchain_id, idempotency_key);
+  /blockchain_link/blockchains/{blockchainId}/validate:
+    post:
+      operationId: triggerBlockchainLinkValidation
+      summary: Trigger validation workflow
+      description: Starts the asynchronous validation workflow for a blockchain and its associated validation session.
+      tags:
+      - Blockchain link (Beta)
+      x-rate-limit-category: async
+      parameters:
+      - in: path
+        name: blockchainId
+        required: true
+        description: ID of the blockchain to validate.
+        schema:
+          type: string
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '202':
+          description: Accepted
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerValidationFlowResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TriggerValidationFlowResponse>> = fireblocks.blockchainLinkBeta.triggerBlockchainLinkValidation(blockchainLinkBetaApiTriggerBlockchainLinkValidationRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TriggerValidationFlowResponse>> response = fireblocks.blockchainLinkBeta().triggerBlockchainLinkValidation(blockchainId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchain_link_beta.trigger_blockchain_link_validation(blockchain_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TriggerValidationFlowResponse>> = fireblocks.blockchainLinkBeta.triggerBlockchainLinkValidation(blockchainLinkBetaApiTriggerBlockchainLinkValidationRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TriggerValidationFlowResponse>> response = fireblocks.blockchainLinkBeta().triggerBlockchainLinkValidation(blockchainId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.blockchain_link_beta.trigger_blockchain_link_validation(blockchain_id, idempotency_key);
+  /blockchain_link/blockchains/billing_info:
+    get:
+      operationId: getBlockchainLinkBillingInfo
+      summary: Get tenant billing info
+      description: Returns the tenant's blockchain activation limit and current usage. tenant_id is derived from the JWT token context.
+      tags:
+      - Blockchain link (Beta)
+      x-rate-limit-category: read
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBillingInfoResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetBillingInfoResponse>> = fireblocks.blockchainLinkBeta.getBlockchainLinkBillingInfo();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetBillingInfoResponse>> response = fireblocks.blockchainLinkBeta().getBlockchainLinkBillingInfo();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchain_link_beta.get_blockchain_link_billing_info();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetBillingInfoResponse>> = fireblocks.blockchainLinkBeta.getBlockchainLinkBillingInfo();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetBillingInfoResponse>> response = fireblocks.blockchainLinkBeta().getBlockchainLinkBillingInfo();
+      - lang: Python
+        source: response = fireblocks.blockchain_link_beta.get_blockchain_link_billing_info();
+  /blockchain_link/blockchains/test_wallet_address:
+    get:
+      operationId: getBlockchainLinkTestWalletAddress
+      summary: Get the test wallet address
+      description: Returns the Ethereum address derived from the configured external wallet private key, used by the UI for test transfers. tenant_id is derived from the JWT token context.
+      tags:
+      - Blockchain link (Beta)
+      x-rate-limit-category: read
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTestWalletAddressResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetTestWalletAddressResponse>> = fireblocks.blockchainLinkBeta.getBlockchainLinkTestWalletAddress();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetTestWalletAddressResponse>> response = fireblocks.blockchainLinkBeta().getBlockchainLinkTestWalletAddress();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.blockchain_link_beta.get_blockchain_link_test_wallet_address();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetTestWalletAddressResponse>> = fireblocks.blockchainLinkBeta.getBlockchainLinkTestWalletAddress();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetTestWalletAddressResponse>> response = fireblocks.blockchainLinkBeta().getBlockchainLinkTestWalletAddress();
+      - lang: Python
+        source: response = fireblocks.blockchain_link_beta.get_blockchain_link_test_wallet_address();
+components:
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  schemas:
+    BlockchainDeclaredProperties:
+      type: object
+      description: Declared properties for blockchain configuration (create/update API and response) Only the fields sent by the API and returned in list/create/update responses.
+      properties:
+        chainName:
+          type: string
+          example: Ethereum
+          description: Human-readable name of the blockchain.
+        chainId:
+          type: number
+          example: 1
+          description: EVM chain ID of the blockchain.
+        symbolName:
+          type: string
+          example: ETH
+          description: Native asset symbol of the blockchain.
+        decimals:
+          type: number
+          example: 18
+          description: Number of decimals for the native asset.
+        rpcUrls:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          maxItems: 1
+          example:
+          - https://rpc.example.com
+          description: RPC endpoint URLs for the blockchain.
+        environmentType:
+          type: string
+          enum:
+          - ENVIRONMENT_TYPE_MAINNET
+          - ENVIRONMENT_TYPE_TESTNET
+          example: ENVIRONMENT_TYPE_MAINNET
+          description: Network environment (mainnet or testnet).
+        blockExplorerUrl:
+          type: string
+          example: https://etherscan.io
+          description: Base URL of the block explorer.
+        blockExplorerTransactionPath:
+          type: string
+          example: /tx
+          description: Path template for a transaction on the block explorer.
+        blockExplorerAddressPath:
+          type: string
+          example: /address
+          description: Path template for an address on the block explorer.
+        networkId:
+          type: number
+          example: 1
+          description: EVM network ID of the blockchain.
+        hasFee:
+          type: boolean
+          example: true
+          description: Whether the blockchain charges transaction fees.
+        isPoa:
+          type: boolean
+          example: false
+          description: Whether the blockchain uses proof-of-authority consensus.
+        hasLayeredFee:
+          type: boolean
+          example: false
+          description: Whether the blockchain uses a layered fee model.
+        nodeType:
+          type: string
+          enum:
+          - NODE_TYPE_CORE_GETH
+          - NODE_TYPE_FANTOM
+          - NODE_TYPE_ERIGON
+          - NODE_TYPE_PARITY
+          - NODE_TYPE_BESU
+          example: NODE_TYPE_CORE_GETH
+          description: Node client type for the blockchain.
+        transactionFormat:
+          type: number
+          example: 0
+          description: Transaction format identifier.
+        baseAssetTenantIds:
+          type: array
+          items:
+            type: string
+          example:
+          - f47ac10b-58cc-4372-a567-0e02b2c3d479
+          description: Tenant IDs that share this base asset.
+        explorerApiUrl:
+          type: string
+          example: https://api.etherscan.io
+          description: Block explorer API base URL.
+        explorerApiKey:
+          type: string
+          example: my-explorer-api-key
+          description: API key for the block explorer API.
+        isTraceEnabled:
+          type: boolean
+          example: false
+          description: Whether trace/debug RPC methods are enabled.
+        rpcAuth:
+          $ref: '#/components/schemas/BlockchainRpcAuth'
+      required:
+      - chainName
+      - chainId
+      - symbolName
+      - rpcUrls
+      - environmentType
+    ListBlockchainsResponse-2:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Blockchain'
+          example: []
+          description: Blockchains for the current page.
+        total:
+          type: number
+          example: 100
+          description: Total number of items across all pages, matching the current filter.
+        next:
+          type: string
+          example: some_value
+          description: Cursor for the next page; absent when the current page is the last. Opaque base64 blob bundling the target pageCursor and current query params (pageSize, search, status, statusExclude, blockchainEnv, sortBy, order).
+        prev:
+          type: string
+          example: some_value
+          description: Cursor for the previous page; absent when the current page is the first.
+      required:
+      - data
+      - total
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    ActivateBlockchainResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Blockchain activation started
+          description: Human-readable result message.
+      required:
+      - message
+    GetBillingInfoResponse:
+      type: object
+      properties:
+        activatedBlockchainsLimit:
+          type: number
+          example: 10
+          description: Maximum number of activated blockchains allowed for this tenant (0 = not purchased).
+        activatedBlockchainsUsed:
+          type: number
+          example: 3
+          description: Number of blockchains currently in Activating, Activated, or Deactivating state for this tenant. Filter-independent (ignores list filters/pagination).
+      required:
+      - activatedBlockchainsLimit
+      - activatedBlockchainsUsed
+    CreateBlockchainRequest:
+      type: object
+      description: Create blockchain request. tenant_id is derived from the JWT token context.
+      properties:
+        declaredProperties:
+          $ref: '#/components/schemas/BlockchainDeclaredProperties'
+      required:
+      - declaredProperties
+    BlockchainRpcAuth:
+      type: object
+      description: Discriminated RPC auth payload. Sent on create/update so backend can distinguish "no auth" from "field unchanged" on PUT updates. Credential values are stored inside declaredProperties and fetched at activation time; they are deliberately not carried through workflow context.
+      properties:
+        type:
+          type: string
+          enum:
+          - RPC_AUTH_BASIC
+          - RPC_AUTH_BEARER
+          - RPC_AUTH_CUSTOM_HEADER
+          example: RPC_AUTH_BASIC
+          description: Authentication scheme used when calling the RPC endpoint.
+        username:
+          type: string
+          example: rpc_user
+          description: Username for RPC_AUTH_BASIC authentication.
+        password:
+          type: string
+          example: my-password
+          description: Password for RPC_AUTH_BASIC authentication.
+        token:
+          type: string
+          example: my-bearer-token
+          description: Bearer token for RPC_AUTH_BEARER authentication.
+        headerName:
+          type: string
+          example: X-Custom-Auth
+          description: Header name for RPC_AUTH_CUSTOM_HEADER authentication.
+        headerValue:
+          type: string
+          example: my-header-value
+          description: Header value for RPC_AUTH_CUSTOM_HEADER authentication.
+      required:
+      - type
+    TriggerValidationFlowResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Validation flow triggered
+          description: Human-readable result message.
+      required:
+      - message
+    BlockchainStateFilter:
+      type: string
+      enum:
+      - BLOCKCHAIN_STATE_CREATED
+      - BLOCKCHAIN_STATE_ACTIVATING
+      - BLOCKCHAIN_STATE_ACTIVATED
+      - BLOCKCHAIN_STATE_DEACTIVATING
+      - BLOCKCHAIN_STATE_DEACTIVATED
+      - BLOCKCHAIN_STATE_TECHNICAL_FAILURE
+      description: Blockchain lifecycle state used for list filtering.
+    CreateBlockchainResponse:
+      type: object
+      properties:
+        blockchain:
+          $ref: '#/components/schemas/Blockchain'
+        message:
+          type: string
+          example: Blockchain created successfully
+          description: Human-readable result message.
+      required:
+      - blockchain
+      - message
+    GetBlockchainByIdResponse:
+      type: object
+      properties:
+        blockchain:
+          $ref: '#/components/schemas/Blockchain'
+      required:
+      - blockchain
+    UpdateBlockchainResponse:
+      type: object
+      properties:
+        blockchain:
+          $ref: '#/components/schemas/Blockchain'
+        message:
+          type: string
+          example: Blockchain updated successfully
+          description: Human-readable result message.
+      required:
+      - blockchain
+      - message
+    Blockchain:
+      type: object
+      description: Blockchain entity
+      properties:
+        id:
+          type: string
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          description: Unique blockchain identifier.
+        blockchainState:
+          type: string
+          enum:
+          - BLOCKCHAIN_STATE_CREATED
+          - BLOCKCHAIN_STATE_ACTIVATING
+          - BLOCKCHAIN_STATE_ACTIVATED
+          - BLOCKCHAIN_STATE_DEACTIVATING
+          - BLOCKCHAIN_STATE_DEACTIVATED
+          - BLOCKCHAIN_STATE_TECHNICAL_FAILURE
+          example: BLOCKCHAIN_STATE_ACTIVATED
+          description: Current lifecycle state of the blockchain.
+        declaredProperties:
+          $ref: '#/components/schemas/BlockchainDeclaredProperties'
+        createdAtUtc:
+          type: number
+          example: 1700000000000
+          description: Creation timestamp (epoch milliseconds, UTC).
+        updatedAtUtc:
+          type: number
+          example: 1700000000000
+          description: Last update timestamp (epoch milliseconds, UTC).
+        validationSessionId:
+          type: string
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          description: Validation session data (optional - only present if validation session exists)
+        validationStatus:
+          type: string
+          enum:
+          - VALIDATION_STATUS_PENDING
+          - VALIDATION_STATUS_IN_PROGRESS
+          - VALIDATION_STATUS_SUCCEEDED
+          - VALIDATION_STATUS_FAILED
+          - VALIDATION_STATUS_TECHNICAL_FAILURE
+          example: VALIDATION_STATUS_SUCCEEDED
+          description: Status of the latest validation session.
+        validationCreatedAtUtc:
+          type: number
+          example: 1700000000000
+          description: Validation session creation timestamp (epoch milliseconds, UTC).
+        validationUpdatedAtUtc:
+          type: number
+          example: 1700000000000
+          description: Validation session last update timestamp (epoch milliseconds, UTC).
+        validationCompletedAtUtc:
+          type: number
+          example: 1700000000000
+          description: Validation session completion timestamp (epoch milliseconds, UTC).
+        validationFailureReasons:
+          type: array
+          items:
+            type: string
+          example:
+          - RPC endpoint unreachable
+          description: Reasons the latest validation failed, if any.
+        failedStep:
+          type: string
+          enum:
+          - FAILED_STEP_CONFIGURATION
+          - FAILED_STEP_RESOURCES_ALLOCATION
+          - FAILED_STEP_TEST_TX_EXTERNAL_TO_FIREBLOCKS
+          - FAILED_STEP_TEST_TX_FIREBLOCKS_TO_FIREBLOCKS
+          example: FAILED_STEP_CONFIGURATION
+          description: Business step at which the activation flow failed. Absent when no failure has been recorded.
+      required:
+      - id
+      - blockchainState
+      - declaredProperties
+      - createdAtUtc
+      - updatedAtUtc
+      - validationFailureReasons
+    BlockchainSortField:
+      type: string
+      enum:
+      - createdAt
+      - chainName
+      - symbolName
+      - status
+      description: Field to sort the blockchain list by.
+    GetTestWalletAddressResponse:
+      type: object
+      properties:
+        testWalletAddress:
+          type: string
+          example: '0x0000000000000000000000000000000000000000'
+          description: Ethereum address derived from BLOCKCHAIN_LINK_EXTERNAL_WALLET_PRIVATE_KEY (for UI display).
+    BlockchainEnvironment:
+      type: string
+      enum:
+      - MAINNET
+      - TESTNET
+      description: Blockchain network environment.
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

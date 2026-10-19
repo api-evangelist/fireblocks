@@ -1,0 +1,87 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Workspace Status (Beta) API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Workspace Status (Beta)
+paths:
+  /management/workspace_status:
+    get:
+      operationId: getWorkspaceStatus
+      summary: Returns current workspace status
+      description: 'Returns current workspace status (Beta).
+
+        **Note**:
+
+        - This endpoint is now in Beta, disabled for general availability at this time.
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkspaceStatusResponse'
+          description: Current workspace status
+        '404':
+          description: Workspace not found
+      tags:
+      - Workspace Status (Beta)
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetWorkspaceStatusResponse>> = fireblocks.workspaceStatusBeta.getWorkspaceStatus();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetWorkspaceStatusResponse>> response = fireblocks.workspaceStatusBeta().getWorkspaceStatus();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.workspace_status_beta.get_workspace_status();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetWorkspaceStatusResponse>> = fireblocks.workspaceStatusBeta.getWorkspaceStatus();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetWorkspaceStatusResponse>> response = fireblocks.workspaceStatusBeta().getWorkspaceStatus();
+      - lang: Python
+        source: response = fireblocks.workspace_status_beta.get_workspace_status();
+components:
+  schemas:
+    GetWorkspaceStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Current workspace status
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

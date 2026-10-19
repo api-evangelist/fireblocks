@@ -1,0 +1,1601 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Connected Accounts API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Connected Accounts
+paths:
+  /connected_accounts:
+    get:
+      summary: Get connected accounts
+      description: Returns all connected accounts.
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: query
+      parameters:
+      - name: mainAccounts
+        in: query
+        required: false
+        description: Whether to include only main accounts in the response.
+        schema:
+          type: boolean
+          default: false
+      - name: pageSize
+        in: query
+        required: false
+        description: Page size for pagination.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      - name: pageCursor
+        in: query
+        required: false
+        description: Page cursor for pagination.
+        schema:
+          type: string
+      operationId: getConnectedAccounts
+      responses:
+        '200':
+          description: Get accounts response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ConnectedAccountsResponse>> = fireblocks.connectedAccounts.getConnectedAccounts(connectedAccountsApiGetConnectedAccountsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ConnectedAccountsResponse>> response = fireblocks.connectedAccounts().getConnectedAccounts(mainAccounts, pageSize, pageCursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.get_connected_accounts(main_accounts, page_size, page_cursor);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ConnectedAccountsResponse>> = fireblocks.connectedAccounts.getConnectedAccounts(connectedAccountsApiGetConnectedAccountsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ConnectedAccountsResponse>> response = fireblocks.connectedAccounts().getConnectedAccounts(mainAccounts, pageSize, pageCursor);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.get_connected_accounts(main_accounts, page_size, page_cursor);
+    post:
+      summary: Add a connected account
+      description: 'Creates a new connected account for the authenticated tenant.
+
+
+        The `creds` field must be a Base64-encoded RSA-encrypted credential blob.
+
+        Use `GET /connected_accounts/credentials/public_key` to retrieve the public key for encryption.
+
+
+        The `providerType` is derived server-side from the `providerId` — callers do not supply it.
+
+
+        Endpoint Permission: Editor, Admin, Non-Signing Admin.'
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: write
+      operationId: addConnectedAccount
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddConnectedAccountRequest'
+      responses:
+        '201':
+          description: Account created (or pending approval).
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddConnectedAccountResponse'
+        '400':
+          description: Bad request — invalid field or provider constraints violated.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token, or insufficient role (Editor or higher required).
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '403':
+          description: Feature not enabled for this tenant.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '404':
+          description: mainAccountId not found.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '422':
+          description: Invalid credentials.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AddConnectedAccountResponse>> = fireblocks.connectedAccounts.addConnectedAccount(connectedAccountsApiAddConnectedAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AddConnectedAccountResponse>> response = fireblocks.connectedAccounts().addConnectedAccount(addConnectedAccountRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.add_connected_account(add_connected_account_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AddConnectedAccountResponse>> = fireblocks.connectedAccounts.addConnectedAccount(connectedAccountsApiAddConnectedAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AddConnectedAccountResponse>> response = fireblocks.connectedAccounts().addConnectedAccount(addConnectedAccountRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.add_connected_account(add_connected_account_request, idempotency_key);
+  /connected_accounts/{accountId}:
+    get:
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: read
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The ID of the account to fetch.
+        schema:
+          type: string
+          minLength: 1
+      summary: Get connected account
+      description: Retrieve detailed information about a specific connected account by ID.
+      operationId: getConnectedAccount
+      responses:
+        '200':
+          description: Account response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedSingleAccountResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ConnectedSingleAccountResponse>> = fireblocks.connectedAccounts.getConnectedAccount(connectedAccountsApiGetConnectedAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ConnectedSingleAccountResponse>> response = fireblocks.connectedAccounts().getConnectedAccount(accountId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.get_connected_account(account_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ConnectedSingleAccountResponse>> = fireblocks.connectedAccounts.getConnectedAccount(connectedAccountsApiGetConnectedAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ConnectedSingleAccountResponse>> response = fireblocks.connectedAccounts().getConnectedAccount(accountId);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.get_connected_account(account_id);
+    delete:
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: write
+      summary: Disconnect connected account
+      description: Disconnect a connected account by ID.
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The ID of the account to disconnect.
+        schema:
+          type: string
+          minLength: 1
+      operationId: disconnectConnectedAccount
+      responses:
+        '204':
+          description: Account disconnected successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.connectedAccounts.disconnectConnectedAccount(connectedAccountsApiDisconnectConnectedAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.connectedAccounts().disconnectConnectedAccount(accountId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.disconnect_connected_account(account_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.connectedAccounts.disconnectConnectedAccount(connectedAccountsApiDisconnectConnectedAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.connectedAccounts().disconnectConnectedAccount(accountId);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.disconnect_connected_account(account_id);
+  /connected_accounts/{accountId}/allowlist:
+    get:
+      summary: Get allowlist for connected account
+      description: 'Retrieves the address allowlist for a specified connected account.
+
+
+        **Note:** Currently supports CoinbaseExchange/Binance accounts only.'
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: query
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The connected account identifier
+        schema:
+          type: string
+      - name: status
+        in: query
+        required: false
+        description: Filter by allowlist entry status
+        schema:
+          $ref: '#/components/schemas/AllowlistEntryStatus'
+      - name: assetId
+        in: query
+        required: false
+        description: 'Filter by Fireblocks asset ID.
+
+
+          See [List assets](https://developers.fireblocks.com/reference/listassets) for the canonical list of Fireblocks asset IDs.
+
+          '
+        schema:
+          type: string
+      - name: networkId
+        in: query
+        required: false
+        description: 'Filter by Fireblocks network ID.
+
+
+          See [List blockchains](https://developers.fireblocks.com/reference/listblockchains) for the canonical list of Fireblocks blockchain identifiers.
+
+          '
+        schema:
+          type: string
+      - name: address
+        in: query
+        required: false
+        description: Filter by specific address
+        schema:
+          type: string
+      - name: pageCursor
+        in: query
+        required: false
+        description: Pagination cursor for next page
+        schema:
+          type: string
+      - name: pageSize
+        in: query
+        required: false
+        description: Maximum number of entries to return
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: order
+        in: query
+        required: false
+        description: Sort order (ASC or DESC).
+        schema:
+          type: string
+          default: DESC
+          example: ASC
+          enum:
+          - ASC
+          - DESC
+      operationId: getConnectedAccountAllowlist
+      responses:
+        '200':
+          description: Allowlist entries response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllowlistResponse'
+        '404':
+          description: Connected account not found
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AllowlistResponse>> = fireblocks.connectedAccounts.getConnectedAccountAllowlist(connectedAccountsApiGetConnectedAccountAllowlistRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AllowlistResponse>> response = fireblocks.connectedAccounts().getConnectedAccountAllowlist(accountId, status, assetId, networkId, address, pageCursor, pageSize, order);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.get_connected_account_allowlist(account_id, status, asset_id, network_id, address, page_cursor, page_size, order);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AllowlistResponse>> = fireblocks.connectedAccounts.getConnectedAccountAllowlist(connectedAccountsApiGetConnectedAccountAllowlistRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AllowlistResponse>> response = fireblocks.connectedAccounts().getConnectedAccountAllowlist(accountId, status, assetId, networkId, address, pageCursor, pageSize, order);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.get_connected_account_allowlist(account_id, status, asset_id, network_id, address, page_cursor, page_size, order);
+  /connected_accounts/{accountId}/allowlist/{allowlistId}:
+    get:
+      summary: Get a single allowlist entry for a connected account
+      description: 'Retrieves a single allowlist entry by its Fireblocks identifier for a specified connected account.
+
+
+        **Note:** Currently supports CoinbaseExchange/Binance accounts only.'
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: query
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The connected account identifier
+        schema:
+          type: string
+      - name: allowlistId
+        in: path
+        required: true
+        description: The Fireblocks allowlist entry identifier
+        schema:
+          type: string
+      operationId: getConnectedAccountAllowlistEntry
+      responses:
+        '200':
+          description: Allowlist entry response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllowlistEntryResponse'
+        '404':
+          description: Connected account or allowlist entry not found
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<AllowlistEntryResponse>> = fireblocks.connectedAccounts.getConnectedAccountAllowlistEntry(connectedAccountsApiGetConnectedAccountAllowlistEntryRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<AllowlistEntryResponse>> response = fireblocks.connectedAccounts().getConnectedAccountAllowlistEntry(accountId, allowlistId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.get_connected_account_allowlist_entry(account_id, allowlist_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<AllowlistEntryResponse>> = fireblocks.connectedAccounts.getConnectedAccountAllowlistEntry(connectedAccountsApiGetConnectedAccountAllowlistEntryRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<AllowlistEntryResponse>> response = fireblocks.connectedAccounts().getConnectedAccountAllowlistEntry(accountId, allowlistId);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.get_connected_account_allowlist_entry(account_id, allowlist_id);
+  /connected_accounts/{accountId}/allowlist/sync:
+    post:
+      summary: Sync allowlist for connected account
+      description: 'Triggers an on-demand sync from the exchange, bypassing the cache and fetching live data immediately.
+
+
+        **Rate limit:** 1 request per minute per connected account.
+
+
+        **Note:** Currently supports CoinbaseExchange/Binance accounts only.'
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: async
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - name: accountId
+        in: path
+        required: true
+        description: The connected account identifier
+        schema:
+          type: string
+      operationId: syncConnectedAccountAllowlist
+      responses:
+        '202':
+          description: Sync request accepted and processing
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.connectedAccounts.syncConnectedAccountAllowlist(connectedAccountsApiSyncConnectedAccountAllowlistRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.connectedAccounts().syncConnectedAccountAllowlist(accountId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.sync_connected_account_allowlist(account_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.connectedAccounts.syncConnectedAccountAllowlist(connectedAccountsApiSyncConnectedAccountAllowlistRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.connectedAccounts().syncConnectedAccountAllowlist(accountId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.sync_connected_account_allowlist(account_id, idempotency_key);
+  /connected_accounts/{accountId}/balances:
+    get:
+      summary: Get balances for an account
+      description: Retrieve current asset balances for a specific connected account as a flat list (one row per `assetId`, `balanceType`).
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: query
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The ID of the account to fetch balances for.
+        schema:
+          type: string
+          minLength: 1
+      - name: pageSize
+        in: query
+        required: false
+        description: Page size for pagination.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: pageCursor
+        in: query
+        required: false
+        description: Page cursor for pagination.
+        schema:
+          type: string
+      operationId: getConnectedAccountBalances
+      responses:
+        '200':
+          description: Account balances response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountBalancesResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ConnectedAccountBalancesResponse>> = fireblocks.connectedAccounts.getConnectedAccountBalances(connectedAccountsApiGetConnectedAccountBalancesRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ConnectedAccountBalancesResponse>> response = fireblocks.connectedAccounts().getConnectedAccountBalances(accountId, pageSize, pageCursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.get_connected_account_balances(account_id, page_size, page_cursor);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ConnectedAccountBalancesResponse>> = fireblocks.connectedAccounts.getConnectedAccountBalances(connectedAccountsApiGetConnectedAccountBalancesRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ConnectedAccountBalancesResponse>> response = fireblocks.connectedAccounts().getConnectedAccountBalances(accountId, pageSize, pageCursor);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.get_connected_account_balances(account_id, page_size, page_cursor);
+  /connected_accounts/{accountId}/credentials:
+    post:
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: write
+      summary: Update connected account credentials
+      description: 'Replace the API credentials (secret + API key) of a connected account.
+
+
+        Credentials belong to an API key, which can back a single account or an entire hierarchy.
+
+        Updating them affects all accounts sharing that key, so the endpoint returns an array of modified accounts.
+
+
+        The `creds` field must be a Base64-encoded RSA-encrypted credential blob; use
+
+        `GET /connected_accounts/credentials/public_key` to retrieve the public key for encryption.
+
+        Both `creds` and `apiKey` are mandatory.
+
+
+        Validation against the exchange is synchronous, but the update itself is **pending mobile
+
+        approval** — the existing credentials stay live until the change is approved, so none of the
+
+        affected accounts are disconnected in the meantime.
+
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
+      operationId: updateConnectedAccountCredentials
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The unique identifier of the connected account whose API key credentials are being replaced.
+        schema:
+          type: string
+          minLength: 1
+        example: 2c96e3aa-07ca-4524-a026-75579d25e24a
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateConnectedAccountCredentialsRequest'
+      responses:
+        '201':
+          description: Credential update initiated (pending approval).
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateConnectedAccountCredentialsResponse'
+        '400':
+          description: Bad request — credentials cannot be updated on a sub-account, or missing creds / apiKey.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '403':
+          description: Insufficient permissions, or feature not enabled for this tenant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '404':
+          description: Connected account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '409':
+          description: Account is not in an updatable state, or the credentials belong to a different account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '422':
+          description: The provided credentials were rejected by the exchange.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<UpdateConnectedAccountCredentialsResponse>> = fireblocks.connectedAccounts.updateConnectedAccountCredentials(connectedAccountsApiUpdateConnectedAccountCredentialsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<UpdateConnectedAccountCredentialsResponse>> response = fireblocks.connectedAccounts().updateConnectedAccountCredentials(updateConnectedAccountCredentialsRequest, accountId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.update_connected_account_credentials(update_connected_account_credentials_request, account_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<UpdateConnectedAccountCredentialsResponse>> = fireblocks.connectedAccounts.updateConnectedAccountCredentials(connectedAccountsApiUpdateConnectedAccountCredentialsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<UpdateConnectedAccountCredentialsResponse>> response = fireblocks.connectedAccounts().updateConnectedAccountCredentials(updateConnectedAccountCredentialsRequest, accountId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.update_connected_account_credentials(update_connected_account_credentials_request, account_id, idempotency_key);
+  /connected_accounts/{accountId}/manifest/capabilities/trading/pairs:
+    get:
+      summary: Get supported trading pairs for an account
+      description: Retrieve all asset trading pairs supported by a specific connected account, including the pair type (`quote`, `market`, `onOffRamp`).
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: query
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The ID of the account to fetch supported pairs for.
+        schema:
+          type: string
+          minLength: 1
+      - name: pageSize
+        in: query
+        required: false
+        description: Page size for pagination.
+        schema:
+          type: integer
+          default: 100
+          minimum: 1
+          maximum: 100
+      - name: pageCursor
+        in: query
+        required: false
+        description: Page cursor for pagination.
+        schema:
+          type: string
+      operationId: getConnectedAccountTradingPairs
+      responses:
+        '200':
+          description: Supported pairs response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountTradingPairsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ConnectedAccountTradingPairsResponse>> = fireblocks.connectedAccounts.getConnectedAccountTradingPairs(connectedAccountsApiGetConnectedAccountTradingPairsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ConnectedAccountTradingPairsResponse>> response = fireblocks.connectedAccounts().getConnectedAccountTradingPairs(accountId, pageSize, pageCursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.get_connected_account_trading_pairs(account_id, page_size, page_cursor);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ConnectedAccountTradingPairsResponse>> = fireblocks.connectedAccounts.getConnectedAccountTradingPairs(connectedAccountsApiGetConnectedAccountTradingPairsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ConnectedAccountTradingPairsResponse>> response = fireblocks.connectedAccounts().getConnectedAccountTradingPairs(accountId, pageSize, pageCursor);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.get_connected_account_trading_pairs(account_id, page_size, page_cursor);
+  /connected_accounts/{accountId}/rates:
+    get:
+      summary: Get exchange rates for an account
+      description: Retrieve current exchange rates for converting between specific assets in a connected account.
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: read
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The ID of the account to fetch rates for.
+        schema:
+          type: string
+          minLength: 1
+      - name: baseAssetId
+        in: query
+        required: true
+        description: The ID of the asset to fetch rates for.
+        schema:
+          type: string
+          minLength: 1
+      - name: quoteAssetId
+        in: query
+        required: true
+        description: The ID of the asset to get the rates nominally.
+        schema:
+          type: string
+          minLength: 1
+      operationId: getConnectedAccountRates
+      responses:
+        '200':
+          description: Rates response
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountRateResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ConnectedAccountRateResponse>> = fireblocks.connectedAccounts.getConnectedAccountRates(connectedAccountsApiGetConnectedAccountRatesRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ConnectedAccountRateResponse>> response = fireblocks.connectedAccounts().getConnectedAccountRates(accountId, baseAssetId, quoteAssetId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.get_connected_account_rates(account_id, base_asset_id, quote_asset_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ConnectedAccountRateResponse>> = fireblocks.connectedAccounts.getConnectedAccountRates(connectedAccountsApiGetConnectedAccountRatesRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ConnectedAccountRateResponse>> response = fireblocks.connectedAccounts().getConnectedAccountRates(accountId, baseAssetId, quoteAssetId);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.get_connected_account_rates(account_id, base_asset_id, quote_asset_id);
+  /connected_accounts/{accountId}/rename:
+    post:
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: write
+      summary: Rename Connected Account
+      description: Rename a connected account by account ID.
+      operationId: renameConnectedAccount
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: The unique identifier of the connected account
+        schema:
+          type: string
+          minLength: 1
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RenameConnectedAccountRequest'
+      responses:
+        '200':
+          description: Successfully renamed connected account.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RenameConnectedAccountResponse'
+        '400':
+          description: Bad request. Missing tenantId, accountId, or accountName.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '403':
+          description: Failed to rename connected account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '404':
+          description: Connected account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        '409':
+          description: Conflict. Account name is already in use by another account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccountErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<RenameConnectedAccountResponse>> = fireblocks.connectedAccounts.renameConnectedAccount(connectedAccountsApiRenameConnectedAccountRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<RenameConnectedAccountResponse>> response = fireblocks.connectedAccounts().renameConnectedAccount(renameConnectedAccountRequest, accountId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.rename_connected_account(rename_connected_account_request, account_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<RenameConnectedAccountResponse>> = fireblocks.connectedAccounts.renameConnectedAccount(connectedAccountsApiRenameConnectedAccountRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<RenameConnectedAccountResponse>> response = fireblocks.connectedAccounts().renameConnectedAccount(renameConnectedAccountRequest, accountId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.connected_accounts.rename_connected_account(rename_connected_account_request, account_id, idempotency_key);
+  /connected_accounts/credentials/public_key:
+    get:
+      summary: Get public key to encrypt connected account credentials
+      description: 'Returns the RSA public key used to encrypt the `creds` field before calling `POST /connected_accounts`.
+
+
+        The key is a singleton resource scoped to the connected-accounts credentials domain — there is one per tenant context.'
+      tags:
+      - Connected Accounts
+      x-rate-limit-category: read
+      operationId: getConnectedAccountsCredentialsPublicKey
+      responses:
+        '200':
+          description: Public key retrieved successfully.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConnectedAccountsCredentialsPublicKeyResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetConnectedAccountsCredentialsPublicKeyResponse>> = fireblocks.connectedAccounts.getConnectedAccountsCredentialsPublicKey();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetConnectedAccountsCredentialsPublicKeyResponse>> response = fireblocks.connectedAccounts().getConnectedAccountsCredentialsPublicKey();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.connected_accounts.get_connected_accounts_credentials_public_key();
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetConnectedAccountsCredentialsPublicKeyResponse>> = fireblocks.connectedAccounts.getConnectedAccountsCredentialsPublicKey();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetConnectedAccountsCredentialsPublicKeyResponse>> response = fireblocks.connectedAccounts().getConnectedAccountsCredentialsPublicKey();
+      - lang: Python
+        source: response = fireblocks.connected_accounts.get_connected_accounts_credentials_public_key();
+components:
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  schemas:
+    ConnectedAccountBalancesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Flat balance row for a single asset within an account and wallet type. One row per (assetId, balanceType).
+          items:
+            $ref: '#/components/schemas/ConnectedAccountBalances'
+          example:
+          - assetId: BTC
+            availableAmount: '100.00'
+            totalAmount: '120.00'
+            balanceType: FUNDING
+            balanceName: Trader1 Wallet
+        total:
+          type: integer
+          description: Total number of balance rows by query.
+          example: 2
+        next:
+          type: string
+          description: A cursor for the next page of results, if available.
+          example: eyJwYWdlIjoyfQ==
+      required:
+      - data
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    AddedConnectedAccountItem:
+      type: object
+      required:
+      - accountId
+      - name
+      - status
+      properties:
+        accountId:
+          type: string
+          description: ID of the created account.
+          example: acc-789012
+        name:
+          type: string
+          description: Human-readable account name.
+          example: My Exchange Account
+        parentAccountId:
+          type: string
+          description: Parent account ID — present only for sub-accounts in an NLV2 hierarchy.
+          example: acc-parent-001
+        status:
+          $ref: '#/components/schemas/ConnectedAccountApprovalStatus'
+    AddConnectedAccountRequest:
+      type: object
+      required:
+      - providerId
+      - creds
+      - apiKey
+      properties:
+        providerId:
+          type: string
+          description: Integration key identifying the provider (e.g. BINANCE, KINGDOM_BANK, GEMINI_NLV2).
+          example: BINANCE
+        displayName:
+          type: string
+          description: Human-readable account name. Required for non-NLV2 providers.
+          example: My Binance Account
+        creds:
+          type: string
+          format: byte
+          description: Base64-encoded RSA-encrypted credential blob. Encrypt using the public key from GET /connected_accounts/credentials/public_key.
+          example: base64encodedencryptedcredentials==
+        apiKey:
+          type: string
+          description: Account-level API key.
+          example: api_key_abc123
+        mainAccountId:
+          type: string
+          description: Parent main account ID for sub-account creation. Not allowed for NLV2 providers.
+          example: acc-parent-001
+        accountId:
+          type: string
+          description: Optional provider-side account ID to associate with the created account.
+          example: provider-acc-001
+        onPremiseServerId:
+          type: string
+          description: On-premise server ID for self-hosted integrations.
+          example: on-prem-server-001
+    AllowlistMetadata:
+      type: object
+      description: Allowlist-specific metadata
+      properties:
+        lastSyncedAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of last sync with provider
+          example: '2026-05-01T15:30:00Z'
+        syncStatus:
+          type: string
+          enum:
+          - SUCCESS
+          - FAILED
+          - IN_PROGRESS
+          - NEVER_SYNCED
+          description: Status of last sync operation
+          example: SUCCESS
+    RenameConnectedAccountResponse:
+      type: string
+      description: Status of the rename operation
+      enum:
+      - SUCCESS
+      - UNAUTHORISED__USER
+      - UNAUTHORISED__DEVICE
+      - INVALID_UNMANAGED_WALLET
+      - INVALID_EXCHANGE_ACCOUNT
+      - NO_ACTIVE_ADMINS
+      - TIMEOUT
+      - INVALID_PARAMETERS
+      - INTERNAL_ERROR
+      - INVALID_CREDENTIALS
+      - INVALID_OTP
+      - INVALID_OTP_METHOD
+      - INVALID_NETWORK_CONNECTION
+      - NETWORK_CONNECTION_EXISTS
+      - INVALID_CREDENTIALS__UNSUPPORTED_PROVIDER
+      - UNSUPPORTED_ALGORITHM
+      - INVALID_CREDENTIALS__IP_WHITELISTING
+      - INVALID_CREDENTIALS__OTP_FAILED
+      - UNSUPPORTED_ASSET
+      - ASSET_ALREADY_EXISTS
+      - ENV_UNSUPPORTED_ASSET
+      - NO_CONFIG_CHANGE_NEEDED
+      - SIMILAR_REQUEST_ALREADY_PENDING
+      - CLOUD_COSIGNER_ALREADY_EXISTS
+      - ILLEGAL_OPERATION
+      - OVERRIDING_PENDING_REQUEST
+      - OWNER_NOT_IN_GROUP
+      - INVALID_THIRD_PARTY_ACCOUNT_HIERARCHY
+      - EXTERNAL_KEY_VALIDATION_FAILED
+      - NO_AVAILABLE_EXTERNAL_KEYS
+      - INVALID_PROOF_OF_OWNERSHIP_SIGNATURE
+      - USER_HAS_EXTERNAL_KEYS
+      - SCHEMA_ALREADY_EXISTS
+      - SCHEMA_ID_OUT_OF_RANGE
+      - FORBIDDEN_SSO_IDP_DOMAIN
+      - UNKNOWN_ERROR
+      example: SUCCESS
+    ConnectedAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the connected account.
+          example: acc-123456
+        name:
+          type: string
+          description: Human-readable name of the connected account.
+          example: Main Venue Account
+        providerId:
+          type: string
+          description: The ID of the venue the account belongs to.
+          example: BRIDGE
+        status:
+          $ref: '#/components/schemas/ConnectedAccountApprovalStatus'
+        totalBalance:
+          $ref: '#/components/schemas/ConnectedAccountTotalBalance'
+        manifest:
+          $ref: '#/components/schemas/ConnectedAccountManifest'
+        parentId:
+          type: string
+          description: The ID of the parent main account, if this is a sub account.
+          example: acc-parent-001
+        apiKey:
+          type: string
+          description: The API key identifier used to connect this account.
+          example: rk_live_abc123
+        providerAccountName:
+          type: string
+          description: The account name provided by the provider.
+          example: Main Account
+        accountType:
+          $ref: '#/components/schemas/ConnectedAccountType'
+      required:
+      - id
+      - name
+      - providerId
+      - status
+      - totalBalance
+      - manifest
+      - accountType
+    UpdateConnectedAccountCredentialsResponse:
+      type: object
+      required:
+      - accounts
+      properties:
+        accounts:
+          type: array
+          description: The account whose credentials are pending update (status WAITING_FOR_APPROVAL). Old credentials stay live until the change is approved.
+          example:
+          - accountId: acc-789012
+            name: My Exchange Account
+            status: WAITING_FOR_APPROVAL
+          items:
+            $ref: '#/components/schemas/AddedConnectedAccountItem'
+    ConnectedAccountType:
+      type: string
+      enum:
+      - EXCHANGE
+      - FIAT
+      - CONNECTED_ACCOUNT
+      example: CONNECTED_ACCOUNT
+    AllowlistEntryProviderMetadata:
+      type:
+      - object
+      - 'null'
+      description: 'Provider-specific pass-through data for this address. Treat as an opaque blob: the shape, set of keys, and value types vary by provider, by entry, and over time. Keys may be added, renamed, or removed without notice as providers evolve their integrations or as new providers are added. The example below illustrates one possible shape and is not a contract — do not program against specific keys.
+
+        '
+      additionalProperties:
+        description: Provider-defined value. May be any JSON type.
+      example:
+        coinbase_exchange_id: '1234567890'
+    ConnectedAccountAssetType:
+      type: string
+      enum:
+      - DIGITAL
+      - FIAT
+    ConnectedSingleAccount:
+      type: object
+      properties:
+        subAccountsIds:
+          type: array
+          description: IDs of sub-accounts associated with this connected account.
+          items:
+            type: string
+          example:
+          - acc-sub-001
+          - acc-sub-002
+    ConnectedAccountTradingPairsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedAccountTradingPair'
+          example:
+          - id: ea6c3cb7-355a-4ee3-82ff-267c69970210
+            baseAssetId: BTC
+            quoteAssetId: USD
+            supportedTypes:
+            - MARKET
+          - id: ea6c3cb7-355a-4ee3-82ff-267c69970211
+            baseAssetId: ETH
+            quoteAssetId: USDC
+            supportedTypes:
+            - QUOTE
+            - MARKET
+        total:
+          type: integer
+          description: Total number of asset pairs matching the query.
+          example: 2
+        next:
+          type:
+          - string
+          - 'null'
+          description: A cursor for the next page of results, if available.
+          example: null
+      required:
+      - data
+    AllowlistResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Array of allowlist entries
+          items:
+            $ref: '#/components/schemas/AllowlistEntry'
+          example:
+          - id: 550e8400-e29b-41d4-a716-446655440000
+            address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb'
+            assets:
+            - BTC
+            - ETH
+            networks:
+            - ETHEREUM
+            - POLYGON
+            label: Coinbase Hot Wallet
+            addressIdentifier: null
+            status: ACTIVE
+            addedAt: '2024-01-15T10:30:00Z'
+            providerReferenceId: CB-SAMPLE-001
+        metadata:
+          $ref: '#/components/schemas/AllowlistMetadata'
+        total:
+          type: integer
+          description: Total number of allowlist entries
+          example: 42
+        next:
+          type: string
+          description: Cursor for the next page of results, if available
+          example: eyJsYXN0SWQiOiJlbnRyeS0wMDQifQ==
+      required:
+      - data
+      - total
+    AddConnectedAccountResponse:
+      type: object
+      required:
+      - accounts
+      properties:
+        accounts:
+          type: array
+          description: Created accounts — main account first, sub-accounts after (NLV2 hierarchy).
+          example:
+          - accountId: acc-789012
+            name: My Exchange Account
+            status: WAITING_FOR_APPROVAL
+          items:
+            $ref: '#/components/schemas/AddedConnectedAccountItem'
+    ConnectedAccountTradingPairSupportedType:
+      type: string
+      enum:
+      - QUOTE
+      - MARKET
+      - LIMIT
+    ConnectedAccountsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: List of connected accounts matching the query.
+          items:
+            $ref: '#/components/schemas/ConnectedAccount'
+          example:
+          - id: acc-123456
+            name: Main Venue Account
+            providerId: BRIDGE
+            status: APPROVED
+            totalBalance:
+              amount: '1201.15'
+              denominatedAssetId: ea6c3cb7-355a-4ee3-82ff-267c69970214
+              hasFullAssetCoverage: true
+            manifest:
+              assetTypes: []
+              capabilities:
+              - DEPOSITS
+              - WITHDRAWALS
+            accountType: CONNECTED_ACCOUNT
+          - id: acc-654321
+            name: Secondary Account
+            providerId: BRIDGE
+            status: WAITING_FOR_APPROVAL
+            totalBalance:
+              amount: '0.00'
+              denominatedAssetId: ea6c3cb7-355a-4ee3-82ff-267c69970214
+              hasFullAssetCoverage: false
+            manifest:
+              assetTypes: []
+              capabilities:
+              - WITHDRAWALS
+            accountType: CONNECTED_ACCOUNT
+        total:
+          type: integer
+          description: Total number of accounts by query.
+          example: 2
+        next:
+          type: string
+          description: A cursor for the next page of results, if available.
+          example: eyJwYWdlIjoyfQ==
+      required:
+      - data
+    ConnectedAccountBalances:
+      type: object
+      properties:
+        assetId:
+          type: string
+          description: Asset identifier (e.g., BTC, ETH, USDC).
+          example: BTC
+        availableAmount:
+          type: string
+          description: Amount available for use.
+          example: '100.00'
+        totalAmount:
+          type: string
+          description: Total amount including locked/held balances.
+          example: '120.00'
+        lockedAmount:
+          type: string
+          description: Amount currently locked/held.
+          example: '20.00'
+        creditAmount:
+          type: string
+          description: Credit line amount, if applicable (0 when not used).
+          example: '0'
+        balanceType:
+          type: string
+          description: Wallet type/category (e.g., SPOT, MARGIN, FUNDING).
+          example: FUNDING
+        balanceName:
+          type: string
+          description: Display name for the balance type (at the provider)
+          example: Trader1 Wallet
+      required:
+      - assetId
+      - availableAmount
+      - totalAmount
+      - balanceType
+    ConnectedAccountCapability:
+      type: string
+      enum:
+      - WITHDRAWALS
+      - DEPOSITS
+      - TRADING
+    ConnectedAccountTradingPair:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the trading pair.
+          example: ea6c3cb7-355a-4ee3-82ff-267c69970210
+        baseAssetId:
+          type: string
+          description: The Symbol of the base asset.
+          example: BTC
+        quoteAssetId:
+          type: string
+          description: The symbol of the quote asset.
+          example: USD
+        supportedTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedAccountTradingPairSupportedType'
+      required:
+      - id
+      - baseAssetId
+      - quoteAssetId
+      - supportedTypes
+    GetConnectedAccountsCredentialsPublicKeyResponse:
+      type: object
+      properties:
+        publicKey:
+          type: string
+          description: RSA public key (PEM) used to encrypt credential payloads sent to POST /connected_accounts.
+          example: '-----BEGIN PUBLIC KEY-----
+
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+
+            -----END PUBLIC KEY-----'
+      required:
+      - publicKey
+    ConnectedAccountManifest:
+      type: object
+      properties:
+        assetTypes:
+          type: array
+          description: Asset types supported by the connected account.
+          items:
+            $ref: '#/components/schemas/ConnectedAccountAssetType'
+          example: []
+        capabilities:
+          type: array
+          description: 'Features supported for the connected account. Logic: - If account capabilities include ramp -> TRADING - If account capabilities include transfers -> DEPOSITS - If account capabilities include transfersBlockchain / transfersFiat / transfersPeerAccounts / transfersInternal -> WITHDRAWALS
+
+            '
+          items:
+            $ref: '#/components/schemas/ConnectedAccountCapability'
+          example:
+          - WITHDRAWALS
+      required:
+      - assetTypes
+      - capabilities
+    ConnectedAccountApprovalStatus:
+      type: string
+      enum:
+      - WAITING_FOR_APPROVAL
+      - APPROVED
+      - REJECTED
+      - CANCELLED
+      - FAILED
+    UpdateConnectedAccountCredentialsRequest:
+      type: object
+      required:
+      - creds
+      - apiKey
+      properties:
+        creds:
+          type: string
+          format: byte
+          description: Base64-encoded RSA-encrypted credential blob (the new secret). Encrypt using the public key from GET /connected_accounts/credentials/public_key.
+          example: base64encodedencryptedcredentials==
+        apiKey:
+          type: string
+          description: The new account-level API key. Mandatory for credential update.
+          example: api_key_new_abc123
+    AllowlistEntryStatus:
+      type: string
+      enum:
+      - ACTIVE
+      - PENDING_PROVIDER_COOLDOWN
+      - PENDING_PROVIDER_REVIEW
+      - PENDING_APPROVAL
+      - REJECTED
+      - REMOVED
+      description: "Current status of the allowlist entry.\n  - `ACTIVE` — Entry is approved and usable.\n  - `PENDING_PROVIDER_COOLDOWN` — Entry was recently added or modified and is in the provider-enforced cooldown window before becoming active.\n  - `PENDING_PROVIDER_REVIEW` — Entry is awaiting provider-side review.\n  - `PENDING_APPROVAL` — Entry is awaiting customer/admin approval on the Fireblocks side.\n  - `REJECTED` — Entry was rejected at submission time and will not become active.\n  - `REMOVED` — Entry was deactivated after previously being active. May still appear in results for audit purposes.\n"
+      example: ACTIVE
+    ConnectedSingleAccountResponse:
+      allOf:
+      - $ref: '#/components/schemas/ConnectedAccount'
+      - $ref: '#/components/schemas/ConnectedSingleAccount'
+    RenameConnectedAccountRequest:
+      type: object
+      required:
+      - accountName
+      properties:
+        accountName:
+          type: string
+          description: The new name for the connected account
+          example: My Trading Account
+    AllowlistEntryResponse:
+      type: object
+      description: Single allowlist entry envelope, paired with the account-level allowlist sync metadata.
+      properties:
+        data:
+          $ref: '#/components/schemas/AllowlistEntry'
+        metadata:
+          $ref: '#/components/schemas/AllowlistMetadata'
+      required:
+      - data
+    ConnectedAccountErrorResponse:
+      type: object
+      required:
+      - message
+      - code
+      properties:
+        message:
+          type: string
+          description: Error message describing what went wrong.
+          example: Provider 'BINANCE' not found
+        code:
+          type: integer
+          description: Numeric error code identifying the type of error.
+          example: 3228
+        errorMessage:
+          type: string
+          description: Error message describing what went wrong
+          example: Insufficient permissions to rename connected account
+        errorCode:
+          type: string
+          description: Error code identifying the type of error
+          example: INSUFFICIENT_PERMISSIONS
+    ConnectedAccountRateResponse:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: The ID of the account that generated the quote.
+          example: ea6c3cb7-355a-4ee3-82ff-267c69970210
+        baseAssetId:
+          type: string
+          description: The source asset identifier
+          example: BTC
+        quoteAssetId:
+          type: string
+          description: The target asset identifier
+          example: USD
+        rate:
+          type: string
+          description: The exchange rate value
+          example: '1.2345'
+      required:
+      - accountId
+      - baseAssetId
+      - quoteAssetId
+      - rate
+    AllowlistEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the allowlist entry
+          example: 550e8400-e29b-41d4-a716-446655440000
+        address:
+          type: string
+          description: The blockchain address
+          example: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb'
+        assets:
+          type: array
+          items:
+            type: string
+          description: "Assets approved for this address.\n\nEach value is either a Fireblocks asset ID (when the provider's asset maps to a Fireblocks-supported asset) or the raw provider asset symbol (when no mapping exists). Treat values as opaque strings.\n\nPossible combinations:\n  - One or more specific asset values (e.g., `[\"BTC\", \"ETH\"]`)\n\nSee [List assets](https://developers.fireblocks.com/reference/listassets) for the canonical list of Fireblocks asset IDs.\n"
+          example:
+          - BTC
+          - ETH
+        networks:
+          type: array
+          items:
+            type: string
+          description: "Networks approved for this address.\n\nEach value is either a Fireblocks network ID (when the provider's network maps to a Fireblocks-supported blockchain) or the raw provider blockchain identifier (when no mapping exists). Treat values as opaque strings.\n\nPossible combinations:\n  - One or more specific network values (e.g., `[\"ETHEREUM\", \"POLYGON\"]`)\n\nSee [List blockchains](https://developers.fireblocks.com/reference/listblockchains) for the canonical list of Fireblocks blockchain identifiers.\n"
+          example:
+          - ETHEREUM
+          - POLYGON
+        label:
+          type:
+          - string
+          - 'null'
+          description: Human-readable label for the address
+          example: Coinbase Hot Wallet
+        addressIdentifier:
+          type:
+          - string
+          - 'null'
+          description: Additional identifier (e.g., memo, destination tag)
+          example: null
+        status:
+          $ref: '#/components/schemas/AllowlistEntryStatus'
+        addedAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when entry was added
+          example: '2024-01-15T10:30:00Z'
+        providerReferenceId:
+          type:
+          - string
+          - 'null'
+          description: Provider's internal reference ID
+          example: CB-SAMPLE-001
+        providerMetadata:
+          $ref: '#/components/schemas/AllowlistEntryProviderMetadata'
+      required:
+      - id
+      - address
+      - assets
+      - networks
+      - status
+      - addedAt
+    ConnectedAccountTotalBalance:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: The denominated currency value of the account.
+          example: '1201.15'
+        denominatedAssetId:
+          type: string
+          description: The asset ID of the total balance.
+          example: ea6c3cb7-355a-4ee3-82ff-267c69970214
+        hasFullAssetCoverage:
+          type: boolean
+          description: Indicates whether the total amount represents the complete balance of all assets in the account. When true, all asset balances have been successfully converted to the denominated currency. When false, some assets could not be included in the total due to missing exchange rates or non-convertible assets.
+          default: false
+          example: true
+      required:
+      - amount
+      - denominatedAssetId
+      - hasFullAssetCoverage
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

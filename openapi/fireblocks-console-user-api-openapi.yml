@@ -1,0 +1,469 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Console User API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Console User
+paths:
+  /management/users:
+    get:
+      operationId: getConsoleUsers
+      summary: Get console users
+      description: 'Get console users for your workspace.
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Console User
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const consoleUsers = await fireblocks.getConsoleUsers();
+          name: Fireblocks SDK Javascript example
+        - language: python
+          code: consoleUsers = fireblocks.get_console_users()
+          name: Fireblocks SDK Python example (Legacy)
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetConsoleUsersResponse>> = fireblocks.consoleUser.getConsoleUsers();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetConsoleUsersResponse>> response = fireblocks.consoleUser().getConsoleUsers();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.console_user.get_console_users();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: got console users
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConsoleUsersResponse'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetConsoleUsersResponse>> = fireblocks.consoleUser.getConsoleUsers();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetConsoleUsersResponse>> response = fireblocks.consoleUser().getConsoleUsers();
+      - lang: Python
+        source: response = fireblocks.console_user.get_console_users();
+    post:
+      operationId: createConsoleUser
+      summary: Create console user
+      description: 'Create console users in your workspace
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin permissions.
+
+        Learn more about Fireblocks Users management in the following guide.
+
+        Endpoint Permission: Admin, Non-Signing Admin.'
+      tags:
+      - Console User
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const res = await fireblocks.createConsoleUser(firstName, lastName, email, role);
+          name: Fireblocks SDK Javascript example
+        - language: python
+          code: res = fireblocks.create_console_user(first_name, last_name, email, role)
+          name: Fireblocks SDK Python example (Legacy)
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.consoleUser.createConsoleUser(consoleUserApiCreateConsoleUserRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.consoleUser().createConsoleUser(createConsoleUser, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.console_user.create_console_user(create_console_user, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConsoleUser'
+      responses:
+        '200':
+          description: User creation approval request has been sent
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '400':
+          description: bad request
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Lacking permissions.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.consoleUser.createConsoleUser(consoleUserApiCreateConsoleUserRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.consoleUser().createConsoleUser(createConsoleUser, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.console_user.create_console_user(create_console_user, idempotency_key);
+  /management/users/{id}:
+    delete:
+      operationId: deleteConsoleUser
+      summary: Request deletion of a console user
+      description: 'Requests deletion of a console user. The request is asynchronous: it goes through the workspace''s configured "Delete users" approval policy (Settings > Quorums), exactly as deleting a user from the console does, and the user is removed only once that approval completes.
+
+        - The workspace must have a "Delete users" approval policy (admin quorum or approval group). If "Delete users" is Owner-only, which is the default, the request is refused with OWNER_ONLY (2760) and the Owner deletes users in the Console. With an admin quorum, the requesting API user''s own approval counts toward the quorum.
+
+        - Track progress by polling GET /management/users; deletion is complete when the user is disabled.
+
+        - Please note that this endpoint is available only for API keys with Admin/Non Signing Admin/Security Admin permissions.
+
+        Endpoint Permission: Admin, Non-Signing Admin, Security Admin.
+
+        **Note:** This endpoint is currently in beta and might be subject to changes.'
+      tags:
+      - Console User
+      x-rate-limit-category: write
+      x-lifecycle:
+        state: beta
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const res = await fireblocks.deleteConsoleUser(consoleUserId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ConsoleUser>> = fireblocks.consoleUser.deleteConsoleUser(consoleUserApiDeleteConsoleUserRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ConsoleUser>> response = fireblocks.consoleUser().deleteConsoleUser(id, force);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.console_user.delete_console_user(id, force);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: id
+        required: true
+        description: The ID of the console user to delete
+        schema:
+          type: string
+      - in: query
+        name: force
+        required: false
+        description: Acknowledges the impact of removing this user and proceeds anyway. Overrides both USER_REFERENCED_IN_TAP and QUORUM_INTEGRITY, the same way the acknowledgement checkbox does in the console.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '202':
+          description: Deletion request accepted. Returns the console user that will be removed once the workspace's configured approval completes.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsoleUser'
+        '400':
+          description: 'Bad request: invalid parameters (for example a non-boolean `force`), or TARGET_IS_API_USER - the ID belongs to an API user in this workspace; this endpoint deletes console users only.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '401':
+          description: Unauthorized. Missing / invalid JWT token in Authorization header.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '403':
+          description: 'Lacking permissions, or the target cannot be deleted: the user is the workspace Owner, or the caller is the target. Also returned as OWNER_ONLY (2760) when the workspace''s "Delete users" approval is Owner-only; set an approval policy in the Console under Settings > Quorums.'
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '404':
+          description: Console user not found. Also returned for users in other workspaces (so the endpoint does not reveal whether an ID exists there) and for users that were already deleted.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '409':
+          description: PENDING_REQUEST_EXISTS - a deletion request for this user is already awaiting approval; USER_REFERENCED_IN_TAP - the user is referenced by the workspace transaction authorization policy (can be overridden with force=true); or USER_PENDING_ONBOARDING - the user has not completed onboarding, so there is nothing to delete yet. Revoke the invitation from the console instead.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '422':
+          description: QUORUM_INTEGRITY - the user is required to complete the workspace's admin approval quorum. Can be overridden with force=true, matching the console's acknowledgement checkbox.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ConsoleUser>> = fireblocks.consoleUser.deleteConsoleUser(consoleUserApiDeleteConsoleUserRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ConsoleUser>> response = fireblocks.consoleUser().deleteConsoleUser(id, force);
+      - lang: Python
+        source: response = fireblocks.console_user.delete_console_user(id, force);
+components:
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - INTERNAL
+              - AUTHENTICATION
+              - AUTHORIZATION
+              - VALIDATION
+              - NOT_FOUND
+              - UNPROCESSABLE_ENTITY
+              - FORBIDDEN
+            message:
+              type: string
+          required:
+          - type
+          - message
+      required:
+      - error
+    ConsoleUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/ConsoleUser'
+    UserStatus:
+      type: string
+      description: The status of the user
+      enum:
+      - PENDING_ACTIVATION
+      - PENDING_DEVICE_PAIRING
+      - PENDING_DEVICE_SETUP
+      - READY
+    UserType:
+      type: string
+      description: The type of the user
+      enum:
+      - API
+      - CONSOLE
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    UserEnabled:
+      type: boolean
+      description: Whether the user is enabled
+    ConsoleUser:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        firstName:
+          type: string
+          description: The first name of the user
+        lastName:
+          type: string
+          description: The last name of the user
+        email:
+          type: string
+          description: The email address of the user
+        role:
+          $ref: '#/components/schemas/UserRole'
+        enabled:
+          $ref: '#/components/schemas/UserEnabled'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        userType:
+          $ref: '#/components/schemas/UserType'
+    UserId:
+      type: string
+      description: The unique identifier of the user
+    UserRole:
+      type: string
+      description: The role of the user
+      enum:
+      - OWNER
+      - ADMIN
+      - SIGNER
+      - COLLATERALS_SIGNER
+      - EDITOR
+      - APPROVER
+      - VIEWER
+      - NON_SIGNING_ADMIN
+      - AUDITOR
+      - NCW_ADMIN
+      - NCW_SIGNER
+      - SECURITY_ADMIN
+      - SECURITY_AUDITOR
+    GetConsoleUsersResponse:
+      type: object
+      properties:
+        users:
+          $ref: '#/components/schemas/ConsoleUsers'
+      required:
+      - users
+    CreateConsoleUser:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: users firstName
+        lastName:
+          type: string
+          description: users lastName
+        role:
+          type: string
+          description: users role
+        email:
+          type: string
+          description: valid email address
+      required:
+      - firstName
+      - lastName
+      - role
+      - email
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

@@ -1,13 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Exchange Fiat Accounts API
+  title: Fireblocks Fiat accounts API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
     - Visit our website for more information: Fireblocks Website
 
     - Visit our developer docs: Fireblocks DevPortal'
-  version: 1.8.0
+  version: 1.6.2
   contact:
     email: developers@fireblocks.com
 servers:
@@ -15,21 +15,23 @@ servers:
   description: Fireblocks Production Environment Base URL
 - url: https://sandbox-api.fireblocks.io/v1
   description: Fireblocks Sandbox Environment Base URL
-security: []
 tags:
-- name: Fiat Accounts
+- name: Fiat accounts
 paths:
   /fiat_accounts:
     get:
       summary: List fiat accounts
       description: 'Returns all fiat accounts.
 
-
         Endpoint Permission: Admin, Non-Signing Admin.'
       tags:
-      - Fiat Accounts
+      - Fiat accounts
+      x-rate-limit-category: query
       x-readme:
         code-samples:
+        - language: python
+          code: transactions = fireblocks.get_fiat_accounts()
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const transactions = await fireblocks.getFiatAccounts();
           name: Fireblocks SDK Javascript example
@@ -67,12 +69,15 @@ paths:
       summary: Find a specific fiat account
       description: 'Returns a fiat account by ID.
 
-
         Endpoint Permission: Admin, Non-Signing Admin.'
       tags:
-      - Fiat Accounts
+      - Fiat accounts
+      x-rate-limit-category: query
       x-readme:
         code-samples:
+        - language: python
+          code: transactions = fireblocks.get_fiat_account_by_id(account_id)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const transactions = await fireblocks.getFiatAccountById(accountId);
           name: Fireblocks SDK Javascript example
@@ -112,77 +117,18 @@ paths:
         source: CompletableFuture<ApiResponse<FiatAccount>> response = fireblocks.fiatAccounts().getFiatAccount(accountId);
       - lang: Python
         source: response = fireblocks.fiat_accounts.get_fiat_account(account_id);
-  /fiat_accounts/{accountId}/redeem_to_linked_dda:
-    post:
-      summary: Redeem funds to DDA
-      description: 'Redeems funds to the linked DDA.
-
-        Learn more about Fireblocks FIAT Connectivity in the following guide.
-
-
-        Endpoint Permission: Admin, Non-Signing Admin.'
-      tags:
-      - Fiat Accounts
-      x-readme:
-        code-samples:
-        - language: javascript
-          code: const transactions = await fireblocks.redeemToLinkedDDA(accountId, amount);
-          name: Fireblocks SDK Javascript example
-        - language: typescript
-          code: 'const response: Promise<FireblocksResponse<RedeemFundsToLinkedDDAResponse>> = fireblocks.fiatAccounts.redeemFundsToLinkedDDA(fiatAccountsApiRedeemFundsToLinkedDDARequest);'
-          name: Fireblocks SDK TypeScript example
-        - language: java
-          code: CompletableFuture<ApiResponse<RedeemFundsToLinkedDDAResponse>> response = fireblocks.fiatAccounts().redeemFundsToLinkedDDA(accountId, funds, idempotencyKey);
-          name: Fireblocks SDK Java example
-        - language: python
-          code: response = fireblocks.fiat_accounts.redeem_funds_to_linked_d_d_a(account_id, funds, idempotency_key);
-          name: Fireblocks SDK Python example
-      parameters:
-      - in: path
-        name: accountId
-        required: true
-        description: The ID of the fiat account to use
-        schema:
-          type: string
-      - $ref: '#/components/parameters/X-Idempotency-Key'
-      responses:
-        '201':
-          description: Transfer succeeded
-          headers:
-            X-Request-ID:
-              $ref: '#/components/headers/X-Request-ID'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RedeemFundsToLinkedDDAResponse'
-        default:
-          $ref: '#/components/responses/Error'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Funds'
-      operationId: redeemFundsToLinkedDDA
-      x-codeSamples:
-      - lang: TypeScript
-        source: 'const response: Promise<FireblocksResponse<RedeemFundsToLinkedDDAResponse>> = fireblocks.fiatAccounts.redeemFundsToLinkedDDA(fiatAccountsApiRedeemFundsToLinkedDDARequest);'
-      - lang: Java
-        source: CompletableFuture<ApiResponse<RedeemFundsToLinkedDDAResponse>> response = fireblocks.fiatAccounts().redeemFundsToLinkedDDA(accountId, funds, idempotencyKey);
-      - lang: Python
-        source: response = fireblocks.fiat_accounts.redeem_funds_to_linked_d_d_a(account_id, funds, idempotency_key);
   /fiat_accounts/{accountId}/deposit_from_linked_dda:
     post:
       summary: Deposit funds from DDA
-      description: 'Deposits funds from the linked DDA.
-
-        Learn more about Fireblocks FIAT Connectivity in the following guide.
-
-
-        Endpoint Permission: Admin, Non-Signing Admin.'
+      description: Deposits funds from the linked DDA.
       tags:
-      - Fiat Accounts
+      - Fiat accounts
+      x-rate-limit-category: write
       x-readme:
         code-samples:
+        - language: python
+          code: transactions = fireblocks.deposit_from_linked_dda(account_id, amount)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const transactions = await fireblocks.depositFromLinkedDDA(accountId, amount);
           name: Fireblocks SDK Javascript example
@@ -228,20 +174,83 @@ paths:
         source: CompletableFuture<ApiResponse<DepositFundsFromLinkedDDAResponse>> response = fireblocks.fiatAccounts().depositFundsFromLinkedDDA(accountId, funds, idempotencyKey);
       - lang: Python
         source: response = fireblocks.fiat_accounts.deposit_funds_from_linked_d_d_a(account_id, funds, idempotency_key);
+  /fiat_accounts/{accountId}/redeem_to_linked_dda:
+    post:
+      summary: Redeem funds to DDA
+      description: Redeems funds to the linked DDA.
+      tags:
+      - Fiat accounts
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: python
+          code: transactions = fireblocks.redeem_to_linked_dda(account_id, amount)
+          name: Fireblocks SDK Python example (Legacy)
+        - language: javascript
+          code: const transactions = await fireblocks.redeemToLinkedDDA(accountId, amount);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<RedeemFundsToLinkedDDAResponse>> = fireblocks.fiatAccounts.redeemFundsToLinkedDDA(fiatAccountsApiRedeemFundsToLinkedDDARequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<RedeemFundsToLinkedDDAResponse>> response = fireblocks.fiatAccounts().redeemFundsToLinkedDDA(accountId, funds, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.fiat_accounts.redeem_funds_to_linked_d_d_a(account_id, funds, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        description: The ID of the fiat account to use
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      responses:
+        '201':
+          description: Transfer succeeded
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedeemFundsToLinkedDDAResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Funds'
+      operationId: redeemFundsToLinkedDDA
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<RedeemFundsToLinkedDDAResponse>> = fireblocks.fiatAccounts.redeemFundsToLinkedDDA(fiatAccountsApiRedeemFundsToLinkedDDARequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<RedeemFundsToLinkedDDAResponse>> response = fireblocks.fiatAccounts().redeemFundsToLinkedDDA(accountId, funds, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.fiat_accounts.redeem_funds_to_linked_d_d_a(account_id, funds, idempotency_key);
 components:
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
   schemas:
-    DepositFundsFromLinkedDDAResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates whether the funds were successfully deposited from the linked DDA
-      required:
-      - success
-    FiatAccountType:
-      type: string
-      enum:
-      - BLINC
     FiatAccount:
       type: object
       properties:
@@ -260,10 +269,49 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FiatAsset'
-    GetFiatAccountsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/FiatAccount'
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    RedeemFundsToLinkedDDAResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the funds were successfully redeemed to the linked DDA
+      required:
+      - success
+    FiatAccountType:
+      type: string
+      description: OTHER indicates the underlying provider isn't representable by this API version's enum (e.g. a newly onboarded provider, or one removed from this list) — it does not identify a specific provider, so it should not be used to key any client-side logic.
+      enum:
+      - BLINC
+      - BLINC_TEST
+      - CROSSRIVER
+      - CROSSRIVER_TEST
+      - CUSTOMERSBANK
+      - CUSTOMERSBANK_TEST
+      - FIFTHTHIRD
+      - FIFTHTHIRD_TEST
+      - KINGDOM_BANK
+      - KINGDOM_BANK_TESTNET
+      - LYNQ
+      - LYNQ_DEV
+      - LYNQ_QA
+      - LYNQ_UAT
+      - N3XT
+      - N3XT_ALPHA
+      - N3XT_BETA
+      - N3XT_OMEGA
+      - SYGNUM_CONNECT
+      - SYGNUM_CONNECT_STAGING
+      - TRANSFERO
+      - TRANSFERO_STAGING
+      - ZENUS_DEV
+      - OTHER
     Funds:
       type: object
       properties:
@@ -276,33 +324,23 @@ components:
           type: string
         balance:
           type: string
-    RedeemFundsToLinkedDDAResponse:
+    GetFiatAccountsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/FiatAccount'
+    DepositFundsFromLinkedDDAResponse:
       type: object
       properties:
         success:
           type: boolean
-          description: Indicates whether the funds were successfully redeemed to the linked DDA
+          description: Indicates whether the funds were successfully deposited from the linked DDA
       required:
       - success
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
+  headers:
+    X-Request-ID:
       schema:
         type: string
-        example: some-unique-id
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
   securitySchemes:
     bearerTokenAuth:
       type: http
@@ -312,3 +350,9 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

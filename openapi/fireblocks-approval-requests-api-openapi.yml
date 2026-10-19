@@ -19,49 +19,6 @@ security: []
 tags:
 - name: Approval Requests
 paths:
-  /tags/approval_requests/{id}:
-    get:
-      summary: Get an approval request by id
-      tags:
-      - Approval Requests
-      x-rate-limit-category: read
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-          format: numeric
-          example: '12345'
-      responses:
-        '200':
-          description: Approval request fetched successfully
-          headers:
-            X-Request-ID:
-              $ref: '#/components/headers/X-Request-ID'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApprovalRequest'
-        '401':
-          description: Unauthorized
-          headers:
-            X-Request-ID:
-              $ref: '#/components/headers/X-Request-ID'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Approval request not found
-          headers:
-            X-Request-ID:
-              $ref: '#/components/headers/X-Request-ID'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      operationId: getApprovalRequest
   /tags/approval_requests/{id}/cancel:
     post:
       summary: Cancel an approval request by ID
@@ -113,6 +70,15 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       operationId: cancelApprovalRequest
 components:
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+        example: some-unique-id
   schemas:
     ErrorResponse:
       type: object
@@ -137,45 +103,6 @@ components:
           - message
       required:
       - error
-    ApprovalRequest:
-      type: object
-      description: Approval request details
-      properties:
-        id:
-          type: string
-          format: numeric
-          description: The approval request identifier
-          example: '12345'
-        type:
-          type: string
-          description: The approval request type
-          enum:
-          - TAG_UPDATE
-          - TAG_DELETE
-          - TAG_ATTACH_DETACH
-        state:
-          type: string
-          description: The approval request state
-          enum:
-          - PENDING
-          - APPROVED
-          - REJECTED
-          - FAILED
-          - CANCELLED
-          - EXPIRED
-      required:
-      - id
-      - type
-      - state
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
   securitySchemes:
     bearerTokenAuth:
       type: http

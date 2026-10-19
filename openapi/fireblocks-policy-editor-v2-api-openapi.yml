@@ -1,0 +1,1287 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Policy Editor V2 API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Policy Editor V2
+paths:
+  /policy/active_policy:
+    get:
+      operationId: getActivePolicy
+      summary: Get the active policy and its validation by policy type
+      description: 'Returns the active policy and its validation for a specific policy type.
+
+
+        Endpoint Permissions: Owner, Admin, Non-Signing Admin.'
+      tags:
+      - Policy Editor V2
+      x-rate-limit-category: query
+      parameters:
+      - name: policyType
+        in: query
+        required: true
+        description: The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT).
+        schema:
+          $ref: '#/components/schemas/PolicyType'
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: '// Single policy type
+
+            const policy = await fireblocks.getActivePolicy({policyType: "TRANSFER"});
+
+            // Multiple policy types
+
+            const policy = await fireblocks.getActivePolicy({policyType: ["TRANSFER", "MINT"]});
+
+            '
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PolicyAndValidationResponse>> = fireblocks.policyEditorV2.getActivePolicy(policyEditorV2ApiGetActivePolicyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PolicyAndValidationResponse>> response = fireblocks.policyEditorV2().getActivePolicy(policyType);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.policy_editor_v2.get_active_policy(policy_type);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: A policy object with validation
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyAndValidationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PolicyAndValidationResponse>> = fireblocks.policyEditorV2.getActivePolicy(policyEditorV2ApiGetActivePolicyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PolicyAndValidationResponse>> response = fireblocks.policyEditorV2().getActivePolicy(policyType);
+      - lang: Python
+        source: response = fireblocks.policy_editor_v2.get_active_policy(policy_type);
+  /policy/draft:
+    get:
+      operationId: getDraft
+      summary: Get the active draft by policy type
+      description: Returns the active draft and its validation for a specific policy type.
+      tags:
+      - Policy Editor V2
+      x-rate-limit-category: read
+      parameters:
+      - name: policyType
+        in: query
+        required: true
+        description: The policy type(s) to retrieve. Can be a single type or multiple types by repeating the parameter (e.g., ?policyType=TRANSFER&policyType=MINT).
+        schema:
+          $ref: '#/components/schemas/PolicyType'
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: '// Single policy type
+
+            const draft = await fireblocks.getDraft({policyType: "TRANSFER"});
+
+            // Multiple policy types
+
+            const draft = await fireblocks.getDraft({policyType: ["TRANSFER", "MINT"]});
+
+            '
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorV2.getDraft(policyEditorV2ApiGetDraftRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorV2().getDraft(policyType);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.policy_editor_v2.get_draft(policy_type);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: A draft validation response object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftReviewAndValidationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorV2.getDraft(policyEditorV2ApiGetDraftRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorV2().getDraft(policyType);
+      - lang: Python
+        source: response = fireblocks.policy_editor_v2.get_draft(policy_type);
+    put:
+      operationId: updateDraft
+      summary: Update the draft with a new set of rules by policy types
+      description: 'Update the draft and return its validation for specific policy types.
+
+
+        **⚠️ IMPORTANT SECURITY NOTICE:**
+
+
+        The Fireblocks Policy is a critical security guardrail. Programmatically modifying your policy via the API introduces significant security risks. As an industry best practice, Fireblocks strongly recommends manual editing accompanied by strict human oversight and approval workflows for all policy changes. Programmatic updates should only be implemented by advanced users with comprehensive, multi-layer security controls in place.'
+      tags:
+      - Policy Editor V2
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: 'const draft = await fireblocks.updateDraft({policyTypes: ["TRANSFER"], rules: rules});
+
+            '
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorV2.updateDraft(policyEditorV2ApiUpdateDraftRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorV2().updateDraft(updateDraftRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.policy_editor_v2.update_draft(update_draft_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDraftRequest'
+      responses:
+        '200':
+          description: A draft validation response object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftReviewAndValidationResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorV2.updateDraft(policyEditorV2ApiUpdateDraftRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorV2().updateDraft(updateDraftRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.policy_editor_v2.update_draft(update_draft_request, idempotency_key);
+    post:
+      operationId: publishDraft
+      summary: Send publish request for a certain draft id
+      description: 'Send publish request of certain draft id and returns the response.
+
+
+        **⚠️ IMPORTANT SECURITY NOTICE:**
+
+
+        The Fireblocks Policy is a critical security guardrail. Programmatically modifying your policy via the API introduces significant security risks. As an industry best practice, Fireblocks strongly recommends manual editing accompanied by strict human oversight and approval workflows for all policy changes. Programmatic updates should only be implemented by advanced users with comprehensive, multi-layer security controls in place.
+
+
+        If you want to learn more about the Fireblocks Policy Editor, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.'
+      tags:
+      - Policy Editor V2
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: 'const policy = await fireblocks.publishDraft({policyTypes: ["TRANSFER"], draftId: "draft-123"});
+
+            '
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<PublishResult>> = fireblocks.policyEditorV2.publishDraft(policyEditorV2ApiPublishDraftRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<PublishResult>> response = fireblocks.policyEditorV2().publishDraft(publishDraftRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.policy_editor_v2.publish_draft(publish_draft_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublishDraftRequest'
+      responses:
+        '201':
+          description: A policy publish result object
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishResult'
+        default:
+          $ref: '#/components/responses/Error'
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<PublishResult>> = fireblocks.policyEditorV2.publishDraft(policyEditorV2ApiPublishDraftRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<PublishResult>> response = fireblocks.policyEditorV2().publishDraft(publishDraftRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.policy_editor_v2.publish_draft(publish_draft_request, idempotency_key);
+components:
+  schemas:
+    InitiatorConfigPattern:
+      oneOf:
+      - type: string
+        enum:
+        - '*'
+        description: All users are allowed
+        example: '*'
+      - $ref: '#/components/schemas/InitiatorConfig'
+    AmountOverTimeConfig:
+      type: object
+      description: Amount over time configuration
+      properties:
+        range:
+          $ref: '#/components/schemas/AmountRangeMinMax-2'
+        currency:
+          $ref: '#/components/schemas/PolicyCurrency'
+        timePeriod:
+          $ref: '#/components/schemas/TimePeriodConfig'
+      required:
+      - range
+      - currency
+      - timePeriod
+    PolicyRuleError:
+      type: object
+      description: Rule validation result error
+      properties:
+        errorMessage:
+          type: string
+          description: Error message
+        errorCode:
+          type: number
+          description: error code
+        errorCodeName:
+          type: string
+          description: error code name
+        errorField:
+          type: string
+          enum:
+          - operator
+          - operators
+          - authorizationGroups
+          - designatedSigner
+          - designatedSigners
+          - contractMethods
+          - amountAggregation
+          - src
+          - dst
+          description: 'The field which the error relates to
+
+            * operator - transaction initiator
+
+            * operators - transaction initiators
+
+            * authorizationGroups - transaction authorizer groups
+
+            * designatedSigner - transaction signer
+
+            * designatedSigners - transaction signers
+
+            * contractMethods - contract methods
+
+            * amountAggregation - transaction amount aggregation configuration
+
+            * src - transaction source asset configuration
+
+            * dst - transaction destination asset configuration
+
+            '
+      required:
+      - errorMessage
+      - errorCode
+      - errorCodeName
+      - errorField
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    ScreeningMetadataConfig:
+      type: object
+      description: Screening metadata configuration
+      properties:
+        direction:
+          type: string
+          enum:
+          - INBOUND
+          - OUTBOUND
+          - ANY
+          description: Direction of transaction
+          example: OUTBOUND
+        provider:
+          type:
+          - string
+          - 'null'
+          enum:
+          - CHAINALYSIS
+          - CHAINALYSIS_V2
+          - ELLIPTIC
+          - ELLIPTIC_HOLISTIC
+          - NOTABENE
+          description: Screening provider
+          example: CHAINALYSIS
+        riskRating:
+          type: string
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          - SEVERE
+          - ANY
+          description: Risk rating threshold
+          example: MEDIUM
+        riskScore:
+          type: string
+          description: Risk score threshold
+          example: '0.8'
+        exposureType:
+          type: string
+          enum:
+          - DIRECT
+          - INDIRECT
+          - ANY
+          description: Exposure type
+          example: DIRECT
+        category:
+          type: array
+          items:
+            type: string
+        name:
+          type: array
+          items:
+            type: string
+        categoryId:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum:
+          - COMPLETED
+          - PENDING
+          - REJECTED
+          - FAILED
+          - CANCELED
+          - BLOCKING_TIME_EXPIRED
+          description: Transaction status
+          example: COMPLETED
+        sourceAddress:
+          type: string
+          description: Source address
+          example: 0x123...
+        destAddress:
+          type: string
+          description: Destination address
+          example: 0x456...
+    ContractMethodPattern:
+      oneOf:
+      - type: string
+        enum:
+        - '*'
+        description: All methods allowed
+        example: '*'
+      - $ref: '#/components/schemas/ContractMethodConfig'
+    AccountConfig:
+      type: object
+      description: Policy account configuration
+      properties:
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountType-2'
+          description: Account types
+        subType:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountIdentifier'
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountIdentifier'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTag'
+          description: Tags for account matching
+        operator:
+          $ref: '#/components/schemas/PolicyOperator'
+        matchFrom:
+          type: string
+          enum:
+          - ACCOUNT
+          - SOURCE
+          description: Whether to match from account or source
+          example: ACCOUNT
+      required:
+      - operator
+    AmountConfig:
+      allOf:
+      - $ref: '#/components/schemas/AmountRange'
+      - $ref: '#/components/schemas/AmountConfigCurrency'
+      example:
+        range:
+          min: '100'
+          max: '10000'
+        currency: USD
+    PolicyTag:
+      type: object
+      description: Policy tag for matching
+      properties:
+        id:
+          type: string
+          description: Tag identifier
+          example: tag_001
+      required:
+      - id
+    DestinationConfig:
+      type: object
+      description: Destination configuration for policy rules
+      properties:
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountType-2'
+          description: Destination account types
+        subType:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountIdentifier'
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountIdentifier'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTag'
+          description: Tags for destination matching
+        operator:
+          $ref: '#/components/schemas/PolicyOperator'
+        matchFrom:
+          type: string
+          enum:
+          - ACCOUNT
+          - SOURCE
+          description: Whether to match from account or source (relevant only for ORDER policy type). If set to ACCOUNT, only matchFrom is allowed and other fields are not required.
+          example: ACCOUNT
+        addressType:
+          type: string
+          enum:
+          - '*'
+          - WHITELISTED
+          - ONE_TIME
+          description: Type of destination addresses allowed
+          example: WHITELISTED
+      required:
+      - operator
+      - addressType
+      example:
+        type:
+        - EXTERNAL
+        operator: INCLUDES
+        addressType: WHITELISTED
+    PublishDraftRequest:
+      type: object
+      description: Request schema for publishing draft with policy types and draft ID
+      required:
+      - policyTypes
+      - draftId
+      properties:
+        policyTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyType'
+        draftId:
+          type: string
+          description: The ID of the draft to publish
+          example: draft-123
+    PolicyMetadata:
+      description: Policy metadata keyed by policy type
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/PolicyMetadataEntry'
+      example:
+        TRANSFER:
+          editedBy: user123
+          editedAt: '2024-01-15T10:30:00Z'
+          publishedBy: user456
+          publishedAt: '2024-01-15T11:00:00Z'
+    AmountRange:
+      type: object
+      description: Amount range with minimum and maximum values
+      properties:
+        range:
+          $ref: '#/components/schemas/AmountRangeMinMax-2'
+      required:
+      - range
+      example:
+        range:
+          min: '100'
+          max: '10000'
+    PolicyUserIds:
+      type: array
+      items:
+        type: string
+      description: List of user IDs
+      example:
+      - user1
+      - user2
+    InitiatorConfig:
+      type: object
+      description: Policy rule initiator configuration
+      properties:
+        users:
+          $ref: '#/components/schemas/PolicyUserIds'
+        groups:
+          $ref: '#/components/schemas/PolicyGroupIds'
+        services:
+          type: array
+          items:
+            type: string
+        fbAdminGroups:
+          type: array
+          items:
+            type: string
+        exchange:
+          type: array
+          items:
+            type: string
+        operator:
+          $ref: '#/components/schemas/PolicyOperator'
+    AssetTypesConfig:
+      type: array
+      items:
+        oneOf:
+        - type: string
+        - enum:
+          - '*'
+      description: List of asset types
+      example:
+      - FUNGIBLE
+      - NFT
+      - '*'
+    PolicyRule:
+      type: object
+      description: V2 Policy rule which is enforced on transactions
+      properties:
+        name:
+          type: string
+          description: Name of the policy rule
+          example: High Value Transfer Policy
+        id:
+          type: string
+          description: Unique identifier for the policy rule
+          example: policy_rule_001
+        policyEngineVersion:
+          type: string
+          enum:
+          - v2
+          description: Policy engine version
+          example: v2
+        type:
+          $ref: '#/components/schemas/PolicyType'
+        subType:
+          $ref: '#/components/schemas/PolicyType'
+        initiator:
+          $ref: '#/components/schemas/InitiatorConfigPattern'
+        asset:
+          $ref: '#/components/schemas/AssetConfig'
+        source:
+          $ref: '#/components/schemas/SourceConfig'
+        destination:
+          $ref: '#/components/schemas/DestinationConfig'
+        account:
+          $ref: '#/components/schemas/AccountConfig'
+        side:
+          $ref: '#/components/schemas/OrderSide'
+        verdict:
+          $ref: '#/components/schemas/VerdictConfig'
+        amountOverTime:
+          $ref: '#/components/schemas/AmountOverTimeConfig'
+        amount:
+          $ref: '#/components/schemas/AmountConfig'
+        externalDescriptor:
+          type: string
+          description: External descriptor for the rule
+          example: High value transfer policy for institutional clients
+        method:
+          $ref: '#/components/schemas/ContractMethodPattern'
+        isGlobalPolicy:
+          type: boolean
+          description: Whether this is a global policy
+          example: false
+        programCall:
+          $ref: '#/components/schemas/ProgramCallConfig'
+        screeningMetadata:
+          $ref: '#/components/schemas/ScreeningMetadataConfig'
+        quoteAsset:
+          $ref: '#/components/schemas/AssetConfig'
+        baseAsset:
+          $ref: '#/components/schemas/AssetConfig'
+        quoteAmount:
+          $ref: '#/components/schemas/AmountRange'
+        baseAmount:
+          $ref: '#/components/schemas/AmountRange'
+        dAppAddress:
+          $ref: '#/components/schemas/DAppAddressConfig'
+        derivationPath:
+          $ref: '#/components/schemas/DerivationPathConfig'
+        index:
+          type: number
+          description: Index for the policy rule
+          example: 1
+      required:
+      - name
+      - id
+      - policyEngineVersion
+      - type
+      - initiator
+      - source
+      - verdict
+    OrderSide:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      - ANY
+      description: Order side for trading operations
+      example: BUY
+    PolicyGroupIds:
+      type: array
+      items:
+        type: string
+      description: List of policy group IDs
+      example:
+      - group1
+      - group2
+    PolicyOperator:
+      type: string
+      enum:
+      - INCLUDES
+      description: Operator for selection
+      example: INCLUDES
+    AccountType-2:
+      type: string
+      enum:
+      - EXCHANGE
+      - UNMANAGED
+      - VAULT
+      - GLOBAL_WHITELIST
+      - NETWORK_CONNECTION
+      - FIAT_ACCOUNT
+      - CONNECTED_ACCOUNT
+      - ONE_TIME_ADDRESS
+      - SRC_DST_NA
+      - MULTIPLE_VENUES
+      - END_USER_WALLET
+      - OEC_PARTNER
+      - CONTRACT
+      - INTERNAL
+      - EXTERNAL
+      - DAPP_CONNECTION
+      - UNKNOWN
+      - '*'
+      - ANY
+      description: Type of account
+      example: VAULT
+    PolicyRuleCheckResult:
+      type: object
+      description: The rule validation result
+      properties:
+        index:
+          type: number
+          description: Rule index number in the policy
+        status:
+          type: string
+          description: Validation status
+          enum:
+          - ok
+          - failure
+        errors:
+          type: array
+          description: A set of rule validation error objects
+          items:
+            $ref: '#/components/schemas/PolicyRuleError'
+      required:
+      - index
+      - status
+      - errors
+    PolicyResponse:
+      type: object
+      description: Response object for policy operations
+      properties:
+        rules:
+          type: array
+          description: A set of policy rules
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadata'
+      required:
+      - rules
+      - metadata
+    PolicyType:
+      type: string
+      enum:
+      - TRANSFER
+      - STAKE
+      - CONTRACT_CALL
+      - TYPED_MESSAGE
+      - APPROVE
+      - MINT
+      - BURN
+      - RAW
+      - COMPLIANCE
+      - DEPLOYMENT
+      - PROGRAM_CALL
+      - DAPP_CONNECTION
+      - UPGRADE
+      - ORDER
+      - AML_CHAINALYSIS_V2_SCREENING
+      - AML_CHAINALYSIS_V2_POST_SCREENING
+      - AML_ELLIPTIC_HOLISTIC_SCREENING
+      - AML_ELLIPTIC_HOLISTIC_POST_SCREENING
+      - TR_NOTABENE_SCREENING
+      - TR_NOTABENE_POST_SCREENING
+      description: Policy type enumeration
+      example: TRANSFER
+    AccountIdentifier:
+      type: object
+      description: Account identifier with type, ID, subtype, and address
+      properties:
+        type:
+          $ref: '#/components/schemas/AccountType-2'
+        id:
+          type: string
+          description: Account ID
+          example: account123
+        subType:
+          type: string
+          description: Account subtype
+          example: INTERNAL
+        address:
+          type: string
+          description: Account address
+          example: 0x123...
+      required:
+      - type
+    PolicyMetadataEntry:
+      type: object
+      description: Policy metadata entry (per policy type)
+      properties:
+        editedBy:
+          type: string
+          description: The user ID of the user who last edited the policy
+          example: user123
+        editedAt:
+          type: string
+          description: The timestamp of the last edit of the policy
+          example: '2024-01-15T10:30:00Z'
+        publishedBy:
+          type: string
+          description: The user ID of the user who last published the policy
+          example: user456
+        publishedAt:
+          type: string
+          description: The timestamp of the last publish of the policy
+          example: '2024-01-15T11:00:00Z'
+    TimePeriodConfig:
+      type: object
+      description: Time period configuration
+      properties:
+        seconds:
+          type: string
+          description: Time period in seconds
+          example: '86400'
+        initiator:
+          $ref: '#/components/schemas/TimePeriodMatchType'
+        source:
+          $ref: '#/components/schemas/TimePeriodMatchType'
+        destination:
+          $ref: '#/components/schemas/TimePeriodMatchType'
+      required:
+      - seconds
+      - initiator
+      - source
+      - destination
+    PolicyAndValidationResponse:
+      type: object
+      description: Policy validation
+      properties:
+        policy:
+          $ref: '#/components/schemas/PolicyResponse'
+        validation:
+          $ref: '#/components/schemas/PolicyValidation'
+      required:
+      - policy
+      - validation
+    UpdateDraftRequest:
+      type: object
+      description: Request schema for updating draft with policy types and rules
+      required:
+      - policyTypes
+      - rules
+      properties:
+        policyTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyType'
+        rules:
+          type: array
+          description: Array of policy rules
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+    PolicyCheckResult:
+      type: object
+      description: Policy rules validation result
+      properties:
+        errors:
+          type: number
+          description: Number of errors
+        results:
+          type: array
+          description: A set of validation results
+          items:
+            $ref: '#/components/schemas/PolicyRuleCheckResult'
+      required:
+      - errors
+      - results
+    ContractMethodConfig:
+      type: object
+      description: Contract method configuration
+      properties:
+        methodCalls:
+          type: array
+          items:
+            type: string
+        operator:
+          type: string
+          enum:
+          - EITHER
+          - EXACT
+          description: Operator for method calls
+          example: EITHER
+        payloadSuffix:
+          type: string
+          description: Payload suffix for method calls
+          example: 0x123...
+      required:
+      - methodCalls
+      - operator
+      example:
+        methodCalls:
+        - transfer
+        - approve
+        operator: EITHER
+    DesignatedSignersConfig:
+      type: object
+      description: Designated signers configuration
+      properties:
+        type:
+          type: string
+          enum:
+          - SINGLE
+          - MULTIPLE
+          - INITIATOR
+          description: Type of designated signers
+          example: SINGLE
+        users:
+          $ref: '#/components/schemas/PolicyUserIds'
+        groups:
+          $ref: '#/components/schemas/PolicyGroupIds'
+      required:
+      - type
+    AssetConfig:
+      type: object
+      description: Policy asset configuration
+      properties:
+        nftTransfer:
+          type: boolean
+          description: Whether this is an NFT transfer
+          example: false
+        assetTypes:
+          $ref: '#/components/schemas/AssetTypesConfig'
+        operator:
+          $ref: '#/components/schemas/PolicyOperator'
+      required:
+      - nftTransfer
+    VerdictConfig:
+      type: object
+      description: Verdict configuration
+      properties:
+        action:
+          type: string
+          enum:
+          - ALLOW
+          - BLOCK
+          - 2-TIER
+          - ACCEPT
+          - REJECT
+          - ALERT
+          - SCREEN
+          - PASS
+          - WAIT
+          - FREEZE
+          - CANCEL
+          description: Verdict action
+          example: ALLOW
+        approvers:
+          $ref: '#/components/schemas/ApproversConfig'
+        designatedSigners:
+          $ref: '#/components/schemas/DesignatedSignersConfig'
+      required:
+      - action
+    PolicyCurrency:
+      type: string
+      enum:
+      - NATIVE
+      - USD
+      - EUR
+      description: Currency for the amount
+      example: USD
+    TimePeriodMatchType:
+      type: string
+      enum:
+      - PER_SINGLE_MATCH
+      - ACROSS_ALL_MATCHES
+      description: Type of match for time period application
+      example: PER_SINGLE_MATCH
+    SourceConfig:
+      type: object
+      description: Source account configuration for policy rules
+      properties:
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountType-2'
+          description: Source account types
+          example:
+          - VAULT
+          - UNMANAGED
+        subType:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountIdentifier'
+          description: Source account subtypes
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountIdentifier'
+          description: Source account identifiers
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTag'
+          description: Tags for source matching
+        operator:
+          $ref: '#/components/schemas/PolicyOperator'
+        matchFrom:
+          type: string
+          enum:
+          - ACCOUNT
+          description: Whether to match from account (relevant only for ORDER policy type)
+          example: ACCOUNT
+      required:
+      - operator
+    AmountRangeMinMax-2:
+      type: object
+      description: Amount range with minimum and maximum values
+      properties:
+        min:
+          type: string
+          description: Minimum amount
+          example: '100'
+        max:
+          type: string
+          description: Maximum amount
+          example: '10000'
+      required:
+      - min
+      example:
+        min: '100'
+        max: '10000'
+    DerivationPathConfig:
+      type: object
+      description: Derivation path configuration
+      properties:
+        path:
+          type: array
+          items:
+            type: number
+          description: Derivation path as array of numbers
+          example:
+          - 44
+          - 0
+          - 0
+          - 0
+          - 0
+        partial:
+          type: boolean
+          description: Whether this is a partial path
+          example: false
+      required:
+      - path
+      example:
+        path:
+        - 44
+        - 0
+        - 0
+        - 0
+        - 0
+        partial: false
+    ApproversConfig:
+      type: object
+      description: Approvers configuration
+      properties:
+        canInitiatorApprove:
+          type: boolean
+          description: Whether initiator can approve
+          example: false
+        operator:
+          type: string
+          enum:
+          - AND
+          - OR
+          description: Operator for approval groups
+          example: AND
+        allowOperatorAsAuthorizer:
+          type: boolean
+          description: Whether operator can be authorizer
+          example: false
+        approvalGroups:
+          type: array
+          items:
+            type: object
+            properties:
+              threshold:
+                type: number
+                description: Approval threshold
+                example: 2
+              users:
+                $ref: '#/components/schemas/PolicyUserIds'
+              groups:
+                $ref: '#/components/schemas/PolicyGroupIds'
+            required:
+            - threshold
+          description: List of approval groups
+          example:
+          - threshold: 2
+            users:
+            - user1
+            - user2
+      required:
+      - canInitiatorApprove
+    AmountConfigCurrency:
+      type: object
+      description: Currency property for amount configuration
+      properties:
+        currency:
+          $ref: '#/components/schemas/PolicyCurrency'
+    ProgramCallConfig:
+      type: object
+      description: Program call configuration
+      properties:
+        allowedSolanaProgramCalls:
+          type: string
+          enum:
+          - '*'
+          - WHITELISTED
+          description: Whether Solana program calls are allowed
+          example: WHITELISTED
+      required:
+      - allowedSolanaProgramCalls
+    DraftResponse:
+      type: object
+      description: Response object for draft operations
+      properties:
+        status:
+          type: string
+          description: Operation status
+        rules:
+          type: array
+          description: Draft rules
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+        draftId:
+          type: string
+          description: Draft unique id
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadata'
+      required:
+      - draftId
+      - status
+      - rules
+      - metadata
+    DAppAddressConfig:
+      type: object
+      description: dApp address configuration for policy rules
+      properties:
+        globalWhitelisted:
+          type: array
+          items:
+            type: string
+          description: Globally whitelisted addresses
+          example:
+          - rabby.io
+          - jup.ag
+        tenantWhitelisted:
+          type: array
+          items:
+            type: string
+          description: Tenant whitelisted addresses
+          example:
+          - uniswap.com
+          - opensea.io
+        urls:
+          type: array
+          items:
+            type: string
+          description: Allowed all address
+          example:
+          - '*'
+        operator:
+          $ref: '#/components/schemas/PolicyOperator'
+      required:
+      - globalWhitelisted
+      - tenantWhitelisted
+      - urls
+      - operator
+    PublishResult:
+      type: object
+      description: Response object of the publish policy operation
+      properties:
+        status:
+          $ref: '#/components/schemas/PolicyStatus'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+        checkResult:
+          $ref: '#/components/schemas/PolicyCheckResult'
+        metadata:
+          $ref: '#/components/schemas/PolicyMetadata'
+      required:
+      - status
+      - rules
+      - checkResult
+      - metadata
+    PolicyStatus:
+      type: string
+      enum:
+      - SUCCESS
+      - UNVALIDATED
+      - INVALID_CONFIGURATION
+      - PENDING
+      - PENDING_CONSOLE_APPROVAL
+      - AWAITING_QUORUM
+      - UNHANDLED_ERROR
+      description: '* SUCCESS - success
+
+        * UNVALIDATED - not validated yet
+
+        * INVALID_CONFIGURATION - at least one rule is invalid
+
+        * PENDING - pending approval
+
+        * PENDING_CONSOLE_APPROVAL - pending approval from the console app
+
+        * AWAITING_QUORUM - pending quorum approval
+
+        * UNHANDLED_ERROR - unhandled error
+
+        '
+    DraftReviewAndValidationResponse:
+      type: object
+      description: Draft validation
+      properties:
+        draftResponse:
+          $ref: '#/components/schemas/DraftResponse'
+        validation:
+          $ref: '#/components/schemas/PolicyValidation'
+      required:
+      - draftResponse
+      - validation
+    PolicyValidation:
+      type: object
+      description: Policy validation object
+      properties:
+        status:
+          type: string
+          description: Validation status
+        checkResult:
+          $ref: '#/components/schemas/PolicyCheckResult'
+      required:
+      - status
+      - checkResult
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

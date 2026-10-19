@@ -1,13 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests Gas……………
+  title: Fireblocks Gas stations API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
     - Visit our website for more information: Fireblocks Website
 
     - Visit our developer docs: Fireblocks DevPortal'
-  version: 1.8.0
+  version: 1.6.2
   contact:
     email: developers@fireblocks.com
 servers:
@@ -15,21 +15,23 @@ servers:
   description: Fireblocks Production Environment Base URL
 - url: https://sandbox-api.fireblocks.io/v1
   description: Fireblocks Sandbox Environment Base URL
-security: []
 tags:
-- name: Gas Station
+- name: Gas stations
 paths:
   /gas_station:
     get:
       summary: Get gas station settings
       description: 'Returns gas station settings and ETH balance.
 
-
         Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
-      - Gas Station
+      - Gas stations
+      x-rate-limit-category: query
       x-readme:
         code-samples:
+        - language: python
+          code: gas_station_info = fireblocks.get_gas_station_info()
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const gasStationInfo = await fireblocks.gasStationInfo();
           name: Fireblocks SDK Javascript example
@@ -67,12 +69,15 @@ paths:
       summary: Get gas station settings by asset
       description: 'Returns gas station settings and balances for a requested asset.
 
-
         Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
-      - Gas Station
+      - Gas stations
+      x-rate-limit-category: query
       x-readme:
         code-samples:
+        - language: python
+          code: gas_station_info = fireblocks.get_gas_station_info(asset_id)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const gasStationInfo = await fireblocks.gasStationInfo(assetId);
           name: Fireblocks SDK Javascript example
@@ -93,7 +98,6 @@ paths:
         schema:
           type: string
           x-fb-entity: asset
-          example: ETH
       responses:
         '200':
           description: Gas Station properties
@@ -121,12 +125,15 @@ paths:
 
         Learn more about the Fireblocks Gas Station in the following guide.
 
-
         Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
-      - Gas Station
+      - Gas stations
+      x-rate-limit-category: write
       x-readme:
         code-samples:
+        - language: python
+          code: gas_station = fireblocks.set_gas_station_configuration(gas_threshold, gas_cap, max_gas_price, asset_id)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const gasStation = await fireblocks.setGasStationConfiguration(gasThreshold, gasCap, maxGasPrice)
           name: Fireblocks SDK Javascript example
@@ -148,7 +155,7 @@ paths:
             schema:
               $ref: '#/components/schemas/GasStationConfiguration'
       responses:
-        '201':
+        '200':
           description: OK
           headers:
             X-Request-ID:
@@ -175,10 +182,10 @@ paths:
 
         Learn more about the Fireblocks Gas Station in the following guide.
 
-
         Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor.'
       tags:
-      - Gas Station
+      - Gas stations
+      x-rate-limit-category: write
       parameters:
       - in: path
         required: true
@@ -187,7 +194,6 @@ paths:
         schema:
           type: string
           x-fb-entity: asset
-          example: ETH
       - $ref: '#/components/parameters/X-Idempotency-Key'
       requestBody:
         required: true
@@ -196,7 +202,7 @@ paths:
             schema:
               $ref: '#/components/schemas/GasStationConfiguration'
       responses:
-        '201':
+        '200':
           description: OK
           headers:
             X-Request-ID:
@@ -227,6 +233,15 @@ paths:
         source: response = fireblocks.gas_stations.update_gas_station_configuration_by_asset_id(gas_station_configuration, asset_id, idempotency_key);
 components:
   schemas:
+    GasStationConfiguration:
+      type: object
+      properties:
+        gasThreshold:
+          type: string
+        gasCap:
+          type: string
+        maxGasPrice:
+          type: string
     EditGasStationConfigurationResponse:
       type: object
       properties:
@@ -235,6 +250,17 @@ components:
           description: Indicates whether editing the gas station configuration was successful
       required:
       - success
+    GasStationConfigurationResponse:
+      type: object
+      properties:
+        gasThreshold:
+          type: string
+        gasCap:
+          type: string
+        maxGasPrice:
+          type:
+          - string
+          - 'null'
     GasStationPropertiesResponse:
       type: object
       properties:
@@ -242,55 +268,13 @@ components:
           type: object
         configuration:
           $ref: '#/components/schemas/GasStationConfigurationResponse'
-    GasStationConfiguration:
+    ErrorSchema:
       type: object
       properties:
-        gasThreshold:
-          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the gasThreshold value
+        message:
           type: string
-          default: '0.005'
-          example: '0.005'
-        gasCap:
-          description: The Gas Station will top up the vault account with gas until the balance reaches the gasCap value
-          example: '0.01'
-          default: '0.01'
-          type: string
-        maxGasPrice:
-          description: Maximum gas price for the fueling transaction (in gwei)
-          example: '20'
-          default: null
-          type:
-          - string
-          - 'null'
-    GasStationConfigurationResponse:
-      type: object
-      properties:
-        gasThreshold:
-          description: The Gas Station will initiate a fueling transaction when the vault account's balance falls below the gasThreshold value
-          type: string
-          default: '0.005'
-          example: '0.005'
-        gasCap:
-          description: The Gas Station will top up the vault account with gas until the balance reaches the gasCap value
-          example: '0.01'
-          default: '0.01'
-          type: string
-        maxGasPrice:
-          description: Maximum gas price for the fueling transaction (in gwei)
-          example: '20'
-          default: null
-          type:
-          - string
-          - 'null'
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
-      schema:
-        type: string
-        example: some-unique-id
+        code:
+          type: number
   responses:
     Error:
       description: Error Response
@@ -301,6 +285,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
   securitySchemes:
     bearerTokenAuth:
       type: http
@@ -310,3 +307,9 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

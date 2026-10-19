@@ -1,0 +1,579 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Security Posture Management API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Security Posture Management
+paths:
+  /security/fspm/findings:
+    get:
+      operationId: getSecurityFindings
+      summary: Get FSPM security findings
+      description: 'Returns a paginated list of FSPM security findings for the workspace.
+
+        Endpoint Roles: Security Admin, Security Auditor.
+
+
+        **Note:** This endpoint is available only for the FSPM Pro package. It is not available for FSPM Basic.'
+      tags:
+      - Security Posture Management
+      x-rate-limit-category: query
+      parameters:
+      - in: query
+        name: pageCursor
+        required: false
+        description: Cursor indicating the page position. Omit to fetch the first page.
+        schema:
+          type: string
+      - in: query
+        name: pageSize
+        required: false
+        description: Number of results per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        example: 10
+      - in: query
+        name: severity
+        required: false
+        description: Filter by severity level
+        schema:
+          type: string
+          enum:
+          - INFO
+          - LOW
+          - MEDIUM
+          - HIGH
+        example: HIGH
+      - in: query
+        name: category
+        required: false
+        description: Filter by finding category
+        schema:
+          type: string
+          enum:
+          - USER_MANAGEMENT
+          - APPROVAL_GROUP_MANAGEMENT
+          - POLICY_ENGINE_UTILIZATION
+          - WORKSPACE_CONFIGURATION
+          - DEFI_ACCESS
+          - FLEET_MANAGEMENT
+        example: USER_MANAGEMENT
+      - in: query
+        name: status
+        required: false
+        description: Filter by finding status
+        schema:
+          type: string
+          enum:
+          - OPEN
+          - ACCEPTED
+          - RESOLVED
+        example: OPEN
+      responses:
+        '200':
+          description: A paginated list of FSPM findings
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFindingsExternalResponse'
+        '400':
+          description: Bad request — invalid or malformed query parameters.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '401':
+          description: Unauthorized — missing or invalid authentication token.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '403':
+          description: Forbidden — insufficient permissions or feature is disabled.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        '429':
+          description: Too many requests — rate limit exceeded, slow down and retry later.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        5XX:
+          description: Internal error.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetFindingsExternalResponse>> = fireblocks.securityPostureManagement.getSecurityFindings(securityPostureManagementApiGetSecurityFindingsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<GetFindingsExternalResponse>> response = fireblocks.securityPostureManagement().getSecurityFindings(pageCursor, pageSize, severity, category, status);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.security_posture_management.get_security_findings(page_cursor, page_size, severity, category, status);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetFindingsExternalResponse>> = fireblocks.securityPostureManagement.getSecurityFindings(securityPostureManagementApiGetSecurityFindingsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<GetFindingsExternalResponse>> response = fireblocks.securityPostureManagement().getSecurityFindings(pageCursor, pageSize, severity, category, status);
+      - lang: Python
+        source: response = fireblocks.security_posture_management.get_security_findings(page_cursor, page_size, severity, category, status);
+  /security/fspm/findings/{id}:
+    get:
+      operationId: getSecurityFindingById
+      summary: Get a FSPM security finding by ID
+      description: 'Returns a single FSPM security finding for the workspace, redacted to the public field set.
+
+        Endpoint Roles: Security Admin, Security Auditor.
+
+
+        **Note:** This endpoint is available only for the FSPM Pro package. It is not available for FSPM Basic.'
+      tags:
+      - Security Posture Management
+      x-rate-limit-category: query
+      parameters:
+      - in: path
+        name: id
+        required: true
+        description: Unique identifier of the finding
+        schema:
+          type: string
+          format: uuid
+        example: d7ca6101-a65e-4a9c-b6c1-b8bd697e0cd2
+      responses:
+        '200':
+          description: A single FSPM finding
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityFindingDetailed'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SecurityFindingDetailed>> = fireblocks.securityPostureManagement.getSecurityFindingById(securityPostureManagementApiGetSecurityFindingByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SecurityFindingDetailed>> response = fireblocks.securityPostureManagement().getSecurityFindingById(id);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.security_posture_management.get_security_finding_by_id(id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SecurityFindingDetailed>> = fireblocks.securityPostureManagement.getSecurityFindingById(securityPostureManagementApiGetSecurityFindingByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SecurityFindingDetailed>> response = fireblocks.securityPostureManagement().getSecurityFindingById(id);
+      - lang: Python
+        source: response = fireblocks.security_posture_management.get_security_finding_by_id(id);
+    patch:
+      operationId: updateSecurityFindingById
+      summary: Update a FSPM security finding by ID
+      description: 'Accepts or reopens a finding for the workspace. When accepting a finding
+
+        (`status: "ACCEPTED"`), `statusUpdatedReason` is required.
+
+        Endpoint Roles: Security Admin.
+
+
+        **Note:** This endpoint is available only for the FSPM Pro package. It is not available for FSPM Basic.'
+      tags:
+      - Security Posture Management
+      x-rate-limit-category: write
+      parameters:
+      - in: path
+        name: id
+        required: true
+        description: Unique identifier of the finding
+        schema:
+          type: string
+          format: uuid
+        example: d7ca6101-a65e-4a9c-b6c1-b8bd697e0cd2
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFindingExternalRequest'
+      responses:
+        '200':
+          description: The updated FSPM finding
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityFindingDetailed'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<SecurityFindingDetailed>> = fireblocks.securityPostureManagement.updateSecurityFindingById(securityPostureManagementApiUpdateSecurityFindingByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<SecurityFindingDetailed>> response = fireblocks.securityPostureManagement().updateSecurityFindingById(updateFindingExternalRequest, id, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.security_posture_management.update_security_finding_by_id(update_finding_external_request, id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<SecurityFindingDetailed>> = fireblocks.securityPostureManagement.updateSecurityFindingById(securityPostureManagementApiUpdateSecurityFindingByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<SecurityFindingDetailed>> response = fireblocks.securityPostureManagement().updateSecurityFindingById(updateFindingExternalRequest, id, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.security_posture_management.update_security_finding_by_id(update_finding_external_request, id, idempotency_key);
+components:
+  schemas:
+    UpdateFindingExternalRequest:
+      description: Request to update the status of a FSPM finding. Only OPEN (reopen) and ACCEPTED (accept) are settable; findings become RESOLVED via automated detection, not through this API. `statusUpdatedReason` is required when accepting a finding and ignored when reopening.
+      discriminator:
+        propertyName: status
+        mapping:
+          ACCEPTED: '#/components/schemas/AcceptFindingRequest'
+          OPEN: '#/components/schemas/ReopenFindingRequest'
+      oneOf:
+      - $ref: '#/components/schemas/AcceptFindingRequest'
+      - $ref: '#/components/schemas/ReopenFindingRequest'
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    FindingInfo:
+      type: object
+      description: Additional structured context about the finding. Shape varies by finding type.
+      additionalProperties:
+        description: Arbitrary key-value metadata associated with the finding type
+      example:
+        id: 2a6f3c4e-9d33-437e-8f2a-2c9b4d3e1f35
+        createdAt: '2026-05-12T12:06:26.242Z'
+        email: ''
+        enabled: true
+        firstName: Admin API
+        isWhitelisted: false
+        lastName: testd6
+        role: ADMIN
+        status: READY
+        tenantId: 6d13843c-4e2b-4a22-2c6f-3b8e3d4a7f52
+        userType: API
+    AcceptFindingRequest:
+      type: object
+      description: Request to accept a FSPM finding. A reason is required.
+      properties:
+        status:
+          type: string
+          enum:
+          - ACCEPTED
+          example: ACCEPTED
+          description: Marks the finding as accepted.
+        statusUpdatedReason:
+          type: string
+          minLength: 1
+          description: The reason for accepting the finding.
+          example: Risk accepted - compensating controls are in place
+      required:
+      - status
+      - statusUpdatedReason
+    SecurityFinding:
+      type: object
+      description: A single FSPM finding
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d7ca6101-a65e-4a9c-b6c1-b8bd697e0cd2
+          description: Unique identifier of the finding
+        status:
+          type: string
+          example: OPEN
+          enum:
+          - OPEN
+          - ACCEPTED
+          - RESOLVED
+          description: Current status of the finding
+        severity:
+          type: string
+          example: HIGH
+          enum:
+          - INFO
+          - LOW
+          - MEDIUM
+          - HIGH
+          description: Severity level of the finding
+        category:
+          type: string
+          example: USER_MANAGEMENT
+          enum:
+          - USER_MANAGEMENT
+          - APPROVAL_GROUP_MANAGEMENT
+          - POLICY_ENGINE_UTILIZATION
+          - WORKSPACE_CONFIGURATION
+          - DEFI_ACCESS
+          - FLEET_MANAGEMENT
+          description: Category of the finding
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-07-28T11:37:05.000Z'
+          description: When the finding was first detected
+        title:
+          type: string
+          description: Human-readable title of the finding
+          example: API co-signer configured without a callback URL
+    ComplianceRequirement:
+      type: object
+      description: A compliance requirement associated with a finding
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 19894318-338e-4304-848f-9388d140e703
+          description: Identifier of the compliance requirement
+        standard:
+          type: string
+          example: SOC 2
+          description: The compliance standard this requirement belongs to
+        criteria:
+          type: string
+          example: CC7.1
+          description: The specific criteria within the compliance standard
+        description:
+          type: string
+          example: Continuous monitoring and configuration baselines
+          description: Human-readable description of the requirement, omitted if not available
+      required:
+      - id
+      - standard
+      - criteria
+    ReopenFindingRequest:
+      type: object
+      description: Request to reopen a FSPM finding.
+      properties:
+        status:
+          type: string
+          enum:
+          - OPEN
+          example: OPEN
+          description: Marks the finding as open again.
+        statusUpdatedReason:
+          type: string
+          example: False positive - reviewed and confirmed no risk
+          description: Ignored when reopening a finding.
+      required:
+      - status
+    GetFindingsExternalResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: List of FSPM findings for the current page.
+          items:
+            $ref: '#/components/schemas/SecurityFinding'
+          example:
+          - id: d7ca3131-a35e-3a9c-36c1-38bd697e0cd2
+            status: OPEN
+            severity: HIGH
+            category: USER_MANAGEMENT
+            createdAt: '2026-07-28T11:37:05.000Z'
+            title: The API user 'Admin API' is missing an IP allowlist
+          - id: 2f6a9c13-7b2d-4158-9a2f-6c3d8b4e0f37
+            status: RESOLVED
+            severity: HIGH
+            category: USER_MANAGEMENT
+            createdAt: '2026-08-30T13:36:35.000Z'
+            title: The API user 'admin api callback' is paired with a co-signer and has no callback
+        total:
+          type: integer
+          description: Total number of findings matching the query.
+          example: 42
+        next:
+          type: string
+          description: Cursor for the next page of results, omitted when there are no more results.
+          example: eyJzZXZlcml0eVJhbmsiOjMsImNyZWF0ZWRBdCI6IjIwMjYtMDctMTRUMTA6MDU6NTYuMDAwWiIsImlkIjoiYjJmZTkwYjItMWZlMy00ZTczLTg1YTItNjZlMTlmN2RhYzY2In0=
+      required:
+      - data
+      - total
+    SecurityFindingDetailed:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 2f8a132e-623d-3a97-841f-2c5d9b7a3e60
+          description: Unique identifier of the finding
+        status:
+          type: string
+          example: ACCEPTED
+          enum:
+          - OPEN
+          - ACCEPTED
+          - RESOLVED
+          description: Current status of the finding
+        severity:
+          type: string
+          example: MEDIUM
+          enum:
+          - INFO
+          - LOW
+          - MEDIUM
+          - HIGH
+          description: Severity level of the finding
+        category:
+          type: string
+          example: USER_MANAGEMENT
+          enum:
+          - USER_MANAGEMENT
+          - APPROVAL_GROUP_MANAGEMENT
+          - POLICY_ENGINE_UTILIZATION
+          - WORKSPACE_CONFIGURATION
+          - DEFI_ACCESS
+          - FLEET_MANAGEMENT
+          description: Category of the finding
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-07-21T07:49:28.000Z'
+          description: When the finding was first detected
+        title:
+          type: string
+          description: Human-readable title of the finding
+          example: The API user 'Admin API' is missing an IP allowlist
+        statusUpdatedAt:
+          type: string
+          format: date-time
+          example: '2026-08-16T08:52:57.000Z'
+          description: When the finding status was last updated, omitted if the status was never updated
+        statusUpdatedByUserId:
+          type: string
+          format: uuid
+          example: 7c2e3a4f-144d-4f23-932c-518b3d7f1a09
+          description: The user who last updated the finding status, omitted if the status was never updated
+        statusUpdatedReason:
+          type: string
+          example: False positive, the API user only ever connects from a fixed, trusted network
+          description: The reason provided for the last status update, omitted if none was provided
+        info:
+          $ref: '#/components/schemas/FindingInfo'
+        complianceReqs:
+          type: array
+          description: Compliance requirements this finding relates to
+          items:
+            $ref: '#/components/schemas/ComplianceRequirement'
+          example:
+          - id: 8a1e6f19-1c4b-2d7e-2f1a-2b6c8d2e4f50
+            standard: SOC 2
+            criteria: CC6.2
+            description: Access provisioning and credential lifecycle
+          - id: 5e2b8e47-ea9c-ef36-8e2d-ea4b9c3e6f18
+            standard: SOC 2
+            criteria: CC6.3
+            description: Least privilege and attack surface, roles and SoD
+        riskExplanation:
+          type: string
+          description: Explanation of the risk this finding represents
+          example: This API user has no IP allowlist, so it can be accessed from anywhere, increasing the risk of unauthorized activity.
+        mitigationGuidance:
+          type: string
+          description: Guidance on how to mitigate this finding
+          example: Go to Developer Center > API Users, click the actions button (3 dots) next to the API user, and select 'Allowlist IP address'.
+      required:
+      - id
+      - status
+      - severity
+      - category
+      - createdAt
+      - title
+      - info
+      - complianceReqs
+      - riskExplanation
+      - mitigationGuidance
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

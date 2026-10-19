@@ -1,0 +1,2364 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Travel Rule API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Travel Rule
+paths:
+  /screening/travel_rule/providers/trust/proof_of_address:
+    post:
+      operationId: createTrustProofOfAddress
+      summary: Create Trust Network Proof of Address
+      description: Creates a cryptographic proof of address ownership for TRUST network.
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrustProofOfAddressRequest'
+      responses:
+        '201':
+          description: Proof of address transaction created successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustProofOfAddressCreateResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Travel Rule
+      x-rate-limit-category: async
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TrustProofOfAddressCreateResponse>> = fireblocks.travelRule.createTrustProofOfAddress(travelRuleApiCreateTrustProofOfAddressRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TrustProofOfAddressCreateResponse>> response = fireblocks.travelRule().createTrustProofOfAddress(trustProofOfAddressRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule.create_trust_proof_of_address(trust_proof_of_address_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TrustProofOfAddressCreateResponse>> = fireblocks.travelRule.createTrustProofOfAddress(travelRuleApiCreateTrustProofOfAddressRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TrustProofOfAddressCreateResponse>> response = fireblocks.travelRule().createTrustProofOfAddress(trustProofOfAddressRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.travel_rule.create_trust_proof_of_address(trust_proof_of_address_request, idempotency_key);
+  /screening/travel_rule/providers/trust/proof_of_address/{transactionId}:
+    get:
+      operationId: getTrustProofOfAddress
+      summary: Retrieve Trust Network Proof of Address Signature
+      description: Retrieves the TRUST-compatible encoded signature for a proof of address transaction. Send this signature directly to TRUST for verification.
+      parameters:
+      - in: path
+        name: transactionId
+        required: true
+        description: Fireblocks transaction ID (UUID format)
+        example: 550e8400-e29b-41d4-a716-446655440000
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Encoded signature retrieved successfully
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustProofOfAddressResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Travel Rule
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TrustProofOfAddressResponse>> = fireblocks.travelRule.getTrustProofOfAddress(travelRuleApiGetTrustProofOfAddressRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TrustProofOfAddressResponse>> response = fireblocks.travelRule().getTrustProofOfAddress(transactionId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule.get_trust_proof_of_address(transaction_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TrustProofOfAddressResponse>> = fireblocks.travelRule.getTrustProofOfAddress(travelRuleApiGetTrustProofOfAddressRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TrustProofOfAddressResponse>> response = fireblocks.travelRule().getTrustProofOfAddress(transactionId);
+      - lang: Python
+        source: response = fireblocks.travel_rule.get_trust_proof_of_address(transaction_id);
+  /screening/travel_rule/transaction/validate:
+    post:
+      x-internal: true
+      operationId: validateTravelRuleTransaction
+      summary: Validate Travel Rule Transaction
+      description: 'Validate Travel Rule transactions.
+
+        Checks what beneficiary VASP details are required by your jurisdiction and the beneficiary''s jurisdiction.
+
+        **Deprecation Notice** This endpoint will be deprecated soon in favor of the validate full endpoint. Please update your integrations to use the validate full endpoint to ensure compatibility with future releases.
+
+        Checks what beneficiary VASP details are required by your jurisdiction and the beneficiary''s jurisdiction.
+
+        Learn more about Fireblocks Travel Rule management in the following guide.
+
+
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      parameters:
+      - name: notation
+        in: query
+        description: 'Specifies the notation of the transaction. Possible values are: - `notabene`: Uses Notabene notation (default behavior). - `fireblocks`: Uses Fireblocks notation, with automatic translation of asset tickers and amounts. - `<none>`: Defaults to `notabene` for backward compatibility.
+
+          **Note:** The default value for the `notation` parameter will change from `notabene` to `fireblocks` Update your integrations accordingly.'
+        required: false
+        schema:
+          $ref: '#/components/schemas/TravelRuleNotationEnum'
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRuleValidateTransactionRequest'
+      responses:
+        '200':
+          description: Transaction validated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleValidateTransactionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Travel Rule
+      x-rate-limit-category: write
+  /screening/travel_rule/transaction/validate/full:
+    post:
+      operationId: validateFullTravelRuleTransaction
+      summary: Validate Full Travel Rule Transaction
+      description: 'Validate Full Travel Rule transactions.
+
+
+        Checks for all required information on the originator and beneficiary VASPs.'
+      parameters:
+      - name: notation
+        in: query
+        description: 'Specifies the notation of the transaction. Possible values are: - `notabene`: Uses Notabene notation (default behavior). - `fireblocks`: Uses Fireblocks notation, with automatic translation of asset tickers and amounts. - `<none>`: Defaults to `notabene` for backward compatibility.
+
+          **Note:** The default value for the `notation` parameter will change from `notabene` to `fireblocks` Update your integrations accordingly.'
+        required: false
+        schema:
+          $ref: '#/components/schemas/TravelRuleNotationEnum'
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRuleValidateFullTransactionRequest'
+      responses:
+        '200':
+          description: Transaction validated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleValidateTransactionResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Travel Rule
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleValidateTransactionResponse>> = fireblocks.travelRule.validateFullTravelRuleTransaction(travelRuleApiValidateFullTravelRuleTransactionRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleValidateTransactionResponse>> response = fireblocks.travelRule().validateFullTravelRuleTransaction(travelRuleValidateFullTransactionRequest, notation, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule.validate_full_travel_rule_transaction(travel_rule_validate_full_transaction_request, notation, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleValidateTransactionResponse>> = fireblocks.travelRule.validateFullTravelRuleTransaction(travelRuleApiValidateFullTravelRuleTransactionRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleValidateTransactionResponse>> response = fireblocks.travelRule().validateFullTravelRuleTransaction(travelRuleValidateFullTransactionRequest, notation, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.travel_rule.validate_full_travel_rule_transaction(travel_rule_validate_full_transaction_request, notation, idempotency_key);
+  /screening/travel_rule/vasp:
+    get:
+      operationId: getVASPs
+      summary: Get All VASPs
+      description: 'Get All VASPs.
+
+
+        Returns a list of VASPs. VASPs can be searched and sorted.
+
+
+        Each VASP in the response may contain fields that are not documented in the schema below. Clients must ignore unrecognised fields rather than failing to deserialize.'
+      parameters:
+      - name: order
+        required: false
+        in: query
+        description: Field to order by
+        example: ASC
+        schema:
+          enum:
+          - ASC
+          - DESC
+      - name: pageSize
+        required: false
+        in: query
+        description: Records per page
+        example: 10
+        schema:
+          minimum: 100
+          maximum: 1000
+          default: 500
+          type: number
+      - name: fields
+        required: false
+        in: query
+        description: 'The VASP fields to return.
+
+
+          Optional. If omitted, each VASP is returned with a default subset of six fields: `did`, `name`, `website`, `logo`, `incorporationCountry` and `jurisdictions`. Pass `all` to return the complete record for each VASP.
+
+
+          Most field names return exactly the requested field. A few behave differently: `documents` and `ddq` return a small default set of identifying fields instead of the requested one, and `travelRule_EMAIL` returns an empty object. An unrecognised field name causes an error.'
+        schema:
+          $ref: '#/components/schemas/TravelRuleFieldsEnum'
+      - name: search
+        required: false
+        in: query
+        description: Search query
+        example: Fireblocks
+        schema:
+          type: string
+      - name: reviewValue
+        required: false
+        in: query
+        description: 'Filter by the VASP''s review status. Possible values include: "TRUSTED", "BLOCKED", "MANUAL", or "NULL". When provided, only VASPs that match the specified reviewValue will be returned (i.e., VASPs that have already been reviewed to this status).'
+        example: TRUSTED
+        schema:
+          enum:
+          - TRUSTED
+          - BLOCKED
+          - MANUAL
+          - null
+      - name: pageCursor
+        required: false
+        in: query
+        description: Cursor for pagination. When provided, the response will include the next page of results.
+        example: 100
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get all VASPs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleGetAllVASPsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Travel Rule
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleGetAllVASPsResponse>> = fireblocks.travelRule.getVASPs(travelRuleApiGetVASPsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleGetAllVASPsResponse>> response = fireblocks.travelRule().getVASPs(order, pageSize, fields, search, reviewValue, pageCursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule.get_v_a_s_ps(order, page_size, fields, search, review_value, page_cursor);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleGetAllVASPsResponse>> = fireblocks.travelRule.getVASPs(travelRuleApiGetVASPsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleGetAllVASPsResponse>> response = fireblocks.travelRule().getVASPs(order, pageSize, fields, search, reviewValue, pageCursor);
+      - lang: Python
+        source: response = fireblocks.travel_rule.get_v_a_s_ps(order, page_size, fields, search, review_value, page_cursor);
+  /screening/travel_rule/vasp/{did}:
+    get:
+      operationId: getVASPByDID
+      summary: Get VASP details
+      description: 'Get VASP Details.
+
+
+        Returns information about a VASP that has the specified DID.
+
+
+        The response may contain fields that are not documented in the schema below. Clients must ignore unrecognised fields rather than failing to deserialize.'
+      parameters:
+      - name: did
+        required: true
+        in: path
+        description: The Decentralized Identifier (DID) of the VASP.
+        example: did:ethr:0x17fe2dd11a2daa7f6c1fdf22532a4763f963aea6
+        schema:
+          type: string
+      - name: fields
+        required: false
+        in: query
+        description: 'The VASP fields to return.
+
+
+          Optional. If omitted, or supplied with an empty value, the complete VASP record is returned, which is the same as passing `all`.
+
+
+          Most field names return exactly the requested field. A few behave differently: `documents` and `ddq` return a small default set of identifying fields instead of the requested one, and `travelRule_EMAIL` returns an empty object. An unrecognised field name causes an error.'
+        schema:
+          $ref: '#/components/schemas/TravelRuleFieldsEnum'
+      responses:
+        '200':
+          description: VASP details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleVASP'
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+      tags:
+      - Travel Rule
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleVASP>> = fireblocks.travelRule.getVASPByDID(travelRuleApiGetVASPByDIDRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleVASP>> response = fireblocks.travelRule().getVASPByDID(did, fields);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule.get_v_a_s_p_by_d_i_d(did, fields);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleVASP>> = fireblocks.travelRule.getVASPByDID(travelRuleApiGetVASPByDIDRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleVASP>> response = fireblocks.travelRule().getVASPByDID(did, fields);
+      - lang: Python
+        source: response = fireblocks.travel_rule.get_v_a_s_p_by_d_i_d(did, fields);
+  /screening/travel_rule/vasp/update:
+    put:
+      operationId: updateVasp
+      summary: Add jsonDidKey to VASP details
+      description: 'Update VASP Details.
+
+
+        Updates a VASP with the provided parameters. Use this endpoint to add your public jsonDIDkey generated by Notabene.'
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRuleUpdateVASPDetails'
+      responses:
+        '200':
+          description: VASP updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleUpdateVASPDetails'
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+      tags:
+      - Travel Rule
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleUpdateVASPDetails>> = fireblocks.travelRule.updateVasp(travelRuleApiUpdateVaspRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleUpdateVASPDetails>> response = fireblocks.travelRule().updateVasp(travelRuleUpdateVASPDetails, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule.update_vasp(travel_rule_update_v_a_s_p_details, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleUpdateVASPDetails>> = fireblocks.travelRule.updateVasp(travelRuleApiUpdateVaspRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleUpdateVASPDetails>> response = fireblocks.travelRule().updateVasp(travelRuleUpdateVASPDetails, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.travel_rule.update_vasp(travel_rule_update_v_a_s_p_details, idempotency_key);
+  /screening/travel_rule/vault/{vaultAccountId}/vasp:
+    get:
+      summary: Get assigned VASP to vault
+      description: Get assigned VASP Did for a specific vault. Returns empty string vaspDid value in response if none assigned.
+      x-rate-limit-category: read
+      tags:
+      - Travel Rule
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.getVaspForVault(vaultAccountId);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleVaspForVault>> = fireblocks.travelRule.getVaspForVault(travelRuleApiGetVaspForVaultRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleVaspForVault>> response = fireblocks.travelRule().getVaspForVault(vaultAccountId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule.get_vasp_for_vault(vault_account_id);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        example: 1
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleVaspForVault'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getVaspForVault
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleVaspForVault>> = fireblocks.travelRule.getVaspForVault(travelRuleApiGetVaspForVaultRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleVaspForVault>> response = fireblocks.travelRule().getVaspForVault(vaultAccountId);
+      - lang: Python
+        source: response = fireblocks.travel_rule.get_vasp_for_vault(vault_account_id);
+    post:
+      summary: Assign VASP to vault
+      description: Sets the VASP Did for a specific vault. Pass empty string to remove existing one.
+      tags:
+      - Travel Rule
+      x-rate-limit-category: write
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: const vaultAsset = await fireblocks.setVaspForVault(vaultAccountId, vaspDid);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<TravelRuleVaspForVault>> = fireblocks.travelRule.setVaspForVault(travelRuleApiSetVaspForVaultRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<TravelRuleVaspForVault>> response = fireblocks.travelRule().setVaspForVault(travelRuleVaspForVault, vaultAccountId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.travel_rule.set_vasp_for_vault(travel_rule_vasp_for_vault, vault_account_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      parameters:
+      - in: path
+        name: vaultAccountId
+        required: true
+        description: The ID of the vault account
+        schema:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRuleVaspForVault'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRuleVaspForVault'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: setVaspForVault
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<TravelRuleVaspForVault>> = fireblocks.travelRule.setVaspForVault(travelRuleApiSetVaspForVaultRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<TravelRuleVaspForVault>> response = fireblocks.travelRule().setVaspForVault(travelRuleVaspForVault, vaultAccountId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.travel_rule.set_vasp_for_vault(travel_rule_vasp_for_vault, vault_account_id, idempotency_key);
+components:
+  schemas:
+    TravelRuleValidateNaturalNameIdentifier:
+      type: object
+      properties:
+        primaryIdentifier:
+          type: string
+          description: The primary identifier of the name
+          example: John
+        secondaryIdentifier:
+          type: string
+          description: The secondary identifier of the name
+          example: Doe
+        nameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a natural person. Acceptable values are: - ''ALIA'': Alias name, a name other than the legal name by which a natural person is also known. - ''BIRT'': Name at birth, the name given to a natural person at birth. - ''MAID'': Maiden name, the original name of a natural person who has changed their name after marriage. - ''LEGL'': Legal name, the name that identifies a natural person for legal, official, or administrative purposes. - ''MISC'': Unspecified, a name by which a natural person may be known but cannot otherwise be categorized.'
+          enum:
+          - ALIA
+          - BIRT
+          - MAID
+          - LEGL
+          - MISC
+          example: LEGL
+    TravelRuleVASPExternalEntityConfig:
+      type: object
+      description: An entity record for the VASP as resolved from an external registry, together with the registration state reported by that registry.
+      properties:
+        provider:
+          type: string
+          description: The external registry the record was resolved from. Returned in lower case, for example `gleif`.
+          example: gleif
+        externalId:
+          type:
+          - string
+          - 'null'
+          description: The VASP's identifier within the external registry. For the `gleif` provider this is the Legal Entity Identifier (LEI).
+          example: 9845001C5PA89625E069
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          description: Timestamp of the last change to the record at the external registry.
+          example: '2024-07-20T00:00:00Z'
+        resolvedAt:
+          type:
+          - string
+          - 'null'
+          description: Timestamp when the record was last resolved from the external registry.
+          example: '2024-07-20T13:27:30.929Z'
+        entity:
+          $ref: '#/components/schemas/TravelRuleVASPExternalEntity'
+        registration:
+          $ref: '#/components/schemas/TravelRuleVASPExternalEntityRegistration'
+    TravelRuleVASP:
+      type: object
+      description: 'A VASP record from the Travel Rule trust framework directory.
+
+
+        The set of keys returned depends on the `fields` query parameter. When `fields` is omitted, or supplied with an empty value, this endpoint returns the complete record.
+
+
+        Additional fields may be present in the response beyond those documented here. Clients must ignore unrecognised fields rather than failing to deserialize.'
+      properties:
+        did:
+          type: string
+          description: The Decentralized Identifier (DID) of the VASP.
+          example: did:ethr:0x17fe2dd11a2daa7f6c1fdf22532a4763f963aea6
+        name:
+          type: string
+          description: The name of the VASP.
+          example: Fireblocks TST
+        verificationStatus:
+          type: string
+          description: The current verification status of the VASP.
+          example: VERIFIED
+        addressLine1:
+          type: string
+          description: The first line of the VASP's address.
+          example: 657 Campfire Street
+        addressLine2:
+          type:
+          - string
+          - 'null'
+          description: The second line of the VASP's address (if applicable). May be null.
+          example: Suite 10
+        city:
+          type: string
+          description: The city where the VASP is located.
+          example: New York
+        country:
+          type: string
+          description: The country where the VASP is registered (ISO-3166 Alpha-2 code).
+          example: US
+        emailDomains:
+          type: string
+          description: The email domains associated with the VASP. The field's type is string; its content is a JSON-encoded array of domains. Clients must parse this value to obtain the array.
+          example: '["fireblocks.com", "example.com"]'
+        website:
+          type: string
+          description: The official website of the VASP.
+          example: https://fireblocks.com
+        logo:
+          type:
+          - string
+          - 'null'
+          description: URL to the logo of the VASP. May be null.
+          example: https://fireblocks.com/logo.png
+        legalStructure:
+          type: string
+          description: The legal structure of the VASP (e.g., Corporation, LLC).
+          example: CORPORATION
+        legalName:
+          type: string
+          description: The legal name of the VASP.
+          example: Fireblocks Inc.
+        yearFounded:
+          type: string
+          description: The year the VASP was founded. Returned as a string, not an integer.
+          example: '2019'
+        incorporationCountry:
+          type: string
+          description: The country where the VASP is incorporated (ISO-3166 Alpha-2 code).
+          example: US
+        isRegulated:
+          type: string
+          description: Indicates whether the VASP is regulated.
+          example: 'YES'
+        otherNames:
+          type:
+          - string
+          - 'null'
+          description: Other names the VASP is known by. May be null.
+          example: Fireblocks Test VASP
+        identificationType:
+          type: string
+          description: The type of identification used by the VASP.
+          example: OTHER
+        identificationCountry:
+          type:
+          - string
+          - 'null'
+          description: The country of identification for the VASP (ISO-3166 Alpha-2 code). May be null.
+          example: US
+        businessNumber:
+          type: string
+          description: The business registration number of the VASP.
+          example: '123456789'
+        regulatoryAuthorities:
+          type:
+          - string
+          - 'null'
+          description: The regulatory authorities overseeing the VASP. May be null.
+          example: SEC, FINCEN
+        jurisdictions:
+          type: string
+          description: The jurisdictions where the VASP operates.
+          example: US, EU
+        division:
+          type:
+          - string
+          - 'null'
+          description: The division of the VASP's registered address, where applicable.
+          example: Downtown
+        street:
+          type:
+          - string
+          - 'null'
+          description: The street name where the VASP is located. May be null.
+          example: Wall Street
+        number:
+          type: string
+          description: The building number of the VASP's address. May be returned as an empty string when not supplied.
+          example: '10'
+        unit:
+          type:
+          - string
+          - 'null'
+          description: The unit or suite number of the VASP's address. May be null.
+          example: Apt 2B
+        postCode:
+          type: string
+          description: The postal code of the VASP's location.
+          example: '10005'
+        state:
+          type: string
+          description: The state or region where the VASP is located.
+          example: NY
+        otherLegalName:
+          type:
+          - string
+          - 'null'
+          description: Alternative legal names of the VASP, as a comma-separated list. Resolved from an external registry, so it is only populated for VASPs with a resolved entity record.
+          example: SIX Digital Exchange SA, SIX Digital Exchange Ltd
+        gleifUpdatedAt:
+          type:
+          - string
+          - 'null'
+          description: Timestamp of the last synchronization with the GLEIF registry. Only populated for VASPs with a GLEIF-resolved LEI.
+          example: '2024-07-20T00:00:00.000Z'
+        leiNumber:
+          type:
+          - string
+          - 'null'
+          description: The VASP's Legal Entity Identifier (LEI), a 20-character alphanumeric code. Only populated for VASPs with a GLEIF-resolved LEI.
+          example: 9845001C5PA89625E069
+        legalForm:
+          type:
+          - string
+          - 'null'
+          description: The GLEIF Entity Legal Form (ELF) code of the VASP. Only populated for VASPs with a GLEIF-resolved LEI.
+          example: MVII
+        entityCategory:
+          type:
+          - string
+          - 'null'
+          description: The GLEIF entity category of the VASP. Only populated for VASPs with a GLEIF-resolved LEI.
+          example: GENERAL
+        entityStatus:
+          type:
+          - string
+          - 'null'
+          description: The GLEIF entity status of the VASP. Only populated for VASPs with a GLEIF-resolved LEI.
+          example: ACTIVE
+        externalEntityConfig:
+          type:
+          - array
+          - 'null'
+          description: Entity records resolved from external registries, such as GLEIF. Only populated for VASPs that have been resolved against at least one external registry.
+          items:
+            $ref: '#/components/schemas/TravelRuleVASPExternalEntityConfig'
+          example:
+          - provider: gleif
+            externalId: 9845001C5PA89625E069
+            updatedAt: '2024-07-20T00:00:00Z'
+            resolvedAt: '2024-07-20T13:27:30.929Z'
+        hqStreet:
+          type:
+          - string
+          - 'null'
+          description: The street of the VASP's headquarters address. Only populated for VASPs with a GLEIF-resolved LEI.
+          example: Hardturmstrasse 201
+        hqNumber:
+          type:
+          - string
+          - 'null'
+          description: The building number of the VASP's headquarters address. May be returned as an empty string as well as `null` when not supplied.
+          example: '201'
+        hqPostcode:
+          type:
+          - string
+          - 'null'
+          description: The postal code of the VASP's headquarters address. Only populated for VASPs with a GLEIF-resolved LEI.
+          example: '8005'
+        hqRegion:
+          type:
+          - string
+          - 'null'
+          description: The region of the VASP's headquarters address, as an ISO-3166-2 subdivision code. Only populated for VASPs with a GLEIF-resolved LEI.
+          example: CH-ZH
+        hqCity:
+          type:
+          - string
+          - 'null'
+          description: The city of the VASP's headquarters address. Only populated for VASPs with a GLEIF-resolved LEI.
+          example: Zurich
+        hqCountry:
+          type:
+          - string
+          - 'null'
+          description: The country of the VASP's headquarters address (ISO-3166 Alpha-2 code). Only populated for VASPs with a GLEIF-resolved LEI.
+          example: CH
+        certificates:
+          type:
+          - string
+          - 'null'
+          description: Certificates or licenses held by the VASP. May be null.
+          example: ISO 27001
+        description:
+          type:
+          - string
+          - 'null'
+          description: A brief description of the VASP. May be null.
+          example: A leading provider of crypto security solutions.
+        travelRule_OPENVASP:
+          type:
+          - string
+          - 'null'
+          description: Travel rule compliance status for OpenVASP. Null when the VASP does not support this protocol.
+          example: active
+        travelRule_SYGNA:
+          type:
+          - string
+          - 'null'
+          description: Travel rule compliance status for Sygna. Null when the VASP does not support this protocol.
+          example: inactive
+        travelRule_TRISA:
+          type:
+          - string
+          - 'null'
+          description: Travel rule compliance status for TRISA. Null when the VASP does not support this protocol.
+          example: pending
+        travelRule_TRLIGHT:
+          type: string
+          description: Travel rule compliance status for TRLight.
+          example: active
+        travelRule_EMAIL:
+          type:
+          - string
+          - 'null'
+          description: Travel rule compliance status for EMAIL. Null when the VASP does not support this protocol.
+          example: inactive
+        travelRule_TRP:
+          type:
+          - string
+          - 'null'
+          description: Travel rule compliance status for TRP. Null when the VASP does not support this protocol.
+          example: active
+        travelRule_SHYFT:
+          type:
+          - string
+          - 'null'
+          description: Travel rule compliance status for Shyft. Null when the VASP does not support this protocol.
+          example: inactive
+        travelRule_USTRAVELRULEWG:
+          type:
+          - string
+          - 'null'
+          description: Travel rule compliance status for US Travel Rule WG. Null when the VASP does not support this protocol.
+          example: pending
+        createdAt:
+          type: string
+          description: Timestamp when the VASP record was created.
+          example: '2023-09-19T12:23:59.711Z'
+        createdBy:
+          type:
+          - string
+          - 'null'
+          description: The DID of the party that created the VASP record. May be null.
+          example: did:ethr:0x19b5ff8440019b635a86bbb632db854f2ea80423
+        updatedAt:
+          type: string
+          description: Timestamp of the last update to the VASP record.
+          example: '2024-08-29T08:23:51.416Z'
+        updatedBy:
+          type: string
+          description: The DID of the party that last updated the VASP record.
+          example: did:ethr:0x19b5ff8440019b635a86bbb632db854f2ea80423
+        lastSentDate:
+          type: string
+          description: The last date a transaction was sent by the VASP.
+          example: '2024-03-18T09:26:07.988Z'
+        lastReceivedDate:
+          type: string
+          description: The last date a transaction was received by the VASP.
+          example: '2024-03-20T11:45:30.212Z'
+        documents:
+          type:
+          - string
+          - 'null'
+          description: Documents associated with the VASP. May be null.
+          example: '[''license.pdf'', ''compliance.pdf'']'
+        hasAdmin:
+          type: boolean
+          description: Indicates if the VASP has an admin.
+          example: true
+        isNotifiable:
+          type: boolean
+          description: Indicates if the VASP is notifiable for compliance reasons.
+          example: true
+        issuers:
+          $ref: '#/components/schemas/TravelRuleIssuers'
+        regulatoryStatus:
+          type:
+          - string
+          - 'null'
+          description: The regulatory status of the VASP, as free text.
+          example: Regulated
+        supervisoryAuthority:
+          type:
+          - string
+          - 'null'
+          description: The supervisory authority responsible for the VASP.
+          example: FINMA
+        registrationLicenseId:
+          type:
+          - string
+          - 'null'
+          description: The identifier of the VASP's registration or operating license.
+          example: LIC-123456
+        statusStartDate:
+          type:
+          - string
+          - 'null'
+          description: The date the VASP's current regulatory status took effect.
+          example: '2023-01-01T00:00:00.000Z'
+        statusExpirationDate:
+          type:
+          - string
+          - 'null'
+          description: The date the VASP's current regulatory status expires.
+          example: '2026-01-01T00:00:00.000Z'
+        lastChecked:
+          type:
+          - string
+          - 'null'
+          description: Timestamp of the last verification of the VASP's regulatory status.
+          example: '2024-07-20T13:27:30.961Z'
+        additionalInformation:
+          type:
+          - string
+          - 'null'
+          description: Additional free-text information about the VASP.
+          example: Licensed for custody and exchange services.
+        subsidiaryOf:
+          type:
+          - string
+          - 'null'
+          description: The DID of the parent VASP, when this VASP is a subsidiary of another.
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+        pii_didkey:
+          type:
+          - string
+          - 'null'
+          description: The VASP's public PII encryption key, published in the trust framework directory. Use it to encrypt IVMS101 personally identifiable information addressed to this VASP.
+          example: 86fae05d276b4096a324a1450ed92a6b2c277412bb6a49bce1ed942a0c6726bf
+        compliancePhase:
+          type:
+          - integer
+          - 'null'
+          description: The VASP's current compliance onboarding phase.
+          example: 3
+        compliancePhaseData:
+          $ref: '#/components/schemas/TravelRuleVASPCompliancePhaseData'
+        vaspnetId:
+          type:
+          - string
+          - 'null'
+          description: The VASP's VASPnet identifier.
+          example: vaspnet-123456
+        vaspnetUpdatedAt:
+          type:
+          - string
+          - 'null'
+          description: Timestamp of the last synchronization with VASPnet.
+          example: '2024-07-20T13:27:30.961Z'
+        vaspnetImmutableFields:
+          type:
+          - array
+          - 'null'
+          description: Names of the fields that are managed by VASPnet and cannot be modified locally. Empty when no fields are locked.
+          items:
+            type: string
+            description: The name of a VASP field managed by VASPnet.
+            example: legalName
+          example:
+          - legalName
+        node_didkey:
+          type:
+          - string
+          - 'null'
+          description: The public key of the Travel Rule node serving this VASP record. The format has not been confirmed against a live response; every observed value has been null.
+          example: did:key:z6Mks5CZRaiooKYhq5TwtXQC1gWhwiZnmiKfFrMnYY62MhYf
+        ddq:
+          type:
+          - string
+          - 'null'
+          description: The VASP's Due Diligence Questionnaire, as a JSON-encoded string containing a `data` object and an `updatedAt` timestamp. Clients must parse this value.
+          example: '{"data":{"fullLegalName":"Fireblocks Inc."},"updatedAt":"2024-11-27T08:59:31.178Z"}'
+        targetProtocol:
+          type:
+          - string
+          - 'null'
+          description: The Travel Rule protocol used to reach this VASP, when a specific one is configured.
+          example: TRLIGHT
+        parentGateway:
+          type:
+          - string
+          - 'null'
+          description: The DID of the gateway VASP that routes messages on this VASP's behalf.
+          example: did:ethr:0x79189b9b98c95785702f8ecfe16bbe396479e1a0
+        isActiveSender:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if the VASP actively sends Travel Rule transfers.
+          example: true
+        isActiveReceiver:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if the VASP actively receives Travel Rule transfers.
+          example: true
+        subsidiaries:
+          type:
+          - array
+          - 'null'
+          description: The VASP's subsidiary entities. The element schema is not yet documented, as no response containing a populated value has been observed; do not assume a particular element type.
+          items: {}
+          example: []
+      required:
+      - did
+      - name
+      - verificationStatus
+      - addressLine1
+      - city
+      - country
+      - emailDomains
+      - website
+      - legalStructure
+      - legalName
+      - yearFounded
+      - incorporationCountry
+      - isRegulated
+      - jurisdictions
+      - travelRule_TRLIGHT
+      - createdAt
+      - hasAdmin
+      - isNotifiable
+      - issuers
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    TravelRuleValidateTransactionResponse:
+      type: object
+      properties:
+        isValid:
+          type: boolean
+          description: '"isValid" will tell you if you have collected all the information needed for the travel rule data transfer. Once this field = "true", you can move on to the next step which is to transfer the front-end information to your back-end and perform Travel Rule Transaction create'
+          example: true
+        type:
+          type: string
+          description: '"type" will tell you if the virtual asset value converted to FIAT value of the withdrawal request is above (=TRAVELRULE) or below (=BELOW_THRESHOLD) the threshold in your jurisdiction. If it is to an unhosted wallet which does not require travel rule information to be sent and only collected, it will say NON_CUSTODIAL.'
+          example: TRAVELRULE
+        beneficiaryAddressType:
+          type: string
+          enum:
+          - UNKNOWN
+          - HOSTED
+          - UNHOSTED
+          description: '"beneficiaryAddressType" will tell you if your blockchain analytics provider or internal address book has been able to identify the wallet address.'
+          example: UNKNOWN
+        addressSource:
+          type: string
+          enum:
+          - UNKNOWN
+          - ADDRESS_HASH
+          - ADDRESS_GRAPH
+          - CHAINALYSIS
+          - ELLIPTIC
+          - CRYSTAL
+          description: '"addressSource" will tell you if the address was found in your internal address book or identified by the blockchain analytics provider.'
+          example: UNKNOWN
+        beneficiaryVASPdid:
+          type: string
+          description: The VASP DID of the beneficiary VASP
+          example: did:ethr:0x46a7ed5813ce735387df2bfb245bd7722e0de992
+        beneficiaryVASPname:
+          type: string
+          description: '"beneficiaryVASPname" will tell you the name of the VASP that has been identified as the owner of the wallet address. This name is used in a subsequent call to get its DID.'
+          example: Fireblocks
+        warnings:
+          description: '"errors/warnings" will tell you what information about the beneficiary you need to collect from the sender.'
+          example:
+          - optional-beneficiaryAccountNumber
+          type: array
+          items:
+            type: string
+      required:
+      - isValid
+      - type
+      - beneficiaryAddressType
+      - addressSource
+      - beneficiaryVASPdid
+      - beneficiaryVASPname
+      - warnings
+    TravelRuleTransactionBlockchainInfo:
+      type: object
+      description: Information about the blockchain transaction.
+      properties:
+        txHash:
+          type: string
+          description: The hash of the transaction
+          example: 6.685730843558756e+76
+        origin:
+          type: string
+          description: The origin address of the transaction
+          example: 8.41132469470587e+47
+        destination:
+          type: string
+          description: The destination address of the transaction
+          example: 8.41132469470587e+47
+    TravelRuleVaspForVault:
+      type: object
+      properties:
+        vaspDid:
+          description: VASP DID
+          type: string
+          example: did:ethr:0x5dddec8dd669c49304ddbcba36ccc6e0798534dc
+    TravelRuleDateAndPlaceOfBirth:
+      type: object
+      description: Represents the date and place of birth for a natural person
+      properties:
+        dateOfBirth:
+          type: string
+          description: Date of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+        placeOfBirth:
+          type: string
+          description: Place of birth. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    TravelRulePerson:
+      type: object
+      properties:
+        naturalPerson:
+          $ref: '#/components/schemas/TravelRuleNaturalPerson'
+        legalPerson:
+          $ref: '#/components/schemas/TravelRuleLegalPerson'
+    TravelRuleValidateLegalNameIdentifier:
+      type: object
+      required:
+      - legalPersonName
+      - legalPersonNameIdentifierType
+      properties:
+        legalPersonName:
+          type: string
+          description: Name by which the legal person is known.
+          maxLength: 100
+          example: Acme Corporation
+        legalPersonNameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a legal person (IVMS101 LegalPersonNameTypeCode). Acceptable values are: - ''LEGL'': Legal name - official name under which the organisation is registered. - ''SHRT'': Short name of the organisation. - ''TRAD'': Trading name - name used by the business for commercial purposes.'
+          enum:
+          - LEGL
+          - SHRT
+          - TRAD
+          example: LEGL
+    TravelRuleNaturalPersonNameIdentifier:
+      type: object
+      properties:
+        nameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+        localNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+        phoneticNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalNameIdentifier'
+    TravelRuleValidateLegalPersonNameIdentifier:
+      type: object
+      required:
+      - nameIdentifier
+      properties:
+        nameIdentifier:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateLegalNameIdentifier'
+          description: An array of name identifiers of the legal person.
+          example:
+          - legalPersonName: Acme Corporation
+            legalPersonNameIdentifierType: LEGL
+        localNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateLegalNameIdentifier'
+          description: An array of local name identifiers of the legal person.
+          example:
+          - legalPersonName: アクメ株式会社
+            legalPersonNameIdentifierType: LEGL
+        phoneticNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateLegalNameIdentifier'
+          description: An array of phonetic name identifiers of the legal person.
+          example:
+          - legalPersonName: Akume Kabushiki Gaisha
+            legalPersonNameIdentifierType: LEGL
+    TravelRuleValidatePerson:
+      type: object
+      properties:
+        naturalPerson:
+          $ref: '#/components/schemas/TravelRuleValidateNaturalPerson'
+        legalPerson:
+          $ref: '#/components/schemas/TravelRuleValidateLegalPerson'
+    TravelRuleFieldsEnum:
+      type: array
+      description: 'The VASP fields to return. Pass `all` for the complete record.
+
+
+        Behaviour differs between the two endpoints when this parameter is omitted: Get VASP details returns the complete record, while Get All VASPs returns a six-field subset per VASP. Passing `all` returns the complete record from both.
+
+
+        Combining `all` with specific field names is not defined; pass either `all` alone or a list of specific names.
+
+
+        This list is not exhaustive. Some field names the API accepts are intentionally undocumented, and an unrecognised name causes an error.'
+      items:
+        type: string
+        enum:
+        - all
+        - did
+        - name
+        - verificationStatus
+        - addressLine1
+        - addressLine2
+        - city
+        - country
+        - emailDomains
+        - website
+        - logo
+        - legalStructure
+        - legalName
+        - yearFounded
+        - incorporationCountry
+        - isRegulated
+        - otherNames
+        - identificationType
+        - identificationCountry
+        - businessNumber
+        - regulatoryAuthorities
+        - jurisdictions
+        - division
+        - street
+        - number
+        - unit
+        - postCode
+        - state
+        - otherLegalName
+        - gleifUpdatedAt
+        - leiNumber
+        - legalForm
+        - entityCategory
+        - entityStatus
+        - externalEntityConfig
+        - hqStreet
+        - hqNumber
+        - hqPostcode
+        - hqRegion
+        - hqCity
+        - hqCountry
+        - certificates
+        - description
+        - travelRule_OPENVASP
+        - travelRule_SYGNA
+        - travelRule_TRISA
+        - travelRule_TRLIGHT
+        - travelRule_EMAIL
+        - travelRule_TRP
+        - travelRule_SHYFT
+        - travelRule_USTRAVELRULEWG
+        - createdAt
+        - createdBy
+        - updatedAt
+        - updatedBy
+        - lastSentDate
+        - lastReceivedDate
+        - documents
+        - hasAdmin
+        - isNotifiable
+        - issuers
+        - regulatoryStatus
+        - supervisoryAuthority
+        - registrationLicenseId
+        - statusStartDate
+        - statusExpirationDate
+        - lastChecked
+        - additionalInformation
+        - subsidiaryOf
+        - pii_didkey
+        - compliancePhase
+        - compliancePhaseData
+        - vaspnetId
+        - vaspnetUpdatedAt
+        - vaspnetImmutableFields
+        - node_didkey
+        - ddq
+        - targetProtocol
+        - parentGateway
+        - isActiveSender
+        - isActiveReceiver
+        - subsidiaries
+      example:
+      - name
+      - country
+      - website
+    TravelRuleAddress:
+      type: object
+      properties:
+        street:
+          type: string
+          example: 1234 Example St
+          description: Street address
+        city:
+          type: string
+          example: New York
+          description: City
+        state:
+          type: string
+          example: NY
+          description: State or province
+        postalCode:
+          type: string
+          example: '10001'
+          description: Postal or ZIP code
+    TravelRuleVASPExternalEntityRegistration:
+      type: object
+      description: The registration state of the VASP as reported by an external registry.
+      properties:
+        status:
+          type:
+          - string
+          - 'null'
+          description: The registration status at the external registry, for example `ISSUED`, `LAPSED` or `RETIRED`. The value set is defined by the registry, not by Fireblocks.
+          example: ISSUED
+        nextRenewalDate:
+          type:
+          - string
+          - 'null'
+          description: The date the registration is next due for renewal at the external registry.
+          example: '2026-05-19T12:41:57Z'
+        corroborationLevel:
+          type:
+          - string
+          - 'null'
+          description: The level to which the registry has corroborated the entity data, for example `FULLY_CORROBORATED`. The value set is defined by the registry, not by Fireblocks.
+          example: FULLY_CORROBORATED
+    TravelRuleLegalPerson:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TravelRuleLegalPersonNameIdentifier'
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: The array of geographic addresses associated with the legal person.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleNationalIdentification'
+        customerIdentification:
+          type: string
+          description: A unique identifier that identifies the customer in the organization's context. The value must be encrypted.
+          example: QmRY9AA4Uit2JRTxDzfzshrJdTK86Kf5HriA3dXDnihDmy
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
+          example: QmXvyML3AJUFpBbJqL5NVp7Vn7xNkuedTsSMk93duLCNW8
+        countryOfRegistration:
+          type: string
+          description: The ISO-3166 Alpha-2 country code where the legal person is registered. The value must be encrypted.
+          example: QmeoTk6UPruEAYNbJEAHdQYc53ap9BXmpnPMcuvs8wutdr
+    TravelRuleValidatePiiIVMS:
+      type: object
+      description: Information about the originator of the transaction.
+      properties:
+        originatorPersons:
+          type: array
+          description: Information about the originator of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRuleValidatePerson'
+        beneficiaryPersons:
+          type: array
+          description: Information about the beneficiary of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRuleValidatePerson'
+        accountNumber:
+          type: array
+          description: Beneficiary account number
+          items:
+            type: string
+    TrustProofOfAddressRequest:
+      type: object
+      description: Request to create a cryptographic proof of address ownership for TRUST network compliance
+      properties:
+        vaultAccountId:
+          type: string
+          format: numeric
+          x-fb-entity: vault_account
+          description: The ID of the vault account.
+          example: '0'
+        asset:
+          type: string
+          description: The asset identifier for which proof of address is being created.
+          example: ETH
+        prefix:
+          type: string
+          description: The prefix to be used for signing messages.
+          minLength: 1
+          maxLength: 255
+          example: trust_verification
+        trustUuid:
+          type: string
+          format: uuid
+          description: A unique identifier (UUID) obtained from TRUST (CreateAddressOwnership)
+          example: 550e8400-e29b-41d4-a716-446655440000
+        address:
+          type: string
+          maxLength: 255
+          description: 'Optional non-default (derived) address of the vault account to prove.
+
+            Supported for UTXO assets only (`BTC`, `BTC_TEST`). The address must belong to the vault account for the given asset.
+
+            Both SegWit and Legacy address forms are accepted.
+
+            When omitted, the proof is created for the default (index 0) address of the vault account.
+
+            '
+          example: bc1qexampleexampleexampleexampleexampleexample
+      required:
+      - vaultAccountId
+      - asset
+      - prefix
+      - trustUuid
+    TravelRulePiiIVMS:
+      type: object
+      description: Personal identifiable information related to the transaction
+      properties:
+        originatorPersons:
+          type: array
+          description: Information about the originator of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePerson'
+        beneficiaryPersons:
+          type: array
+          description: Information about the beneficiary of the transaction
+          items:
+            $ref: '#/components/schemas/TravelRulePerson'
+        accountNumber:
+          type: array
+          description: Beneficiary account number. The value must be encrypted.
+          items:
+            type: string
+            example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+    TrustProofOfAddressResponse:
+      type: object
+      description: Response containing the TRUST-compatible encoded signature
+      properties:
+        transactionId:
+          type: string
+          format: uuid
+          description: Transaction ID from Fireblocks (UUID format)
+          example: 550e8400-e29b-41d4-a716-446655440000
+        status:
+          $ref: '#/components/schemas/TypedMessageTransactionStatusEnum'
+        signature:
+          type: string
+          description: 'TRUST-compatible encoded signature for proof of address verification.
+
+            '
+          example: '0x6e6e0da016d49d2eaeefb2ce49efcde627151ce03d3e525963aa541ce07fb41c0f1f70d131f160480b4a68aaefbdae1b6fe3765eee3ceff0a8b47a8c979ccd961c'
+        publicKey:
+          type: string
+          description: 'Hex public key of the Fireblocks vault key that produced the signature.
+
+            Present only when `status` is `SIGNED` or `COMPLETED`, and only if Fireblocks returned it.
+
+            TRUST requires this key for SUI, TON and XTZ (as `auxProofData.encryptedPublicKey`).
+
+            '
+          example: 0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+      required:
+      - transactionId
+      - status
+      - signature
+    TravelRuleValidateTransactionRequest:
+      type: object
+      properties:
+        transactionAsset:
+          type: string
+          example: BTC
+          description: Transaction asset symbol (BTC,ETH)
+        destination:
+          type: string
+          example: bc1qxy2kgdygjrsqtzq2n0yrf1234p83kkfjhx0wlh
+          description: Transaction destination address
+        transactionAmount:
+          type: string
+          example: '10'
+          description: Transaction amount in the transaction asset
+        transactionAssetDecimals:
+          type: number
+          example: 8
+          description: Number of decimals in the transaction asset. This is used to convert the transaction amount to the smallest unit of the asset
+        originatorVASPdid:
+          type: string
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+          description: This is the identifier assigned to your VASP
+        originatorEqualsBeneficiary:
+          type: boolean
+          example: false
+          description: '"True" if the originator and beneficiary is the same person and you therefore do not need to collect any information. "False" if it is a third-party transfer.'
+        travelRuleBehavior:
+          type: boolean
+          example: true
+          description: This will also check if the transaction is a TRAVEL_RULE in the beneficiary VASP's jurisdiction
+        beneficiaryVASPdid:
+          type: string
+          example: did:ethr:0x46a7ed5813ce735387df2bfb245bd7722e0de992
+          description: This is the identifier assigned to the VASP the funds are being sent to
+        beneficiaryVASPname:
+          type: string
+          example: HelloCrypto
+          description: Beneficiary VASP name
+        beneficiaryName:
+          type: string
+          example: John Doe
+          description: Beneficiary  name
+        beneficiaryAccountNumber:
+          type: string
+          example: 1234-1234-1234-12234
+          description: Beneficiary  name
+        beneficiaryAddress:
+          $ref: '#/components/schemas/TravelRuleAddress'
+      required:
+      - transactionAsset
+      - destination
+      - transactionAmount
+      - originatorVASPdid
+      - originatorEqualsBeneficiary
+    TravelRuleValidateGeographicAddress:
+      type: object
+      properties:
+        streetName:
+          type: string
+          description: Name of a street or thoroughfare
+          example: 123 Main St
+        townName:
+          type: string
+          description: Name of a built-up area, with defined boundaries, and a local government
+          example: New York
+        country:
+          type: string
+          description: Nation with its own government (ISO-3166 Alpha-2 country code)
+          example: US
+        buildingNumber:
+          type: string
+          description: Number that identifies the position of a building on a street
+          example: 123
+        postCode:
+          type: string
+          description: Identifier consisting of a group of letters and/or numbers added to a postal address to assist the sorting of mail
+          example: 12345
+        addressType:
+          type: string
+          description: 'Specifies the type of address. Acceptable values are: - ''HOME'': Residential, the home address - ''BIZZ'': Business, the business address - ''GEOG'': Geographic, an unspecified physical (geographical) address'
+          enum:
+          - HOME
+          - BIZZ
+          - GEOG
+          example: HOME
+        department:
+          type: string
+          description: Identification of a division of a large organisation or building
+          example: IT
+        subDepartment:
+          type: string
+          description: Identification of a sub-division of a large organisation or building
+          example: Security
+        buildingName:
+          type: string
+          description: Name of the building or house
+          example: Acme Building
+        floor:
+          type: string
+          description: Floor or storey within a building
+          example: 1
+        postBox:
+          type: string
+          description: Numbered box in a post office
+          example: 123
+        room:
+          type: string
+          description: Building room number
+          example: 101
+        townLocationName:
+          type: string
+          description: Specific location name within the town
+          example: Downtown
+        districtName:
+          type: string
+          description: Identifies a subdivision within a country subdivision
+          example: Manhattan
+        countrySubDivision:
+          type: string
+          description: Identifies a subdivision of a country such as state, region, or province
+          example: New York
+        addressLine:
+          type: array
+          items:
+            type: string
+          description: Information that locates and identifies a specific address, presented in free format text
+          example:
+          - 123 Main St
+          - New York
+          - NY 12345
+    TravelRuleNotationEnum:
+      type: array
+      items:
+        type: string
+        enum:
+        - fireblocks
+        - notabene
+    TravelRuleValidateLegalPerson:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          $ref: '#/components/schemas/TravelRuleValidateLegalPersonNameIdentifier'
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateGeographicAddress'
+          description: The array of geographic addresses associated with the legal person.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleValidateNationalIdentification'
+        customerIdentification:
+          type: string
+          description: A unique identifier that identifies the customer in the organization's context.
+          example: CUST987654
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization.
+          example: 123456789
+        countryOfRegistration:
+          type: string
+          description: The ISO-3166 Alpha-2 country code where the legal person is registered.
+          example: US
+    TravelRuleValidateNaturalPerson:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalPersonNameIdentifier'
+          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier schema.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateGeographicAddress'
+          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress schema.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleValidateNationalIdentification'
+        dateAndPlaceOfBirth:
+          $ref: '#/components/schemas/TravelRuleValidateDateAndPlaceOfBirth'
+        customerIdentification:
+          type: string
+          description: A unique identifier for the customer within the organization's context.
+          example: CUST123456
+        countryOfResidence:
+          type: string
+          description: The ISO-3166 Alpha-2 country code of the natural person's residence.
+          example: US
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization.
+          example: 123456789
+    TravelRuleNaturalPerson:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleNaturalPersonNameIdentifier'
+          description: An array of structured name identifiers for the natural person, referencing the TravelRuleNaturalPersonNameIdentifier schema.
+        geographicAddress:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleGeographicAddress'
+          description: An array of geographic addresses associated with the natural person, referencing the TravelRuleGeographicAddress schema.
+        nationalIdentification:
+          $ref: '#/components/schemas/TravelRuleNationalIdentification'
+        dateAndPlaceOfBirth:
+          $ref: '#/components/schemas/TravelRuleDateAndPlaceOfBirth'
+        customerIdentification:
+          type: string
+          description: A unique identifier for the customer within the organization's context. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        countryOfResidence:
+          type: string
+          description: The ISO-3166 Alpha-2 country code of the natural person's residence. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        customerNumber:
+          type: string
+          description: A distinct identifier that uniquely identifies the customer within the organization. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+    TravelRuleGetAllVASPsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleVASP'
+          description: An array of VASP objects, referencing the TravelRuleVASP schema.
+        total:
+          type: integer
+          description: The total number of VASPs.
+          example: 2
+        next:
+          type:
+          - string
+          - 'null'
+          description: The URL for the next page of results.
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+    TrustProofOfAddressCreateResponse:
+      type: object
+      description: Response from creating a proof of address transaction
+      properties:
+        transactionId:
+          type: string
+          format: uuid
+          description: Transaction ID from Fireblocks (UUID format)
+          example: 550e8400-e29b-41d4-a716-446655440000
+        status:
+          $ref: '#/components/schemas/TypedMessageTransactionStatusEnum'
+      required:
+      - transactionId
+      - status
+    TravelRuleNationalIdentification:
+      type: object
+      description: Represents a national identifier for a person or entity
+      properties:
+        countryOfIssue:
+          type: string
+          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code). The value must be encrypted.
+          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
+        nationalIdentifier:
+          type: string
+          description: National identifier (max 35 characters). The value must be encrypted.
+          example: QmdR6qLnZ7Kwf5cBaXG8QFQenEvRg9JNZeoPranVuGd63z
+        nationalIdentifierType:
+          type: string
+          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'': National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security number The value must be encrypted.'
+          example: QmUKTg3aFJFhMz1o9gPqA3MgTRwd2LvDLwWTPHYUoMEYVi
+        registrationAuthority:
+          type: string
+          description: Registration authority (format -> RA followed by 6 digits). The value must be encrypted.
+          example: QmV9KJMyT9RJzpYfhME5xNCZ4G67fEkzTpRMyJzp9kTNYk
+    TravelRuleValidateDateAndPlaceOfBirth:
+      type: object
+      description: Represents the date and place of birth for a natural person
+      properties:
+        dateOfBirth:
+          type: string
+          description: Date of birth in ISO 8601 format (YYYY-MM-DD)
+          example: '1990-01-01'
+        placeOfBirth:
+          type: string
+          description: Place of birth
+          example: New York, USA
+    TravelRuleValidateFullTransactionRequest:
+      type: object
+      properties:
+        originatorVASPdid:
+          type: string
+          description: The Decentralized Identifier (DID) of the exchange (VASP) that is sending the virtual assets. This identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene network.
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+        beneficiaryVASPdid:
+          type: string
+          description: The Decentralized Identifier (DID) of the exchange (VASP) that is receiving the virtual assets. This identifier is unique to the exchange and is generated when the exchange's account is  created in the Notabene network.
+          example: did:ethr:0x17fe2dd11a2daa7f6c1fdf22532a4763f963aea6
+        transactionAsset:
+          type: string
+          description: 'Transaction asset symbol (e.g., BTC, ETH, USDC).  By using the `notation` query string, users can select the type of asset notation: - `fireblocks`: Converts asset symbols to Fireblocks notation. - `notabene`: Retains the original Notabene asset symbol format.'
+          example: BTC
+        transactionAmount:
+          type: string
+          description: 'Transaction amount in the transaction asset. For example, if the asset is BTC, the amount  is the value in BTC units.  By using the `notation` query string, users can select the type of amount notation: - `fireblocks`: Converts the amount to Fireblocks notation (e.g., adjusted for decimals). - `notabene`: Retains the original Notabene amount format.'
+          example: '10'
+        originatorVASPname:
+          type: string
+          description: The name of the VASP acting as the transaction originator.
+          example: Originator VASP Ltd.
+        beneficiaryVASPname:
+          type: string
+          description: The name of the VASP acting as the transaction beneficiary.
+          example: Beneficiary VASP Inc.
+        transactionBlockchainInfo:
+          $ref: '#/components/schemas/TravelRuleTransactionBlockchainInfo'
+        originator:
+          $ref: '#/components/schemas/TravelRuleValidatePiiIVMS'
+        beneficiary:
+          $ref: '#/components/schemas/TravelRuleValidatePiiIVMS'
+        encrypted:
+          type: string
+          description: Encrypted data related to the transaction.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        protocol:
+          type: string
+          enum:
+          - TRLight
+          - TRP
+          - OpenVASP
+          - GTR
+          description: The protocol used to perform the travel rule.
+          example: TRLight
+        skipBeneficiaryDataValidation:
+          type: boolean
+          description: Whether to skip validation of beneficiary data.
+          example: false
+        travelRuleBehavior:
+          type: boolean
+          description: Whether to check if the transaction complies with the travel rule in the beneficiary VASP's jurisdiction.
+          example: true
+        originatorRef:
+          type: string
+          description: A reference ID related to the originator of the transaction.
+          example: ORG123456
+        beneficiaryRef:
+          type: string
+          description: A reference ID related to the beneficiary of the transaction.
+          example: BEN654321
+        travelRuleBehaviorRef:
+          type: string
+          description: A reference ID related to the travel rule behavior.
+          example: TRB987654
+        originatorProof:
+          $ref: '#/components/schemas/TravelRuleOwnershipProof'
+        beneficiaryProof:
+          $ref: '#/components/schemas/TravelRuleOwnershipProof'
+        beneficiaryDid:
+          type: string
+          description: "The Decentralized Identifier (DID) of the person at the receiving exchange (VASP).  This identifier is generated when the customer is registered in the Notabene network,  or automatically created based on the `beneficiaryRef`.  - If neither `beneficiaryRef` nor `beneficiaryDid` is provided in the `txCreate` payload, \n  a new random DID is generated for every transaction."
+          example: did:key:z6Mkf67890Zghijkl67890
+        originatorDid:
+          type: string
+          description: "The Decentralized Identifier (DID) of the person at the exchange (VASP) who is requesting the withdrawal. This identifier is generated when the customer is registered in the Notabene network or automatically created based on the `originatorRef`.  - If neither `originatorRef` nor `originatorDid` is provided in the `txCreate` payload, \n  a new random DID is generated for every transaction."
+          example: did:key:z6Mkf12345Zabcdef12345
+        isNonCustodial:
+          type: boolean
+          description: Indicates if the transaction involves a non-custodial wallet.
+          example: true
+        notificationEmail:
+          type: string
+          description: The email address where a notification should be sent upon completion of the travel rule
+        pii:
+          $ref: '#/components/schemas/TravelRulePiiIVMS'
+        pii_url:
+          type: string
+          description: The URL of the personal identifiable information related to the transaction
+      required:
+      - originator
+      - beneficiary
+    TravelRuleValidateNaturalPersonNameIdentifier:
+      type: object
+      properties:
+        nameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
+        localNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
+        phoneticNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleValidateNaturalNameIdentifier'
+    TravelRuleUpdateVASPDetails:
+      type: object
+      properties:
+        did:
+          type: string
+          example: did:ethr:0x44957e75d6ce4a5bf37aae117da86422c848f7c2
+          description: The decentralized identifier of the VASP
+        pii_didkey:
+          type: string
+          example: did:key:z6Mks5CZRaiooKYhq5TwtXQC1gWhwiZnmiKfFrMnYY62MhYf
+          description: The PII DID key of the VASP
+      required:
+      - did
+      - pii_didkey
+    TravelRuleVASPCompliancePhaseData:
+      type:
+      - object
+      - 'null'
+      description: 'The VASP''s progress through the Travel Rule compliance onboarding milestones, as a map keyed by milestone code.
+
+
+        Each value indicates whether that milestone has been completed. The set of milestone codes is defined by the Travel Rule provider and may change over time, so clients must not assume any particular key is present. Examples of milestone codes include `TX_SENT`, `TX_NOTIFY_API`, `TF_VASP_VERIFIED`, `RULES_CUSTOM_INCOMING` and `INTEGRATIONS_WIDGET`.'
+      additionalProperties:
+        type: boolean
+        description: Whether the milestone identified by the key has been completed.
+        example: true
+    TravelRuleLegalNameIdentifier:
+      type: object
+      required:
+      - legalPersonName
+      - legalPersonNameIdentifierType
+      properties:
+        legalPersonName:
+          type: string
+          description: Name by which the legal person is known. The value must be encrypted.
+          example: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
+        legalPersonNameIdentifierType:
+          type: string
+          description: 'Specifies the type of name for a legal person (IVMS101 LegalPersonNameTypeCode). Acceptable values are: - ''LEGL'': Legal name - official name under which the organisation is registered. - ''SHRT'': Short name of the organisation. - ''TRAD'': Trading name - name used by the business for commercial purposes. The value must be encrypted.'
+          example: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
+    TravelRuleIssuer:
+      type: object
+      description: An attestation of a single VASP attribute by an issuing party.
+      properties:
+        issuerDid:
+          type: string
+          description: The Decentralized Identifier (DID) of the party that issued the attestation.
+          example: did:ethr:0x7947578140ed0fa32cb025d9ad9a6c6e72c52686
+        issuedDate:
+          type: string
+          description: Timestamp when the attestation was issued. Present on every attestation observed to date, but not guaranteed, so treat it as optional.
+          example: '2024-07-20T13:27:30.958Z'
+        issuerName:
+          type: string
+          description: The human-readable name of the issuing party. Returned only for issuers that publish a name, such as GLEIF; absent for others, including in the same response.
+          example: GLEIF
+      required:
+      - issuerDid
+    TypedMessageTransactionStatusEnum:
+      type: string
+      description: Status of the typed message transaction from Fireblocks. For details, see [Primary transaction statuses](https://developers.fireblocks.com/reference/primary-transaction-statuses)
+      enum:
+      - SUBMITTED
+      - QUEUED
+      - PENDING_SIGNATURE
+      - PENDING_AUTHORIZATION
+      - PENDING_3RD_PARTY_MANUAL_APPROVAL
+      - PENDING_3RD_PARTY
+      - BROADCASTING
+      - PENDING_AML_SCREENING
+      - CONFIRMING
+      - PARTIALLY_COMPLETED
+      - PENDING_EMAIL_APPROVAL
+      - CANCELLED
+      - REJECTED
+      - FAILED
+      - TIMEOUT
+      - BLOCKED
+      example: PENDING_SIGNATURE
+    TravelRuleLegalPersonNameIdentifier:
+      type: object
+      properties:
+        nameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleLegalNameIdentifier'
+          description: An array of name identifiers of the legal person.
+          example:
+          - legalPersonName: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
+            legalPersonNameIdentifierType: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
+        localNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleLegalNameIdentifier'
+          description: An array of local name identifiers of the legal person.
+          example:
+          - legalPersonName: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
+            legalPersonNameIdentifierType: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
+        phoneticNameIdentifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRuleLegalNameIdentifier'
+          description: An array of phonetic name identifiers of the legal person.
+          example:
+          - legalPersonName: QmVXXj5BJchhqQTU27uEkeghYMnxR6aVjZxJP9jS6uCg9Q
+            legalPersonNameIdentifierType: QmPevsa5xdkxf6Lgt7f9YweRBdgseeAkWVaYyssKF3Q86e
+    TravelRuleGeographicAddress:
+      type: object
+      properties:
+        streetName:
+          type: string
+          description: Name of a street or thoroughfare. The value must be encrypted.
+          example: QmZGXXsKPk5iPS97LLjXB5e8Qs555ocdzcpbPMXvt84Ji9
+        townName:
+          type: string
+          description: Name of a built-up area, with defined boundaries, and a local government. The value must be encrypted.
+          example: QmNkEt9VdnhjefQMXo3ZaZAs765ugoWiazaqcY9skHMjCt
+        country:
+          type: string
+          description: Nation with its own government (ISO-3166 Alpha-2 country code). The value must be encrypted.
+          example: QmRGHdoxQfSi6tevyvaYGzs8BVStfqJqEyrMYqUfzXxkmm
+        buildingNumber:
+          type: string
+          description: Number that identifies the position of a building on a street. The value must be encrypted.
+          example: QmUFpNkxdsVtebDSUz5eP51kzoysXmqj2gBgeH11PD7SVP
+        postCode:
+          type: string
+          description: Identifier consisting of a group of letters and/or numbers added to a postal address to assist the sorting of mail. The value must be encrypted.
+          example: QmTJsK3sc3fPEVwvAp97UUiVoFhjzQhYX3sCda1JxuCnXj
+        addressType:
+          type: string
+          description: 'Specifies the type of address. Acceptable values are: - ''HOME'': Residential, the home address - ''BIZZ'': Business, the business address - ''GEOG'': Geographic, an unspecified physical (geographical) address The value must be encrypted.'
+          example: Qmdr9LcChZsoivS6uAhe7Qk7cGLDAx73wBZTVvq4WoU71H
+        department:
+          type: string
+          description: Identification of a division of a large organisation or building. The value must be encrypted.
+          example: QmN7fb65x5MyA7RKyhbXaUKvJ7U4Y9eqpEZTmJYpNyEG8
+        subDepartment:
+          type: string
+          description: Identification of a sub-division of a large organisation or building. The value must be encrypted.
+          example: QmTkfyGh54tXNqFxyEGK9NyTJZYpQ6RZ9zpNykxykME8s
+        buildingName:
+          type: string
+          description: Name of the building or house. The value must be encrypted.
+          example: QmXJfGk85t6RKyhbXaEK9Nz4MEeMKypq6EY9zpJyC9nM9
+        floor:
+          type: string
+          description: Floor or storey within a building. The value must be encrypted.
+          example: QmZP5G7fhZpMyQxXnT9KyR6ybXaEM9zpJy4ME9MkTJGE1
+        postBox:
+          type: string
+          description: Numbered box in a post office. The value must be encrypted.
+          example: QmTkfYRGK54xFqXyJYNZyE9kY9zpMKytJnXy5z9EME9sJ
+        room:
+          type: string
+          description: Building room number. The value must be encrypted.
+          example: QmRYXnT9KyhbXaEMZpMyxMkZ9zpYNYTJ4ME5kCGE7fhMJ
+        townLocationName:
+          type: string
+          description: Specific location name within the town. The value must be encrypted.
+          example: QmNpZTyXJXnT9K6EYZpQxYNYMkC5p4kGEfhnkMJzpYT9Jm
+        districtName:
+          type: string
+          description: Identifies a subdivision within a country subdivision. The value must be encrypted.
+          example: QmT9p6ERKyNYXnTyhbpMYJ4zpYT9kMJZT9QmEMGZ5kMhCy
+        countrySubDivision:
+          type: string
+          description: Identifies a subdivision of a country such as state, region, or province. The value must be encrypted.
+          example: QmK9yTbXaZpMYJYTYp6NT9QmEMGZT9p9kMJfhyGE4Z7k5C
+        addressLine:
+          type: array
+          items:
+            type: string
+          description: Information that locates and identifies a specific address, presented in free format text. Each item must be encrypted.
+          example:
+          - QmNp9kMjfhGZ5kMJzpNYXZTy6NQmZYEMGZ4kZT9Y6pNYT
+    TravelRuleOwnershipProof:
+      type: object
+      description: Ownership proof related to the originator of the transaction.
+      properties:
+        type:
+          type: string
+          description: 'The type of ownership proof. Example values: - `eip-191`: Ethereum signature proof - `eip-712`: Ethereum typed data signature proof - `bip-137`: Bitcoin signature proof - `microtransfer`: Microtransaction (Satoshi test) - `screenshot`: Uploaded screenshot of the wallet - `self-declaration`: Checkbox attestation of ownership'
+          example: eip-191
+        proof:
+          type: string
+          description: 'The cryptographic signature, transaction hash, or other proof depending on the type. Examples: - For `eip-191`: `0x3dd4a17a...ce4a2bcd1b` - For `microtransfer`: The transaction hash `H3V8GXBy39Dz...tr3TSTkY=`'
+          example: 0x3dd4a17a...ce4a2bcd1b
+        attestation:
+          type: string
+          description: 'A human-readable statement of wallet ownership. Required for signature proofs and self-declarations. Examples: - `I certify that ETH account 0x896B...0b9b belongs to me.` - `I hereby declare that the blockchain address 0xa437bEed902AF9338B7DEB23848e195d85019510 is under my control.`'
+          example: I certify that ETH account 0x896B...0b9b belongs to me.
+        address:
+          type: string
+          description: 'The wallet address being verified. Examples: - For Ethereum: `0x896B...0b9b` - For Bitcoin: `1442...dxhsQ`'
+          example: 0x896B...0b9b
+        wallet_provider:
+          type: string
+          description: 'The wallet provider or method used for verification. Examples: - For Metamask: `Metamask` - For manual signature: `manual`'
+          example: Metamask
+        url:
+          type: string
+          description: 'The URL for the uploaded screenshot (for `screenshot` proof types only). Example: `https://example.com/uploaded_image.png`'
+          example: https://example.com/uploaded_image.png
+        did:
+          type: string
+          description: The Decentralized Identifier (DID) associated with the ownership proof.
+          example: did:key:z6Mkf12345Zabcdef12345
+        status:
+          type: string
+          description: The status of the ownership proof verification.
+          example: verified
+        confirmed:
+          type: boolean
+          description: 'Whether the user confirmed ownership of the wallet (for `self-declaration` proofs). Example: `true`'
+          example: true
+    TravelRuleIssuers:
+      type: object
+      properties:
+        yearFounded:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        isRegulated:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        regulatoryAuthorities:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        name:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        logo:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        website:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        legalName:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        legalStructure:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        incorporationCountry:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        businessNumber:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        addressLine1:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        city:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        country:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+        description:
+          $ref: '#/components/schemas/TravelRuleIssuer'
+      required:
+      - yearFounded
+      - isRegulated
+      - name
+      - website
+      - legalName
+      - legalStructure
+      - incorporationCountry
+      - businessNumber
+      - addressLine1
+      - city
+      - country
+    TravelRuleNaturalNameIdentifier:
+      type: object
+      properties:
+        primaryIdentifier:
+          type: string
+          description: The primary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+        secondaryIdentifier:
+          type: string
+          description: The secondary identifier of the name. The value must be encrypted.
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+        nameIdentifierType:
+          type: string
+          description: 'The type of the name identifier. The value must be encrypted. The value must be one of the following: [LEGL, DBA, TRAD, NICK, ALIA, MAID, FORM, PREV, BORN, OTHR].'
+          example: QmP6wx8bx3SVNG3hd3SZKnS5pDjUan4y9H1VtyRqu7tsAv
+    TravelRuleVASPExternalEntity:
+      type: object
+      description: The VASP's entity data as held by an external registry. These fields mirror a subset of the top-level VASP fields, but carry the registry's values rather than the VASP's own, so the two may differ.
+      properties:
+        legalName:
+          type:
+          - string
+          - 'null'
+          description: The legal name of the entity as recorded by the external registry.
+          example: Fireblocks Inc.
+        otherLegalName:
+          type:
+          - string
+          - 'null'
+          description: Alternative legal names of the entity, as a comma-separated list.
+          example: SIX Digital Exchange SA, SIX Digital Exchange Ltd
+        legalForm:
+          type:
+          - string
+          - 'null'
+          description: The Entity Legal Form (ELF) code of the entity.
+          example: MVII
+        legalStructure:
+          type:
+          - string
+          - 'null'
+          description: The legal structure of the entity. The external registry may return the Entity Legal Form code in this field, so its value can duplicate `legalForm`.
+          example: MVII
+        entityCategory:
+          type:
+          - string
+          - 'null'
+          description: The category assigned to the entity by the external registry.
+          example: GENERAL
+        entityStatus:
+          type:
+          - string
+          - 'null'
+          description: The status of the entity at the external registry.
+          example: ACTIVE
+        businessNumber:
+          type:
+          - string
+          - 'null'
+          description: The business registration number of the entity.
+          example: CHE-449.145.067
+        yearFounded:
+          type:
+          - string
+          - 'null'
+          description: The year the entity was founded. Returned as a string, not an integer.
+          example: '2018'
+        jurisdictions:
+          type:
+          - string
+          - 'null'
+          description: The jurisdictions the entity is registered in.
+          example: CH
+        addressLine1:
+          type:
+          - string
+          - 'null'
+          description: The first line of the entity's registered address.
+          example: Hardturmstrasse 201
+        number:
+          type:
+          - string
+          - 'null'
+          description: The building number of the entity's registered address. May be returned as an empty string as well as `null` when not supplied.
+          example: '201'
+        postCode:
+          type:
+          - string
+          - 'null'
+          description: The postal code of the entity's registered address.
+          example: '8005'
+        city:
+          type:
+          - string
+          - 'null'
+          description: The city of the entity's registered address.
+          example: Zurich
+        state:
+          type:
+          - string
+          - 'null'
+          description: The state or region of the entity's registered address, as an ISO-3166-2 subdivision code.
+          example: CH-ZH
+        country:
+          type:
+          - string
+          - 'null'
+          description: The country of the entity's registered address (ISO-3166 Alpha-2 code).
+          example: CH
+        hqStreet:
+          type:
+          - string
+          - 'null'
+          description: The street of the entity's headquarters address.
+          example: Hardturmstrasse 201
+        hqNumber:
+          type:
+          - string
+          - 'null'
+          description: The building number of the entity's headquarters address. May be returned as an empty string as well as `null` when not supplied.
+          example: '201'
+        hqPostcode:
+          type:
+          - string
+          - 'null'
+          description: The postal code of the entity's headquarters address.
+          example: '8005'
+        hqCity:
+          type:
+          - string
+          - 'null'
+          description: The city of the entity's headquarters address.
+          example: Zurich
+        hqRegion:
+          type:
+          - string
+          - 'null'
+          description: The region of the entity's headquarters address, as an ISO-3166-2 subdivision code.
+          example: CH-ZH
+        hqCountry:
+          type:
+          - string
+          - 'null'
+          description: The country of the entity's headquarters address (ISO-3166 Alpha-2 code).
+          example: CH
+    TravelRuleValidateNationalIdentification:
+      type: object
+      description: Represents a national identifier for a person or entity
+      properties:
+        countryOfIssue:
+          type: string
+          description: Country that issued the national identifier (ISO-3166 Alpha-2 country code)
+          example: US
+        nationalIdentifier:
+          type: string
+          description: National identifier (max 35 characters)
+          maxLength: 35
+          example: 123456789
+        nationalIdentifierType:
+          type: string
+          description: 'Type of national identifier. Acceptable values include: - ''PASSPORT'': Passport number - ''NATIONAL_ID'': National identification number - ''TAX_ID'': Tax identification number - ''SOCIAL_SECURITY'': Social security number'
+          enum:
+          - PASSPORT
+          - NATIONAL_ID
+          - TAX_ID
+          - SOCIAL_SECURITY
+          example: NATIONAL_ID
+        registrationAuthority:
+          type: string
+          description: Registration authority (format -> RA followed by 6 digits)
+          pattern: ^RA\d{6}$
+          example: RA123456
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

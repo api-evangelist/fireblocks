@@ -1,13 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Workspace Management Keys (Beta) API
+  title: Fireblocks Keys (Beta) API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
     - Visit our website for more information: Fireblocks Website
 
     - Visit our developer docs: Fireblocks DevPortal'
-  version: 1.8.0
+  version: 1.6.2
   contact:
     email: developers@fireblocks.com
 servers:
@@ -15,7 +15,6 @@ servers:
   description: Fireblocks Production Environment Base URL
 - url: https://sandbox-api.fireblocks.io/v1
   description: Fireblocks Sandbox Environment Base URL
-security: []
 tags:
 - name: Keys (Beta)
 paths:
@@ -43,6 +42,7 @@ paths:
           $ref: '#/components/responses/Error'
       tags:
       - Keys (Beta)
+      x-rate-limit-category: query
       x-readme:
         code-samples:
         - language: typescript
@@ -92,6 +92,7 @@ paths:
           $ref: '#/components/responses/Error'
       tags:
       - Keys (Beta)
+      x-rate-limit-category: query
       x-readme:
         code-samples:
         - language: typescript
@@ -111,7 +112,57 @@ paths:
       - lang: Python
         source: response = fireblocks.keys_beta.get_mpc_keys_list_by_user(user_id);
 components:
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
   schemas:
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    MpcKey:
+      type: object
+      properties:
+        keyId:
+          type: string
+          example: 743f82cf-b526-4148-afb1-cd71f1dfee10
+          maxLength: 36
+          minLength: 36
+        userId:
+          type: string
+          example: da084d02-d446-413e-b4ce-1e3256517dfd
+          description: The user id that owns the key
+          maxLength: 36
+          minLength: 36
+        algorithm:
+          type: number
+          example: 201
+          description: The algorithm of the key
+        players:
+          description: The players that are associated with the key
+          type: array
+          items:
+            $ref: '#/components/schemas/Players'
+        lastPreprocessedIndex:
+          type: number
+          minimum: 0
+          example: '6'
+          description: The last index used on this key
+      required:
+      - keyId
+      - userId
+      - algorithm
+      - players
     Players:
       type: object
       properties:
@@ -148,49 +199,11 @@ components:
       required:
       - tenantId
       - keys
-    MpcKey:
-      type: object
-      properties:
-        keyId:
-          type: string
-          example: 743f82cf-b526-4148-afb1-cd71f1dfee10
-          maxLength: 36
-          minLength: 36
-        userId:
-          type: string
-          example: da084d02-d446-413e-b4ce-1e3256517dfd
-          description: The user id that owns the key
-          maxLength: 36
-          minLength: 36
-        algorithm:
-          type: number
-          example: 201
-          description: The algorithm of the key
-        players:
-          description: The players that are associated with the key
-          type: array
-          items:
-            $ref: '#/components/schemas/Players'
-        lastPreprocessedIndex:
-          type: number
-          minimum: 0
-          example: '6'
-          description: The last index used on this key
-      required:
-      - keyId
-      - userId
-      - algorithm
-      - players
-  responses:
-    Error:
-      description: Error Response
-      headers:
-        X-Request-ID:
-          $ref: '#/components/headers/X-Request-ID'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSchema'
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
   securitySchemes:
     bearerTokenAuth:
       type: http
@@ -200,3 +213,9 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

@@ -1,13 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Smart Contracts Contract Templates API
+  title: Fireblocks Contract Templates API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
     - Visit our website for more information: Fireblocks Website
 
     - Visit our developer docs: Fireblocks DevPortal'
-  version: 1.8.0
+  version: 1.6.2
   contact:
     email: developers@fireblocks.com
 servers:
@@ -15,7 +15,6 @@ servers:
   description: Fireblocks Production Environment Base URL
 - url: https://sandbox-api.fireblocks.io/v1
   description: Fireblocks Sandbox Environment Base URL
-security: []
 tags:
 - name: Contract Templates
 paths:
@@ -23,8 +22,8 @@ paths:
     get:
       operationId: getContractTemplates
       summary: List all contract templates
+      x-rate-limit-category: query
       description: 'Return minimal representation of all the contract templates available for the workspace.
-
 
         Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
       parameters:
@@ -83,6 +82,9 @@ paths:
           type: string
       x-readme:
         code-samples:
+        - language: python
+          code: contract_templates = fireblocks.get_contract_templates()
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const contractTemplates = await fireblocks.getContractTemplates();
           name: Fireblocks SDK Javascript example
@@ -116,10 +118,8 @@ paths:
     post:
       operationId: uploadContractTemplate
       summary: Upload contract template
-      description: 'Upload a new contract template. This contract template will be available for the workspace.
-
-
-        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor'
+      x-rate-limit-category: write
+      description: Upload a new contract template. This contract template will be available for the workspace
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
       requestBody:
@@ -130,6 +130,9 @@ paths:
               $ref: '#/components/schemas/ContractUploadRequest'
       x-readme:
         code-samples:
+        - language: python
+          code: template = fireblocks.upload_contract_template(upload_request)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const contractTemplate = await fireblocks.uploadContractTemplate(uploadRequest);
           name: Fireblocks SDK Javascript example
@@ -164,10 +167,8 @@ paths:
     get:
       operationId: getContractTemplateById
       summary: Return contract template by id
-      description: 'Return detailed information about the contract template.
-
-
-        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      x-rate-limit-category: read
+      description: Return detailed information about the contract template
       parameters:
       - name: contractTemplateId
         required: true
@@ -178,6 +179,9 @@ paths:
           type: string
       x-readme:
         code-samples:
+        - language: python
+          code: contract_template = fireblocks.get_contract_template(contract_id)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const contractTemplate = await fireblocks.getContractTemplate(contractId);
           name: Fireblocks SDK Javascript example
@@ -217,10 +221,8 @@ paths:
     delete:
       operationId: deleteContractTemplateById
       summary: Delete a contract template by id
-      description: 'Delete a contract by id. allowed only for private contract templates. Notice: it is irreversible!
-
-
-        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor'
+      x-rate-limit-category: write
+      description: 'Delete a contract by id. allowed only for private contract templates. Notice: it is irreversible!'
       parameters:
       - name: contractTemplateId
         required: true
@@ -231,6 +233,9 @@ paths:
           type: string
       x-readme:
         code-samples:
+        - language: python
+          code: fireblocks.deleteContractTemplate(contract_id)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: await fireblocks.getContractTemplate(contractId);
           name: Fireblocks SDK Javascript example
@@ -267,10 +272,8 @@ paths:
     get:
       operationId: getConstructorByContractTemplateId
       summary: Return contract template's constructor
-      description: 'Return contract template''s constructor ABI.
-
-
-        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      x-rate-limit-category: read
+      description: Return contract template's constructor ABI
       parameters:
       - name: contractTemplateId
         required: true
@@ -288,6 +291,9 @@ paths:
           type: boolean
       x-readme:
         code-samples:
+        - language: python
+          code: contract_constructor_abi = fireblocks.get_contract_template_constructor(contract_id)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const contractConstructorAbi = await fireblocks.getContractTemplateConstructor(contractId);
           name: Fireblocks SDK Javascript example
@@ -324,14 +330,74 @@ paths:
         source: CompletableFuture<ApiResponse<AbiFunction>> response = fireblocks.contractTemplates().getConstructorByContractTemplateId(contractTemplateId, withDocs);
       - lang: Python
         source: response = fireblocks.contract_templates.get_constructor_by_contract_template_id(contract_template_id, with_docs);
+  /tokenization/templates/{contractTemplateId}/deploy:
+    post:
+      operationId: deployContract
+      summary: Deploy contract
+      x-rate-limit-category: write
+      description: Deploy a new contract by contract template id. If you wish to deploy a token (ERC20, ERC721 etc), and create asset please use POST /tokenization
+      parameters:
+      - name: contractTemplateId
+        required: true
+        in: path
+        description: The Contract Template identifier
+        example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
+        schema:
+          type: string
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContractDeployRequest'
+      x-readme:
+        code-samples:
+        - language: python
+          code: response = fireblocks.deploy_contract(contract_id, contract_deploy_request)
+          name: Fireblocks SDK Python example (Legacy)
+        - language: javascript
+          code: const { txId } = await fireblocks.deployContract(contractId, contractDeployRequest);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ContractDeployResponse>> = fireblocks.contractTemplates.deployContract(contractTemplatesApiDeployContractRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ContractDeployResponse>> response = fireblocks.contractTemplates().deployContract(contractDeployRequest, contractTemplateId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.contract_templates.deploy_contract(contract_deploy_request, contract_template_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      responses:
+        '202':
+          description: Contract was deployed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractDeployResponse'
+        '404':
+          description: Could not find contract.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpContractDoesNotExistError'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Contract Templates
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ContractDeployResponse>> = fireblocks.contractTemplates.deployContract(contractTemplatesApiDeployContractRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ContractDeployResponse>> response = fireblocks.contractTemplates().deployContract(contractDeployRequest, contractTemplateId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.contract_templates.deploy_contract(contract_deploy_request, contract_template_id, idempotency_key);
   /tokenization/templates/{contractTemplateId}/function:
     get:
       operationId: getFunctionAbiByContractTemplateId
       summary: Return contract template's function
-      description: 'Return contract template`s function ABI by signature.
-
-
-        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, Viewer.'
+      description: Return contract template`s function ABI by signature
+      x-rate-limit-category: read
       parameters:
       - name: contractTemplateId
         required: true
@@ -341,9 +407,7 @@ paths:
         schema:
           type: string
       - name: functionSignature
-        description: The contract's function signature
         required: true
-        example: initialize(string,string,address)
         in: query
         schema:
           type: string
@@ -382,14 +446,11 @@ paths:
         source: CompletableFuture<ApiResponse<AbiFunction>> response = fireblocks.contractTemplates().getFunctionAbiByContractTemplateId(contractTemplateId, functionSignature);
       - lang: Python
         source: response = fireblocks.contract_templates.get_function_abi_by_contract_template_id(contract_template_id, function_signature);
-  /tokenization/templates/{contractTemplateId}/deploy:
-    post:
-      operationId: deployContract
-      summary: Deploy contract
-      description: 'Deploy a new contract by contract template id. If you wish to deploy a token (ERC20, ERC721 etc), and create asset please use `POST /tokenization`.
-
-
-        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, Approver, and Editor, Viewer.'
+  /tokenization/templates/{contractTemplateId}/supported_blockchains:
+    get:
+      operationId: getSupportedBlockchainsByTemplateId
+      summary: Get supported blockchains for the template
+      x-rate-limit-category: read
       parameters:
       - name: contractTemplateId
         required: true
@@ -398,34 +459,30 @@ paths:
         example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
         schema:
           type: string
-      - $ref: '#/components/parameters/X-Idempotency-Key'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ContractDeployRequest'
       x-readme:
         code-samples:
+        - language: python
+          code: supported_blockchains = fireblocks.get_supported_blockchains_by_template_id(contract_template_id)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
-          code: const { txId } = await fireblocks.deployContract(contractId, contractDeployRequest);
+          code: const supportedBlockchains = await fireblocks.getSupportedBlockchainsByTemplateId(contractTemplateId);
           name: Fireblocks SDK Javascript example
         - language: typescript
-          code: 'const response: Promise<FireblocksResponse<ContractDeployResponse>> = fireblocks.contractTemplates.deployContract(contractTemplatesApiDeployContractRequest);'
+          code: 'const response: Promise<FireblocksResponse<SupportedBlockChainsResponse>> = fireblocks.contractTemplates.getSupportedBlockchainsByTemplateId(contractTemplatesApiGetSupportedBlockchainsByTemplateIdRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<ContractDeployResponse>> response = fireblocks.contractTemplates().deployContract(contractDeployRequest, contractTemplateId, idempotencyKey);
+          code: CompletableFuture<ApiResponse<SupportedBlockChainsResponse>> response = fireblocks.contractTemplates().getSupportedBlockchainsByTemplateId(contractTemplateId);
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.contract_templates.deploy_contract(contract_deploy_request, contract_template_id, idempotency_key);
+          code: response = fireblocks.contract_templates.get_supported_blockchains_by_template_id(contract_template_id);
           name: Fireblocks SDK Python example
       responses:
-        '202':
-          description: Contract was deployed successfully
+        '200':
+          description: Supported blockchains list
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContractDeployResponse'
+                $ref: '#/components/schemas/SupportedBlockChainsResponse'
         '404':
           description: Could not find contract.
           content:
@@ -438,41 +495,58 @@ paths:
       - Contract Templates
       x-codeSamples:
       - lang: TypeScript
-        source: 'const response: Promise<FireblocksResponse<ContractDeployResponse>> = fireblocks.contractTemplates.deployContract(contractTemplatesApiDeployContractRequest);'
+        source: 'const response: Promise<FireblocksResponse<SupportedBlockChainsResponse>> = fireblocks.contractTemplates.getSupportedBlockchainsByTemplateId(contractTemplatesApiGetSupportedBlockchainsByTemplateIdRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<ContractDeployResponse>> response = fireblocks.contractTemplates().deployContract(contractDeployRequest, contractTemplateId, idempotencyKey);
+        source: CompletableFuture<ApiResponse<SupportedBlockChainsResponse>> response = fireblocks.contractTemplates().getSupportedBlockchainsByTemplateId(contractTemplateId);
       - lang: Python
-        source: response = fireblocks.contract_templates.deploy_contract(contract_deploy_request, contract_template_id, idempotency_key);
+        source: response = fireblocks.contract_templates.get_supported_blockchains_by_template_id(contract_template_id);
 components:
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
   schemas:
-    VendorDto:
+    ErrorSchema:
       type: object
       properties:
-        id:
+        message:
           type: string
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b4453
-          description: The unique identifier of the vendor of this contract template
-        name:
-          type: string
-          example: Fireblocks
-          description: The name of the vendor of this contract template
-      required:
-      - id
-      - name
-    LeanAbiFunction:
+        code:
+          type: number
+    ContractAttributes:
       type: object
       properties:
-        name:
-          type: string
-          example: initialize
-          description: The function name
-        inputs:
-          description: The function inputs
+        useCases:
           type: array
           items:
-            $ref: '#/components/schemas/ParameterWithValue'
-      required:
-      - inputs
+            type: string
+        standards:
+          type: array
+          items:
+            type: string
+          description: Token standards implemented by the contract (e.g. ERC-20, ERC-1400). Not returned for templates that do not follow ERC token standards, such as non-EVM templates (e.g. Stellar, Solana Token 2022)
+        auditor:
+          $ref: '#/components/schemas/AuditorData'
+    FunctionDoc:
+      type: object
+      properties:
+        details:
+          type: string
+          description: A description of the function
+        params:
+          type: object
+          additionalProperties:
+            type: string
+          description: A description of the function parameters
+        returns:
+          type: object
+          additionalProperties:
+            type: string
+          description: A description of the function return values. only for read functions
     LeanContractDto:
       type: object
       properties:
@@ -524,152 +598,14 @@ components:
           enum:
           - FUNGIBLE_TOKEN
           - NON_FUNGIBLE_TOKEN
+          - NON_TOKEN
+          - TOKEN_EXTENSION
           - TOKEN_UTILITY
       required:
       - id
       - name
       - description
       - isPublic
-    ContractDeployRequest:
-      type: object
-      properties:
-        assetId:
-          type: string
-          example: ETH_TEST5
-          description: The base asset identifier of the blockchain you want to deploy to
-        vaultAccountId:
-          type: string
-          example: '0'
-          description: The vault account id you wish to deploy from
-        constructorParameters:
-          description: The constructor parameters of this contract
-          items:
-            $ref: '#/components/schemas/ParameterWithValue'
-          example:
-          - internalType: string
-            name: name_
-            type: string
-            value: TokenName
-          - internalType: string
-            name: symbol_
-            type: string
-            value: TokenSymbol
-          type: array
-      required:
-      - assetId
-      - vaultAccountId
-    ContractAttributes:
-      type: object
-      properties:
-        useCases:
-          type: array
-          items:
-            type: string
-        standards:
-          type: array
-          items:
-            type: string
-        auditor:
-          $ref: '#/components/schemas/AuditorData'
-      required:
-      - useCases
-      - standards
-      - auditor
-    TemplatesPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The data of the current page
-          items:
-            $ref: '#/components/schemas/LeanContractDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The ID of the next page
-          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
-      required:
-      - data
-    AuditorData:
-      type: object
-      properties:
-        name:
-          type: string
-        imageURL:
-          type: string
-        link:
-          type: string
-      required:
-      - name
-      - imageURL
-      - link
-    HttpContractDoesNotExistError:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Not Found error code
-          example: Contract does not exist
-        code:
-          type: string
-          description: Error code
-          example: 404
-    FunctionDoc:
-      type: object
-      properties:
-        details:
-          type: string
-          description: A description of the function
-        params:
-          type: object
-          additionalProperties:
-            type: string
-          description: A description of the function parameters
-        returns:
-          type: object
-          additionalProperties:
-            type: string
-          description: A description of the function return values. only for read functions
-    AbiFunction:
-      type: object
-      properties:
-        name:
-          type: string
-          example: mint
-          description: The name of the contract function as it appears in the ABI
-        stateMutability:
-          type: string
-          example: pure
-          enum:
-          - pure
-          - view
-          - nonpayable
-          - payable
-          description: The state mutability of the contract function as it appears in the ABI
-        type:
-          type: string
-          example: constructor
-          description: The type if the function
-          enum:
-          - function
-          - constructor
-        inputs:
-          description: The parameters that this function/constructor posses
-          items:
-            $ref: '#/components/schemas/Parameter'
-          type: array
-        outputs:
-          description: The parameters that this 'read' function returns
-          items:
-            $ref: '#/components/schemas/Parameter'
-          type: array
-        description:
-          type: string
-          description: The documentation of this function (if has any)
-      required:
-      - type
-      - inputs
     ContractUploadRequest:
       type: object
       properties:
@@ -695,6 +631,8 @@ components:
           enum:
           - FUNGIBLE_TOKEN
           - NON_FUNGIBLE_TOKEN
+          - NON_TOKEN
+          - TOKEN_EXTENSION
           - TOKEN_UTILITY
           type: string
           example: FUNGIBLE_TOKEN
@@ -718,21 +656,19 @@ components:
           - $ref: '#/components/schemas/ContractDoc'
         abi:
           type: array
+          example:
+          - inputs:
+            - internalType: address
+              name: implementation
+              type: address
+            - internalType: bytes
+              name: _data
+              type: bytes
+            stateMutability: payable
+            type: constructor
+          description: The abi of the contract template. Necessary for displaying and for after deployment encoding
           items:
-            example:
-            - inputs:
-              - internalType: address
-                name: implementation
-                type: address
-              - internalType: bytes
-                name: _data
-                type: bytes
-              stateMutability: payable
-              type: constructor
-            description: The abi of the contract template. Necessary for displaying and for after deployment encoding
-            type: array
-            items:
-              $ref: '#/components/schemas/AbiFunction'
+            $ref: '#/components/schemas/AbiFunction'
         attributes:
           example:
             useCases:
@@ -748,11 +684,160 @@ components:
           description: The attributes related to this contract template. It will be displayed in the tokenization page
           allOf:
           - $ref: '#/components/schemas/ContractAttributes'
+        protocol:
+          type: string
+          enum:
+          - ETH
+          - SOL
+          example: ETH
+          description: The protocol that the template will be used for
       required:
       - name
       - description
       - bytecode
       - abi
+      - type
+    AbiFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: mint
+          description: The name of the contract function as it appears in the ABI
+        stateMutability:
+          type: string
+          example: pure
+          enum:
+          - pure
+          - view
+          - nonpayable
+          - payable
+          description: The state mutability of the contract function as it appears in the ABI
+        type:
+          type: string
+          example: constructor
+          description: The type of the function
+          enum:
+          - constructor
+          - function
+          - error
+          - event
+          - receive
+          - fallback
+        inputs:
+          description: The parameters that this function/constructor posses
+          items:
+            $ref: '#/components/schemas/Parameter'
+          type: array
+        outputs:
+          description: The parameters that this 'read' function returns
+          items:
+            $ref: '#/components/schemas/Parameter'
+          type: array
+        description:
+          type: string
+          description: The documentation of this function (if has any)
+      required:
+      - type
+    Parameter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: _name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+      required:
+      - name
+      - type
+    SupportedBlockchain:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the blockchain
+          example: 9f9f7062-df90-4fc0-8697-96685184357b
+        legacyId:
+          type: string
+          description: The old blockchain ID representation of the blockchain
+          example: ETH
+        displayName:
+          type: string
+          description: The name of the blockchain
+          example: Ethereum
+        nativeAssetId:
+          type: string
+          description: Native asset ID of this blockchain
+          example: 9f9f7062-df90-4fc0-8697-96685184356a
+      required:
+      - id
+      - legacyId
+      - displayName
+      - nativeAssetId
+    TemplatesPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The data of the current page
+          items:
+            $ref: '#/components/schemas/LeanContractDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The ID of the next page
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+      required:
+      - data
+    ParameterWithValue:
+      type: object
+      properties:
+        name:
+          type: string
+          example: _name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The  internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+        value:
+          example: 'true'
+          description: 'The value of the parameter. The shape follows the ABI `type`: a string for `string`/`address`/`bytes*`, a number for `uint*`/`int*`, a boolean for `bool`, an array for `T[]`, and for `tuple` an array of nested ParameterWithValue objects (one per entry in `components`, in ABI order).'
+        functionValue:
+          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
+          allOf:
+          - $ref: '#/components/schemas/LeanAbiFunction'
+      required:
+      - name
+      - type
     ContractTemplateDto:
       type: object
       properties:
@@ -774,21 +859,19 @@ components:
           description: "A full description of the contract template. May contain \n to break the lines"
         abi:
           type: array
+          example:
+          - inputs:
+            - internalType: address
+              name: implementation
+              type: address
+            - internalType: bytes
+              name: _data
+              type: bytes
+            stateMutability: payable
+            type: constructor
+          description: The abi of the contract template. Necessary for displaying and for after deployment encoding
           items:
-            example:
-            - inputs:
-              - internalType: address
-                name: implementation
-                type: address
-              - internalType: bytes
-                name: _data
-                type: bytes
-              stateMutability: payable
-              type: constructor
-            description: The abi of the contract template. Necessary for displaying and for after deployment encoding
-            type: array
-            items:
-              $ref: '#/components/schemas/AbiFunction'
+            $ref: '#/components/schemas/AbiFunction'
         attributes:
           example:
             useCases:
@@ -841,6 +924,8 @@ components:
           enum:
           - FUNGIBLE_TOKEN
           - NON_FUNGIBLE_TOKEN
+          - NON_TOKEN
+          - TOKEN_EXTENSION
           - TOKEN_UTILITY
           type: string
           example: FUNGIBLE_TOKEN
@@ -848,7 +933,6 @@ components:
         implementationContractId:
           type: string
         initializationPhase:
-          description: For standalone contracts use ON_DEPLOYMENT and for contracts that are behind proxies use POST_DEPLOYMENT
           enum:
           - ON_DEPLOYMENT
           - POST_DEPLOYMENT
@@ -860,31 +944,91 @@ components:
       - abi
       - isPublic
       - initializationPhase
-    Parameter:
+    VendorDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: b70701f4-d7b1-4795-a8ee-b09cdb5b4453
+          description: The unique identifier of the vendor of this contract template
+        name:
+          type: string
+          example: Fireblocks
+          description: The name of the vendor of this contract template
+      required:
+      - id
+      - name
+    ContractDeployRequest:
+      type: object
+      properties:
+        assetId:
+          type: string
+          example: ETH_TEST5
+          description: The base asset identifier of the blockchain you want to deploy to
+        vaultAccountId:
+          type: string
+          example: '0'
+          description: The vault account id you wish to deploy from
+        constructorParameters:
+          description: The constructor parameters of this contract
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
+          example:
+          - internalType: string
+            name: name_
+            type: string
+            value: TokenName
+          - internalType: string
+            name: symbol_
+            type: string
+            value: TokenSymbol
+          type: array
+        useGasless:
+          type: boolean
+          example: false
+          description: Indicates whether the token should be created in a gasless manner, utilizing the ERC-2771 standard. When set to true, the transaction will be relayed by a designated relayer. The workspace must be configured to use Fireblocks gasless relay.
+        fee:
+          type: string
+          description: Max fee amount for the write function transaction. interchangeable with the 'feeLevel' field
+          example: '2000'
+        feeLevel:
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          type: string
+          description: Fee level for the write function transaction. interchangeable with the 'fee' field
+          example: MEDIUM
+      required:
+      - assetId
+      - vaultAccountId
+    AuditorData:
       type: object
       properties:
         name:
           type: string
-          example: _name
-          description: The name of the parameter as it appears in the ABI
-        description:
+        imageURL:
           type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
+        link:
           type: string
-          example: string
-          description: The internal type of the parameter as it appears in the ABI
-        type:
-          type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
-          type: array
-          description: In case it’s a struct, it will hold the struct data
       required:
       - name
-      - type
+      - imageURL
+      - link
+    SupportedBlockChainsResponse:
+      type: object
+      properties:
+        supportsAllBlockchains:
+          type: boolean
+          description: Boolean representing if all blockchains are supported
+          example: true
+        supportedBlockchains:
+          type: array
+          description: List of supported blockchains
+          items:
+            $ref: '#/components/schemas/SupportedBlockchain'
+      required:
+      - supportsAllBlockchains
     ContractDeployResponse:
       type: object
       properties:
@@ -894,40 +1038,6 @@ components:
           description: The transaction id of the deployment request
       required:
       - txId
-    ParameterWithValue:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Some Name
-          description: The name of the parameter as it appears in the ABI
-        description:
-          type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
-          type: string
-          example: string
-          description: The  internal type of the parameter as it appears in the ABI
-        type:
-          type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
-          type: array
-          items:
-            $ref: '#/components/schemas/Parameter'
-        value:
-          example: 'true'
-          description: The value of the parameter. can also be ParameterWithValue
-          type: string
-        functionValue:
-          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
-          allOf:
-          - $ref: '#/components/schemas/LeanAbiFunction'
-      required:
-      - name
-      - type
     ContractDoc:
       type: object
       properties:
@@ -952,22 +1062,57 @@ components:
               details: Initializes the contract
           description: The description of the contract functions
         version:
-          type: string
-          example: '1'
+          type: number
+          example: 1
           description: The version of the contract
       required:
       - kind
       - methods
       - version
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
+    HttpContractDoesNotExistError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Not Found error code
+          example: Contract does not exist
+        code:
+          type: string
+          description: Error code
+          example: 404
+    LeanAbiFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: initialize
+          description: The function name
+        inputs:
+          description: The function inputs
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
+        outputs:
+          description: The function outputs
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
+        stateMutability:
+          type: string
+          enum:
+          - view
+          - pure
+          - nonpayable
+          - payable
+          example: nonpayable
+          description: The state mutability of the function (e.g., view, pure, nonpayable, payable)
+      required:
+      - inputs
+  headers:
+    X-Request-ID:
       schema:
         type: string
-        example: some-unique-id
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
   responses:
     Error:
       description: Error Response
@@ -987,3 +1132,9 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

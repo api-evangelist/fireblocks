@@ -1,13 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Blockchains and Assets Approval Requests……
+  title: Fireblocks Policy Editor (Beta) API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
     - Visit our website for more information: Fireblocks Website
 
     - Visit our developer docs: Fireblocks DevPortal'
-  version: 1.8.0
+  version: 1.6.2
   contact:
     email: developers@fireblocks.com
 servers:
@@ -15,38 +15,39 @@ servers:
   description: Fireblocks Production Environment Base URL
 - url: https://sandbox-api.fireblocks.io/v1
   description: Fireblocks Sandbox Environment Base URL
-security: []
 tags:
 - name: Policy Editor (Beta)
 paths:
   /tap/active_policy:
     get:
-      operationId: getActivePolicy
+      operationId: getActivePolicyLegacy
       summary: Get the active policy and its validation
-      description: 'Returns the active policy and its validation.
+      description: 'Legacy Endpoint – Returns the active policy and its validation.
 
+        **Note:**
 
-        **Note:** These endpoints are currently in beta and might be subject to changes.
+        - This endpoint will remain available for the foreseeable future and is not deprecated. - The `getActivePolicy` endpoint under policy/paths provides policy type-specific operations and improved functionality. - These endpoints are currently in beta and might be subject to changes.
 
-        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.
-
-
-        Endpoint Permission: Admin, Non-Signing Admin.'
+        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.'
       tags:
       - Policy Editor (Beta)
+      x-rate-limit-category: query
       x-readme:
         code-samples:
+        - language: python
+          code: policy = fireblocks.get_active_policy()
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const policy = await fireblocks.getActivePolicy();
           name: Fireblocks SDK Javascript example
         - language: typescript
-          code: 'const response: Promise<FireblocksResponse<PolicyAndValidationResponse>> = fireblocks.policyEditorBeta.getActivePolicy();'
+          code: 'const response: Promise<FireblocksResponse<LegacyPolicyAndValidationResponse>> = fireblocks.policyEditorBeta.getActivePolicyLegacy();'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<PolicyAndValidationResponse>> response = fireblocks.policyEditorBeta().getActivePolicy();
+          code: CompletableFuture<ApiResponse<LegacyPolicyAndValidationResponse>> response = fireblocks.policyEditorBeta().getActivePolicyLegacy();
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.policy_editor_beta.get_active_policy();
+          code: response = fireblocks.policy_editor_beta.get_active_policy_legacy();
           name: Fireblocks SDK Python example
       responses:
         '200':
@@ -57,44 +58,46 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PolicyAndValidationResponse'
+                $ref: '#/components/schemas/LegacyPolicyAndValidationResponse'
         default:
           $ref: '#/components/responses/Error'
       x-codeSamples:
       - lang: TypeScript
-        source: 'const response: Promise<FireblocksResponse<PolicyAndValidationResponse>> = fireblocks.policyEditorBeta.getActivePolicy();'
+        source: 'const response: Promise<FireblocksResponse<LegacyPolicyAndValidationResponse>> = fireblocks.policyEditorBeta.getActivePolicyLegacy();'
       - lang: Java
-        source: CompletableFuture<ApiResponse<PolicyAndValidationResponse>> response = fireblocks.policyEditorBeta().getActivePolicy();
+        source: CompletableFuture<ApiResponse<LegacyPolicyAndValidationResponse>> response = fireblocks.policyEditorBeta().getActivePolicyLegacy();
       - lang: Python
-        source: response = fireblocks.policy_editor_beta.get_active_policy();
+        source: response = fireblocks.policy_editor_beta.get_active_policy_legacy();
   /tap/draft:
     get:
-      operationId: getDraft
+      operationId: getDraftLegacy
       summary: Get the active draft
-      description: 'Returns the active draft and its validation.
+      description: 'Legacy Endpoint – Returns the active draft and its validation.
 
+        **Note:**
 
-        **Note:** These endpoints are currently in beta and might be subject to changes.
+        - This endpoint will remain available for the foreseeable future and is not deprecated. - The `getDraft` endpoint under policy/paths provides policy type-specific operations and improved functionality. - These endpoints are currently in beta and might be subject to changes.
 
-        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.
-
-
-        Endpoint Permission: Admin, Non-Signing Admin.'
+        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.'
       tags:
       - Policy Editor (Beta)
+      x-rate-limit-category: read
       x-readme:
         code-samples:
+        - language: python
+          code: policy = fireblocks.get_draft()
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const policy = await fireblocks.getDraft();
           name: Fireblocks SDK Javascript example
         - language: typescript
-          code: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.getDraft();'
+          code: 'const response: Promise<FireblocksResponse<LegacyDraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.getDraftLegacy();'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().getDraft();
+          code: CompletableFuture<ApiResponse<LegacyDraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().getDraftLegacy();
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.policy_editor_beta.get_draft();
+          code: response = fireblocks.policy_editor_beta.get_draft_legacy();
           name: Fireblocks SDK Python example
       responses:
         '200':
@@ -105,54 +108,54 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DraftReviewAndValidationResponse'
+                $ref: '#/components/schemas/LegacyDraftReviewAndValidationResponse'
         default:
           $ref: '#/components/responses/Error'
       x-codeSamples:
       - lang: TypeScript
-        source: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.getDraft();'
+        source: 'const response: Promise<FireblocksResponse<LegacyDraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.getDraftLegacy();'
       - lang: Java
-        source: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().getDraft();
+        source: CompletableFuture<ApiResponse<LegacyDraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().getDraftLegacy();
       - lang: Python
-        source: response = fireblocks.policy_editor_beta.get_draft();
+        source: response = fireblocks.policy_editor_beta.get_draft_legacy();
     put:
-      operationId: updateDraft
+      operationId: updateDraftLegacy
       summary: Update the draft with a new set of rules
-      description: 'Update the draft and return its validation.
+      description: 'Legacy Endpoint – Update the draft and return its validation.
 
+        **Note:**
 
-        **Note:** These endpoints are currently in beta and might be subject to changes.
+        - This endpoint will remain available for the foreseeable future and is not deprecated. - The `updateDraft` endpoint under policy/paths provides policy type-specific operations and improved functionality. - These endpoints are currently in beta and might be subject to changes.
 
-        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.
-
-        Learn more about Fireblocks Transaction Authorization Policy in the following guide.
-
-
-        Endpoint Permission: Admin, Non-Signing Admin.'
+        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.'
       tags:
       - Policy Editor (Beta)
+      x-rate-limit-category: write
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
       x-readme:
         code-samples:
+        - language: python
+          code: policy = fireblocks.update_draft()
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const policy = await fireblocks.updateDraft();
           name: Fireblocks SDK Javascript example
         - language: typescript
-          code: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.updateDraft(policyEditorBetaApiUpdateDraftRequest);'
+          code: 'const response: Promise<FireblocksResponse<LegacyDraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.updateDraftLegacy(policyEditorBetaApiUpdateDraftLegacyRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().updateDraft(policyRules, idempotencyKey);
+          code: CompletableFuture<ApiResponse<LegacyDraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().updateDraftLegacy(legacyPolicyRules, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.policy_editor_beta.update_draft(policy_rules, idempotency_key);
+          code: response = fireblocks.policy_editor_beta.update_draft_legacy(legacy_policy_rules, idempotency_key);
           name: Fireblocks SDK Python example
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PolicyRules'
+              $ref: '#/components/schemas/LegacyPolicyRules'
       responses:
         '200':
           description: A draft validation response object
@@ -162,43 +165,45 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DraftReviewAndValidationResponse'
+                $ref: '#/components/schemas/LegacyDraftReviewAndValidationResponse'
         default:
           $ref: '#/components/responses/Error'
       x-codeSamples:
       - lang: TypeScript
-        source: 'const response: Promise<FireblocksResponse<DraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.updateDraft(policyEditorBetaApiUpdateDraftRequest);'
+        source: 'const response: Promise<FireblocksResponse<LegacyDraftReviewAndValidationResponse>> = fireblocks.policyEditorBeta.updateDraftLegacy(policyEditorBetaApiUpdateDraftLegacyRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<DraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().updateDraft(policyRules, idempotencyKey);
+        source: CompletableFuture<ApiResponse<LegacyDraftReviewAndValidationResponse>> response = fireblocks.policyEditorBeta().updateDraftLegacy(legacyPolicyRules, idempotencyKey);
       - lang: Python
-        source: response = fireblocks.policy_editor_beta.update_draft(policy_rules, idempotency_key);
+        source: response = fireblocks.policy_editor_beta.update_draft_legacy(legacy_policy_rules, idempotency_key);
     post:
-      operationId: publishDraft
+      operationId: publishDraftLegacy
       summary: Send publish request for a certain draft id
-      description: 'Send publish request of certain draft id and returns the response.
+      description: 'Legacy Endpoint – Send publish request of certain draft id and returns the response.
 
+        **Note:**
 
-        **Note:** These endpoints are currently in beta and might be subject to changes.
+        - This endpoint will remain available for the foreseeable future and is not deprecated. - The `publishDraft` endpoint under policy/paths provides improved functionality and better performance. - These endpoints are currently in beta and might be subject to changes.
 
-        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.
-
-
-        Endpoint Permission: Admin, Non-Signing Admin.'
+        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.'
       tags:
       - Policy Editor (Beta)
+      x-rate-limit-category: write
       x-readme:
         code-samples:
+        - language: python
+          code: policy = fireblocks.publish_draft()
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const policy = await fireblocks.publishDraft();
           name: Fireblocks SDK Javascript example
         - language: typescript
-          code: 'const response: Promise<FireblocksResponse<PublishResult>> = fireblocks.policyEditorBeta.publishDraft(policyEditorBetaApiPublishDraftRequest);'
+          code: 'const response: Promise<FireblocksResponse<LegacyPublishResult>> = fireblocks.policyEditorBeta.publishDraftLegacy(policyEditorBetaApiPublishDraftLegacyRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<PublishResult>> response = fireblocks.policyEditorBeta().publishDraft(publishDraftRequest, idempotencyKey);
+          code: CompletableFuture<ApiResponse<LegacyPublishResult>> response = fireblocks.policyEditorBeta().publishDraftLegacy(legacyPublishDraftRequest, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.policy_editor_beta.publish_draft(publish_draft_request, idempotency_key);
+          code: response = fireblocks.policy_editor_beta.publish_draft_legacy(legacy_publish_draft_request, idempotency_key);
           name: Fireblocks SDK Python example
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
@@ -207,7 +212,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PublishDraftRequestV2'
+              $ref: '#/components/schemas/LegacyPublishDraftRequest'
       responses:
         '201':
           description: A policy publish result object
@@ -217,44 +222,44 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PublishResult'
+                $ref: '#/components/schemas/LegacyPublishResult'
         default:
           $ref: '#/components/responses/Error'
       x-codeSamples:
       - lang: TypeScript
-        source: 'const response: Promise<FireblocksResponse<PublishResult>> = fireblocks.policyEditorBeta.publishDraft(policyEditorBetaApiPublishDraftRequest);'
+        source: 'const response: Promise<FireblocksResponse<LegacyPublishResult>> = fireblocks.policyEditorBeta.publishDraftLegacy(policyEditorBetaApiPublishDraftLegacyRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<PublishResult>> response = fireblocks.policyEditorBeta().publishDraft(publishDraftRequest, idempotencyKey);
+        source: CompletableFuture<ApiResponse<LegacyPublishResult>> response = fireblocks.policyEditorBeta().publishDraftLegacy(legacyPublishDraftRequest, idempotencyKey);
       - lang: Python
-        source: response = fireblocks.policy_editor_beta.publish_draft(publish_draft_request, idempotency_key);
+        source: response = fireblocks.policy_editor_beta.publish_draft_legacy(legacy_publish_draft_request, idempotency_key);
   /tap/publish:
     post:
       operationId: publishPolicyRules
       summary: Send publish request for a set of policy rules
       description: 'Send publish request of set of policy rules and returns the response.
 
-
         **Note:** These endpoints are currently in beta and might be subject to changes.
 
-        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.
-
-
-        Endpoint Permission: Admin, Non-Signing Admin.'
+        If you want to participate and learn more about the Fireblocks TAP, please contact your Fireblocks Customer Success Manager or send an email to CSM@fireblocks.com.'
       tags:
       - Policy Editor (Beta)
+      x-rate-limit-category: write
       x-readme:
         code-samples:
+        - language: python
+          code: policy = fireblocks.publish_rules()
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const policy = await fireblocks.publishRules();
           name: Fireblocks SDK Javascript example
         - language: typescript
-          code: 'const response: Promise<FireblocksResponse<PublishResult>> = fireblocks.policyEditorBeta.publishPolicyRules(policyEditorBetaApiPublishPolicyRulesRequest);'
+          code: 'const response: Promise<FireblocksResponse<LegacyPublishResult>> = fireblocks.policyEditorBeta.publishPolicyRules(policyEditorBetaApiPublishPolicyRulesRequest);'
           name: Fireblocks SDK TypeScript example
         - language: java
-          code: CompletableFuture<ApiResponse<PublishResult>> response = fireblocks.policyEditorBeta().publishPolicyRules(policyRules, idempotencyKey);
+          code: CompletableFuture<ApiResponse<LegacyPublishResult>> response = fireblocks.policyEditorBeta().publishPolicyRules(legacyPolicyRules, idempotencyKey);
           name: Fireblocks SDK Java example
         - language: python
-          code: response = fireblocks.policy_editor_beta.publish_policy_rules(policy_rules, idempotency_key);
+          code: response = fireblocks.policy_editor_beta.publish_policy_rules(legacy_policy_rules, idempotency_key);
           name: Fireblocks SDK Python example
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
@@ -263,7 +268,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PolicyRules'
+              $ref: '#/components/schemas/LegacyPolicyRules'
       responses:
         '201':
           description: A policy publish result object
@@ -273,19 +278,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PublishResult'
+                $ref: '#/components/schemas/LegacyPublishResult'
         default:
           $ref: '#/components/responses/Error'
       x-codeSamples:
       - lang: TypeScript
-        source: 'const response: Promise<FireblocksResponse<PublishResult>> = fireblocks.policyEditorBeta.publishPolicyRules(policyEditorBetaApiPublishPolicyRulesRequest);'
+        source: 'const response: Promise<FireblocksResponse<LegacyPublishResult>> = fireblocks.policyEditorBeta.publishPolicyRules(policyEditorBetaApiPublishPolicyRulesRequest);'
       - lang: Java
-        source: CompletableFuture<ApiResponse<PublishResult>> response = fireblocks.policyEditorBeta().publishPolicyRules(policyRules, idempotencyKey);
+        source: CompletableFuture<ApiResponse<LegacyPublishResult>> response = fireblocks.policyEditorBeta().publishPolicyRules(legacyPolicyRules, idempotencyKey);
       - lang: Python
-        source: response = fireblocks.policy_editor_beta.publish_policy_rules(policy_rules, idempotency_key);
+        source: response = fireblocks.policy_editor_beta.publish_policy_rules(legacy_policy_rules, idempotency_key);
 components:
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
   schemas:
-    PolicyMetadata:
+    LegacyPolicyMetadata:
       type: object
       description: Policy related metadata
       properties:
@@ -301,208 +314,14 @@ components:
         publishedAt:
           type: string
           description: The timestamp of the last publish of the policy
-    PublishDraftRequestV2:
+    ErrorSchema:
       type: object
-      description: Request schema for publishing draft with policy types and draft ID
-      required:
-      - policyTypes
-      - draftId
       properties:
-        policyTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyTypeV2'
-        draftId:
+        message:
           type: string
-          description: The ID of the draft to publish
-          example: draft-123
-    PolicyRuleCheckResult:
-      type: object
-      description: The rule validation result
-      properties:
-        index:
+        code:
           type: number
-          description: Rule index number in the policy
-        status:
-          type: string
-          description: Validation status
-          enum:
-          - ok
-          - failure
-        errors:
-          type: array
-          description: A set of rule validation error objects
-          items:
-            $ref: '#/components/schemas/PolicyRuleError'
-      required:
-      - index
-      - status
-      - errors
-    PolicyResponse:
-      type: object
-      description: Response object for policy operations
-      properties:
-        rules:
-          type: array
-          description: A set of policy rules
-          items:
-            $ref: '#/components/schemas/PolicyRule'
-        metadata:
-          $ref: '#/components/schemas/PolicyMetadata'
-      required:
-      - rules
-      - metadata
-    PolicySrcOrDestId:
-      type: string
-      description: 'Defines the account id, options are
-
-        * "*" - All accounts
-
-        * Specific account id
-
-        '
-    PolicyStatus:
-      type: string
-      enum:
-      - SUCCESS
-      - UNVALIDATED
-      - INVALID_CONFIGURATION
-      - PENDING
-      - PENDING_CONSOLE_APPROVAL
-      - AWAITING_QUORUM
-      - UNHANDLED_ERROR
-      description: '* SUCCESS - success
-
-        * UNVALIDATED - not validated yet
-
-        * INVALID_CONFIGURATION - at least one rule is invalid
-
-        * PENDING - pending approval
-
-        * PENDING_CONSOLE_APPROVAL - pending approval from the console app
-
-        * AWAITING_QUORUM - pending quorum approval
-
-        * UNHANDLED_ERROR - unhandled error
-
-        '
-    SrcOrDestAttributes:
-      type: array
-      description: 'Defines source or destination component, options are:
-
-        * id only
-
-        * id and type - first item in the array MUST be id.
-
-        * id, type and subtype - first item in the array MUST be id and second item MUST be type.
-
-        '
-      items:
-        anyOf:
-        - $ref: '#/components/schemas/PolicySrcOrDestId'
-        - $ref: '#/components/schemas/PolicySrcOrDestType'
-        - $ref: '#/components/schemas/PolicySrcOrDestSubType'
-      minItems: 1
-      maxItems: 3
-    PolicySrcOrDestSubType:
-      type: string
-      enum:
-      - EXTERNAL
-      - INTERNAL
-      - CONTRACT
-      - EXCHANGETEST
-      - '*'
-      description: '* EXTERNAL - A whitelisted wallet assigned as external is typically used for addresses managed by your clients and counterparties
-
-        * INTERNAL - A whitelisted wallet assigned as internal, is typically used for addresses that you control outside of your Fireblocks workspace
-
-        * CONTRACT - A whitelisted wallet assigned as contract is for identifying and managing external smart contracts
-
-        * EXCHANGETEST - Exchanges which operate only on testnet assets
-
-        * "*" - All subtypes
-
-        '
-    DraftResponse:
-      type: object
-      description: Response object for draft operations
-      properties:
-        status:
-          type: string
-          description: Operation status
-        rules:
-          type: array
-          description: Draft rules
-          items:
-            $ref: '#/components/schemas/PolicyRule'
-        draftId:
-          type: string
-          description: Draft unique id
-        metadata:
-          $ref: '#/components/schemas/PolicyMetadata'
-      required:
-      - draftId
-      - status
-      - rules
-      - metadata
-    PolicySrcOrDestType:
-      type: string
-      enum:
-      - EXCHANGE
-      - UNMANAGED
-      - VAULT
-      - NETWORK_CONNECTION
-      - COMPOUND
-      - FIAT_ACCOUNT
-      - ONE_TIME_ADDRESS
-      - '*'
-      description: '* EXCHANGE - A third-party exchange account connected to your workspace
-
-        * UNMANAGED - A unmanaged wallet outside of Fireblocks workspace
-
-        * VAULT - An account in your Fireblocks Vault
-
-        * NETWORK_CONNECTION - A connection in your Fireblocks network
-
-        * COMPOUND - (deprecated) An asset retrieved by using the Compound DeFI protocol
-
-        * FIAT_ACCOUNT - A third-party fiat account connected to your workspace
-
-        * ONE_TIME_ADDRESS - A non-whitelisted asset from your Fireblocks Workspace
-
-        * "*" - All types
-
-        '
-    AmountAggregationTimePeriodMethod:
-      type: string
-      enum:
-      - PER_SINGLE_MATCH
-      - ACROSS_ALL_MATCHES
-      description: '* PER_SINGLE_MATCH - Apply the limit to each listed entity
-
-        * ACROSS_ALL_MATCHES - Apply the limit to the sum of all listed entities
-
-        '
-    PublishResult:
-      type: object
-      description: Response object of the publish policy operation
-      properties:
-        status:
-          $ref: '#/components/schemas/PolicyStatus'
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyRule'
-        checkResult:
-          $ref: '#/components/schemas/PolicyCheckResult'
-        metadata:
-          $ref: '#/components/schemas/PolicyMetadata'
-      required:
-      - status
-      - rules
-      - checkResult
-      - metadata
-    PolicyRule:
+    LegacyPolicyRule:
       type: object
       description: Policy rule which is enforced on transactions
       properties:
@@ -543,7 +362,6 @@ components:
           enum:
           - TRANSFER
           - CONTRACT_CALL
-          - PROGRAM_CALL
           - APPROVE
           - MINT
           - BURN
@@ -552,7 +370,8 @@ components:
           - STAKE
           - RAW
           - TYPED_MESSAGE
-          description: "Defines the type of transaction to which the rule applies.\n  * TRANSFER - Default. Transfers funds from one account to another\n  * CONTRACT_CALL - Calls a smart contract, mainly for DeFi operations.\n  * PROGRAM_CALL - Calls a smart contract for web3 operations on the Solana blockchain. \n  * APPROVE - Allows a smart contract to withdraw from a designated wallet.\n  * MINT - Perform a mint operation (increase supply) on a supported token\n  * BURN - Perform a burn operation (reduce supply) on a supported token\n  * SUPPLY - Use for DeFi to lend assets\n  * REDEEM - Use for DeFi to get lending back\n  * STAKE - Allows you to allocate and lock certain assets for earning staking rewards.\n  * RAW - An off-chain message with no predefined format, use it to sign any message with your private key.\n  * TYPED_MESSAGE - An off-chain message type that follows a predefined format, used to sign specific messages that are not actual transactions.\n"
+          - PROGRAM_CALL
+          description: "Defines the type of transaction to which the rule applies.\n  * TRANSFER - Default. Transfers funds from one account to another\n  * CONTRACT_CALL - Calls a smart contract, mainly for DeFi operations.\n  * APPROVE - Allows a smart contract to withdraw from a designated wallet.\n  * MINT - Perform a mint operation (increase supply) on a supported token\n  * BURN - Perform a burn operation (reduce supply) on a supported token\n  * SUPPLY - Use for DeFi to lend assets\n  * REDEEM - Use for DeFi to get lending back\n  * STAKE - Allows you to allocate and lock certain assets for earning staking rewards.\n  * RAW - An off-chain message with no predefined format, use it to sign any message with your private key.\n  * TYPED_MESSAGE - An off-chain message type that follows a predefined format, used to sign specific messages that are not actual transactions.\n  * PROGRAM_CALL - In Solana refers to invoking on-chain programs (smart contracts) to execute transactions and interact with the blockchain.\n"
         designatedSigner:
           type: string
           description: (deprecated - replaced by "designatedSigners") Id representing the user who signs transactions that match a specific rule
@@ -596,17 +415,17 @@ components:
           description: (deprecated - replaced by "src") source account type
           deprecated: true
           allOf:
-          - $ref: '#/components/schemas/PolicySrcOrDestType'
+          - $ref: '#/components/schemas/LegacyPolicySrcOrDestType'
         srcSubType:
           description: (deprecated - replaced by "src") source sub account type
           deprecated: true
           allOf:
-          - $ref: '#/components/schemas/PolicySrcOrDestSubType'
+          - $ref: '#/components/schemas/LegacyPolicySrcOrDestSubType'
         srcId:
           description: (deprecated - replaced by "src") source account id
           deprecated: true
           allOf:
-          - $ref: '#/components/schemas/PolicySrcOrDestId'
+          - $ref: '#/components/schemas/LegacyPolicySrcOrDestId'
         src:
           type: object
           description: Defines source accounts the rule allows transfers to originate from
@@ -615,22 +434,22 @@ components:
               type: array
               description: A set of ids in a tuple format
               items:
-                $ref: '#/components/schemas/SrcOrDestAttributes'
+                $ref: '#/components/schemas/LegacySrcOrDestAttributes'
         dstType:
           description: (deprecated - replaced by "dst") destination account type
           deprecated: true
           allOf:
-          - $ref: '#/components/schemas/PolicySrcOrDestType'
+          - $ref: '#/components/schemas/LegacyPolicySrcOrDestType'
         dstSubType:
           description: (deprecated - replaced by "dst") destination sub account type
           deprecated: true
           allOf:
-          - $ref: '#/components/schemas/PolicySrcOrDestSubType'
+          - $ref: '#/components/schemas/LegacyPolicySrcOrDestSubType'
         dstId:
           description: (deprecated - replaced by "dst") destination account id
           deprecated: true
           allOf:
-          - $ref: '#/components/schemas/PolicySrcOrDestId'
+          - $ref: '#/components/schemas/LegacyPolicySrcOrDestId'
         dst:
           type: object
           description: Defines the destination accounts the rule allows transfers to
@@ -639,7 +458,7 @@ components:
               type: array
               description: A set of ids in a tuple format
               items:
-                $ref: '#/components/schemas/SrcOrDestAttributes'
+                $ref: '#/components/schemas/LegacySrcOrDestAttributes'
         dstAddressType:
           type: string
           enum:
@@ -739,11 +558,11 @@ components:
             '
           properties:
             operators:
-              $ref: '#/components/schemas/AmountAggregationTimePeriodMethod'
+              $ref: '#/components/schemas/LegacyAmountAggregationTimePeriodMethod'
             srcTransferPeers:
-              $ref: '#/components/schemas/AmountAggregationTimePeriodMethod'
+              $ref: '#/components/schemas/LegacyAmountAggregationTimePeriodMethod'
             dstTransferPeers:
-              $ref: '#/components/schemas/AmountAggregationTimePeriodMethod'
+              $ref: '#/components/schemas/LegacyAmountAggregationTimePeriodMethod'
         rawMessageSigning:
           type: object
           description: Raw message signing configuration
@@ -774,29 +593,241 @@ components:
       - amountScope
       - amount
       - periodSec
-    PolicyCheckResult:
+    LegacyPolicyAndValidationResponse:
       type: object
-      description: Policy rules validation result
+      description: Policy validation
       properties:
-        errors:
-          type: number
-          description: Number of errors
-        result:
-          type: array
-          description: A set of validation results
-          items:
-            $ref: '#/components/schemas/PolicyRuleCheckResult'
+        policy:
+          $ref: '#/components/schemas/LegacyPolicyResponse'
+        validation:
+          $ref: '#/components/schemas/LegacyPolicyValidation'
       required:
-      - errors
-      - result
-    ErrorSchema:
+      - policy
+      - validation
+    LegacyPolicySrcOrDestType:
+      type: string
+      enum:
+      - EXCHANGE
+      - UNMANAGED
+      - VAULT
+      - NETWORK_CONNECTION
+      - COMPOUND
+      - FIAT_ACCOUNT
+      - ONE_TIME_ADDRESS
+      - '*'
+      description: '* EXCHANGE - A third-party exchange account connected to your workspace
+
+        * UNMANAGED - A unmanaged wallet outside of Fireblocks workspace
+
+        * VAULT - An account in your Fireblocks Vault
+
+        * NETWORK_CONNECTION - A connection in your Fireblocks network
+
+        * COMPOUND - (deprecated) An asset retrieved by using the Compound DeFI protocol
+
+        * FIAT_ACCOUNT - A third-party fiat account connected to your workspace
+
+        * ONE_TIME_ADDRESS - A non-whitelisted asset from your Fireblocks Workspace
+
+        * "*" - All types
+
+        '
+    LegacyPolicyStatus:
+      type: string
+      enum:
+      - SUCCESS
+      - UNVALIDATED
+      - INVALID_CONFIGURATION
+      - PENDING
+      - PENDING_CONSOLE_APPROVAL
+      - AWAITING_QUORUM
+      - UNHANDLED_ERROR
+      description: '* SUCCESS - success
+
+        * UNVALIDATED - not validated yet
+
+        * INVALID_CONFIGURATION - at least one rule is invalid
+
+        * PENDING - pending approval
+
+        * PENDING_CONSOLE_APPROVAL - pending approval from the console app
+
+        * AWAITING_QUORUM - pending quorum approval
+
+        * UNHANDLED_ERROR - unhandled error
+
+        '
+    LegacyDraftResponse:
+      type: object
+      description: Response object for draft operations
+      properties:
+        status:
+          type: string
+          description: Operation status
+        rules:
+          type: array
+          description: Draft rules
+          items:
+            $ref: '#/components/schemas/LegacyPolicyRule'
+        draftId:
+          type: string
+          description: Draft unique id
+        metadata:
+          $ref: '#/components/schemas/LegacyPolicyMetadata'
+      required:
+      - draftId
+      - status
+      - rules
+      - metadata
+    LegacyPolicyRules:
       type: object
       properties:
-        message:
-          type: string
-        code:
+        rules:
+          description: Policy rules
+          type: array
+          items:
+            $ref: '#/components/schemas/LegacyPolicyRule'
+    LegacyPolicySrcOrDestSubType:
+      type: string
+      enum:
+      - EXTERNAL
+      - INTERNAL
+      - CONTRACT
+      - EXCHANGETEST
+      - '*'
+      description: '* EXTERNAL - A whitelisted wallet assigned as external is typically used for addresses managed by your clients and counterparties
+
+        * INTERNAL - A whitelisted wallet assigned as internal, is typically used for addresses that you control outside of your Fireblocks workspace
+
+        * CONTRACT - A whitelisted wallet assigned as contract is for identifying and managing external smart contracts
+
+        * EXCHANGETEST - Exchanges which operate only on testnet assets
+
+        * "*" - All subtypes
+
+        '
+    LegacyPolicyRuleCheckResult:
+      type: object
+      description: The rule validation result
+      properties:
+        index:
           type: number
-    PolicyRuleError:
+          description: Rule index number in the policy
+        status:
+          type: string
+          description: Validation status
+          enum:
+          - ok
+          - failure
+        errors:
+          type: array
+          description: A set of rule validation error objects
+          items:
+            $ref: '#/components/schemas/LegacyPolicyRuleError'
+      required:
+      - index
+      - status
+      - errors
+    LegacyPolicySrcOrDestId:
+      type: string
+      description: 'Defines the account id, options are
+
+        * "*" - All accounts
+
+        * Specific account id
+
+        '
+    LegacyPublishResult:
+      type: object
+      description: Response object of the publish policy operation
+      properties:
+        status:
+          $ref: '#/components/schemas/LegacyPolicyStatus'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/LegacyPolicyRule'
+        checkResult:
+          $ref: '#/components/schemas/LegacyPolicyCheckResult'
+        metadata:
+          $ref: '#/components/schemas/LegacyPolicyMetadata'
+      required:
+      - status
+      - rules
+      - checkResult
+      - metadata
+    LegacyPolicyResponse:
+      type: object
+      description: Response object for policy operations
+      properties:
+        rules:
+          type: array
+          description: A set of policy rules
+          items:
+            $ref: '#/components/schemas/LegacyPolicyRule'
+        metadata:
+          $ref: '#/components/schemas/LegacyPolicyMetadata'
+      required:
+      - rules
+      - metadata
+    LegacyDraftReviewAndValidationResponse:
+      type: object
+      description: Draft validation
+      properties:
+        draftResponse:
+          $ref: '#/components/schemas/LegacyDraftResponse'
+        validation:
+          $ref: '#/components/schemas/LegacyPolicyValidation'
+      required:
+      - draftResponse
+      - validation
+    LegacyPolicyValidation:
+      type: object
+      description: Policy validation object
+      properties:
+        status:
+          type: string
+          description: Validation status
+        checkResult:
+          $ref: '#/components/schemas/LegacyPolicyCheckResult'
+      required:
+      - status
+      - checkResult
+    LegacyPublishDraftRequest:
+      type: object
+      properties:
+        draftId:
+          description: draft unique identifier
+          type: string
+    LegacyAmountAggregationTimePeriodMethod:
+      type: string
+      enum:
+      - PER_SINGLE_MATCH
+      - ACROSS_ALL_MATCHES
+      description: '* PER_SINGLE_MATCH - Apply the limit to each listed entity
+
+        * ACROSS_ALL_MATCHES - Apply the limit to the sum of all listed entities
+
+        '
+    LegacySrcOrDestAttributes:
+      type: array
+      description: 'Defines source or destination component, options are:
+
+        * id only
+
+        * id and type - first item in the array MUST be id.
+
+        * id, type and subtype - first item in the array MUST be id and second item MUST be type.
+
+        '
+      items:
+        anyOf:
+        - $ref: '#/components/schemas/LegacyPolicySrcOrDestId'
+        - $ref: '#/components/schemas/LegacyPolicySrcOrDestType'
+        - $ref: '#/components/schemas/LegacyPolicySrcOrDestSubType'
+      minItems: 1
+      maxItems: 3
+    LegacyPolicyRuleError:
       type: object
       description: Rule validation result error
       properties:
@@ -847,82 +878,26 @@ components:
       - errorCode
       - errorCodeName
       - errorField
-    DraftReviewAndValidationResponse:
+    LegacyPolicyCheckResult:
       type: object
-      description: Draft validation
+      description: Policy rules validation result
       properties:
-        draftResponse:
-          $ref: '#/components/schemas/DraftResponse'
-        validation:
-          $ref: '#/components/schemas/PolicyValidation'
-      required:
-      - draftResponse
-      - validation
-    PolicyRules:
-      type: object
-      properties:
-        rules:
-          description: Policy rules
+        errors:
+          type: number
+          description: Number of errors
+        results:
           type: array
+          description: A set of validation results
           items:
-            $ref: '#/components/schemas/PolicyRule'
-    PolicyValidation:
-      type: object
-      description: Policy validation object
-      properties:
-        status:
-          type: string
-          description: Validation status
-        checkResult:
-          $ref: '#/components/schemas/PolicyCheckResult'
+            $ref: '#/components/schemas/LegacyPolicyRuleCheckResult'
       required:
-      - status
-      - checkResult
-    PolicyAndValidationResponse:
-      type: object
-      description: Policy validation
-      properties:
-        policy:
-          $ref: '#/components/schemas/PolicyResponse'
-        validation:
-          $ref: '#/components/schemas/PolicyValidation'
-      required:
-      - policy
-      - validation
-    PolicyTypeV2:
-      type: string
-      enum:
-      - TRANSFER
-      - STAKE
-      - CONTRACT_CALL
-      - TYPED_MESSAGE
-      - APPROVE
-      - MINT
-      - BURN
-      - RAW
-      - COMPLIANCE
-      - DEPLOYMENT
-      - PROGRAM_CALL
-      - DAPP_CONNECTION
-      - UPGRADE
-      - ORDER
-      - AML_CHAINALYSIS_V2_SCREENING
-      - AML_CHAINALYSIS_V2_POST_SCREENING
-      - AML_ELLIPTIC_HOLISTIC_SCREENING
-      - AML_ELLIPTIC_HOLISTIC_POST_SCREENING
-      - TR_NOTABENE_SCREENING
-      - TR_NOTABENE_POST_SCREENING
-      description: Policy type enumeration
-      example: TRANSFER
-  parameters:
-    X-Idempotency-Key:
-      name: Idempotency-Key
-      in: header
-      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
-      required: false
+      - errors
+      - results
+  headers:
+    X-Request-ID:
       schema:
         type: string
-        example: some-unique-id
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
   responses:
     Error:
       description: Error Response
@@ -942,3 +917,9 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

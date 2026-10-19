@@ -1,0 +1,125 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Users API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Users
+paths:
+  /users:
+    get:
+      summary: List users
+      description: 'List all users for the workspace.
+
+
+        Please note that this endpoint is available only for API keys with Admin permissions.'
+      tags:
+      - Users
+      x-rate-limit-category: query
+      x-readme:
+        code-samples:
+        - language: python
+          code: users = fireblocks.get_users()
+          name: Fireblocks SDK Python example (Legacy)
+        - language: javascript
+          code: const users = await fireblocks.getUsers();
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<GetUsersResponse>> = fireblocks.users.getUsers();'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<List<UserResponse>>> response = fireblocks.users().getUsers();
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.users.get_users();
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: List of users
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      operationId: getUsers
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<GetUsersResponse>> = fireblocks.users.getUsers();'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<List<UserResponse>>> response = fireblocks.users().getUsers();
+      - lang: Python
+        source: response = fireblocks.users.get_users();
+components:
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+        email:
+          type: string
+        enabled:
+          type: boolean
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    GetUsersResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserResponse'
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

@@ -1,0 +1,952 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Approvals (Beta) API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Approvals (Beta)
+paths:
+  /approvals:
+    get:
+      summary: List approval requests
+      description: 'Retrieve the pending approval requests the authenticated API user is eligible to act on, including requests the user has already approved that are still pending overall.
+
+
+        The response is scoped to the authenticated user by default. Pass `userId` to read another user''s queue, or `includeAllUsers=true` to read every pending request in the workspace. Both require an Admin, Non-Signing Admin, Security Admin or Security Auditor role and are rejected with 403 otherwise.
+
+
+        Set `quorumStatusMode=SUMMARY` to include each request''s approval thresholds and counts. The per-approver breakdown is available only when fetching a single request — see `GET /approvals/{requestId}`.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Approver, Signer, Security Admin, Security Auditor.'
+      tags:
+      - Approvals (Beta)
+      x-rate-limit-category: query
+      operationId: getApprovals
+      parameters:
+      - in: query
+        name: includeUserApproved
+        required: false
+        description: When true, also include requests the authenticated user has already approved that are still pending overall. Defaults to false (only requests the user has not yet acted on).
+        schema:
+          type: boolean
+      - in: query
+        name: userId
+        required: false
+        description: Return the pending requests for this user instead of the authenticated user. Requires an Admin, Non-Signing Admin, Security Admin or Security Auditor role; other roles are rejected with 403. Cannot be combined with `includeAllUsers=true` — sending both is rejected with 400.
+        example: 8f3c1a2e-4b7d-4c91-a0e5-2d6f8b1c3a94
+        schema:
+          type: string
+      - in: query
+        name: includeAllUsers
+        required: false
+        description: When true, return every pending request in the workspace instead of a single user's queue. Defaults to false. Requires an Admin, Non-Signing Admin, Security Admin or Security Auditor role; other roles are rejected with 403. In this mode `userStatus` is always `USER_STATUS_NOT_APPLICABLE`, because the response is not scoped to one user, and `includeUserApproved` has no effect. Cannot be combined with `userId`.
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: quorumStatusMode
+        required: false
+        description: How much quorum detail to include in each request's `quorumStatus`. `NONE` (the default) returns it as `null`. `SUMMARY` returns the approval thresholds, current counts and status. `FULL` is rejected with 400 on this endpoint because the per-approver breakdown requires a single request — use `GET /approvals/{requestId}` for it. Any other value is rejected with 400; the parameter is case-sensitive.
+        schema:
+          type: string
+          enum:
+          - NONE
+          - SUMMARY
+          default: NONE
+      - in: query
+        name: pageSize
+        required: false
+        description: Number of results per page. Maximum 30. Defaults to 20.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 30
+          default: 20
+      - in: query
+        name: pageCursor
+        required: false
+        description: Cursor returned from the previous response (the `next` field) to fetch the next page.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Approval requests the authenticated user is eligible to act on.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListApprovalsResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ListApprovalsResponse>> = fireblocks.approvalsBeta.getApprovals(approvalsBetaApiGetApprovalsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ListApprovalsResponse>> response = fireblocks.approvalsBeta().getApprovals(includeUserApproved, userId, includeAllUsers, quorumStatusMode, pageSize, pageCursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.approvals_beta.get_approvals(include_user_approved, user_id, include_all_users, quorum_status_mode, page_size, page_cursor);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ListApprovalsResponse>> = fireblocks.approvalsBeta.getApprovals(approvalsBetaApiGetApprovalsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ListApprovalsResponse>> response = fireblocks.approvalsBeta().getApprovals(includeUserApproved, userId, includeAllUsers, quorumStatusMode, pageSize, pageCursor);
+      - lang: Python
+        source: response = fireblocks.approvals_beta.get_approvals(include_user_approved, user_id, include_all_users, quorum_status_mode, page_size, page_cursor);
+  /approvals/{requestId}:
+    get:
+      summary: Get a single approval request
+      description: 'Retrieve full detail for a single approval request by ID, including the payload to sign and, when requested, the request''s `quorumStatus`.
+
+
+        Because this endpoint addresses one request, it accepts `quorumStatusMode=FULL`, which adds the participating approvers and their individual approval state.
+
+
+        `userStatus` reflects the authenticated user by default. Pass `userId` to report it for another user instead.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Approver, Signer, Security Admin, Security Auditor.'
+      tags:
+      - Approvals (Beta)
+      x-rate-limit-category: query
+      operationId: getApprovalById
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        description: The approval request ID.
+        schema:
+          type: string
+      - in: query
+        name: userId
+        required: false
+        description: Report `userStatus` for this user instead of the authenticated user. This selects whose approval state is returned; it does not change which requests can be fetched. Requires an Admin, Non-Signing Admin, Security Admin or Security Auditor role; other roles are rejected with 403.
+        example: 8f3c1a2e-4b7d-4c91-a0e5-2d6f8b1c3a94
+        schema:
+          type: string
+      - in: query
+        name: quorumStatusMode
+        required: false
+        description: How much quorum detail to include in `quorumStatus`. `NONE` (the default) returns it as `null`. `SUMMARY` returns the approval thresholds, current counts and status. `FULL` adds `users` and the per-group `members` indexes identifying who may approve and who already has. Any other value is rejected with 400; the parameter is case-sensitive.
+        schema:
+          type: string
+          enum:
+          - NONE
+          - SUMMARY
+          - FULL
+          default: NONE
+      responses:
+        '200':
+          description: The requested approval request.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalRequestItem'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ApprovalRequestItem>> = fireblocks.approvalsBeta.getApprovalById(approvalsBetaApiGetApprovalByIdRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ApprovalRequestItem>> response = fireblocks.approvalsBeta().getApprovalById(requestId, userId, quorumStatusMode);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.approvals_beta.get_approval_by_id(request_id, user_id, quorum_status_mode);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ApprovalRequestItem>> = fireblocks.approvalsBeta.getApprovalById(approvalsBetaApiGetApprovalByIdRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ApprovalRequestItem>> response = fireblocks.approvalsBeta().getApprovalById(requestId, userId, quorumStatusMode);
+      - lang: Python
+        source: response = fireblocks.approvals_beta.get_approval_by_id(request_id, user_id, quorum_status_mode);
+  /approvals/{requestId}/approve:
+    post:
+      summary: Approve an approval request
+      description: 'Approve a pending approval request as the authenticated API user. The caller signs the request''s signable data with the private key of a registered approval API key and submits the base64url-encoded signature, optionally with the key ID. The server verifies the signature against the registered public key — using the given key ID, or matching against all of the user''s registered keys when the key ID is omitted — and advances the approval quorum.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Approver, Signer, Security Admin.'
+      tags:
+      - Approvals (Beta)
+      x-rate-limit-category: write
+      operationId: approveApproval
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - in: path
+        name: requestId
+        required: true
+        description: The approval request ID.
+        example: '18055'
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApproveApprovalRequest'
+      responses:
+        '204':
+          description: The approval request was approved.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.approvalsBeta.approveApproval(approvalsBetaApiApproveApprovalRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.approvalsBeta().approveApproval(approveApprovalRequest, requestId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.approvals_beta.approve_approval(approve_approval_request, request_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.approvalsBeta.approveApproval(approvalsBetaApiApproveApprovalRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.approvalsBeta().approveApproval(approveApprovalRequest, requestId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.approvals_beta.approve_approval(approve_approval_request, request_id, idempotency_key);
+  /approvals/{requestId}/reject:
+    post:
+      summary: Reject an approval request
+      description: 'Reject a pending approval request as the authenticated API user. No signature is required (unlike approve). The caller must be eligible to act on the request; rejecting finalizes the request as rejected per the approval policy.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Approver, Signer, Security Admin.'
+      tags:
+      - Approvals (Beta)
+      x-rate-limit-category: write
+      operationId: rejectApproval
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - in: path
+        name: requestId
+        required: true
+        description: The approval request ID.
+        example: '18055'
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The approval request was rejected.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<void>> = fireblocks.approvalsBeta.rejectApproval(approvalsBetaApiRejectApprovalRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<Void>> response = fireblocks.approvalsBeta().rejectApproval(requestId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.approvals_beta.reject_approval(request_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<void>> = fireblocks.approvalsBeta.rejectApproval(approvalsBetaApiRejectApprovalRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<Void>> response = fireblocks.approvalsBeta().rejectApproval(requestId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.approvals_beta.reject_approval(request_id, idempotency_key);
+  /management/api_users/{userId}/approval_keys:
+    post:
+      operationId: createApprovalKey
+      summary: Register an approval key
+      description: 'Register an approval public key for an API user, used to sign approval requests. Up to 2 active keys are supported per API user. Returns the server-generated key ID used for deletion.
+
+
+        The `userId` must be the authenticated API user''s own ID. Registering a key for another user is not supported and is rejected.
+
+
+        Registration may require approval. In that case the response carries `ccrIdPendingRegistration`, the key reads as `APPROVAL_API_KEY_STATUS_PENDING_REGISTRATION` and cannot sign until the request is approved. A rejected request removes the key.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Approver, Signer, Security Admin.'
+      tags:
+      - Approvals (Beta)
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - in: path
+        name: userId
+        required: true
+        description: The ID of the API user to register the approval key for.
+        example: 8f3c1a2e-4b7d-4c91-a0e5-2d6f8b1c3a94
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterApprovalApiKeyRequest'
+      responses:
+        '200':
+          description: The approval key was registered.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterApprovalApiKeyResponse'
+        '409':
+          description: Another approval key request for this API user is already pending approval.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<RegisterApprovalApiKeyResponse>> = fireblocks.approvalsBeta.createApprovalKey(approvalsBetaApiCreateApprovalKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<RegisterApprovalApiKeyResponse>> response = fireblocks.approvalsBeta().createApprovalKey(registerApprovalApiKeyRequest, userId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.approvals_beta.create_approval_key(register_approval_api_key_request, user_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<RegisterApprovalApiKeyResponse>> = fireblocks.approvalsBeta.createApprovalKey(approvalsBetaApiCreateApprovalKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<RegisterApprovalApiKeyResponse>> response = fireblocks.approvalsBeta().createApprovalKey(registerApprovalApiKeyRequest, userId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.approvals_beta.create_approval_key(register_approval_api_key_request, user_id, idempotency_key);
+    get:
+      operationId: getApprovalKeys
+      summary: List approval keys
+      description: 'List the approval public keys registered for the specified API user.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Approver, Signer, Security Admin, Security Auditor.'
+      tags:
+      - Approvals (Beta)
+      x-rate-limit-category: query
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        description: The ID of the API user whose approval keys to list.
+        example: 8f3c1a2e-4b7d-4c91-a0e5-2d6f8b1c3a94
+        schema:
+          type: string
+      - in: query
+        name: pageSize
+        required: false
+        description: Number of results per page. Maximum 15. Defaults to 10.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 15
+          default: 10
+      - in: query
+        name: pageCursor
+        required: false
+        description: Cursor returned from the previous response (the `next` field) to fetch the next page.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The API user's approval keys.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListApprovalApiKeysResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ListApprovalApiKeysResponse>> = fireblocks.approvalsBeta.getApprovalKeys(approvalsBetaApiGetApprovalKeysRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ListApprovalApiKeysResponse>> response = fireblocks.approvalsBeta().getApprovalKeys(userId, pageSize, pageCursor);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.approvals_beta.get_approval_keys(user_id, page_size, page_cursor);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ListApprovalApiKeysResponse>> = fireblocks.approvalsBeta.getApprovalKeys(approvalsBetaApiGetApprovalKeysRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ListApprovalApiKeysResponse>> response = fireblocks.approvalsBeta().getApprovalKeys(userId, pageSize, pageCursor);
+      - lang: Python
+        source: response = fireblocks.approvals_beta.get_approval_keys(user_id, page_size, page_cursor);
+  /management/api_users/{userId}/approval_keys/{keyId}:
+    delete:
+      operationId: deleteApprovalKey
+      summary: Delete an approval key
+      description: 'Delete (revoke) an approval public key for the specified API user. The deletion may require approval: it always does for the API user''s last key or another user''s key. In that case the response carries `ccrIdPendingDeletion`, the key reads as `APPROVAL_API_KEY_STATUS_PENDING_DELETION` and stays active until the request is approved. A rejected request leaves the key enabled.
+
+
+        Endpoint Permission: Owner, Admin, Non-Signing Admin, Approver, Signer, Security Admin.'
+      tags:
+      - Approvals (Beta)
+      x-rate-limit-category: write
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - in: path
+        name: userId
+        required: true
+        description: The ID of the API user whose approval key to delete.
+        example: 8f3c1a2e-4b7d-4c91-a0e5-2d6f8b1c3a94
+        schema:
+          type: string
+      - in: path
+        name: keyId
+        required: true
+        description: The ID of the approval key to delete.
+        example: fab543c0-d6be-414c-aa05-5c6c84269d7a
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The approval key was deleted, or its deletion is pending approval.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteApprovalApiKeyResponse'
+        '409':
+          description: Another approval key request for this API user is already pending approval.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<DeleteApprovalApiKeyResponse>> = fireblocks.approvalsBeta.deleteApprovalKey(approvalsBetaApiDeleteApprovalKeyRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<DeleteApprovalApiKeyResponse>> response = fireblocks.approvalsBeta().deleteApprovalKey(userId, keyId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.approvals_beta.delete_approval_key(user_id, key_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<DeleteApprovalApiKeyResponse>> = fireblocks.approvalsBeta.deleteApprovalKey(approvalsBetaApiDeleteApprovalKeyRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<DeleteApprovalApiKeyResponse>> response = fireblocks.approvalsBeta().deleteApprovalKey(userId, keyId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.approvals_beta.delete_approval_key(user_id, key_id, idempotency_key);
+components:
+  schemas:
+    RegisterApprovalApiKeyRequest:
+      type: object
+      description: The approval API key to register.
+      properties:
+        name:
+          type: string
+          description: A human-readable label for the key.
+          example: primary signing key
+        approvalApiPublicKey:
+          $ref: '#/components/schemas/ApprovalApiPublicKey'
+      required:
+      - name
+      - approvalApiPublicKey
+    QuorumRuleset:
+      type: object
+      description: One sub-request of the approval criteria, made up of one or more tiers.
+      properties:
+        groupMatch:
+          type: string
+          description: Whether every tier in `groups` must be satisfied (`ALL`) or any single one of them (`ANY`).
+          enum:
+          - ALL
+          - ANY
+          example: ALL
+        status:
+          $ref: '#/components/schemas/QuorumApprovalState'
+        groups:
+          type: array
+          description: The tiers of this sub-request, evaluated according to `groupMatch`.
+          items:
+            $ref: '#/components/schemas/QuorumGroup'
+          example:
+          - threshold: 1
+            currentApprovalCount: 1
+            status: APPROVED
+          - threshold: 2
+            currentApprovalCount: 1
+            status: PENDING
+      required:
+      - groupMatch
+      - status
+      - groups
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    DeleteApprovalApiKeyResponse:
+      type: object
+      description: The result of deleting an approval API key.
+      properties:
+        ccrIdPendingDeletion:
+          type: string
+          description: Always returned. An empty string when the key was deleted immediately. Otherwise, the ID of the approval request that must be approved before the key is removed; the key stays active until then. The request appears in `GET /v1/approvals`.
+          example: '19332'
+      required:
+      - ccrIdPendingDeletion
+    ApprovalRequestItem:
+      type: object
+      properties:
+        requestPayload:
+          type: string
+          description: The pending approval request as a JSON string, exactly as produced by the backend — this is the precise string to sign in order to approve the request (sign it as-is; do not re-serialize). The JSON has the shape { requestId, requestType, requestTimestamp (epoch ms), expiresAt (epoch seconds), requestData }, where requestData is the request-type-specific payload.
+          example: '{"requestId":"ccr-1f2e3d4c","requestType":"ADD_USER","requestTimestamp":1750000000000,"expiresAt":1750600000,"requestData":{"type":"ADD_USER","creator":"user-1f2e3d4c","id":"ccr-1f2e3d4c"}}'
+        requestSignature:
+          type: string
+          description: Signature over the requestPayload. Empty until request signing is implemented.
+          example: ''
+        userStatus:
+          type: string
+          description: The authenticated user's approval status for this request.
+          example: USER_NOT_APPROVED
+          enum:
+          - USER_STATUS_NOT_APPLICABLE
+          - USER_NOT_ELIGIBLE_TO_APPROVE
+          - USER_NOT_APPROVED
+          - USER_APPROVED
+        quorumStatus:
+          $ref: '#/components/schemas/QuorumStatus'
+      required:
+      - requestPayload
+      - userStatus
+    QuorumUser:
+      type: object
+      description: A user who participates in this request's approval quorum, and their approval state.
+      properties:
+        index:
+          type: integer
+          description: Zero-based position of this user within the `users` array. The `members` arrays elsewhere in the document reference users by this index rather than repeating the user ID.
+          example: 0
+        userId:
+          type: string
+          description: The participating user's ID.
+          example: 6073c3d2-9f4b-4c1a-8f7d-2b1e5a9c4d80
+        status:
+          $ref: '#/components/schemas/QuorumApprovalState'
+        isMandatoryOwner:
+          type: boolean
+          description: Present and `true` only for the workspace owner, when this request additionally requires the owner's approval. Absent for every other participant.
+          example: true
+      required:
+      - index
+      - userId
+      - status
+    QuorumRequestState:
+      type: string
+      description: The approval request's overall state. Anything other than `PENDING` means the request is no longer awaiting approvals.
+      enum:
+      - PENDING
+      - APPROVED
+      - REJECTED
+      - CANCELLED
+      - TIMED_OUT
+      - FAILED
+      example: PENDING
+    ApprovalApiPublicKey:
+      type: object
+      description: The public key material and its signing algorithm.
+      properties:
+        algorithm:
+          type: string
+          description: The signature algorithm of the public key.
+          example: ECDSA_SECP256R1
+          enum:
+          - RSA_PS256
+          - ECDSA_SECP256R1
+          - ECDSA_SECP384R1
+          - EDDSA_ED25519
+        publicKeyPem:
+          type: string
+          description: The PEM-encoded public key.
+          example: '-----BEGIN PUBLIC KEY-----
+
+            MFkwEwYHKoZIzj0CAQ...
+
+            -----END PUBLIC KEY-----'
+      required:
+      - algorithm
+      - publicKeyPem
+    QuorumApprovalState:
+      type: string
+      description: 'Whether an approval requirement has been met. Treat this as authoritative rather than comparing the counts yourself: a group can show `currentApprovalCount` equal to `threshold` and still be `PENDING` when the request additionally requires the workspace owner''s approval.'
+      enum:
+      - APPROVED
+      - PENDING
+      example: PENDING
+    RulesetQuorum:
+      type: object
+      description: The general shape, used when the request has more than one sub-request or a sub-request with more than one tier. Each entry in `rulesets` is a sub-request; each of its `groups` is a tier.
+      properties:
+        type:
+          type: string
+          description: Discriminator identifying the multi-tier shape.
+          enum:
+          - RULESET
+          example: RULESET
+        rulesetMatch:
+          type: string
+          description: Whether every sub-request in `rulesets` must be satisfied (`ALL`) or any single one of them (`ANY`).
+          enum:
+          - ALL
+          - ANY
+          example: ALL
+        status:
+          $ref: '#/components/schemas/QuorumApprovalState'
+        isMandatoryOwnerApproved:
+          type: boolean
+          description: Present only when this request additionally requires the workspace owner's approval. `false` means the owner has not approved yet. Absent when no owner approval is required.
+          example: false
+        rulesets:
+          type: array
+          description: The sub-requests of the approval criteria, evaluated according to `rulesetMatch`.
+          items:
+            $ref: '#/components/schemas/QuorumRuleset'
+          example:
+          - groupMatch: ALL
+            status: PENDING
+            groups:
+            - threshold: 1
+              currentApprovalCount: 1
+              status: APPROVED
+            - threshold: 2
+              currentApprovalCount: 1
+              status: PENDING
+      required:
+      - type
+      - rulesetMatch
+      - status
+      - rulesets
+    ApproveApprovalRequest:
+      type: object
+      description: The signed approval of a pending request.
+      properties:
+        keyId:
+          type: string
+          description: The ID of the approval API key used to sign the request. Optional — if omitted, the signature is verified against all of the user's registered approval API keys.
+          example: 64e6b6a3-a607-40e0-8a1e-fe93976ffd46
+        signature:
+          type: string
+          description: Base64url-encoded signature over the request's signable data, produced with the private key of a registered approval API key. If keyId is provided the signature must match that key; otherwise it is matched against all of the user's registered keys.
+          example: MEUCIQD...signature...Ok
+      required:
+      - signature
+    ApprovalApiKey:
+      type: object
+      description: A registered approval API key for an API user.
+      properties:
+        id:
+          type: string
+          description: The unique key ID, used to delete the key.
+          example: fab543c0-d6be-414c-aa05-5c6c84269d7a
+        name:
+          type: string
+          description: A human-readable label for the key.
+          example: primary signing key
+        createdAt:
+          type: string
+          description: Creation time as epoch time in seconds.
+          example: '1750000000'
+        lastUsedAt:
+          type: string
+          description: Last time the key was used to sign, as epoch time in seconds (0 if never used).
+          example: '1750600000'
+        approvalApiPublicKey:
+          $ref: '#/components/schemas/ApprovalApiPublicKey'
+        userId:
+          type: string
+          description: The ID of the API user who owns this key.
+          example: 8f3c1a2e-4b7d-4c91-a0e5-2d6f8b1c3a94
+        status:
+          type: string
+          description: The state of the key. `APPROVAL_API_KEY_STATUS_PENDING_REGISTRATION` - registered but waiting for approval, cannot sign yet. `APPROVAL_API_KEY_STATUS_ENABLED` - active. `APPROVAL_API_KEY_STATUS_PENDING_DELETION` - removal is waiting for approval, the key stays active until then. `APPROVAL_API_KEY_STATUS_UNSPECIFIED` - unknown.
+          example: APPROVAL_API_KEY_STATUS_ENABLED
+          enum:
+          - APPROVAL_API_KEY_STATUS_UNSPECIFIED
+          - APPROVAL_API_KEY_STATUS_PENDING_REGISTRATION
+          - APPROVAL_API_KEY_STATUS_ENABLED
+          - APPROVAL_API_KEY_STATUS_PENDING_DELETION
+      required:
+      - id
+      - name
+      - createdAt
+      - lastUsedAt
+      - approvalApiPublicKey
+      - userId
+      - status
+    ListApprovalApiKeysResponse:
+      type: object
+      description: The approval API keys registered for the API user.
+      properties:
+        data:
+          type: array
+          description: The registered approval API keys.
+          items:
+            $ref: '#/components/schemas/ApprovalApiKey'
+          example:
+          - id: fab543c0-d6be-414c-aa05-5c6c84269d7a
+            name: primary signing key
+            createdAt: '1750000000'
+            lastUsedAt: '1750600000'
+            approvalApiPublicKey:
+              algorithm: ECDSA_SECP256R1
+              publicKeyPem: '-----BEGIN PUBLIC KEY-----
+
+                MFkwEwYHKoZIzj0CAQ...
+
+                -----END PUBLIC KEY-----'
+            userId: 8f3c1a2e-4b7d-4c91-a0e5-2d6f8b1c3a94
+            status: APPROVAL_API_KEY_STATUS_ENABLED
+        next:
+          type: string
+          description: Cursor for the next page of results. Pass it back as the `pageCursor` query param to fetch the next page. Empty or absent when this is the last page.
+          example: cursor for the next page
+      required:
+      - data
+    RegisterApprovalApiKeyResponse:
+      type: object
+      description: The result of registering an approval API key.
+      properties:
+        keyId:
+          type: string
+          description: The server-generated ID of the registered key, used for deletion.
+          example: fab543c0-d6be-414c-aa05-5c6c84269d7a
+        ccrIdPendingRegistration:
+          type: string
+          description: Always returned. An empty string when the key is active immediately. Otherwise, the ID of the approval request that must be approved before the key becomes active. The request appears in `GET /v1/approvals`.
+          example: '19331'
+      required:
+      - keyId
+      - ccrIdPendingRegistration
+    SimpleQuorum:
+      type: object
+      description: The flattened shape used when the request has a single sub-request with a single tier, which is the common case. The threshold and approval count sit directly on the quorum object instead of inside `rulesets`.
+      properties:
+        type:
+          type: string
+          description: Discriminator identifying the flattened single-tier shape.
+          enum:
+          - SIMPLE
+          example: SIMPLE
+        threshold:
+          type: integer
+          description: Number of approvals this request requires.
+          example: 2
+        currentApprovalCount:
+          type: integer
+          description: Approvals collected so far toward `threshold`.
+          example: 1
+        status:
+          $ref: '#/components/schemas/QuorumApprovalState'
+        isMandatoryOwnerApproved:
+          type: boolean
+          description: Present only when this request additionally requires the workspace owner's approval. `false` means the owner has not approved yet, which is why `status` can remain `PENDING` even once `currentApprovalCount` reaches `threshold`. Absent when no owner approval is required.
+          example: false
+        members:
+          type: array
+          description: Indexes into the top-level `users` array identifying the users who may approve. Returned only for `quorumStatusMode=FULL`; omitted otherwise.
+          items:
+            type: integer
+          example:
+          - 0
+          - 1
+      required:
+      - type
+      - threshold
+      - currentApprovalCount
+      - status
+    QuorumStatus:
+      type:
+      - object
+      - 'null'
+      description: 'The approval quorum''s structure and progress for this request.
+
+
+        `null` when `quorumStatusMode` is omitted or `NONE`. Also `null` on an otherwise successful response when the quorum cannot be reported faithfully — a multi-tier request in a workspace that does not maintain per-tier approval counts — so absence here does not imply the request has no quorum.
+
+
+        The object may carry additional backend-defined fields beyond those documented.'
+      properties:
+        requestStatus:
+          $ref: '#/components/schemas/QuorumRequestState'
+        users:
+          type: array
+          description: Every user participating in this request's quorum. Returned only for `quorumStatusMode=FULL`; omitted otherwise.
+          items:
+            $ref: '#/components/schemas/QuorumUser'
+          example:
+          - index: 0
+            userId: 6073c3d2-9f4b-4c1a-8f7d-2b1e5a9c4d80
+            status: APPROVED
+          - index: 1
+            userId: a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d
+            status: PENDING
+            isMandatoryOwner: true
+        quorum:
+          description: 'The approval criteria and how far they have been met. `type` discriminates the two shapes: `SIMPLE` flattens the common single-tier case, `RULESET` is the general multi-tier form.'
+          discriminator:
+            propertyName: type
+            mapping:
+              SIMPLE: '#/components/schemas/SimpleQuorum'
+              RULESET: '#/components/schemas/RulesetQuorum'
+          oneOf:
+          - $ref: '#/components/schemas/SimpleQuorum'
+          - $ref: '#/components/schemas/RulesetQuorum'
+          example:
+            type: SIMPLE
+            threshold: 2
+            currentApprovalCount: 1
+            status: PENDING
+            isMandatoryOwnerApproved: false
+            members:
+            - 0
+            - 1
+      required:
+      - requestStatus
+      - quorum
+    ListApprovalsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The approval requests the authenticated user is eligible to act on.
+          items:
+            $ref: '#/components/schemas/ApprovalRequestItem'
+          example:
+          - requestPayload:
+              requestId: ccr-1f2e3d4c
+              requestType: ADD_USER
+              requestTimestamp: 1750000000000
+              expiresAt: 1750600000
+              requestData:
+                type: ADD_USER
+                creator: user-1f2e3d4c
+                id: ccr-1f2e3d4c
+            userStatus: USER_NOT_APPROVED
+        next:
+          type: string
+          description: Cursor for the next page of results. Pass it back as the `pageCursor` query param to fetch the next page. Empty or absent when this is the last page.
+          example: cursor for the next page
+      required:
+      - data
+    QuorumGroup:
+      type: object
+      description: 'A single tier of a ruleset: a threshold and the approvals collected toward it.'
+      properties:
+        threshold:
+          type: integer
+          description: Number of approvals this tier requires.
+          example: 2
+        currentApprovalCount:
+          type: integer
+          description: Approvals collected so far toward `threshold`.
+          example: 1
+        status:
+          $ref: '#/components/schemas/QuorumApprovalState'
+        members:
+          type: array
+          description: Indexes into the top-level `users` array identifying the users who belong to this tier. Returned only for `quorumStatusMode=FULL`; omitted otherwise.
+          items:
+            type: integer
+          example:
+          - 0
+          - 1
+      required:
+      - threshold
+      - currentApprovalCount
+      - status
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

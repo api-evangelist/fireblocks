@@ -1,0 +1,552 @@
+openapi: 3.2.0
+info:
+  title: Fireblocks Reports (Beta) API
+  description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
+
+
+    - Visit our website for more information: Fireblocks Website
+
+    - Visit our developer docs: Fireblocks DevPortal'
+  version: 1.6.2
+  contact:
+    email: developers@fireblocks.com
+servers:
+- url: https://api.fireblocks.io/v1
+  description: Fireblocks Production Environment Base URL
+- url: https://sandbox-api.fireblocks.io/v1
+  description: Fireblocks Sandbox Environment Base URL
+tags:
+- name: Reports (Beta)
+paths:
+  /reports:
+    post:
+      operationId: createReport
+      summary: Create a report
+      description: 'Creates a new asynchronous report job and returns a receipt containing the report ID.
+
+        Poll `GET /v1/reports/{reportId}` to check status. When `status` is `COMPLETED`, the poll
+
+        response includes a fresh pre-signed download URL in `links.downloadUrl`.
+
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+
+        Endpoint Permission: Viewer and above.'
+      tags:
+      - Reports (Beta)
+      x-rate-limit-category: report
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReportRequest'
+      responses:
+        '202':
+          description: Report job accepted and queued for processing
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReportResponse'
+        '409':
+          description: A report with the same type and filters is already being processed
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportConflictResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<CreateReportResponse>> = fireblocks.reportsBeta.createReport(reportsBetaApiCreateReportRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<CreateReportResponse>> response = fireblocks.reportsBeta().createReport(createReportRequest, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.reports_beta.create_report(create_report_request, idempotency_key);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<CreateReportResponse>> = fireblocks.reportsBeta.createReport(reportsBetaApiCreateReportRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<CreateReportResponse>> response = fireblocks.reportsBeta().createReport(createReportRequest, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.reports_beta.create_report(create_report_request, idempotency_key);
+    get:
+      operationId: listReports
+      summary: List reports
+      description: 'Returns a paginated list of report jobs scoped to the calling tenant.
+
+
+        **Note:** Download URLs are not included in list responses. Call `GET /v1/reports/{reportId}` to
+
+        obtain a fresh signed download URL for a specific completed report.
+
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+
+        Endpoint Permission: Viewer and above.'
+      tags:
+      - Reports (Beta)
+      x-rate-limit-category: query
+      parameters:
+      - name: pageCursor
+        in: query
+        required: false
+        description: Opaque cursor returned from a previous list call
+        schema:
+          type: string
+      - name: pageSize
+        in: query
+        required: false
+        description: Maximum number of items per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+      - name: sortBy
+        in: query
+        required: false
+        description: Field to sort by
+        schema:
+          type: string
+          enum:
+          - createdAt
+          - completedAt
+          default: createdAt
+      - name: order
+        in: query
+        required: false
+        description: Sort direction
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          default: DESC
+      - name: status
+        in: query
+        required: false
+        description: Filter by lifecycle status. Repeat the parameter to filter on multiple statuses (e.g., ?status=QUEUED&status=PROCESSING).
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportStatus'
+      - name: reportType
+        in: query
+        required: false
+        description: Filter by report type. Repeat the parameter to filter on multiple types.
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportType'
+      responses:
+        '200':
+          description: Paginated list of report jobs
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ReportListResponse>> = fireblocks.reportsBeta.listReports(reportsBetaApiListReportsRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ReportListResponse>> response = fireblocks.reportsBeta().listReports(pageCursor, pageSize, sortBy, order, status, reportType);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.reports_beta.list_reports(page_cursor, page_size, sort_by, order, status, report_type);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ReportListResponse>> = fireblocks.reportsBeta.listReports(reportsBetaApiListReportsRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ReportListResponse>> response = fireblocks.reportsBeta().listReports(pageCursor, pageSize, sortBy, order, status, reportType);
+      - lang: Python
+        source: response = fireblocks.reports_beta.list_reports(page_cursor, page_size, sort_by, order, status, report_type);
+  /reports/{reportId}:
+    get:
+      operationId: getReport
+      summary: Get report status
+      description: 'Returns the current status of a report job. Check the `status` field to determine the outcome.
+
+
+        When `status` is `COMPLETED`, the response includes a fresh pre-signed download URL in
+
+        `links.downloadUrl` (TTL ~1 hour). Re-poll this endpoint to obtain a new URL after expiry.
+
+
+        When `status` is `FAILED`, the `failedAt` timestamp indicates when the failure occurred.
+
+
+        **Note:** These endpoints are currently in beta and might be subject to changes.
+
+
+        Endpoint Permission: Viewer and above.'
+      tags:
+      - Reports (Beta)
+      x-rate-limit-category: read
+      parameters:
+      - name: reportId
+        in: path
+        required: true
+        description: The unique identifier of the report job
+        example: 0190b3c2-7e4a-7c31-9f2a-1b6d8e5a0c11
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Report job details
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportJobResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      x-readme:
+        code-samples:
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ReportJobResponse>> = fireblocks.reportsBeta.getReport(reportsBetaApiGetReportRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ReportJobResponse>> response = fireblocks.reportsBeta().getReport(reportId);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.reports_beta.get_report(report_id);
+          name: Fireblocks SDK Python example
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ReportJobResponse>> = fireblocks.reportsBeta.getReport(reportsBetaApiGetReportRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ReportJobResponse>> response = fireblocks.reportsBeta().getReport(reportId);
+      - lang: Python
+        source: response = fireblocks.reports_beta.get_report(report_id);
+components:
+  schemas:
+    ReportJobResponse:
+      type: object
+      description: 'A report job. Optional fields are status-dependent: `completedAt`, `rowCount`, `fileSizeBytes`, and `links` are present only when `status` is `COMPLETED`; `failedAt` is present only when `status` is `FAILED`.'
+      required:
+      - id
+      - status
+      - reportType
+      - outputFormat
+      - compress
+      - requestedByUserId
+      - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the report job
+          example: 0190b3c2-7e4a-7c31-9f2a-1b6d8e5a0c11
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        reportType:
+          $ref: '#/components/schemas/ReportType'
+        outputFormat:
+          $ref: '#/components/schemas/ReportOutputFormat'
+        compress:
+          type: boolean
+          description: Whether the output file is gzip-compressed
+          example: true
+        requestedByUserId:
+          type: string
+          description: ID of the user who requested the report
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        createdAt:
+          type: integer
+          format: int64
+          description: Epoch milliseconds (UTC) when the job was created
+          example: 1717190000000
+        completedAt:
+          type: integer
+          format: int64
+          description: Epoch milliseconds (UTC) when the report completed. Only present when `status` is `COMPLETED`.
+          example: 1717191800000
+        failedAt:
+          type: integer
+          format: int64
+          description: Epoch milliseconds (UTC) when the report failed. Only present when `status` is `FAILED`.
+          example: 1717191500000
+        rowCount:
+          type: integer
+          description: Number of rows in the report file. Only present when `status` is `COMPLETED`.
+          example: 42500
+        fileSizeBytes:
+          type: integer
+          format: int64
+          description: Size of the report file in bytes (includes compression when `compress` is `true`). Only present when `status` is `COMPLETED`.
+          example: 1048576
+        links:
+          $ref: '#/components/schemas/ReportJobLinks'
+    ReportConflictResponse:
+      type: object
+      description: Returned when a report with the same type and filters is already being processed for your workspace
+      required:
+      - errorCode
+      - name
+      - id
+      properties:
+        errorCode:
+          type: integer
+          description: Fireblocks error code for this conflict
+          example: 12005
+        name:
+          type: string
+          description: Error name
+          example: REPORT_ALREADY_IN_FLIGHT
+        id:
+          type: string
+          description: The ID of the report currently being processed. Use this ID to poll for status.
+          example: 0190b3c2-7e4a-7c31-9f2a-1b6d8e5a0c11
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    AddressesFilters:
+      type: object
+      description: Filter options for the `addresses` report type.
+      additionalProperties: false
+      properties:
+        vaultAccountIds:
+          type: array
+          description: Restrict to the listed vault account IDs. Max 1000 items. Pass a single ID as a one-element array.
+          items:
+            type: string
+          maxItems: 1000
+          example:
+          - '1'
+          - '2'
+        assets:
+          type: array
+          description: Filter by asset symbol (e.g., BTC, ETH). Max 1000 items. Pass a single symbol as a one-element array.
+          items:
+            type: string
+          maxItems: 1000
+          example:
+          - BTC
+          - ETH
+    ReportJob:
+      type: object
+      description: 'A report job. Optional fields are status-dependent: `completedAt`, `rowCount`, and `fileSizeBytes` are present only when `status` is `COMPLETED`; `failedAt` is present only when `status` is `FAILED`.'
+      required:
+      - id
+      - status
+      - reportType
+      - outputFormat
+      - compress
+      - requestedByUserId
+      - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the report job
+          example: 0190b3c2-7e4a-7c31-9f2a-1b6d8e5a0c11
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        reportType:
+          $ref: '#/components/schemas/ReportType'
+        outputFormat:
+          $ref: '#/components/schemas/ReportOutputFormat'
+        compress:
+          type: boolean
+          description: Whether the output file is gzip-compressed
+          example: true
+        requestedByUserId:
+          type: string
+          description: ID of the user who requested the report
+          example: 44fcead0-7053-4831-a53a-df7fb90d440f
+        createdAt:
+          type: integer
+          format: int64
+          description: Epoch milliseconds (UTC) when the job was created
+          example: 1717190000000
+        completedAt:
+          type: integer
+          format: int64
+          description: Epoch milliseconds (UTC) when the report completed. Only present when `status` is `COMPLETED`.
+          example: 1717191800000
+        failedAt:
+          type: integer
+          format: int64
+          description: Epoch milliseconds (UTC) when the report failed. Only present when `status` is `FAILED`.
+          example: 1717191500000
+        rowCount:
+          type: integer
+          description: Number of rows in the report file. Only present when `status` is `COMPLETED`.
+          example: 42500
+        fileSizeBytes:
+          type: integer
+          format: int64
+          description: Size of the report file in bytes (includes compression when `compress` is `true`). Only present when `status` is `COMPLETED`.
+          example: 1048576
+    ReportJobLinks:
+      type: object
+      description: Download URL for the report. Present only when `status` is `COMPLETED`, and only on `GET /v1/reports/{reportId}` — not included in list responses.
+      required:
+      - downloadUrl
+      - downloadUrlExpiresAt
+      properties:
+        downloadUrl:
+          type: string
+          description: URL to download the report file. A new URL is generated on each request to `GET /v1/reports/{reportId}` while `status` is `COMPLETED`. Re-poll to obtain a fresh URL after the previous one expires (approximately 1 hour).
+          example: https://s3.amazonaws.com/fireblocks-reports/report-0190b3c2.csv.gz?X-Amz-Expires=3600&...
+        downloadUrlExpiresAt:
+          type: integer
+          format: int64
+          description: Epoch milliseconds (UTC) when the download URL expires
+          example: 1717200000000
+    CreateReportResponse:
+      type: object
+      description: Returned when a report job is successfully created. Use the `id` to poll for status via `GET /v1/reports/{reportId}`.
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the report job
+          example: 0190b3c2-7e4a-7c31-9f2a-1b6d8e5a0c11
+    ReportOutputFormat:
+      type: string
+      enum:
+      - CSV
+      description: The output file format of the report
+      example: CSV
+    CreateReportRequest:
+      description: Request body for creating a new asynchronous report job
+      discriminator:
+        propertyName: reportType
+        mapping:
+          ADDRESSES: '#/components/schemas/CreateAddressesReportRequest'
+      oneOf:
+      - $ref: '#/components/schemas/CreateAddressesReportRequest'
+    ReportListResponse:
+      type: object
+      description: Paginated list of report jobs. Download URLs are not included in list items — call `GET /v1/reports/{reportId}` to retrieve the download URL for a specific completed report.
+      required:
+      - data
+      - next
+      - prev
+      properties:
+        data:
+          type: array
+          description: Page of report jobs
+          example: []
+          items:
+            $ref: '#/components/schemas/ReportJob'
+        next:
+          type:
+          - string
+          - 'null'
+          description: Opaque cursor for the next page. Null on the last page.
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+        prev:
+          type:
+          - string
+          - 'null'
+          description: Opaque cursor for the previous page. Null on the first page.
+          example: eJ0eXAiOiJKV1QiLCJhbGcOiJIUzI1NiJ9
+    ReportType:
+      type: string
+      enum:
+      - ADDRESSES
+      description: The type of report to generate
+      example: ADDRESSES
+    ReportStatus:
+      type: string
+      enum:
+      - QUEUED
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      description: The current lifecycle state of a report job
+      example: QUEUED
+    CreateAddressesReportRequest:
+      type: object
+      description: Request body for creating a new ADDRESSES report job
+      required:
+      - reportType
+      - outputFormat
+      properties:
+        reportType:
+          type: string
+          description: The type of report to generate.
+          enum:
+          - ADDRESSES
+          example: ADDRESSES
+        outputFormat:
+          $ref: '#/components/schemas/ReportOutputFormat'
+        compress:
+          type: boolean
+          description: Gzip the output file. Defaults to true.
+          default: false
+          example: true
+        filters:
+          $ref: '#/components/schemas/AddressesFilters'
+  responses:
+    Error:
+      description: Error Response
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSchema'
+  parameters:
+    X-Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: A unique identifier for the request. If the request is sent multiple times with the same idempotency key, the server will return the same response as the first request. The idempotency key is valid for 24 hours.
+      required: false
+      schema:
+        type: string
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python

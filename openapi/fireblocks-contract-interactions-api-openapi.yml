@@ -1,13 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Fireblocks Smart Contracts Contract Interactions API
+  title: Fireblocks Contract Interactions API
   description: 'Fireblocks provides a suite of applications to manage digital asset operations and a complete development platform to build your business on the blockchain.
 
 
     - Visit our website for more information: Fireblocks Website
 
     - Visit our developer docs: Fireblocks DevPortal'
-  version: 1.8.0
+  version: 1.6.2
   contact:
     email: developers@fireblocks.com
 servers:
@@ -15,18 +15,83 @@ servers:
   description: Fireblocks Production Environment Base URL
 - url: https://sandbox-api.fireblocks.io/v1
   description: Fireblocks Sandbox Environment Base URL
-security: []
 tags:
 - name: Contract Interactions
 paths:
+  /contract_interactions/base_asset_id/{baseAssetId}/contract_address/{contractAddress}/decode:
+    post:
+      operationId: decodeContractData
+      summary: Decode a function call data, error, or event log
+      x-rate-limit-category: read
+      description: Decode a function call data, error, or event log from a deployed contract by blockchain native asset id and contract address.
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - name: contractAddress
+        required: true
+        in: path
+        description: The contract's onchain address
+        example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        schema:
+          type: string
+      - name: baseAssetId
+        required: true
+        in: path
+        description: The blockchain native asset identifier
+        example: ETH
+        schema:
+          type: string
+      x-readme:
+        code-samples:
+        - language: javascript
+          code: "const payload = {\n  \"data\": \"0xcd21db4f000000000000000000000000000000000000000000000000000000006790c645\",\n  \"dataType\": \"ERROR\"\n} const decodeResponse = await fireblocks.decodeContractData(baseAssetId, contractAddress, payload);"
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ContractDataDecodedResponse>> = fireblocks.contractInteractions.decodeContractData(contractInteractionsApiDecodeContractDataRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ContractDataDecodedResponse>> response = fireblocks.contractInteractions().decodeContractData(contractDataDecodeRequest, contractAddress, baseAssetId, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.contract_interactions.decode_contract_data(contract_data_decode_request, contract_address, base_asset_id, idempotency_key);
+          name: Fireblocks SDK Python example
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContractDataDecodeRequest'
+      responses:
+        '200':
+          description: Decoded data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractDataDecodedResponse'
+        '400':
+          description: Bad request, invalid input data or parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractDataDecodeError'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Contract Interactions
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ContractDataDecodedResponse>> = fireblocks.contractInteractions.decodeContractData(contractInteractionsApiDecodeContractDataRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ContractDataDecodedResponse>> response = fireblocks.contractInteractions().decodeContractData(contractDataDecodeRequest, contractAddress, baseAssetId, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.contract_interactions.decode_contract_data(contract_data_decode_request, contract_address, base_asset_id, idempotency_key);
   /contract_interactions/base_asset_id/{baseAssetId}/contract_address/{contractAddress}/functions:
     get:
       operationId: getDeployedContractAbi
       summary: Return deployed contract's ABI
+      x-rate-limit-category: read
       description: 'Return deployed contract''s ABI by blockchain native asset id and contract address.
 
-
-        Endpoint Permission: Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, and Viewer.'
+        Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, and Viewer.'
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
       - name: contractAddress
@@ -45,6 +110,9 @@ paths:
           type: string
       x-readme:
         code-samples:
+        - language: python
+          code: deployed_contract_abi = fireblocks.get_contracts_abi(base_asset_id, contract_address)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const deployedContractAbi = await fireblocks.getContractAbi(baseAssetId, contractAddress);
           name: Fireblocks SDK Javascript example
@@ -59,7 +127,7 @@ paths:
           name: Fireblocks SDK Python example
       responses:
         '200':
-          description: Contract ABI response
+          description: ''
           content:
             application/json:
               schema:
@@ -78,11 +146,8 @@ paths:
   /contract_interactions/base_asset_id/{baseAssetId}/contract_address/{contractAddress}/functions/read:
     post:
       operationId: readCallFunction
-      summary: Call a read function
-      description: 'Call a read function on a deployed contract by blockchain native asset id and contract address.
-
-
-        Endpoint Permission: Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor.'
+      summary: Call a read function on a deployed contract
+      description: Call a read function on a deployed contract by blockchain native asset id and contract address
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
       - name: contractAddress
@@ -93,14 +158,15 @@ paths:
         schema:
           type: string
       - name: baseAssetId
-        description: The blockchain base assetId
         required: true
         in: path
-        example: ETH
         schema:
           type: string
       x-readme:
         code-samples:
+        - language: python
+          code: read_response = fireblocks.read_contract_call_function(base_asset_id, contract_address, payload)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const readResponse= await fireblocks.readContractCallFunction(baseAssetId, contractAddress, payload);
           name: Fireblocks SDK Javascript example
@@ -130,6 +196,7 @@ paths:
           $ref: '#/components/responses/Error'
       tags:
       - Contract Interactions
+      x-rate-limit-category: read
       x-codeSamples:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<ParameterWithValueList>> = fireblocks.contractInteractions.readCallFunction(contractInteractionsApiReadCallFunctionRequest);'
@@ -140,11 +207,8 @@ paths:
   /contract_interactions/base_asset_id/{baseAssetId}/contract_address/{contractAddress}/functions/write:
     post:
       operationId: writeCallFunction
-      summary: Call a write function
-      description: 'Call a write function on a deployed contract by blockchain native asset id and contract address. This creates an onchain transaction, thus it is an async operation. It returns a transaction id that can be polled for status check.
-
-
-        Endpoint Permission: Owner, Admin, Non-Signing Admin, Signer, and Editor.'
+      summary: Call a write function on a deployed contract
+      description: Call a write function on a deployed contract by blockchain native asset id and contract address. This creates an onchain transaction, thus it is an async operation. It returns a transaction id that can be polled for status check
       parameters:
       - $ref: '#/components/parameters/X-Idempotency-Key'
       - name: contractAddress
@@ -155,14 +219,15 @@ paths:
         schema:
           type: string
       - name: baseAssetId
-        description: The blockchain base assetId
         required: true
         in: path
-        example: ETH
         schema:
           type: string
       x-readme:
         code-samples:
+        - language: python
+          code: write_function_response = fireblocks.write_contract_call_function(base_asset_id, contract_address, payload)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const writeFunctionResponse = await fireblocks.writeContractCallFunction(baseAssetId, contractAddress, payload);
           name: Fireblocks SDK Javascript example
@@ -192,6 +257,7 @@ paths:
           $ref: '#/components/responses/Error'
       tags:
       - Contract Interactions
+      x-rate-limit-category: async
       x-codeSamples:
       - lang: TypeScript
         source: 'const response: Promise<FireblocksResponse<WriteCallFunctionResponseDto>> = fireblocks.contractInteractions.writeCallFunction(contractInteractionsApiWriteCallFunctionRequest);'
@@ -199,12 +265,71 @@ paths:
         source: CompletableFuture<ApiResponse<WriteCallFunctionResponseDto>> response = fireblocks.contractInteractions().writeCallFunction(writeCallFunctionDto, contractAddress, baseAssetId, idempotencyKey);
       - lang: Python
         source: response = fireblocks.contract_interactions.write_call_function(write_call_function_dto, contract_address, base_asset_id, idempotency_key);
+  /contract_interactions/base_asset_id/{baseAssetId}/tx_hash/{txHash}:
+    get:
+      operationId: getContractAddress
+      summary: Get contract address by transaction hash
+      x-rate-limit-category: read
+      description: Retrieve the contract address by blockchain native asset ID and transaction hash
+      parameters:
+      - $ref: '#/components/parameters/X-Idempotency-Key'
+      - name: baseAssetId
+        required: true
+        in: path
+        description: The blockchain base assetId
+        example: ETH_TEST3
+        schema:
+          type: string
+      - name: txHash
+        required: true
+        in: path
+        description: The transaction hash
+        example: '0x3b015ca0518c55d7bff4e3f5aa5d0431705771553ba8a95cf20e34cb597f57f6'
+        schema:
+          type: string
+      x-readme:
+        code-samples:
+        - language: python
+          code: contract_address = fireblocks.get_contract_address(base_asset_id, tx_hash)
+          name: Fireblocks SDK Python example (Legacy)
+        - language: javascript
+          code: const contractAddress = await fireblocks.getContractAddress(baseAssetId, txHash);
+          name: Fireblocks SDK Javascript example
+        - language: typescript
+          code: 'const response: Promise<FireblocksResponse<ContractAddressResponse>> = fireblocks.contractInteractions.getContractAddress(contractInteractionsApiGetContractAddressRequest);'
+          name: Fireblocks SDK TypeScript example
+        - language: java
+          code: CompletableFuture<ApiResponse<ContractAddressResponse>> response = fireblocks.contractInteractions().getContractAddress(baseAssetId, txHash, idempotencyKey);
+          name: Fireblocks SDK Java example
+        - language: python
+          code: response = fireblocks.contract_interactions.get_contract_address(base_asset_id, tx_hash, idempotency_key);
+          name: Fireblocks SDK Python example
+      responses:
+        '200':
+          description: Retrieved The Contract Address Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractAddressResponse'
+        default:
+          $ref: '#/components/responses/Error'
+      tags:
+      - Contract Interactions
+      x-codeSamples:
+      - lang: TypeScript
+        source: 'const response: Promise<FireblocksResponse<ContractAddressResponse>> = fireblocks.contractInteractions.getContractAddress(contractInteractionsApiGetContractAddressRequest);'
+      - lang: Java
+        source: CompletableFuture<ApiResponse<ContractAddressResponse>> response = fireblocks.contractInteractions().getContractAddress(baseAssetId, txHash, idempotencyKey);
+      - lang: Python
+        source: response = fireblocks.contract_interactions.get_contract_address(base_asset_id, tx_hash, idempotency_key);
   /contract_interactions/base_asset_id/{baseAssetId}/tx_hash/{txHash}/receipt:
     get:
       operationId: getTransactionReceipt
       summary: Get transaction receipt
+      x-rate-limit-category: read
       description: 'Retrieve the transaction receipt by blockchain native asset ID and transaction hash
 
+        > **Note** > This functionality is exclusively available for EVM (Ethereum Virtual Machine) compatible chains.
 
         Endpoint Permission: Admin, Non-Signing Admin, Signer, Approver, Editor, and Viewer.'
       parameters:
@@ -224,6 +349,9 @@ paths:
           type: string
       x-readme:
         code-samples:
+        - language: python
+          code: transaction_receipt = fireblocks.get_transaction_receipt(base_asset_id, tx_hash)
+          name: Fireblocks SDK Python example (Legacy)
         - language: javascript
           code: const transactionReceipt = await fireblocks.getTransactionReceipt(baseAssetId, txHash);
           name: Fireblocks SDK Javascript example
@@ -256,91 +384,37 @@ paths:
         source: response = fireblocks.contract_interactions.get_transaction_receipt(base_asset_id, tx_hash);
 components:
   schemas:
-    IdlType:
-      type: string
-      enum:
-      - bool
-      - u8
-      - i8
-      - u16
-      - i16
-      - u32
-      - i32
-      - f32
-      - u64
-      - i64
-      - f64
-      - u128
-      - i128
-      - u256
-      - i256
-      - bytes
-      - string
-      - pubkey
-      description: The type of the parameter
-      example: u8
-    ParameterWithValue:
+    ReadAbiFunction:
       type: object
       properties:
-        name:
+        stateMutability:
           type: string
-          example: Some Name
-          description: The name of the parameter as it appears in the ABI
-        description:
-          type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
-          type: string
-          example: string
-          description: The  internal type of the parameter as it appears in the ABI
-        type:
-          type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
+          enum:
+          - pure
+          - view
+          example: pure
+        outputs:
           type: array
           items:
             $ref: '#/components/schemas/Parameter'
-        value:
-          example: 'true'
-          description: The value of the parameter. can also be ParameterWithValue
-          type: string
-        functionValue:
-          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
-          allOf:
-          - $ref: '#/components/schemas/LeanAbiFunction'
-      required:
-      - name
-      - type
-    SolanaInstructionWithValue:
-      type: object
-      properties:
         name:
           type: string
-          description: The name of the instruction
-          example: approve
-        discriminator:
+        type:
+          type: string
+        inputs:
           type: array
           items:
-            type: number
-          description: The discriminator for the instruction. Acts as a function selector
-          example:
-          - 13
-        accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/SOLAccountWithValue'
-        args:
-          type: array
-          description: The arguments of the instruction
-          items:
-            $ref: '#/components/schemas/SolParameterWithValue'
+            $ref: '#/components/schemas/ParameterWithValue'
+        description:
+          type: string
       required:
-      - name
-      - discriminator
-      - accounts
-      - args
+      - stateMutability
+      - type
+      - inputs
+    ParameterWithValueList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ParameterWithValue'
     SolParameterWithValue:
       type: object
       properties:
@@ -358,6 +432,195 @@ components:
       - name
       - type
       - value
+    ErrorSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: number
+    SOLAccount:
+      type: object
+      description: The accounts involved in the instruction
+      properties:
+        name:
+          type: string
+          description: The name of the account
+          example: mint
+        signer:
+          type: boolean
+          description: Indicates if the account needs to sign the instruction. If true a signature for this account must be provided
+          example: false
+        writable:
+          type: boolean
+          description: Indicates if the account's data can be changed by the instruction.
+          example: true
+        address:
+          type: string
+          description: The address of the account
+          example: 4PVcDXAkAgQkVx4puiSXdZ5H8BrTqUzstJBKKWFy3XsH
+      required:
+      - name
+    WriteCallFunctionDto:
+      type: object
+      properties:
+        vaultAccountId:
+          type: string
+          example: '0'
+          description: The vault account id this contract was deploy from
+        abiFunction:
+          oneOf:
+          - $ref: '#/components/schemas/WriteAbiFunction'
+          - $ref: '#/components/schemas/SolanaInstructionWithValue'
+        amount:
+          type: string
+          description: Amount in base asset. Being used in payable functions
+          example: '12.345'
+        feeLevel:
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          type: string
+          description: Fee level for the write function transaction. interchangeable with the 'fee' field
+          example: MEDIUM
+        fee:
+          type: string
+          description: Max fee amount for the write function transaction. interchangeable with the 'feeLevel' field
+          example: '2000'
+        note:
+          type: string
+          description: Custom note, not sent to the blockchain, that describes the transaction at your Fireblocks workspace
+        useGasless:
+          type: boolean
+          example: false
+          description: Indicates whether the token should be created in a gasless manner, utilizing the ERC-2771 standard. When set to true, the transaction will be relayed by a designated relayer. The workspace must be configured to use Fireblocks gasless relay.
+        externalId:
+          type: string
+          description: External id that can be used to identify the transaction in your system. The unique identifier of the transaction outside of Fireblocks with max length of 255 characters
+          example: 0192e4f5-924e-7bb9-8e5b-c748270feb38
+      required:
+      - vaultAccountId
+      - abiFunction
+    ContractDataEncodedDataString:
+      type: string
+      description: The encoded data to decode
+      example: '0x1234567890abcdef'
+    TransactionReceiptResponse:
+      type: object
+      properties:
+        blockHash:
+          type: string
+          description: The block hash
+          example: '0x6e3c92a3d96f96e46b7f39c30244edb6e8e0f4b65d3846c9f8287f9dd5d1a3d2'
+        blockNumber:
+          type: integer
+          description: The block number
+          example: 123456
+        contractAddress:
+          type:
+          - string
+          - 'null'
+          description: The address of deployed contract
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+        cumulativeGasUsed:
+          type: integer
+          format: int64
+          description: The cumulative gas used in the transaction
+          example: 21000
+        effectiveGasPrice:
+          type: integer
+          format: int64
+          description: The effective gas price
+          example: 1000000000
+        from:
+          type: string
+          description: Sender address
+          example: '0xa7D9ddBE1f17865597Fbd27ec712455208B6b76D'
+        gasUsed:
+          type: integer
+          format: int64
+          description: Gas used by the transaction
+          example: 21000
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/TxLog'
+          description: Array of transaction logs
+        logsBloom:
+          type: string
+          description: Logs bloom filter
+          example: '0x0000000000000000000000000000000000000000000000000000000000000000'
+        status:
+          type: integer
+          description: Transaction status (1 for success, 0 for failure)
+          example: 1
+        to:
+          type:
+          - string
+          - 'null'
+          description: Recipient address
+          example: '0x1eC4a8bB9bB9Afa24f79cC2e1423cD00B6cFf50'
+        transactionHash:
+          type: string
+          description: The transaction hash
+          example: '0x5a3b7f4b2c9e4a0b1f8a12c8e5f1d0e2a6b4c9d1f7e2b1a2b3c4d5e6f7a8b9c'
+        transactionIndex:
+          type: integer
+          description: Transaction index in the block
+          example: 3
+        type:
+          type: string
+          description: Type of transaction
+          example: '0x2'
+      required:
+      - blockHash
+      - blockNumber
+      - cumulativeGasUsed
+      - effectiveGasPrice
+      - from
+      - gasUsed
+      - logs
+      - logsBloom
+      - status
+      - transactionHash
+      - transactionIndex
+      - type
+    ContractDataDecodeResponseParams:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the contract function.
+          example: transfer
+        signature:
+          type: string
+          description: The signature of the contract function.
+          example: transfer(address,uint256)
+        args:
+          $ref: '#/components/schemas/ParameterWithValueList'
+      required:
+      - name
+      - signature
+      - args
+    ContractDataLogDataParam:
+      type: object
+      properties:
+        data:
+          type: string
+          description: The data to decode, which can be a string or an object containing the data and its type.
+          example: '0x1234567890abcdef'
+        topics:
+          type: array
+          items:
+            type: string
+          description: The topics of the log, which is an array of strings.
+          example:
+          - 1311768467294899700
+          - 12379813812177893000
+      required:
+      - data
+      - topics
     TxLog:
       type: object
       properties:
@@ -412,32 +675,269 @@ components:
       - blockHash
       - logIndex
       - removed
-    ReadAbiFunction:
+    ContractDataDecodedResponse:
       type: object
       properties:
-        inputs:
+        result:
           type: array
           items:
-            $ref: '#/components/schemas/ParameterWithValue'
+            $ref: '#/components/schemas/ContractDataDecodeResponseParams'
+          description: The decoded parameters of the contract function call.
+        type:
+          $ref: '#/components/schemas/ContractDataDecodeDataType'
+      required:
+      - result
+      - type
+    SOLAccountWithValue:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the account
+          example: mint
+        signer:
+          type: boolean
+          description: Indicates if the account needs to sign the instruction. If true a signature for this account must be provided
+          example: false
+        writable:
+          type: boolean
+          description: Indicates if the account's data can be changed by the instruction.
+          example: true
+        address:
+          type: string
+          description: The address of the account
+          example: 4PVcDXAkAgQkVx4puiSXdZ5H8BrTqUzstJBKKWFy3XsH
+      required:
+      - name
+      - address
+    AbiFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: mint
+          description: The name of the contract function as it appears in the ABI
         stateMutability:
           type: string
+          example: pure
           enum:
           - pure
           - view
+          - nonpayable
+          - payable
+          description: The state mutability of the contract function as it appears in the ABI
         type:
           type: string
+          example: constructor
+          description: The type of the function
+          enum:
+          - constructor
+          - function
+          - error
+          - event
+          - receive
+          - fallback
+        inputs:
+          description: The parameters that this function/constructor posses
+          items:
+            $ref: '#/components/schemas/Parameter'
+          type: array
+        outputs:
+          description: The parameters that this 'read' function returns
+          items:
+            $ref: '#/components/schemas/Parameter'
+          type: array
+        description:
+          type: string
+          description: The documentation of this function (if has any)
+      required:
+      - type
+    Parameter:
+      type: object
+      properties:
         name:
           type: string
-        outputs:
+          example: _name
+          description: The name of the parameter as it appears in the ABI
+        description:
+          type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
           type: array
           items:
             $ref: '#/components/schemas/Parameter'
+      required:
+      - name
+      - type
+    ContractDataDecodeDataType:
+      type: string
+      description: The type of the data to decode.
+      enum:
+      - ERROR
+      - LOG
+      - FUNCTION
+      example: FUNCTION
+    ReadCallFunctionDto:
+      type: object
+      properties:
+        abiFunction:
+          oneOf:
+          - $ref: '#/components/schemas/ReadAbiFunction'
+          - $ref: '#/components/schemas/SolanaInstructionWithValue'
+      required:
+      - abiFunction
+    ParameterWithValue:
+      type: object
+      properties:
+        name:
+          type: string
+          example: _name
+          description: The name of the parameter as it appears in the ABI
         description:
           type: string
+          example: The name of the token
+          description: A description of the parameter, fetched from the devdoc of this contract
+        internalType:
+          type: string
+          example: string
+          description: The  internal type of the parameter as it appears in the ABI
+        type:
+          type: string
+          example: string
+          description: The type of the parameter as it appears in the ABI
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+        value:
+          example: 'true'
+          description: 'The value of the parameter. The shape follows the ABI `type`: a string for `string`/`address`/`bytes*`, a number for `uint*`/`int*`, a boolean for `bool`, an array for `T[]`, and for `tuple` an array of nested ParameterWithValue objects (one per entry in `components`, in ABI order).'
+        functionValue:
+          description: The function value of this param (if has one). If this is set, the `value` shouldn`t be. Used for proxies
+          allOf:
+          - $ref: '#/components/schemas/LeanAbiFunction'
       required:
-      - stateMutability
+      - name
       - type
-      - inputs
+    ContractAddressResponse:
+      type: object
+      properties:
+        contractAddress:
+          type: string
+          description: The contract's onchain address
+          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
+      required:
+      - contractAddress
+    SolanaInstruction:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the instruction
+          example: transfer
+        discriminator:
+          type: array
+          items:
+            type: number
+          description: The discriminator for the instruction. Acts as a function selector
+          example:
+          - 13
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SOLAccount'
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/SolParameter'
+      required:
+      - name
+      - discriminator
+      - accounts
+      - args
+    IdlType:
+      type: string
+      enum:
+      - bool
+      - u8
+      - i8
+      - u16
+      - i16
+      - u32
+      - i32
+      - f32
+      - u64
+      - i64
+      - f64
+      - u128
+      - i128
+      - u256
+      - i256
+      - bytes
+      - string
+      - pubkey
+      description: The type of the parameter
+      example: u8
+    ContractAbiResponseDto:
+      type: object
+      properties:
+        abi:
+          example:
+          - inputs:
+            - internalType: address
+              name: implementation
+              type: address
+            - internalType: bytes
+              name: _data
+              type: bytes
+            stateMutability: nonpayable
+            type: constructor
+          description: The abi of the contract
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/AbiFunction'
+            - $ref: '#/components/schemas/SolanaInstruction'
+        implementationAbi:
+          example:
+          - inputs:
+            - internalType: address
+              name: to
+              type: address
+            - internalType: uint256
+              name: amount
+              type: uint256
+            stateMutability: nonpayable
+            type: function
+            name: mint
+          description: The abi of the implementation contract if exists. Relevant only for proxy patterns
+          type: array
+          items:
+            $ref: '#/components/schemas/AbiFunction'
+      required:
+      - abi
+    SolParameter:
+      type: object
+      description: The arguments of the instruction
+      properties:
+        name:
+          type: string
+          description: The name of the parameter
+          example: mint
+        type:
+          $ref: '#/components/schemas/IdlType'
+      required:
+      - name
+      - type
     WriteAbiFunction:
       type: object
       properties:
@@ -467,17 +967,53 @@ components:
       - stateMutability
       - type
       - inputs
-    ParameterWithValueList:
-      type: array
-      items:
-        $ref: '#/components/schemas/ParameterWithValue'
+    ContractDataDecodeError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Bad request error message
+          example: 'Error decoding data: Invalid ABI'
+        code:
+          type: number
+          description: Error code
+          example: 400
+      required:
+      - message
+      - code
+    ContractDataDecodeRequest:
+      type: object
+      properties:
+        data:
+          description: The data to decode, which can be a string or an object containing the data and its type.
+          oneOf:
+          - $ref: '#/components/schemas/ContractDataEncodedDataString'
+          - $ref: '#/components/schemas/ContractDataLogDataParam'
+          example: '0x1234567890abcdef'
+        dataType:
+          $ref: '#/components/schemas/ContractDataDecodeDataType'
+        abi:
+          type: array
+          items:
+            $ref: '#/components/schemas/AbiFunction'
+          description: The abi of the function/error/log to decode.
+          example:
+          - inputs:
+            - name: to
+              type: address
+            - name: amount
+              type: uint256
+            stateMutability: nonpayable
+            type: function
+            name: transfer
+      required:
+      - data
+      - dataType
     WriteCallFunctionResponseDto:
       type: object
       properties:
         txId:
           type: string
-          example: b70701f4-d7b1-4795-a8ee-b09cdb5b850d
-          description: The Fireblocks transaction id of the function call
       required:
       - txId
     LeanAbiFunction:
@@ -492,266 +1028,50 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ParameterWithValue'
-      required:
-      - inputs
-    AbiFunction:
-      type: object
-      properties:
-        name:
-          type: string
-          example: mint
-          description: The name of the contract function as it appears in the ABI
+        outputs:
+          description: The function outputs
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterWithValue'
         stateMutability:
           type: string
-          example: pure
           enum:
-          - pure
           - view
+          - pure
           - nonpayable
           - payable
-          description: The state mutability of the contract function as it appears in the ABI
-        type:
-          type: string
-          example: constructor
-          description: The type if the function
-          enum:
-          - function
-          - constructor
-        inputs:
-          description: The parameters that this function/constructor posses
-          items:
-            $ref: '#/components/schemas/Parameter'
-          type: array
-        outputs:
-          description: The parameters that this 'read' function returns
-          items:
-            $ref: '#/components/schemas/Parameter'
-          type: array
-        description:
-          type: string
-          description: The documentation of this function (if has any)
+          example: nonpayable
+          description: The state mutability of the function (e.g., view, pure, nonpayable, payable)
       required:
-      - type
       - inputs
-    ReadCallFunctionDto:
-      type: object
-      properties:
-        abiFunction:
-          example:
-            inputs: []
-            stateMutability: view
-            type: function
-            name: decimals
-            outputs:
-            - name: ''
-              type: uint8
-              internalType: uint8
-          description: The abi of the read function you wish to call
-          type: object
-          $ref: '#/components/schemas/ReadAbiFunction'
-      required:
-      - abiFunction
-    TransactionReceiptResponse:
-      type: object
-      properties:
-        blockHash:
-          type: string
-          description: The block hash
-          example: '0x6e3c92a3d96f96e46b7f39c30244edb6e8e0f4b65d3846c9f8287f9dd5d1a3d2'
-        blockNumber:
-          type: integer
-          description: The block number
-          example: 123456
-        contractAddress:
-          type:
-          - string
-          - 'null'
-          description: The address of deployed contract
-          example: '0xC2c4e1Db41F0bB97996D0eD0542D2170d146FB66'
-        cumulativeGasUsed:
-          type: integer
-          description: The cumulative gas used in the transaction
-          example: 21000
-        effectiveGasPrice:
-          type: integer
-          description: The effective gas price
-          example: 1000000000
-        from:
-          type: string
-          description: Sender address
-          example: '0xa7D9ddBE1f17865597Fbd27ec712455208B6b76D'
-        gasUsed:
-          type: integer
-          description: Gas used by the transaction
-          example: 21000
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/TxLog'
-          description: Array of transaction logs
-        logsBloom:
-          type: string
-          description: Logs bloom filter
-          example: '0x0000000000000000000000000000000000000000000000000000000000000000'
-        status:
-          type: integer
-          description: Transaction status (1 for success, 0 for failure)
-          example: 1
-        to:
-          type:
-          - string
-          - 'null'
-          description: Recipient address
-          example: '0x1eC4a8bB9bB9Afa24f79cC2e1423cD00B6cFf50'
-        transactionHash:
-          type: string
-          description: The transaction hash
-          example: '0x5a3b7f4b2c9e4a0b1f8a12c8e5f1d0e2a6b4c9d1f7e2b1a2b3c4d5e6f7a8b9c'
-        transactionIndex:
-          type: integer
-          description: Transaction index in the block
-          example: 3
-        type:
-          type: string
-          description: Type of transaction
-          example: '0x2'
-      required:
-      - blockHash
-      - blockNumber
-      - cumulativeGasUsed
-      - effectiveGasPrice
-      - from
-      - gasUsed
-      - logs
-      - logsBloom
-      - status
-      - transactionHash
-      - transactionIndex
-      - type
-    SOLAccountWithValue:
+    SolanaInstructionWithValue:
       type: object
       properties:
         name:
           type: string
-          description: The name of the account
-          example: mint
-        signer:
-          type: boolean
-          description: Indicates if the account needs to sign the instruction. If true a signature for this account must be provided
-          example: false
-        writable:
-          type: boolean
-          description: Indicates if the account's data can be changed by the instruction.
-          example: true
-        address:
-          type: string
-          description: The address of the account
-          example: 4PVcDXAkAgQkVx4puiSXdZ5H8BrTqUzstJBKKWFy3XsH
-      required:
-      - name
-      - address
-    ContractAbiResponseDto:
-      type: object
-      properties:
-        abi:
-          example:
-          - inputs:
-            - internalType: address
-              name: implementation
-              type: address
-            - internalType: bytes
-              name: _data
-              type: bytes
-            stateMutability: nonpayable
-            type: constructor
-          description: The abi of the contract
+          description: The name of the instruction
+          example: approve
+        discriminator:
           type: array
           items:
-            $ref: '#/components/schemas/AbiFunction'
-        implementationAbi:
+            type: number
+          description: The discriminator for the instruction. Acts as a function selector
           example:
-          - inputs:
-            - internalType: address
-              name: to
-              type: address
-            - internalType: uint256
-              name: amount
-              type: uint256
-            stateMutability: nonpayable
-            type: function
-            name: mint
-          description: The abi of the implementation contract if exists. Relevant only for proxy patterns
+          - 13
+        accounts:
           type: array
           items:
-            $ref: '#/components/schemas/AbiFunction'
-      required:
-      - abi
-    Parameter:
-      type: object
-      properties:
-        name:
-          type: string
-          example: _name
-          description: The name of the parameter as it appears in the ABI
-        description:
-          type: string
-          example: The name of the token
-          description: A description of the parameter, fetched from the devdoc of this contract
-        internalType:
-          type: string
-          example: string
-          description: The internal type of the parameter as it appears in the ABI
-        type:
-          type: string
-          example: string
-          description: The type of the parameter as it appears in the ABI
-        components:
+            $ref: '#/components/schemas/SOLAccountWithValue'
+        args:
           type: array
-          description: In case it’s a struct, it will hold the struct data
+          description: The arguments of the instruction
+          items:
+            $ref: '#/components/schemas/SolParameterWithValue'
       required:
       - name
-      - type
-    WriteCallFunctionDto:
-      type: object
-      properties:
-        vaultAccountId:
-          type: string
-          example: '0'
-          description: The vault account id this contract was deploy from
-        abiFunction:
-          oneOf:
-          - $ref: '#/components/schemas/WriteAbiFunction'
-          - $ref: '#/components/schemas/SolanaInstructionWithValue'
-        amount:
-          type: string
-          description: Amount in base asset. Being used in payable functions
-          example: '12.345'
-        feeLevel:
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          type: string
-          description: Fee level for the write function transaction. interchangeable with the 'fee' field
-          example: MEDIUM
-        fee:
-          type: string
-          description: Max fee amount for the write function transaction. interchangeable with the 'feeLevel' field
-          example: '2000'
-        note:
-          type: string
-          description: Custom note, not sent to the blockchain, that describes the transaction at your Fireblocks workspace
-        useGasless:
-          type: boolean
-          example: false
-          description: Indicates whether the token should be created in a gasless manner, utilizing the ERC-2771 standard. When set to true, the transaction will be relayed by a designated relayer. The workspace must be configured to use Fireblocks gasless relay.
-        externalId:
-          type: string
-          description: External id that can be used to identify the transaction in your system. The unique identifier of the transaction outside of Fireblocks with max length of 255 characters
-          example: 0192e4f5-924e-7bb9-8e5b-c748270feb38
-      required:
-      - vaultAccountId
-      - abiFunction
+      - discriminator
+      - accounts
+      - args
   parameters:
     X-Idempotency-Key:
       name: Idempotency-Key
@@ -760,7 +1080,11 @@ components:
       required: false
       schema:
         type: string
-        example: some-unique-id
+  headers:
+    X-Request-ID:
+      schema:
+        type: string
+      description: Unique ID correlated to the API request. Please provide it in any support ticket you create or on Github issues related to Fireblocks SDKs
   responses:
     Error:
       description: Error Response
@@ -780,3 +1104,9 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-readme:
+  explorer-enabled: false
+  samples-languages:
+  - curl
+  - javascript
+  - python
