@@ -1,4 +1,4 @@
-# fireblocks (fireblocks)
+# Fireblocks
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,425 +66,206 @@
 
 Fireblocks is an institutional digital-asset and stablecoin infrastructure company providing MPC-secured custody, wallets (custodial and non-custodial / embedded), payments, tokenization, staking, smart contracts, off-exchange settlement, and DeFi security to trading firms, fintechs, exchanges, payment service providers, banks, financial institutions, and Web3 companies. The Fireblocks REST API exposes 236+ operations across 15 surface areas — Vaults, Transactions, Wallets, Assets, Exchange, Tokenization, Contracts, Staking, NFTs, Payments, Network/Off-Exchange, Compliance, Gas Station, Workspace Management, and Webhooks — alongside the separate Non-Custodial Wallet (NCW) API for embedded wallets.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/fireblocks/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/fireblocks/refs/heads/main/apis.yml)
+**Areas:** Digital Assets · Custody · Vault · Transaction · Tokenization · Stablecoins
+
+## Fireblocks on APIs.io
+
+Everything profiled for Fireblocks is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/fireblocks/](https://apis.io/providers/fireblocks/)** — or go straight to one of the APIs or properties below.
+
+### APIs (35)
+
+- [Fireblocks Vaults API](https://apis.io/apis/fireblocks/fireblocks-vaults-api/) — Create and manage vault accounts, asset wallets, deposit addresses, attached tags, and balance inquiries. Vaults are the root container for MPC-secured…
+- [Fireblocks Transactions API](https://apis.io/apis/fireblocks/fireblocks-transactions-api/) — Create, cancel, drop, and query digital-asset transactions across all supported chains. Every transaction passes the workspace Policy Engine, is signed by…
+- [Fireblocks Tokenization API](https://apis.io/apis/fireblocks/fireblocks-tokenization-api/) — Deploy, mint, burn, and manage tokens across the chains supported by Fireblocks Tokenization Engine. Covers ERC-20 fungible tokens, multichain stablecoins,…
+- [Fireblocks Staking API](https://apis.io/apis/fireblocks/fireblocks-staking-api/) — Execute and track staking operations across multiple proof-of-stake chains. Browse staking providers and validators, initiate stake / unstake / withdraw /…
+- [Fireblocks NFTs API](https://apis.io/apis/fireblocks/fireblocks-nfts-api/) — Discover, index, and manage non-fungible tokens held in the workspace's vault accounts. List owned NFTs, fetch token-level metadata, refresh ownership…
+- [Fireblocks Compliance and Policy API](https://apis.io/apis/fireblocks/fireblocks-compliance-api/) — AML transaction screening, Travel Rule VASP messaging (FATF Recommendation 16), address registry lookups, and the workspace Policy Editor (Beta and V2).…
+- [Fireblocks Gas Station API](https://apis.io/apis/fireblocks/fireblocks-gas-station-api/) — Configure the Fireblocks Gas Station — auto-fuel logic that tops up native-asset balances in vault accounts so ERC-20 / SPL / contract-call transactions…
+- [Fireblocks Webhooks API](https://apis.io/apis/fireblocks/fireblocks-webhooks-api/) — Receive push notifications when workspace events occur — TRANSACTION_CREATED, TRANSACTION_STATUS_UPDATED, VAULT_ACCOUNT_ADDED,…
+- [fireblocks Approval Requests API](https://apis.io/apis/fireblocks/fireblocks-approval-requests-api/) — The Approval Requests API from fireblocks — 2 operation(s) for approval requests.
+- [fireblocks Blockchains & Assets API](https://apis.io/apis/fireblocks/fireblocks-blockchains-assets-api/) — The Blockchains & Assets API from fireblocks — 8 operation(s) for blockchains & assets.
+- [fireblocks Connected Accounts (Beta) API](https://apis.io/apis/fireblocks/fireblocks-connected-accounts-beta-api/) — The Connected Accounts (Beta) API from fireblocks — 5 operation(s) for connected accounts (beta).
+- [fireblocks Contract Interactions API](https://apis.io/apis/fireblocks/fireblocks-contract-interactions-api/) — The Contract Interactions API from fireblocks — 4 operation(s) for contract interactions.
+- [fireblocks Contract Templates API](https://apis.io/apis/fireblocks/fireblocks-contract-templates-api/) — The Contract Templates API from fireblocks — 5 operation(s) for contract templates.
+- [fireblocks Cosigners (Beta) API](https://apis.io/apis/fireblocks/fireblocks-cosigners-beta-api/) — The Cosigners (Beta) API from fireblocks — 5 operation(s) for cosigners (beta).
+- [fireblocks dApp Connections API](https://apis.io/apis/fireblocks/fireblocks-dapp-connections-api/) — The dApp Connections API from fireblocks — 3 operation(s) for dapp connections.
+- [fireblocks Deployed Contracts API](https://apis.io/apis/fireblocks/fireblocks-deployed-contracts-api/) — The Deployed Contracts API from fireblocks — 5 operation(s) for deployed contracts.
+- [fireblocks Exchange Accounts API](https://apis.io/apis/fireblocks/fireblocks-exchange-accounts-api/) — The Exchange Accounts API from fireblocks — 7 operation(s) for exchange accounts.
+- [fireblocks Fiat Accounts API](https://apis.io/apis/fireblocks/fireblocks-fiat-accounts-api/) — The Fiat Accounts API from fireblocks — 4 operation(s) for fiat accounts.
+- [fireblocks Network API](https://apis.io/apis/fireblocks/fireblocks-fireblocks-network-api/) — The Fireblocks Network API from fireblocks — 11 operation(s) for fireblocks network.
+- [fireblocks Job Management API](https://apis.io/apis/fireblocks/fireblocks-job-management-api/) — The Job Management API from fireblocks — 6 operation(s) for job management.
+- [fireblocks Key Link API](https://apis.io/apis/fireblocks/fireblocks-key-link-api/) — The Key Link API from fireblocks — 5 operation(s) for key link.
+- [fireblocks Keys (Beta) API](https://apis.io/apis/fireblocks/fireblocks-keys-beta-api/) — The Keys (Beta) API from fireblocks — 2 operation(s) for keys (beta).
+- [fireblocks Off Exchange API](https://apis.io/apis/fireblocks/fireblocks-off-exchange-api/) — The Off Exchange API from fireblocks — 5 operation(s) for off exchange.
+- [fireblocks Payments - Flows API](https://apis.io/apis/fireblocks/fireblocks-payments-flows-api/) — The Payments - Flows API from fireblocks — 5 operation(s) for payments - flows.
+- [fireblocks Payments - Payout API](https://apis.io/apis/fireblocks/fireblocks-payments-payout-api/) — The Payments - Payout API from fireblocks — 3 operation(s) for payments - payout.
+- [fireblocks Policy Editor (Beta) API](https://apis.io/apis/fireblocks/fireblocks-policy-editor-beta-api/) — The Policy Editor (Beta) API from fireblocks — 3 operation(s) for policy editor (beta).
+- [fireblocks Policy Editor V2 (Beta) API](https://apis.io/apis/fireblocks/fireblocks-policy-editor-v2-beta-api/) — The Policy Editor V2 (Beta) API from fireblocks — 2 operation(s) for policy editor v2 (beta).
+- [fireblocks Smart Transfers API](https://apis.io/apis/fireblocks/fireblocks-smart-transfers-api/) — The Smart Transfers API from fireblocks — 15 operation(s) for smart transfers.
+- [fireblocks Tags API](https://apis.io/apis/fireblocks/fireblocks-tags-api/) — The Tags API from fireblocks — 2 operation(s) for tags.
+- [fireblocks Trading (Beta) API](https://apis.io/apis/fireblocks/fireblocks-trading-beta-api/) — The Trading (Beta) API from fireblocks — 4 operation(s) for trading (beta).
+- [fireblocks Webhooks V2 API](https://apis.io/apis/fireblocks/fireblocks-webhooks-v2-api/) — The Webhooks V2 API from fireblocks — 9 operation(s) for webhooks v2.
+- [fireblocks Whitelisted Contracts API](https://apis.io/apis/fireblocks/fireblocks-whitelisted-contracts-api/) — The Whitelisted Contracts API from fireblocks — 3 operation(s) for whitelisted contracts.
+- [fireblocks Whitelisted External Wallets API](https://apis.io/apis/fireblocks/fireblocks-whitelisted-external-wallets-api/) — The Whitelisted External Wallets API from fireblocks — 4 operation(s) for whitelisted external wallets.
+- [fireblocks Whitelisted Internal Wallets API](https://apis.io/apis/fireblocks/fireblocks-whitelisted-internal-wallets-api/) — The Whitelisted Internal Wallets API from fireblocks — 5 operation(s) for whitelisted internal wallets.
+- [fireblocks Workspace Management API](https://apis.io/apis/fireblocks/fireblocks-workspace-management-api/) — The Workspace Management API from fireblocks — 13 operation(s) for workspace management.
 
-## Scope
+### Published properties
 
-- **Position:** Consuming
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Timestamps
+#### Agentic access (1)
 
-- **Created:** 2026-05-25
-- **Modified:** 2026-05-25
+Which operations an agent can call, which act, and which need a human in the loop.
 
-## APIs
+- [Fireblocks Agentic Access](https://apis.io/agentic-access/fireblocks/fireblocks-agentic-access/)
 
-### Fireblocks Vaults API
+#### JSON Schema (3)
 
-Create and manage vault accounts, asset wallets, deposit addresses, attached tags, and balance inquiries. Vaults are the root container for MPC-secured keys, balances, and transactions inside a Fireblocks workspace. Supports paged listing, bulk address creation, customer-ref-id tagging, auto-fuel toggling, and UTXO/unspent-input enumeration.
+The data models the API reads and writes.
 
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
+- [Fireblocks Transaction](https://apis.io/schemas/fireblocks/fireblocks-transaction/)
+- [Fireblocks Vault Account](https://apis.io/schemas/fireblocks/fireblocks-vault-account/)
+- [Fireblocks Webhook Event](https://apis.io/schemas/fireblocks/fireblocks-webhook-event/)
 
-#### Tags
+#### JSON-LD (1)
 
-- Digital Assets
-- Vaults
-- Custody
-- MPC
+Linked-data contexts for the provider's vocabulary.
 
-#### Properties
+- [Fireblocks Context](https://apis.io/jsonld/fireblocks/fireblocks-context/)
 
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-vaults-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-vaults-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-vaults-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/fireblocks-vault-account-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+#### Collections (77)
 
-### Fireblocks Transactions API
+Postman and Open Collection request collections.
 
-Create, cancel, drop, and query digital-asset transactions across all supported chains. Every transaction passes the workspace Policy Engine, is signed by the MPC quorum, and is broadcast under Fireblocks' fee-bump-and-rebroadcast logic. Supports transfers, raw signings, typed-message signings, contract calls, drop-and-replace, fee estimation, validate-address, and approval-request management.
+- [Fireblocks Blockchains and Assets Approval Requests API](https://apis.io/collections/fireblocks/open-fireblocks-approval-requests-api/)
+- [Fireblocks Blockchains and Assets API](https://apis.io/collections/fireblocks/open-fireblocks-assets-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Blockchains & Assets API](https://apis.io/collections/fireblocks/open-fireblocks-blockchains-assets-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Compliance API](https://apis.io/collections/fireblocks/open-fireblocks-compliance-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Connected Accounts (Beta) API](https://apis.io/collections/fireblocks/open-fireblocks-connected-accounts-beta-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Contract Interactions API](https://apis.io/collections/fireblocks/open-fireblocks-contract-interactions-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Contract Templates API](https://apis.io/collections/fireblocks/open-fireblocks-contract-templates-api/)
+- [Fireblocks Smart Contracts API](https://apis.io/collections/fireblocks/open-fireblocks-contracts-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Cosigners (Beta) API](https://apis.io/collections/fireblocks/open-fireblocks-cosigners-beta-api/)
+- [Fireblocks Blockchains and Assets Approval Requests dApp Connections API](https://apis.io/collections/fireblocks/open-fireblocks-dapp-connections-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Deployed Contracts API](https://apis.io/collections/fireblocks/open-fireblocks-deployed-contracts-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Exchange Accounts API](https://apis.io/collections/fireblocks/open-fireblocks-exchange-accounts-api/)
+- [Fireblocks Exchange and Fiat Accounts API](https://apis.io/collections/fireblocks/open-fireblocks-exchange-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Fiat Accounts API](https://apis.io/collections/fireblocks/open-fireblocks-fiat-accounts-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Fireblocks Network API](https://apis.io/collections/fireblocks/open-fireblocks-fireblocks-network-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Gas Station API](https://apis.io/collections/fireblocks/open-fireblocks-gas-station-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Job Management API](https://apis.io/collections/fireblocks/open-fireblocks-job-management-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Key Link API](https://apis.io/collections/fireblocks/open-fireblocks-key-link-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Keys (Beta) API](https://apis.io/collections/fireblocks/open-fireblocks-keys-beta-api/)
+- [Fireblocks Network and Off-Exchange API](https://apis.io/collections/fireblocks/open-fireblocks-network-api/)
+- [Fireblocks Blockchains and Assets Approval Requests NFTs API](https://apis.io/collections/fireblocks/open-fireblocks-nfts-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Off Exchange API](https://apis.io/collections/fireblocks/open-fireblocks-off-exchange-api/)
+- [Fireblocks Payments API](https://apis.io/collections/fireblocks/open-fireblocks-payments-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Payments - Flows API](https://apis.io/collections/fireblocks/open-fireblocks-payments-flows-api/)
+- [Fireblocks Blockchains and Assets Approval Requests Payments - Payout API](https://apis.io/collections/fireblocks/open-fireblocks-payments-payout-api/)
+- …and 52 more published on APIs.io
 
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
+#### Governance rules (2)
 
-#### Tags
+Spectral rulesets for the provider's contracts.
 
-- Digital Assets
-- Transactions
-- MPC
-- Custody
+- [Fireblocks — fireblocks network link rules](https://apis.io/rules/fireblocks/fireblocks-fireblocks-network-link-spectral-rules/)
+- [Fireblocks — jsonschema rules](https://apis.io/rules/fireblocks/fireblocks-jsonschema-spectral-rules/)
 
-#### Properties
+#### Security (3)
 
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-transactions-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-transactions-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-transactions-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/fireblocks-transaction-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+Authentication, trust centre, and vulnerability disclosure.
 
-### Fireblocks Whitelisted Wallets API
+- [Fireblocks Authentication](https://apis.io/security/fireblocks/fireblocks-authentication/)
+- [Fireblocks Domain Security](https://apis.io/security/fireblocks/fireblocks-domain-security/)
+- [Fireblocks Trust Center](https://apis.io/security/fireblocks/fireblocks-trust-center/)
 
-Manage Fireblocks whitelisted destinations — internal wallets, external wallets, and whitelisted contracts. Internal wallets group addresses you own outside of vault accounts; external wallets identify counterparties (exchanges, payment processors, custodians). All approved destinations bypass one-time-address restrictions and accelerate the policy-engine quorum.
+#### Plans and pricing (2)
 
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
+Published plans, tiers and prices.
 
-#### Tags
+- [Fireblocks Plans Pricing](https://apis.io/plans/fireblocks/fireblocks-plans-pricing/)
+- [Fireblocks Price Estimates](https://apis.io/plans/fireblocks/fireblocks-price-estimates/)
 
-- Digital Assets
-- Wallets
-- Whitelisting
-- Compliance
+#### Rate limits (1)
 
-#### Properties
+Published request limits.
 
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-wallets-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-wallets-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-wallets-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+- [Fireblocks Rate Limits](https://apis.io/rate-limits/fireblocks/fireblocks-rate-limits/)
 
-### Fireblocks Blockchains and Assets API
+#### FinOps (1)
 
-Enumerate the blockchains and assets supported by the workspace — native coins, ERC-20s, SPL tokens, BRC-20s, NFTs — and register new asset/contract pairs. Returns asset metadata including contract address, native asset, decimals, and on-chain id used by the rest of the Fireblocks API.
+What the API costs to run, by operation.
 
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
+- [Fireblocks Finops](https://apis.io/finops/fireblocks/fireblocks-finops/)
 
-#### Tags
+## Where to find this API
 
-- Digital Assets
-- Blockchains
-- Assets
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-assets-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-assets-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-assets-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks Exchange and Fiat Accounts API
-
-Connect, read, and trade across exchange accounts and fiat (DDA) accounts. Manage exchange sub-accounts, perform internal exchange transfers, convert between assets, read manifests of trading pairs, fetch rates and balances, and surface Connected Accounts (Beta) and Trading (Beta) quotes/orders.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- Exchanges
-- Fiat
-- Trading
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-exchange-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-exchange-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-exchange-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks Tokenization API
-
-Deploy, mint, burn, and manage tokens across the chains supported by Fireblocks Tokenization Engine. Covers ERC-20 fungible tokens, multichain stablecoins, asset tokenization, smart contract management, and the full token lifecycle. Pricing is 3-30 basis points on Assets Under Custody.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- Tokenization
-- Stablecoins
-- Smart Contracts
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-tokenization-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-tokenization-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-tokenization-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks Smart Contracts API
-
-Deploy contract templates, manage deployed contracts, execute read/write contract interactions, and broker dApp connections via WalletConnect. Powers the Fireblocks DeFi security suite — every contract call passes the workspace Policy Engine and is simulated before MPC signing.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- Smart Contracts
-- dApps
-- DeFi
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-contracts-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-contracts-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-contracts-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks Staking API
-
-Execute and track staking operations across multiple proof-of-stake chains. Browse staking providers and validators, initiate stake / unstake / withdraw / claim-rewards actions, and query position state. Backs institutional Earn workflows for ETH, SOL, ADA, DOT, KSM, NEAR, TEZOS, MATIC, and more.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- Staking
-- DeFi
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-staking-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-staking-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-staking-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks NFTs API
-
-Discover, index, and manage non-fungible tokens held in the workspace's vault accounts. List owned NFTs, fetch token-level metadata, refresh ownership state, and update token-spam classification.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- NFTs
-- Tokens
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-nfts-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-nfts-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-nfts-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks Payments API
-
-Run institutional crypto payment flows — payment configs, payout instruction sets, and Smart Transfer tickets (atomic multi-leg asset transfers between two counterparties). Powers cross-border B2B settlement, OTC desks, PSP rails, and the Fireblocks Agentic Payments Suite.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- Payments
-- Stablecoins
-- Payouts
-- Smart Transfers
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-payments-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-payments-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-payments-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks Network and Off-Exchange API
-
-Configure Fireblocks Network connections (point-to-point connectivity layer between Fireblocks workspaces), set routing policies per asset, and operate Off-Exchange — Fireblocks' settlement layer that keeps collateral in MPC custody while mirroring balances to integrated exchanges.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- Network
-- Off-Exchange
-- Settlement
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-network-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-network-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-network-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks Compliance and Policy API
-
-AML transaction screening, Travel Rule VASP messaging (FATF Recommendation 16), address registry lookups, and the workspace Policy Editor (Beta and V2). Wire third-party screening providers (Chainalysis, Elliptic, TRM) into the transaction lifecycle and codify the workspace's transaction-authorization rules.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- Compliance
-- AML
-- Travel Rule
-- Policy
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-compliance-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-compliance-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-compliance-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks Gas Station API
-
-Configure the Fireblocks Gas Station — auto-fuel logic that tops up native-asset balances in vault accounts so ERC-20 / SPL / contract-call transactions don't fail for lack of gas. Per-asset thresholds are workspace-configurable.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- Gas Station
-- Fees
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-gas-station-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-gas-station-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-gas-station-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks Workspace Management API
-
-Manage everything inside a Fireblocks workspace — API users, console users, user groups, audit logs, cosigners, signing keys, KeyLink external-key management, workspace freeze/unfreeze, and Admin Quorum administrative approvals.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/api-overview](https://developers.fireblocks.com/reference/api-overview)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- Administrative
-- Users
-- Keys
-- Audit
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
-- [OpenAPI](openapi/fireblocks-workspace-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-workspace-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-workspace-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-### Fireblocks Webhooks API
-
-Receive push notifications when workspace events occur — TRANSACTION_CREATED, TRANSACTION_STATUS_UPDATED, VAULT_ACCOUNT_ADDED, EMBEDDED_WALLET_DEVICE_PAIRED, SMART_TRANSFER events, and more. Each event is signed with RSA-SHA512 in the Fireblocks-Signature header so the consumer can verify authenticity before processing. Webhooks V2 surface adds destination management and replay-from-history.
-
-- **Human URL:** [https://developers.fireblocks.com/reference/webhook-notifications](https://developers.fireblocks.com/reference/webhook-notifications)
-- **Base URL:** `https://api.fireblocks.io/v1`
-
-#### Tags
-
-- Digital Assets
-- Webhooks
-- Events
-- Push
-
-#### Properties
-
-- [Documentation](https://developers.fireblocks.com/reference/webhook-notifications)
-- [OpenAPI](openapi/fireblocks-webhooks-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireblocks-webhooks-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireblocks-webhooks-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/fireblocks-webhook-event-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON-LD](json-ld/fireblocks-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-
-## Common Properties
-
-- [Portal](https://www.fireblocks.com)
+- [Website](https://www.fireblocks.com/)
 - [Documentation](https://developers.fireblocks.com)
-- [Getting Started](https://developers.fireblocks.com/docs/quickstart)
-- [Documentation](https://developers.fireblocks.com/reference/api-overview)
+- [Getting started](https://developers.fireblocks.com/docs/quickstart)
 - [Pricing](https://www.fireblocks.com/pricing)
-- [GitHub Organization](https://github.com/fireblocks)
-- [OpenAPI](https://github.com/fireblocks/fireblocks-openapi-spec) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [OpenAPI](https://github.com/fireblocks/fireblocks-ncw-open-api-spec) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Status Page](https://status.fireblocks.io)
-- [About](https://www.fireblocks.com/about)
-- [Contact Form](https://www.fireblocks.com/contact)
-- [Careers](https://www.fireblocks.com/careers)
-- [Terms of Service](https://www.fireblocks.com/legal/terms-of-service)
-- [Privacy Policy](https://www.fireblocks.com/legal/privacy-notice)
-- [Trust Center](https://trust.fireblocks.com/)
+- [Changelog](https://developers.fireblocks.com/changelog)
 - [Blog](https://www.fireblocks.com/blog/)
-- [News](https://www.fireblocks.com/newsroom/)
-- [LinkedIn](https://www.linkedin.com/company/fireblocks/)
-- [Twitter](https://x.com/fireblocks)
-- [YouTube](https://www.youtube.com/c/Fireblocks)
-- [Case Studies](https://www.fireblocks.com/customer-stories/)
-- [Events](https://www.fireblocks.com/events/)
-- [Training](https://academy.fireblocks.com/)
-- [SDK](https://github.com/fireblocks/fireblocks-sdk-js)
-- [SDK](https://github.com/fireblocks/ts-sdk)
-- [SDK](https://github.com/fireblocks/fireblocks-sdk-py)
-- [SDK](https://github.com/fireblocks/py-sdk)
-- [SDK](https://github.com/fireblocks/java-sdk)
-- [SDK](https://github.com/fireblocks/fireblocks-web3-provider)
-- [SDK](https://github.com/fireblocks/hardhat-fireblocks)
-- [SDK](https://github.com/fireblocks/fireblocks-defi-sdk)
-- [SDK](https://github.com/fireblocks/fireblocks-defi-sdk-py)
-- [SDK](https://github.com/fireblocks/fireblocks-json-rpc)
-- [SDK](https://github.com/fireblocks/solana-web3-adapter)
-- [SDK](https://github.com/fireblocks/fireblocks-xrp-sdk)
-- [SDK](https://github.com/fireblocks/hbar-fireblocks-sdk)
-- [SDK](https://github.com/fireblocks/cardano-raw-sdk)
-- [SDK](https://github.com/fireblocks/move-fireblocks-sdk)
-- [SDK](https://github.com/fireblocks/stacks-fireblocks-sdk)
-- [SDK](https://github.com/fireblocks/seismic-sdk)
-- [C L I](https://github.com/fireblocks/fireblocks-cli)
-- [C L I](https://github.com/fireblocks/homebrew-fireblocks-cli)
-- [Tool](https://github.com/fireblocks/recovery)
-- [Tool](https://github.com/fireblocks/fireblocks-key-recovery-tool)
-- [Tool](https://github.com/fireblocks/fireblocks-agent)
-- [Tool](https://github.com/fireblocks/fireblocks-mcp)
-- [Tool](https://github.com/fireblocks/x402-facilitator)
-- [Tool](https://github.com/fireblocks/x402-agent)
-- [Tool](https://github.com/fireblocks/mpc-lib)
-- [Code Examples](https://github.com/fireblocks/developers-hub)
-- [Code Examples](https://github.com/fireblocks/retail-demo)
-- [Code Examples](https://github.com/fireblocks/tokenization-lab)
-- [Code Examples](https://github.com/fireblocks/ncw-web-demo)
-- [Code Examples](https://github.com/fireblocks/ncw-web-demo-v2)
-- [Code Examples](https://github.com/fireblocks/ncw-backend-demo)
-- [Code Examples](https://github.com/fireblocks/android-ncw-demo)
-- [SDK](https://github.com/fireblocks/ncw-ios-sdk)
-- [Code Examples](https://github.com/fireblocks/ncw-ios-demo)
-- [SDK](https://github.com/fireblocks/react-native-ncw-sdk)
-- [SDK](https://github.com/fireblocks/ew-ios-sdk)
-- [Code Examples](https://github.com/fireblocks/ew-node-demo)
-- [Code Examples](https://github.com/fireblocks/ew-backend-demo)
-- [Code Examples](https://github.com/fireblocks/plugin-based-callback-handler)
-- [Code Examples](https://github.com/fireblocks/btc_tx_validation)
-- [Code Examples](https://github.com/fireblocks/eth_tx_validation)
-- [Plans](https://plans/fireblocks-plans-pricing.yml)
-- [Rate Limits](https://rate-limits/fireblocks-rate-limits.yml)
-- [Fin Ops](https://finops/fireblocks-finops.yml)
-- [Features](undefined)
+- [Trust centre](https://trust.fireblocks.com/)
+- [Terms of service](https://www.fireblocks.com/legal/terms-of-service)
+- [Privacy policy](https://www.fireblocks.com/legal/privacy-notice)
+- [GitHub](https://github.com/fireblocks)
+- [Status](https://status.fireblocks.io)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** info@apievangelist.com
-**URL:** https://apievangelist.com
+**Kin Score 67.2** — exemplar · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 61.8 |
+| Contract governance | 54.5 |
+| Operational transparency | 44.7 |
+| Developer ergonomics | 70.2 |
+| Access clarity | 68.4 |
+
+**Agent readiness 38.0** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | verified |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/fireblocks/](https://apis.io/providers/fireblocks/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Fireblocks: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/fireblocks/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
